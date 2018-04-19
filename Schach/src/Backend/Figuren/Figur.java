@@ -5,10 +5,22 @@
  */
 package Backend.Figuren;
 
+import Backend.Enums.Farbe;
+import Backend.Enums.Position;
+import Backend.Spielbrett;
+import java.util.LinkedList;
+
 /**
  *
  * @author timtim
  */
-public interface Figur {
+public abstract class Figur {
     
+    protected Farbe farbe;
+    
+    public Figur(Farbe farbe){
+        this.farbe = farbe;
+    }
+    
+    abstract LinkedList<Position> getMoves(Spielbrett spielbrett, Position eigenePosition);
 }

@@ -5,10 +5,24 @@
  */
 package Backend.Figuren;
 
+import Backend.Enums.Farbe;
+import Backend.Enums.Position;
+import Backend.Spielbrett;
+import java.util.LinkedList;
+
 /**
  *
  * @author timtim
  */
-public class Laeufer implements Figur{
+public class Laeufer extends Figur{
+
+    public Laeufer(Farbe farbe) {
+        super(farbe);
+    }
+
+    @Override
+    public LinkedList<Position> getMoves(Spielbrett spielbrett, Position eigenePosition) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

@@ -10,5 +10,5 @@ package Backend.Enums;
  * @author timtim
  */
 public enum Farbe {
-    Schwarz, Weiss 
+    SCHWARZ, WEISS 
 }
