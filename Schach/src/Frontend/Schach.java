@@ -19,15 +19,17 @@ import javafx.stage.Stage;
 public class Schach extends Application {
     
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage mainStage) throws Exception {
         Parent root;
         //JFXMasonryPane root = new JFXMasonryPane();
-        root = FXMLLoader.load(getClass().getResource("StartSeite.fxml"));
+        root = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
         
         Scene scene = new Scene(root);
         
-        stage.setScene(scene);
-        stage.show();
+        mainStage.setTitle("Schach Spiel - by Team Deep Blue");
+        mainStage.setResizable(false);
+        mainStage.setScene(scene);
+        mainStage.show();
     }
 
     /**
