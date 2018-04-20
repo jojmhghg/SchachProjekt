@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -51,6 +52,20 @@ public class SchachFXMLController implements Initializable {
         }
         catch (IOException e) {
         }
+    }
+    
+    @FXML
+    private void goToChessBoard(ActionEvent event) throws IOException {
+        Parent chessBoardScene;
+        chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
+        //chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
+        //Scene chessBoardScene = new Scene(chessBoardScene);
+        Stage chessBoardStage = new Stage();
+        chessBoardStage.setTitle("Schach Spiel by Team Deep Blue");
+        chessBoardStage.setScene(new Scene(chessBoardScene));
+        chessBoardStage.show();
+        // Hide this current window (if this is what you want)
+        ((Node)(event.getSource())).getScene().getWindow().hide();
     }
     
     @Override

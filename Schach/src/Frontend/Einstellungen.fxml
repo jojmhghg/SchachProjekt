@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.SchachFXMLController">
    <children>
       <JFXTabPane layoutX="14.0" layoutY="14.0" prefHeight="338.0" prefWidth="538.0">
          <tabs>
@@ -18,7 +18,7 @@
                      <children>
                         <Text layoutX="39.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Zeit in Minuten" wrappingWidth="78.37890625" />
                         <JFXSlider layoutX="116.0" layoutY="97.0" prefHeight="14.0" prefWidth="173.0" />
-                        <JFXButton layoutX="151.0" layoutY="197.0" text="Los geht !" />
+                        <JFXButton buttonType="RAISED" layoutX="151.0" layoutY="197.0" onAction="#goToChessBoard" text="Los geht !" />
                         <Text layoutX="39.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
                         <JFXTextArea layoutX="118.0" layoutY="19.0" prefHeight="36.0" prefWidth="170.0" />
                      </children>
