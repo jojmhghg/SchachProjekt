@@ -5,6 +5,7 @@
  */
 package Frontend;
 
+import com.jfoenix.controls.JFXMasonryPane;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +20,9 @@ public class Schach extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("StartSeite.fxml"));
+        Parent root;
+        //JFXMasonryPane root = new JFXMasonryPane();
+        root = FXMLLoader.load(getClass().getResource("StartSeite.fxml"));
         
         Scene scene = new Scene(root);
         
