@@ -130,7 +130,10 @@ public class Partie {
             this.spielbrett = new Spielbrett(speichername);           
         } catch (IOException e) { 
             throw new SpielException("Spielstand '" + speichername + "' konnte nicht gefunden werden!");
-        }      
+        }  
+        
+        //TODO: Nächste Zeile anpassen!!!!!!!!!!
+        this.ablauf = new LinkedList<>();
     }
     
        

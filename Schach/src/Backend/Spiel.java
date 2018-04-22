@@ -14,12 +14,12 @@ public class Spiel {
     private Partie partie;
     private final Einstellungen einstellungen;
     
-    public Spiel(){
+    public Spiel() throws SpielException{
         partie = new Partie("tmp");
         einstellungen = new Einstellungen();
     }
     
-    public void ladePartie(String speichername){
+    public void ladePartie(String speichername) throws SpielException{
         partie = new Partie(speichername);
     }
     
