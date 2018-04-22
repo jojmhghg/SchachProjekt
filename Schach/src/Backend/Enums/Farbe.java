@@ -10,5 +10,10 @@ package Backend.Enums;
  * @author timtim
  */
 public enum Farbe {
-    SCHWARZ, WEISS 
+    SCHWARZ, WEISS; 
+
+    public static Farbe parseFarbe(String line) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+   
 }

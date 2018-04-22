@@ -5,10 +5,27 @@
  */
 package Backend;
 
+import Backend.Figuren.Figur;
+
 /**
  *
  * @author timtim
  */
 public class Feld {
+    
+    private Figur figur;
+    
+    public Feld(){
+        this.figur = null;
+    }
+
+    public Figur getFigur() {
+        return figur;
+    }
+
+    public void setFigur(Figur figur) {
+        this.figur = figur;
+    }
+    
     
 }

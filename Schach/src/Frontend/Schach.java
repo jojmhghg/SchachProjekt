@@ -5,7 +5,6 @@
  */
 package Frontend;
 
-import com.jfoenix.controls.JFXMasonryPane;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

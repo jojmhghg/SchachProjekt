@@ -5,10 +5,28 @@
  */
 package Backend;
 
+import Backend.Enums.Position;
+
 /**
  *
  * @author timtim
  */
 public class Spielbrett {
+
+    Feld[] spielbrett;
+    
+    
+    public Spielbrett() {
+        this.spielbrett = new Feld[64];
+    }
+    
+    
+    public Spielbrett(String speichername) {
+        
+    }
+    
+    public Feld getFeld(Position position){        
+        return this.spielbrett[position.ordinal()];
+    }
     
 }
