@@ -5,7 +5,9 @@
  */
 package Backend;
 
+import Backend.Enums.Position;
 import Backend.Figuren.Figur;
+import java.util.LinkedList;
 
 /**
  *
@@ -17,6 +19,13 @@ public class Feld {
     
     public Feld(){
         this.figur = null;
+    }
+    
+    public LinkedList<Position> getMoves(){
+        if(figur != null){
+            return null;
+        }
+        return new LinkedList<>();
     }
 
     public Figur getFigur() {

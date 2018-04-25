@@ -48,6 +48,7 @@ public class Einstellungen {
          
         } catch (IOException e) { 
             throw new SpielException("Einstellungen.txt existiert nicht!");
+            //TODO: statt Fehler lieber Datei anlegen
         }  
     }
 

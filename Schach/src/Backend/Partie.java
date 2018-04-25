@@ -144,6 +144,24 @@ public class Partie {
      * 
      * @return True, falls Gegner eine KI; False, sonst
      */
+    public Farbe getSpielerAmZug() {
+        Farbe spielerAmZug;
+        
+        if(this.ablauf.size() % 2 == 0){
+            spielerAmZug = Farbe.WEISS;
+        }
+        else{
+            spielerAmZug = Farbe.SCHWARZ;
+        }
+        
+        return spielerAmZug;
+    }
+    
+    /**
+     * Getter für Attribut kiGegner
+     * 
+     * @return True, falls Gegner eine KI; False, sonst
+     */
     public boolean isKiGegner() {
         return kiGegner;
     }
@@ -205,7 +223,7 @@ public class Partie {
     
     /* --- Sonstige public Methoden --- */
     
-    public void zieheFigur(Position ursprung, Position ziel, int verbrauchteZeit){
+    public void zieheFigur(Position ursprung, Position ziel){
         Farbe amZug;
         
         if(this.ablauf.size() % 2 == 0){

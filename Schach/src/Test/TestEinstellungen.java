@@ -1,20 +1,26 @@
+package Test;
+
+
+import Backend.Einstellungen;
+import Backend.SpielException;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Backend;
 
 /**
  *
  * @author timtim
  */
-public class TestKlasse {
+public class TestEinstellungen {
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+    public TestEinstellungen(){
+        
+    }
+    
+    public void start(){
         try {
             System.out.println("Teste Konstruktor: ");
             Einstellungen einstellungen = new Einstellungen();
@@ -61,9 +67,4 @@ public class TestKlasse {
             System.out.println("    Fehlermeldung: " + ex);
         }
     }
-   
-    public void start(){
-        System.out.println("Starte Tests für Klasse Einstellungen\n");
-    }
-    
 }

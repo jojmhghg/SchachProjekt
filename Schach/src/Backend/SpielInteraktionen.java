@@ -31,7 +31,6 @@ public interface SpielInteraktionen {
     public int getZeitSpieler1();
     public int getZeitSpieler2();
     public int getPartiezeit();
-    public Optionen getOptionen();
     
     public LinkedList<Zug> getMoeglicheZuege(Position position);
     

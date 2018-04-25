@@ -57,42 +57,37 @@ public class Spiel implements SpielInteraktionen {
 
     @Override
     public void zieheFigur(Position ausgangsposition, Position zielposition) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.partie.zieheFigur(ausgangsposition, zielposition);
     }
 
     @Override
     public Farbe getSpielerAmZug() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.partie.getSpielerAmZug();
     }
 
     @Override
     public Farbe getGewinner() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.partie.getGewinner();
     }
 
     @Override
     public int getZeitSpieler1() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.partie.getVerbleibendeZeitSpieler1();
     }
 
     @Override
     public int getZeitSpieler2() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.partie.getVerbleibendeZeitSpieler2();
     }
 
     @Override
     public int getPartiezeit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Optionen getOptionen() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.partie.getPartiezeit();
     }
 
     @Override
     public LinkedList<Zug> getMoeglicheZuege(Position position) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
 
