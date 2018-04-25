@@ -22,5 +22,6 @@ public abstract class Figur {
         this.farbe = farbe;
     }
     
-    abstract LinkedList<Position> getMoves(Spielbrett spielbrett, Position eigenePosition);
+    public abstract LinkedList<Position> getMoves(Spielbrett spielbrett, Position eigenePosition);
+    public abstract String getFigurName();
 }

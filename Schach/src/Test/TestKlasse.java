@@ -23,7 +23,7 @@ public class TestKlasse {
         TestEinstellungen testEinstellungen = new TestEinstellungen();
         //testEinstellungen.start();
         
-         TestSonstige testSonstige = new TestSonstige();
+        TestSonstige testSonstige = new TestSonstige();
         testSonstige.start();
 
     }

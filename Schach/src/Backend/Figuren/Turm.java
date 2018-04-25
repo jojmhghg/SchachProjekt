@@ -24,5 +24,10 @@ public class Turm extends Figur{
     public LinkedList<Position> getMoves(Spielbrett spielbrett, Position eigenePosition) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public String getFigurName() {
+        return "Turm";
+    }
     
 }
