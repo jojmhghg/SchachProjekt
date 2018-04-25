@@ -66,8 +66,7 @@ public class Spielbrett {
         this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
     }
-    
-    
+        
     public Spielbrett(String speichername) {
         
     }
