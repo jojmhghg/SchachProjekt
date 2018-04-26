@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -25,7 +26,8 @@ public class Schach extends Application {
         
         Scene scene = new Scene(root);
         
-        mainStage.setTitle("Schach Spiel - by Team Deep Blue");
+        mainStage.initStyle(StageStyle.UNDECORATED);
+        //mainStage.setTitle("Schach Spiel - by Team Deep Blue");
         mainStage.setResizable(false);
         mainStage.setScene(scene);
         mainStage.show();
