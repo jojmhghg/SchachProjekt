@@ -36,56 +36,88 @@ public class Dame extends Figur{
         
         int i = 0;
         int step = 1;
-        int min = 0;
-        int max = 0;
+        int minGegnerischeGrundreihe = 0;
+        int maxGegnerischeGrundreihe = 0;
+        int minEigeneGrundreihe = 0;
+        int maxEigeneGrundreihe = 0;
         int forward = 0;
         int left = 0;
         int right = 0;
         Farbe color;
         boolean next = true;
+        boolean backward = true;
+        boolean welchesNext = true;
         if(this.farbe == Farbe.WEISS){
-            min = 8;
-            max = 15;
+            minEigeneGrundreihe = 0;
+            maxEigeneGrundreihe = 7;
+            minGegnerischeGrundreihe = 56;
+            maxGegnerischeGrundreihe = 63;
             forward = 8;
-            left = 7;
-            right = 9;
+            left = -1;
+            right = 1;
             color = Farbe.SCHWARZ;
         }
         else{
-            min = 48;
-            max = 55;
+            minEigeneGrundreihe = 56;
+            maxEigeneGrundreihe = 63;
+            minGegnerischeGrundreihe = 0;
+            maxGegnerischeGrundreihe = 7;
             forward = -8;
-            left = -9;
-            right = -7;
+            left = -1;
+            right = 1;
             color = Farbe.WEISS;
         }  
-        
+        //Fuer Vorwaertszuege und Rueckwaertzuege
         while(next){
-            //Wenn Feld(er) vor der Dame frei sind, sind Zuege moeglich
-            if(spielbrett.emptyFeld(Position.values()[position.ordinal() + step*forward])){
-                while(i < 27){
-                    if(positions[i] == null){
-                        positions[i] = Position.values()[position.ordinal() + forward];
-                        i = 27;
-                    }
-                    i++;
-                }
+            int minWelcheGrundreihe;
+            int maxWelcheGrundreihe;
+            int welchesForward;
+            if(!backward){
+                minWelcheGrundreihe = minEigeneGrundreihe;
+                maxWelcheGrundreihe = maxEigeneGrundreihe;
+                welchesForward = forward;
+            } 
+            else{
+                minWelcheGrundreihe = minGegnerischeGrundreihe;
+                maxWelcheGrundreihe = maxGegnerischeGrundreihe;
+                welchesForward = -forward;
+                welchesNext = false;
             }
-            //Wenn eine gegnerische Figur in der Reihe vorwärts steht, dann ist Zug moeglich
-            else if(!spielbrett.emptyFeld(Position.values()[position.ordinal() + step*forward]) && spielbrett.getFeld(Position.values()[position.ordinal() + step*forward]).getFigur().farbe == color){
-                while(i < 27){
-                    if(positions[i] == null){
-                        positions[i] = Position.values()[position.ordinal() + forward];
-                        i = 27;
+            //Nur wenn Dame nicht auf gegnerischer/eigener Grundreihe steht, gibt es noch moegliche Zuege
+            if((position.ordinal() + (step - 1)*welchesForward) >= minWelcheGrundreihe && (position.ordinal() + (step - 1)*welchesForward) <= maxWelcheGrundreihe ){ 
+                //Wenn Feld(er) vor der Dame frei sind, sind Zuege moeglich
+                if(spielbrett.emptyFeld(Position.values()[position.ordinal() + step*welchesForward])){
+                    while(i < 27){
+                        if(positions[i] == null){
+                            positions[i] = Position.values()[position.ordinal() + step*welchesForward];
+                            i = 27;
+                        }
+                        i++;
                     }
-                    i++;
+                    step++;
+                }
+                //Wenn eine gegnerische Figur in der Reihe vorwaerts/rueckwaerts steht, dann ist Zug moeglich
+                else if(!spielbrett.emptyFeld(Position.values()[position.ordinal() + step*welchesForward]) && spielbrett.getFeld(Position.values()[position.ordinal() + step*welchesForward]).getFigur().farbe == color){
+                    while(i < 27){
+                        if(positions[i] == null){
+                            positions[i] = Position.values()[position.ordinal() + step*welchesForward];
+                            i = 27;
+                        }
+                        i++;
+                    }
+                    step++;
+                }
+                else{
+                    backward = false;
+                    next = welchesNext;
                 }
             }
             else{
-                next = false;
+                backward = false;
+                next = welchesNext;
             }
+            
         }
-        
         return positions;
     }
 }
