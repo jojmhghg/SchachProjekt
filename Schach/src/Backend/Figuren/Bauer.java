@@ -42,19 +42,22 @@ public class Bauer extends Figur{
         int forward = 0;
         int left = 0;
         int right = 0;
+        Farbe color;
         if(this.farbe == Farbe.WEISS){
             min = 8;
             max = 15;
             forward = 8;
-            left = -9;
-            right = -7;
+            left = 7;
+            right = 9;
+            color = Farbe.SCHWARZ;
         }
         else{
             min = 48;
             max = 55;
             forward = -8;
-            left = 7;
-            right = 9;
+            left = -9;
+            right = -7;
+            color = Farbe.WEISS;
         }
         int i = 0;
         if(position.ordinal() >= min && position.ordinal() <= max){
@@ -90,12 +93,25 @@ public class Bauer extends Figur{
                 }
             }
         }
-        if((position.ordinal() % 8) != 0){      // || (position.ordinal() % 8) != 7
-            if(!spielbrett.emptyFeld(Position.values()[position.ordinal() + left]) && .TODO muss andere Farbe sein als eigene){
+        
+        if((position.ordinal() % 8) != 0){
+            if(!spielbrett.emptyFeld(Position.values()[position.ordinal() + left]) && spielbrett.getFeld(position).getFigur().farbe == color){
                 i = 0;
                 while(i < 4){
                     if(positions[i] == null){
-                        positions[i] = Position.values()[position.ordinal() + 2*forward];
+                        positions[i] = Position.values()[position.ordinal() + left];
+                        i = 4;
+                    }
+                    i++;
+                }  
+            }
+        }
+        if((position.ordinal() % 8) != 7){
+            if(!spielbrett.emptyFeld(Position.values()[position.ordinal() + right]) && spielbrett.getFeld(position).getFigur().farbe == color){
+                i = 0;
+                while(i < 4){
+                    if(positions[i] == null){
+                        positions[i] = Position.values()[position.ordinal() + right];
                         i = 4;
                     }
                     i++;
@@ -105,3 +121,10 @@ public class Bauer extends Figur{
         return positions;
     }
 }
+
+
+// anstatt emptyFeld
+// spielbrett.getFeld(position).getFigur() == null
+// überdenken
+            
+       
