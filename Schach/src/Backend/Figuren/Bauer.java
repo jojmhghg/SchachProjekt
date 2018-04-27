@@ -37,6 +37,7 @@ public class Bauer extends Figur{
         Spielbrett spielbrett = new Spielbrett();
         Position[] positions = new Position[4];
         
+        int i = 0;
         int min = 0;
         int max = 0;
         int forward = 0;
@@ -59,17 +60,18 @@ public class Bauer extends Figur{
             right = -7;
             color = Farbe.WEISS;
         }
-        int i = 0;
-        if(position.ordinal() >= min && position.ordinal() <= max){
-            if(spielbrett.emptyFeld(Position.values()[position.ordinal() + forward])){
-                while(i < 4){
-                    if(positions[i] == null){
-                        positions[i] = Position.values()[position.ordinal() + forward];
-                        i = 4;
-                    }
-                    i++;
+        //Wenn Feld direkt vor dem Bauer frei ist, dann ist Zug moeglich
+        if(spielbrett.emptyFeld(Position.values()[position.ordinal() + forward])){
+            while(i < 4){
+                if(positions[i] == null){
+                    positions[i] = Position.values()[position.ordinal() + forward];
+                    i = 4;
                 }
-                if(spielbrett.emptyFeld(Position.values()[position.ordinal() + forward])){
+                i++;
+            }
+            //Wenn auf Grundreihe und 2 Felder vor dem Bauern frei ist, dann ist Zug moeglich
+            if(position.ordinal() >= min && position.ordinal() <= max){
+                if(spielbrett.emptyFeld(Position.values()[position.ordinal() + 2*forward])){
                     i = 0;
                     while(i < 4){
                         if(positions[i] == null){
@@ -81,19 +83,7 @@ public class Bauer extends Figur{
                 }
             }
         }
-        else{
-            if(spielbrett.emptyFeld(Position.values()[position.ordinal() + forward])){
-                i = 0;
-                while(i < 4){
-                    if(positions[i] == null){
-                        positions[i] = Position.values()[position.ordinal() + 2*forward];
-                        i = 4;
-                    }
-                    i++;
-                }
-            }
-        }
-        
+        //Wenn schräg vorne links eine gegnerische Figur steht und nicht die 1.Spalte ist, dann ist Zug moeglich
         if((position.ordinal() % 8) != 0){
             if(!spielbrett.emptyFeld(Position.values()[position.ordinal() + left]) && spielbrett.getFeld(position).getFigur().farbe == color){
                 i = 0;
@@ -106,6 +96,7 @@ public class Bauer extends Figur{
                 }  
             }
         }
+        //Wenn schräg vorne rechts eine gegnerische Figur steht und nicht die 8.Spalte ist, dann ist Zug moeglich
         if((position.ordinal() % 8) != 7){
             if(!spielbrett.emptyFeld(Position.values()[position.ordinal() + right]) && spielbrett.getFeld(position).getFigur().farbe == color){
                 i = 0;
