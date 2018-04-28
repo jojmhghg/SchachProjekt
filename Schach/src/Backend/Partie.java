@@ -20,8 +20,7 @@ import java.util.LinkedList;
  */
 public class Partie {
     
-    /* --- Attribute --- */  
-    
+    /* --- Attribute --- */    
     /**
      * gibt an ob man gegen einen KI-Gegner spielt (true = ja)
      */
@@ -34,16 +33,7 @@ public class Partie {
     /**
      * eingestellte Partiezeit pro Spieler
      */
-    private final int partiezeit;
-    /**
-     * akt. Spielbrett
-     */
-    private final Spielbrett spielbrett;
-    /**
-     * Farbe des Geinners oder null
-     */
-    private Farbe gewinner;
-    
+    private final int partiezeit; 
     /**
      * Verbleibende Zeit von Spieler1 in Millisekunden
      */
@@ -54,15 +44,25 @@ public class Partie {
     private long verbleibendeZeitSpieler2;
     
     /**
+     * akt. Spielbrett
+     */
+    private final Spielbrett spielbrett;
+    /**
+     * Farbe des Geinners oder null
+     */
+    private Farbe gewinner;
+    /**
+     * Liste mit den vergangenen Zügen
+     */
+    private final LinkedList<Zug> ablauf;
+    
+    /**
      * Hilfsattribut, das angibt wann genau (Datum in millis) der letzte Zug
      * abgeschlossen wurde.
      * Wichtig um die für einen Zug benötigte Zeit zu berechnen
      */
     private long endeLetzterZug;
-    /**
-     * Liste mit den vergangenen Zügen
-     */
-    private final LinkedList<Zug> ablauf;  
+      
     
     /* --- Konstruktoren --- */
     
@@ -258,13 +258,30 @@ public class Partie {
         //ziehe figur
         this.spielbrett.setFigurAufFeld(ursprung, ziel);   
         
-        //aktuallisiere verbleibenede Zeit und zeitpunkt des ende des zugs
-        Date d = new Date();
-        this.berechneVerbleibendeZeit((int) (d.getTime() - this.endeLetzterZug));
-        this.endeLetzterZug = (int) d.getTime();
-        
+        //aktuallisiere verbleibenede Zeit und zeitpunkt des ende des zugs, 
+        //falls Partie zeitlich begrenzt ist
+        if(this.partiezeit > 0){
+            Date d = new Date();
+            this.berechneVerbleibendeZeit((int) (d.getTime() - this.endeLetzterZug));
+            this.endeLetzterZug = (int) d.getTime();
+        }
+           
         //Zug abspeichern
         this.ablauf.add(new Zug(ursprung, ziel, "test"));
+        
+        //jetzt zieht KI, falls es ein PvE-Spiel ist
+        if(this.kiGegner){
+            this.kiZieht();
+        }
+    }
+    
+    /**
+     * Speichert das Spiel in einer Datei mit dem angegebenen Namen
+     * 
+     * @param dateiname Name der Datei 
+     */
+    public void speichereSpiel(String dateiname) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     
@@ -297,14 +314,11 @@ public class Partie {
             }
         }   
     }
-
+    
     /**
-     * Speichert das Spiel in einer Datei mit dem angegebenen Namen
-     * 
-     * @param dateiname Name der Datei 
+     * Hilfsmethode, die die Schnittstelle zur KI ist
      */
-    void speichereSpiel(String dateiname) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void kiZieht(){
+        
     }
-  
 }
