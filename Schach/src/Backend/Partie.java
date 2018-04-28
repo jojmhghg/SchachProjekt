@@ -140,21 +140,12 @@ public class Partie {
     /* --- Getter --- */
     
     /**
-     * Getter für Attribut kiGegner
+     * Gibt zurück, welcher Spieler am Zug ist
      * 
-     * @return True, falls Gegner eine KI; False, sonst
+     * @return Farbe des Spielers der am Zug ist
      */
     public Farbe getSpielerAmZug() {
-        Farbe spielerAmZug;
-        
-        if(this.ablauf.size() % 2 == 0){
-            spielerAmZug = Farbe.WEISS;
-        }
-        else{
-            spielerAmZug = Farbe.SCHWARZ;
-        }
-        
-        return spielerAmZug;
+        return this.spielbrett.getSpielerAmZug();
     }
     
     /**
