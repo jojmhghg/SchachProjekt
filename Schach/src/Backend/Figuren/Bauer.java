@@ -23,7 +23,61 @@ public class Bauer extends Figur{
 
     @Override
     public LinkedList<Position> getMoves(Spielbrett spielbrett, Position eigenePosition) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        LinkedList<Position> moves = new LinkedList<>();
+    
+        int forward;
+        int left;
+        int right;
+        boolean grundreihe = false;
+        
+        if(this.farbe == Farbe.WEISS){
+            forward = 8;
+            left = 7;
+            right = 9;
+            if(eigenePosition.ordinal() >= 8 && eigenePosition.ordinal() < 16){
+                grundreihe = true;
+            }
+        }
+        else{          
+            forward = -8;
+            left = -7;
+            right = -9;
+            if(eigenePosition.ordinal() >= 48 && eigenePosition.ordinal() < 56){
+                grundreihe = true;
+            }
+        }
+        
+        /* Überprüfe ob Bauer ein Feld nach vorne ziehen kann */
+        
+        // Posi vor Bauer berechnen
+        int posi = eigenePosition.ordinal() + forward;
+        // Test ob Bauer auf anderer Seite am Rand steht
+        // @Steven: "musst du entscheiden ob der test raus kann.
+        // weiß nicht ob man einen Bauer auch Bauer sein lassen kann,
+        // wenn er auf der anderen Seite ankommt"
+        if(posi >= 0 && posi < 64){
+            // Hier wird posi von int zu Position umgewandelt
+            Position posiVorBauer = Position.values()[posi];
+            // So testet man ob ein Feld leer ist ohne extra eine Methode zu schreiben
+            if(spielbrett.getFeld(posiVorBauer).getFigur() == null){
+                moves.add(posiVorBauer);
+                
+                /* Überprüfe ob Bauer zwei Felder nach vorne ziehen kann */
+                posi = eigenePosition.ordinal() + forward + forward;
+                Position posi2VorBauer = Position.values()[posi];
+                if(grundreihe && spielbrett.getFeld(posi2VorBauer).getFigur() == null){
+                    moves.add(posi2VorBauer);
+                }
+            }
+        }
+
+        /* Überprüfe ob Bauer eine Figur, links vor sich, schlagen kann */
+        //TODO: kannst du hier deinen Code einfügen Steven? evtl musst du den ein wenig anpassen
+                
+        /* Überprüfe ob Bauer eine Figur, rechts vor sich, schlagen kann */
+        //TODO: kannst du hier deinen Code einfügen Steven? evtl musst du den ein wenig anpassen
+        
+        return moves; 
     }
 
     @Override
@@ -31,7 +85,7 @@ public class Bauer extends Figur{
         return "Bauer";
     }
     
-    
+    /*
     @Override
     public Position[] moveBauer(Position position){
         Spielbrett spielbrett = new Spielbrett();
@@ -61,6 +115,7 @@ public class Bauer extends Figur{
             color = Farbe.WEISS;
         }
         //Wenn Feld direkt vor dem Bauer frei ist, dann ist Zug moeglich
+        
         if(spielbrett.emptyFeld(Position.values()[position.ordinal() + forward])){
             while(i < 4){
                 if(positions[i] == null){
@@ -111,6 +166,7 @@ public class Bauer extends Figur{
         }
         return positions;
     }
+    */
 }
 
 
