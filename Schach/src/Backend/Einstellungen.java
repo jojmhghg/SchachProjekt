@@ -68,6 +68,7 @@ public class Einstellungen {
      */
     public void setHighlightingAus(boolean highlightingAus) {
         this.highlightingAus = highlightingAus;
+        //TODO: in File eintragen
     }
 
     /**
@@ -86,6 +87,7 @@ public class Einstellungen {
      */
     public void setUsername(String username) {
         this.username = username;
+        //TODO: in File eintragen
     }
     
     

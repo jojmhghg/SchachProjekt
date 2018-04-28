@@ -86,8 +86,8 @@ public class Spiel implements SpielInteraktionen {
     }
 
     @Override
-    public LinkedList<Zug> getMoeglicheZuege(Position position) {
-        return null;
+    public LinkedList<Position> getMoeglicheZuege(Position position) {
+        return this.partie.getSpielbrett().getMovesFuerFeld(position);
     }
 
 

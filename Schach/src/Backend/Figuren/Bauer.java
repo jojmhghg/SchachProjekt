@@ -7,7 +7,6 @@ package Backend.Figuren;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
-import Backend.SpielInteraktionen;
 import Backend.Spielbrett;
 import java.util.LinkedList;
 
@@ -59,13 +58,13 @@ public class Bauer extends Figur{
             // Hier wird posi von int zu Position umgewandelt
             Position posiVorBauer = Position.values()[posi];
             // So testet man ob ein Feld leer ist ohne extra eine Methode zu schreiben
-            if(spielbrett.getFeld(posiVorBauer).getFigur() == null){
+            if(spielbrett.getFigurAufFeld(posiVorBauer) == null){
                 moves.add(posiVorBauer);
                 
                 /* Überprüfe ob Bauer zwei Felder nach vorne ziehen kann */
                 posi = eigenePosition.ordinal() + forward + forward;
                 Position posi2VorBauer = Position.values()[posi];
-                if(grundreihe && spielbrett.getFeld(posi2VorBauer).getFigur() == null){
+                if(grundreihe && spielbrett.getFigurAufFeld(posi2VorBauer) == null){
                     moves.add(posi2VorBauer);
                 }
             }

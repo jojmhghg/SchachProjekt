@@ -32,7 +32,7 @@ public interface SpielInteraktionen {
     public int getZeitSpieler2();
     public int getPartiezeit();
     
-    public LinkedList<Zug> getMoeglicheZuege(Position position);
+    public LinkedList<Position> getMoeglicheZuege(Position position);
     
     
 }
