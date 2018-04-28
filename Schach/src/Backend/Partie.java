@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -19,10 +20,10 @@ import java.util.LinkedList;
  */
 public class Partie {
     
-    /* --- Attribute --- */
-    
+    /* --- Attribute --- */   
     private final boolean kiGegner;
     private final Farbe farbe;
+    
     /**
      * In Minuten
      */
@@ -33,11 +34,17 @@ public class Partie {
     /**
      * In Millisekunden
      */
-    private int verbleibendeZeitSpieler1;
+    private long verbleibendeZeitSpieler1;
     /**
      * In Millisekunden
      */
-    private int verbleibendeZeitSpieler2;
+    private long verbleibendeZeitSpieler2;
+    
+    /**
+     * Hilfsattribut, das angibt wann genau (Datum in millis) der letzte Zug
+     * abgeschlossen wurde
+     */
+    private long endeLetzterZug;
     
     private final LinkedList<Zug> ablauf;  
     
@@ -55,6 +62,7 @@ public class Partie {
         
         this.verbleibendeZeitSpieler1 = optionen.getPartiezeit() * 60 * 1000;
         this.verbleibendeZeitSpieler2 = optionen.getPartiezeit() * 60 * 1000;
+        this.endeLetzterZug = 0;
         
         this.gewinner = null;
         this.ablauf = new LinkedList<>();
@@ -189,7 +197,7 @@ public class Partie {
      * 
      * @return Verbleibende Zeit des Spieler1
      */
-    public int getVerbleibendeZeitSpieler1() {
+    public long getVerbleibendeZeitSpieler1() {
         return verbleibendeZeitSpieler1;
     }
 
@@ -198,7 +206,7 @@ public class Partie {
      * 
      * @return Verbleibende Zeit des Spieler2
      */
-    public int getVerbleibendeZeitSpieler2() {
+    public long getVerbleibendeZeitSpieler2() {
         return verbleibendeZeitSpieler2;
     }
 
@@ -214,56 +222,52 @@ public class Partie {
     
     /* --- Sonstige public Methoden --- */
     
-    public void zieheFigur(Position ursprung, Position ziel){
-        Farbe amZug;
+    /**
+     * Zieht die Figur & aktuallisiert die verbleibende Zeit
+     * 
+     * @param ursprung Position der zu ziehenden Figur
+     * @param ziel Zielposition
+     * @throws SpielException Wirft Fehler, falls ungültiger Zug
+     */
+    public void zieheFigur(Position ursprung, Position ziel) throws SpielException{
+        //ziehe figur
+        this.spielbrett.setFigurAufFeld(ursprung, ziel);   
         
-        if(this.ablauf.size() % 2 == 0){
-            amZug = Farbe.WEISS;
-        }
-        else{
-            amZug = Farbe.SCHWARZ;
-        }
-        
-      //TODO  this.spielbrett.getFeld(ursprung).testeZug(ziel, amZug);
-        
+        //aktuallisiere verbleibenede Zeit und zeitpunkt des ende des zugs
+        Date d = new Date();
+        this.berechneVerbleibendeZeit((int) (d.getTime() - this.endeLetzterZug));
+        this.endeLetzterZug = (int) d.getTime();
     }
     
     
-    /* --- Sonstige private Methoden --- */
+/* --- Private Methoden --- */
     
     /**
-     * Zieht für Zug verbrauchte Zeit von Spieler1 ab. Überprüft ob Zeit von Spieler1 abgelaufen
-     * und speichert Spieler2 als Gewinner
+     * Zieht für Zug verbrauchte Zeit von Spieler ab. Überprüft ob Zeit von Spieler abgelaufen
+     * und wenn ja, wird anderer Spieler als Gewinner gesetzt
      * 
      * @param verbrauchteZeit Verbrauchte Zeit von Spieler1 für diesen Zug
      */
-    private void berechneVerbleibendeZeitSpieler1(int verbrauchteZeit) {
-        this.verbleibendeZeitSpieler1 -= verbrauchteZeit;
+    private void berechneVerbleibendeZeit(int verbrauchteZeit) {
+        if(this.getSpielerAmZug() == this.farbe){
+            this.verbleibendeZeitSpieler1 -= verbrauchteZeit;
         
-        if(this.verbleibendeZeitSpieler1 <= 0 && this.partiezeit > 0){
-            if(this.farbe == Farbe.SCHWARZ){
-                this.gewinner = Farbe.WEISS;
-            }
-            else{
-                this.gewinner = Farbe.SCHWARZ;
+            if(this.verbleibendeZeitSpieler1 <= 0 && this.partiezeit > 0){
+                if(this.farbe == Farbe.SCHWARZ){
+                    this.gewinner = Farbe.WEISS;
+                }
+                else{
+                    this.gewinner = Farbe.SCHWARZ;
+                }
             }
         }
-    }
-
-    /**
-     * Zieht für Zug verbrauchte Zeit von Spieler2 ab. Überprüft ob Zeit von Spieler2 abgelaufen
-     * und speichert Spieler1 als Gewinner
-     * 
-     * @param verbrauchteZeit Verbrauchte Zeit von Spieler2 für diesen Zug
-     */    
-    private void berechneVerbleibendeZeitSpieler2(int verbrauchteZeit) {
-        this.verbleibendeZeitSpieler2 -= verbrauchteZeit;
+        else{
+            this.verbleibendeZeitSpieler2 -= verbrauchteZeit;
         
-        if(this.verbleibendeZeitSpieler2 <= 0 && this.partiezeit > 0){
-            this.gewinner = this.farbe;
-        }
+            if(this.verbleibendeZeitSpieler2 <= 0 && this.partiezeit > 0){
+                 this.gewinner = this.farbe;
+            }
+        }   
     }
-    
-    
-    
+  
 }

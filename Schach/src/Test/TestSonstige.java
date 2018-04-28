@@ -44,7 +44,7 @@ public class TestSonstige {
                 
                 Position pos = Position.values()[i];
 
-                Figur figur = partie.getSpielbrett().getFeld(pos).getFigur();
+                Figur figur = partie.getSpielbrett().getFigurAufFeld(pos);
                 if(figur != null){
                     
                     if(figur instanceof Springer){

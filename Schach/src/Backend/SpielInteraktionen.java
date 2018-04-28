@@ -24,13 +24,13 @@ public interface SpielInteraktionen {
     /* --- Methoden die eine Partie betreffen --- */
     public Spielbrett neuePartie(Optionen partieoptionen);
     public Spielbrett partieLaden(String speicherstand) throws SpielException;
-    public void zieheFigur(Position ausgangsposition, Position zielposition);
+    public void zieheFigur(Position ausgangsposition, Position zielposition) throws SpielException;
     
     public Farbe getSpielerAmZug();
     public Farbe getGewinner();  
-    public int getZeitSpieler1();
-    public int getZeitSpieler2();
-    public int getPartiezeit();
+    public long getZeitSpieler1();
+    public long getZeitSpieler2();
+    public long getPartiezeit();
     
     public LinkedList<Position> getMoeglicheZuege(Position position);
     

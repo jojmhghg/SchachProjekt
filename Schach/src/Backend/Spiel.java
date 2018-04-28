@@ -56,7 +56,7 @@ public class Spiel implements SpielInteraktionen {
     }
 
     @Override
-    public void zieheFigur(Position ausgangsposition, Position zielposition) {
+    public void zieheFigur(Position ausgangsposition, Position zielposition) throws SpielException{
         this.partie.zieheFigur(ausgangsposition, zielposition);
     }
 
@@ -71,17 +71,17 @@ public class Spiel implements SpielInteraktionen {
     }
 
     @Override
-    public int getZeitSpieler1() {
+    public long getZeitSpieler1() {
         return this.partie.getVerbleibendeZeitSpieler1();
     }
 
     @Override
-    public int getZeitSpieler2() {
+    public long getZeitSpieler2() {
         return this.partie.getVerbleibendeZeitSpieler2();
     }
 
     @Override
-    public int getPartiezeit() {
+    public long getPartiezeit() {
         return this.partie.getPartiezeit();
     }
 
