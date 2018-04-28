@@ -31,8 +31,10 @@ public interface SpielInteraktionen {
     public long getZeitSpieler1();
     public long getZeitSpieler2();
     public long getPartiezeit();
-    
+    public LinkedList<Zug> getMitschrift();   
     public LinkedList<Position> getMoeglicheZuege(Position position);
+    
+    public void speichereSpiel(String dateiname);
     
     
 }

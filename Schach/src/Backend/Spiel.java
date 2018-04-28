@@ -90,6 +90,16 @@ public class Spiel implements SpielInteraktionen {
         return this.partie.getSpielbrett().getMovesFuerFeld(position);
     }
 
+    @Override
+    public LinkedList<Zug> getMitschrift() {
+        return this.partie.getMitschrift();
+    }
+
+    @Override
+    public void speichereSpiel(String dateiname) {
+        this.partie.speichereSpiel(dateiname);
+    }
+
 
     
 }

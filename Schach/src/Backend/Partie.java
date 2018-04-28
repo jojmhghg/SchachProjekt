@@ -20,32 +20,48 @@ import java.util.LinkedList;
  */
 public class Partie {
     
-    /* --- Attribute --- */   
+    /* --- Attribute --- */  
+    
+    /**
+     * gibt an ob man gegen einen KI-Gegner spielt (true = ja)
+     */
     private final boolean kiGegner;
+    /**
+     * Gibt die Farbe vom Spieler1 an
+     */
     private final Farbe farbe;
     
     /**
-     * In Minuten
+     * eingestellte Partiezeit pro Spieler
      */
     private final int partiezeit;
+    /**
+     * akt. Spielbrett
+     */
     private final Spielbrett spielbrett;
+    /**
+     * Farbe des Geinners oder null
+     */
     private Farbe gewinner;
     
     /**
-     * In Millisekunden
+     * Verbleibende Zeit von Spieler1 in Millisekunden
      */
     private long verbleibendeZeitSpieler1;
     /**
-     * In Millisekunden
+     * Verbleibende Zeit von Spieler2 in Millisekunden
      */
     private long verbleibendeZeitSpieler2;
     
     /**
      * Hilfsattribut, das angibt wann genau (Datum in millis) der letzte Zug
-     * abgeschlossen wurde
+     * abgeschlossen wurde.
+     * Wichtig um die für einen Zug benötigte Zeit zu berechnen
      */
     private long endeLetzterZug;
-    
+    /**
+     * Liste mit den vergangenen Zügen
+     */
     private final LinkedList<Zug> ablauf;  
     
     /* --- Konstruktoren --- */
@@ -148,6 +164,15 @@ public class Partie {
     /* --- Getter --- */
     
     /**
+     * Gibt Liste mit allen Zügen zurück
+     * 
+     * @return LinkedList mit vergangenen Zügen
+     */
+    public LinkedList<Zug> getMitschrift() {
+        return this.ablauf;
+    }
+    
+    /**
      * Gibt zurück, welcher Spieler am Zug ist
      * 
      * @return Farbe des Spielers der am Zug ist
@@ -223,7 +248,7 @@ public class Partie {
     /* --- Sonstige public Methoden --- */
     
     /**
-     * Zieht die Figur & aktuallisiert die verbleibende Zeit
+     * Zieht die Figur & aktuallisiert die verbleibende Zeit sowie Liste der Züge
      * 
      * @param ursprung Position der zu ziehenden Figur
      * @param ziel Zielposition
@@ -237,6 +262,9 @@ public class Partie {
         Date d = new Date();
         this.berechneVerbleibendeZeit((int) (d.getTime() - this.endeLetzterZug));
         this.endeLetzterZug = (int) d.getTime();
+        
+        //Zug abspeichern
+        this.ablauf.add(new Zug(ursprung, ziel, "test"));
     }
     
     
@@ -268,6 +296,15 @@ public class Partie {
                  this.gewinner = this.farbe;
             }
         }   
+    }
+
+    /**
+     * Speichert das Spiel in einer Datei mit dem angegebenen Namen
+     * 
+     * @param dateiname Name der Datei 
+     */
+    void speichereSpiel(String dateiname) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
   
 }
