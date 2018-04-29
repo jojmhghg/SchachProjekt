@@ -5,8 +5,12 @@
  */
 package Frontend;
 
+import Backend.Enums.Position;
+import Backend.Figuren.Figur;
+import Backend.Figuren.Springer;
 import Backend.Spiel;
 import Backend.Partie;
+import Backend.Spielbrett;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -173,9 +178,38 @@ public class SpielbrettFXMLController implements Initializable {
     private TableColumn spielZuegeSchwarz;
    @FXML
    private MenuBar myMenuBar;
+   @FXML
+   private ImageView test;
    
    private Partie partie;
    private Spiel spiel;
+   
+      
+//   public void initSpielbrett(){
+//      
+//       Spielbrett spielbrett = new Spielbrett();
+//       
+//       for(int i = 0; i < 64; i++){
+//                                
+//                Position pos = Position.values()[i];
+//
+//                Figur figur = spielbrett.getFeld(pos).getFigur();
+//                if(figur != null){
+//                    
+//                    if(figur instanceof Springer){
+//                        Image value = new Image("\\Frontend\\Ressources\\Pieces\\Wood\\BishopW.png");
+//                        ImageView imgView = new ImageView(value);
+//                        test.setImage(value);
+//                        A1.getChildren().add(imgView);
+//                    }
+//                    else{
+//                    }
+//                }
+//                else{
+//                }
+//                
+//            }
+//    }
     
     
 
@@ -215,7 +249,7 @@ public class SpielbrettFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        //initSpielbrett();
     } 
     
 }

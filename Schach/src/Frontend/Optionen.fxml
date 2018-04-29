@@ -55,21 +55,18 @@
                               <Font size="14.0" />
                            </font>
                         </Text>
-                        <JFXRadioButton fx:id="weissLokal" layoutX="103.0" layoutY="96.0" text="Weiß">
+                        <JFXRadioButton fx:id="weissLokal" layoutX="103.0" layoutY="96.0" selected="true" text="Weiß">
                            <font>
                               <Font size="14.0" />
                            </font>
                            <toggleGroup>
-                              <ToggleGroup fx:id="Farbe1" />
+                              <ToggleGroup fx:id="FarbeLokal" />
                            </toggleGroup>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="schwarzLokal" layoutX="194.0" layoutY="96.0" selected="true" text="Schwarz">
+                        <JFXRadioButton fx:id="schwarzLokal" layoutX="194.0" layoutY="96.0" text="Schwarz" toggleGroup="$FarbeLokal">
                            <font>
                               <Font size="14.0" />
                            </font>
-                           <toggleGroup>
-                              <ToggleGroup fx:id="Farbe2" />
-                           </toggleGroup>
                         </JFXRadioButton>
                         <Text layoutX="31.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="KI">
                            <font>
@@ -106,15 +103,15 @@
                               <Font size="14.0" />
                            </font>
                         </Text>
-                        <JFXRadioButton fx:id="weiss" layoutX="113.0" layoutY="132.0" text="Weiß">
+                        <JFXRadioButton fx:id="weiss" layoutX="113.0" layoutY="132.0" selected="true" text="Weiß">
                            <font>
                               <Font size="14.0" />
                            </font>
                            <toggleGroup>
-                              <ToggleGroup fx:id="Farbe" />
+                              <ToggleGroup fx:id="FarbeOnline" />
                            </toggleGroup>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="schwarz" layoutX="206.0" layoutY="131.0" selected="true" text="Schwarz" toggleGroup="$Farbe">
+                        <JFXRadioButton fx:id="schwarz" layoutX="206.0" layoutY="131.0" text="Schwarz" toggleGroup="$FarbeOnline">
                            <font>
                               <Font size="14.0" />
                            </font>

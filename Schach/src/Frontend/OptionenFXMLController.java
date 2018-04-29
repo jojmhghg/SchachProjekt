@@ -5,6 +5,7 @@
  */
 package Frontend;
 
+import Backend.Spielbrett;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
@@ -64,6 +65,8 @@ public class OptionenFXMLController implements Initializable {
     
     ObservableList<String> partieZeitList =  FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt" );
     
+    SpielbrettFXMLController spielbrett;
+    
     public OptionenFXMLController(){ 
     }
 
@@ -88,6 +91,7 @@ public class OptionenFXMLController implements Initializable {
             chessBoardStage.setScene(new Scene(chessBoardScene));
             chessBoardStage.initStyle(StageStyle.UNDECORATED);
             //loadStandardBoard();
+
             chessBoardStage.show();
             // Hide this current window (if this is what you want)
             ((Node)(event.getSource())).getScene().getWindow().hide();

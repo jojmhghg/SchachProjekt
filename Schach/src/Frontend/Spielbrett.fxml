@@ -288,97 +288,41 @@
                <effect>
                   <InnerShadow />
                </effect>
-               <children>
-                  <ImageView fitHeight="74.0" fitWidth="74.0" layoutX="1.0" layoutY="1.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Ressources/Pieces/Wood/BishopW.png" />
-                     </image>
-                  </ImageView>
-               </children>
             </Pane>
             <Pane fx:id="B2" prefHeight="200.0" prefWidth="200.0" styleClass="B2" stylesheets="@Spielbrett.css" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <effect>
                   <InnerShadow />
                </effect>
-               <children>
-                  <ImageView fitHeight="74.0" fitWidth="74.0" layoutX="-2.0" layoutY="2.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Ressources/Pieces/Wood/BishopW.png" />
-                     </image>
-                  </ImageView>
-               </children>
             </Pane>
             <Pane fx:id="C2" prefHeight="200.0" prefWidth="200.0" styleClass="C2" stylesheets="@Spielbrett.css" GridPane.columnIndex="2" GridPane.rowIndex="6">
                <effect>
                   <InnerShadow />
                </effect>
-               <children>
-                  <ImageView fitHeight="74.0" fitWidth="74.0" layoutX="1.0" layoutY="1.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Ressources/Pieces/Wood/BishopW.png" />
-                     </image>
-                  </ImageView>
-               </children>
             </Pane>
             <Pane fx:id="D2" prefHeight="200.0" prefWidth="200.0" styleClass="D2" stylesheets="@Spielbrett.css" GridPane.columnIndex="3" GridPane.rowIndex="6">
                <effect>
                   <InnerShadow />
                </effect>
-               <children>
-                  <ImageView fitHeight="74.0" fitWidth="74.0" layoutX="1.0" layoutY="1.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Ressources/Pieces/Wood/BishopW.png" />
-                     </image>
-                  </ImageView>
-               </children>
             </Pane>
             <Pane fx:id="E2" prefHeight="200.0" prefWidth="200.0" styleClass="E2" stylesheets="@Spielbrett.css" GridPane.columnIndex="4" GridPane.rowIndex="6">
                <effect>
                   <InnerShadow />
                </effect>
-               <children>
-                  <ImageView fitHeight="74.0" fitWidth="74.0" layoutX="1.0" layoutY="1.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Ressources/Pieces/Wood/BishopW.png" />
-                     </image>
-                  </ImageView>
-               </children>
             </Pane>
             <Pane fx:id="F2" prefHeight="200.0" prefWidth="200.0" styleClass="F2" stylesheets="@Spielbrett.css" GridPane.columnIndex="5" GridPane.rowIndex="6">
                <effect>
                   <InnerShadow />
                </effect>
-               <children>
-                  <ImageView fitHeight="74.0" fitWidth="74.0" layoutX="1.0" layoutY="1.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Ressources/Pieces/Wood/BishopW.png" />
-                     </image>
-                  </ImageView>
-               </children>
             </Pane>
             <Pane fx:id="G2" prefHeight="200.0" prefWidth="200.0" styleClass="G2" stylesheets="@Spielbrett.css" GridPane.columnIndex="6" GridPane.rowIndex="6">
                <effect>
                   <InnerShadow />
                </effect>
-               <children>
-                  <ImageView fitHeight="74.0" fitWidth="74.0" layoutX="1.0" layoutY="1.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Ressources/Pieces/Wood/BishopW.png" />
-                     </image>
-                  </ImageView>
-               </children>
             </Pane>
             <Pane fx:id="H2" prefHeight="200.0" prefWidth="200.0" styleClass="H2" stylesheets="@Spielbrett.css" GridPane.columnIndex="7" GridPane.rowIndex="6">
                <effect>
                   <InnerShadow />
                </effect>
-               <children>
-                  <ImageView fitHeight="74.0" fitWidth="74.0" layoutX="1.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Ressources/Pieces/Wood/BishopW.png" />
-                     </image>
-                  </ImageView>
-               </children>
             </Pane>
             <Pane fx:id="A1" prefHeight="200.0" prefWidth="200.0" stylesheets="@Spielbrett.css" GridPane.rowIndex="7">
                <effect>
@@ -387,7 +331,10 @@
                <styleClass>
                   <String fx:value="A1" />
                   <String fx:value="Felder" />
-               </styleClass></Pane>
+               </styleClass>
+               <children>
+                  <ImageView fx:id="test" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
             <Pane fx:id="B1" prefHeight="200.0" prefWidth="200.0" styleClass="B1" stylesheets="@Spielbrett.css" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <effect>
                   <InnerShadow />
@@ -422,11 +369,11 @@
         <menus>
           <Menu mnemonicParsing="false" text="Partie">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Neue Partie" />
-                  <MenuItem mnemonicParsing="false" text="Partie laden" />
-                  <MenuItem mnemonicParsing="false" text="Aufgeben" />
-                  <MenuItem mnemonicParsing="false" text="Speichern" />
                   <MenuItem mnemonicParsing="false" text="Remis anbieten" />
+                  <MenuItem mnemonicParsing="false" text="Aufgeben" />
+                  <MenuItem mnemonicParsing="false" text="Neue Partie" />
+                  <MenuItem mnemonicParsing="false" text="Speichern" />
+                  <MenuItem mnemonicParsing="false" text="Partie laden" />
               <MenuItem mnemonicParsing="false" onAction="#beenden" text="Beenden" />
             </items>
           </Menu>
