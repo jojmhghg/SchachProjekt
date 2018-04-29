@@ -93,6 +93,13 @@ public class Partie {
      * @throws SpielException 
      */
     public Partie(String speichername) throws SpielException{
+        //initialisiere Spielbrett mit Grundaufstellung
+        this.spielbrett = new Spielbrett();        
+        boolean kiGegnerTmp;
+        Farbe farbeTmp, gewinnerTmp;
+        int partiezeitTmp;
+        long verbleibendeZeitSpieler1Tmp, verbleibendeZeitSpieler2Tmp;
+        
         //Pfad zum Speicherziel für Windows
         File file = new File(".\\saves\\" + speichername + ".txt"); 
         //Pfad zum Speicherziel für Macs
@@ -108,56 +115,70 @@ public class Partie {
             
             // Lade Gegnereinstellungen
             if((line = bufferedReader.readLine()) != null){
-                this.kiGegner = Boolean.parseBoolean(line);
+                kiGegnerTmp = Boolean.parseBoolean(line);
             }
             else{
                 throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
             }
             // Lade Farbe (von Spieler1)
             if((line = bufferedReader.readLine()) != null){
-                this.farbe = Farbe.parseFarbe(line);
+                farbeTmp = Farbe.parseFarbe(line);
             }
             else{
                 throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
             }
             // Lade Partiezeit
             if((line = bufferedReader.readLine()) != null){
-                this.partiezeit = Integer.parseInt(line);
+                partiezeitTmp = Integer.parseInt(line);
             }
             else{
                 throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
             }
             // Lade verbleibende Zeit von Spieler1
             if((line = bufferedReader.readLine()) != null){
-                this.verbleibendeZeitSpieler1 = Integer.parseInt(line);
+                verbleibendeZeitSpieler1Tmp = Integer.parseInt(line);
             }
             else{
                 throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
             }
             // Lade verbleibende Zeit von Spieler2
             if((line = bufferedReader.readLine()) != null){
-                this.verbleibendeZeitSpieler2 = Integer.parseInt(line);
+                verbleibendeZeitSpieler2Tmp = Integer.parseInt(line);
             }
             else{
                 throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
             }
             // Lade verbleibende Zeit von Spieler2
             if((line = bufferedReader.readLine()) != null){
-                this.gewinner = Farbe.parseFarbe(line);
+                gewinnerTmp = Farbe.parseFarbe(line);
             }
             else{
                 throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
+            }  
+            
+            this.ablauf = new LinkedList<>();
+            int pos1, pos2;
+            while((line = bufferedReader.readLine()) != null){
+                final String[] positionen = line.split(" ");
+                pos1 = Integer.parseInt(positionen[0]);
+                pos2 = Integer.parseInt(positionen[1]);
+                this.zieheFigur(Position.values()[pos1], Position.values()[pos2]);
             }
             
             
-            /* --- Lade Spielbrett --- */
-            this.spielbrett = new Spielbrett(speichername);           
         } catch (IOException e) { 
             throw new SpielException("Spielstand '" + speichername + "' konnte nicht gefunden werden!");
-        }  
+        }      
         
-        //TODO: Nächste Zeile anpassen!!!!!!!!!!
-        this.ablauf = new LinkedList<>();
+        this.kiGegner = kiGegnerTmp;
+        this.farbe = farbeTmp;
+        this.partiezeit = partiezeitTmp;
+        
+        this.verbleibendeZeitSpieler1 = verbleibendeZeitSpieler1Tmp;
+        this.verbleibendeZeitSpieler2 = verbleibendeZeitSpieler2Tmp;
+        this.endeLetzterZug = (int) new Date().getTime();
+        
+        this.gewinner = gewinnerTmp;
     }
     
        

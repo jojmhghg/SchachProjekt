@@ -30,6 +30,7 @@ public class Dame extends Figur{
         return "Dame";
     }
     
+    /*
     public Position[] moveDame(Position position){
         Spielbrett spielbrett = new Spielbrett();
         Position[] positions = new Position[26];
@@ -120,5 +121,6 @@ public class Dame extends Figur{
         }
         return positions;
     }
+*/
 }
 

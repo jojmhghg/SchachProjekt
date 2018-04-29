@@ -25,7 +25,7 @@ public class Spielbrett {
     /**
      * Array mit den 64 Feldern
      */
-    private Feld[] spielbrett;
+    private final Feld[] spielbrett;
     /**
      * Gibt an ob und wer gerade im Schach steht
      */
@@ -84,16 +84,6 @@ public class Spielbrett {
         this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
     }
-      
-    /**
-     * Konstruktor um ein Spielbrett zu erstellen und die Aufstellung aus 
-     * einer Speicherdatei zu laden
-     * 
-     * @param speichername Name des Speicherstandes
-     */
-    public Spielbrett(String speichername) {
-        
-    }
     
     /**
      * Gibt zurück ob ein König und welcher im Schach steht
@@ -146,7 +136,11 @@ public class Spielbrett {
             this.spielbrett[zielposition.ordinal()].setFigur(figur);
         }
         else{
-            throw new SpielException("Ungültiger Zug!");
+            String exception = "";
+            for(Position pos : moves){
+                exception += pos.toString() + " ";
+            }
+            throw new SpielException("Ungültiger Zug! " + moves.size());
         }  
         
         // Jetzt ist anderer Spieler am Zug
@@ -187,4 +181,46 @@ public class Spielbrett {
         return true;
     }
     
+    /**
+     * Hilfsmethode zur Darstellung des Spielbretts im Terminal
+     * Genutzt zu Testzwecken
+     */
+    public void printSpielbrett(){
+        System.out.print("******************** Spielbrett: *************************************");
+        System.out.println("**********************************************************\n");
+        
+        Figur figur;
+        int counter;
+        int j = 56;
+        
+        while(j > -8){
+            counter = 0;
+            for(int i = j; i < j + 8; i++){
+                figur = this.spielbrett[i].getFigur();
+
+                if(figur != null){
+
+                    if(figur instanceof Springer){
+                        System.out.print(figur.getFigurName() + " " + figur.getFarbe().getAbk() + "\t");
+                    }
+                    else{
+                        System.out.print(figur.getFigurName() + "\t " + figur.getFarbe().getAbk() + "\t");
+                    }
+                }
+                else{
+                    System.out.print("leer\t\t");
+                }
+
+                if(counter >= 7){
+                    System.out.println("");
+                    counter = -1;
+                    j = j - 8;
+                }
+                counter++;
+            }
+        }
+        
+        System.out.print("\n\n**********************************************************************");
+        System.out.println("**********************************************************\n");
+    }
 }

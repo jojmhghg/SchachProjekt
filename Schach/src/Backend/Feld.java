@@ -36,8 +36,8 @@ public class Feld {
      * @param position Das Feld der Figur, deren möglichen Züge man haben will
      * @return LinkedList mit möglichen Ziel-Positionen
      */
-    public LinkedList<Position> getMoves(Spielbrett spielbrett, Position position){
-        if(figur != null){
+    public LinkedList<Position> getMoves(Spielbrett spielbrett, Position position){   
+        if(figur != null){       
             return figur.getMoves(spielbrett, position);
         }
         return new LinkedList<>();

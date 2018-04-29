@@ -50,25 +50,20 @@ public class Bauer extends Figur{
         
         // Posi vor Bauer berechnen
         int posi = eigenePosition.ordinal() + forward;
-        // Test ob Bauer auf anderer Seite am Rand steht
-        // @Steven: "musst du entscheiden ob der test raus kann.
-        // weiß nicht ob man einen Bauer auch Bauer sein lassen kann,
-        // wenn er auf der anderen Seite ankommt"
-        if(posi >= 0 && posi < 64){
-            // Hier wird posi von int zu Position umgewandelt
-            Position posiVorBauer = Position.values()[posi];
-            // So testet man ob ein Feld leer ist ohne extra eine Methode zu schreiben
-            if(spielbrett.getFigurAufFeld(posiVorBauer) == null){
-                moves.add(posiVorBauer);
-                
-                /* Überprüfe ob Bauer zwei Felder nach vorne ziehen kann */
-                posi = eigenePosition.ordinal() + forward + forward;
-                Position posi2VorBauer = Position.values()[posi];
-                if(grundreihe && spielbrett.getFigurAufFeld(posi2VorBauer) == null){
-                    moves.add(posi2VorBauer);
-                }
+        // Hier wird posi von int zu Position umgewandelt
+        Position posiVorBauer = Position.values()[posi];
+        // So testet man ob ein Feld leer ist ohne extra eine Methode zu schreiben
+        if(spielbrett.getFigurAufFeld(posiVorBauer) == null){
+            moves.add(posiVorBauer);
+            
+            /* Überprüfe ob Bauer zwei Felder nach vorne ziehen kann */
+            posi = eigenePosition.ordinal() + forward + forward;
+            Position posi2VorBauer = Position.values()[posi];
+            if(grundreihe && spielbrett.getFigurAufFeld(posi2VorBauer) == null){
+                moves.add(posi2VorBauer);
             }
         }
+        
 
         /* Überprüfe ob Bauer eine Figur, links vor sich, schlagen kann */
         //TODO: kannst du hier deinen Code einfügen Steven? evtl musst du den ein wenig anpassen
