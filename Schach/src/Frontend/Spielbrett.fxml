@@ -63,13 +63,6 @@
                <effect>
                   <InnerShadow />
                </effect>
-               <children>
-                  <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Ressources/Pieces/Wood/BishopW.png" />
-                     </image>
-                  </ImageView>
-               </children>
             </Pane>
             <Pane fx:id="E8" prefHeight="200.0" prefWidth="200.0" styleClass="E8" stylesheets="@Spielbrett.css" GridPane.columnIndex="4">
                <effect>

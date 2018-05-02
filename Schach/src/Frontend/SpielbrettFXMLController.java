@@ -188,7 +188,6 @@ public class SpielbrettFXMLController implements Initializable {
    @FXML
    private ImageView test;
    
-   private Partie partie;
    private Spiel spiel;
    private Pane[] paneArray;
       
@@ -259,14 +258,10 @@ public class SpielbrettFXMLController implements Initializable {
        paneArray[61] = F8;
        paneArray[62] = G8;
        paneArray[63] = H8;
-       
-       
-       
-       
-       
-       
+
        Spielbrett spielbrett = new Spielbrett();
-       
+       //Spielbrett spielbrett = new Spielbrett(spiel.neuePartie(partieoptionen)); //Zu benutzen
+
        for(int i = 0; i < 64; i++){
                                 
                 Position pos = Position.values()[i];
