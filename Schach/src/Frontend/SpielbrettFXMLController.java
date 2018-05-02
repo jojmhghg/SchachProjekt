@@ -269,54 +269,61 @@ public class SpielbrettFXMLController implements Initializable {
 
                 Figur figur = spielbrett.getFigurAufFeld(pos);
                 if(figur != null){
-                       
-                    if(figur instanceof Laeufer){
-                        if(figur.getFarbe() == Farbe.WEISS){
-                            value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");     
-                        }
-                        else{
-                            value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");             
-                        }                              
-                    }
-                    if(figur instanceof Springer){
-                        if(figur.getFarbe() == Farbe.WEISS){
-                            value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");     
-                        }
-                        else{
-                            value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");             
-                        }                 
-                    }
-                    if(figur instanceof Koenig){
-                        if(figur.getFarbe() == Farbe.WEISS){
-                            value = new Image("Frontend/Ressources/Pieces/Wood/KingW.png");     
-                        }
-                        else{
-                            value = new Image("Frontend/Ressources/Pieces/Wood/KingB.png");             
-                        }                    
-                    }
-                    if(figur instanceof Dame){
-                        if(figur.getFarbe() == Farbe.WEISS){
-                            value = new Image("Frontend/Ressources/Pieces/Wood/QueenW.png");     
-                        }
-                        else{
-                            value = new Image("Frontend/Ressources/Pieces/Wood/QueenB.png");             
-                        }                      
-                    }
-                    if(figur instanceof Bauer){
-                        if(figur.getFarbe() == Farbe.WEISS){
-                            value = new Image("Frontend/Ressources/Pieces/Wood/PawnW.png");     
-                        }
-                        else{
-                            value = new Image("Frontend/Ressources/Pieces/Wood/PawnB.png");             
-                        }                   
-                    }
-                    if(figur instanceof Turm){
-                        if(figur.getFarbe() == Farbe.WEISS){
-                            value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");     
-                        }
-                        else{
-                            value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");             
-                        }                     
+                    
+                    switch(figur.getFigurName()){
+                        case "Springer":
+                            if(figur.getFarbe() == Farbe.WEISS){
+                                value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");     
+                            }
+                            else{
+                                value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");             
+                            }
+                            break;
+                            
+                        case "Läufer":
+                            if(figur.getFarbe() == Farbe.WEISS){
+                                value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");     
+                            }
+                            else{
+                                value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");             
+                            }
+                            break;
+                            
+                            case "König":
+                            if(figur.getFarbe() == Farbe.WEISS){
+                                value = new Image("Frontend/Ressources/Pieces/Wood/KingW.png");     
+                            }
+                            else{
+                                value = new Image("Frontend/Ressources/Pieces/Wood/KingB.png");             
+                            }
+                            break;
+                            
+                            case "Dame":
+                            if(figur.getFarbe() == Farbe.WEISS){
+                                value = new Image("Frontend/Ressources/Pieces/Wood/QueenW.png");     
+                            }
+                            else{
+                                value = new Image("Frontend/Ressources/Pieces/Wood/QueenB.png");             
+                            }
+                            break;
+                            
+                            case "Bauer":
+                            if(figur.getFarbe() == Farbe.WEISS){
+                                value = new Image("Frontend/Ressources/Pieces/Wood/PawnW.png");     
+                            }
+                            else{
+                                value = new Image("Frontend/Ressources/Pieces/Wood/PawnB.png");             
+                            }
+                            break;
+                            
+                            case "Turm":
+                            if(figur.getFarbe() == Farbe.WEISS){
+                                value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");     
+                            }
+                            else{
+                                value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");             
+                            }
+                            break;
                     }
                     
                     if(value != null){
