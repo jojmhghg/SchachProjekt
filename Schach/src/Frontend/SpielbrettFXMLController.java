@@ -5,9 +5,15 @@
  */
 package Frontend;
 
+import Backend.Enums.Farbe;
 import Backend.Enums.Position;
+import Backend.Figuren.Bauer;
+import Backend.Figuren.Dame;
 import Backend.Figuren.Figur;
+import Backend.Figuren.Koenig;
+import Backend.Figuren.Laeufer;
 import Backend.Figuren.Springer;
+import Backend.Figuren.Turm;
 import Backend.Spiel;
 import Backend.Partie;
 import Backend.Spielbrett;
@@ -15,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -183,33 +190,156 @@ public class SpielbrettFXMLController implements Initializable {
    
    private Partie partie;
    private Spiel spiel;
-   
+   private Pane[] paneArray;
       
-//   public void initSpielbrett(){
-//      
-//       Spielbrett spielbrett = new Spielbrett();
-//       
-//       for(int i = 0; i < 64; i++){
-//                                
-//                Position pos = Position.values()[i];
-//
-//                Figur figur = spielbrett.getFeld(pos).getFigur();
-//                if(figur != null){
-//                    
-//                    if(figur instanceof Springer){
-//                        Image value = new Image("\\Frontend\\Ressources\\Pieces\\Wood\\BishopW.png");
-//                        ImageView imgView = new ImageView(value);
-//                        test.setImage(value);
-//                        A1.getChildren().add(imgView);
-//                    }
-//                    else{
-//                    }
-//                }
-//                else{
-//                }
-//                
-//            }
-//    }
+   public void initSpielbrett(){
+      
+       paneArray = new Pane[64];
+       paneArray[0] = A1;
+       paneArray[1] = B1;
+       paneArray[2] = C1;
+       paneArray[3] = D1;
+       paneArray[4] = E1;
+       paneArray[5] = F1;
+       paneArray[6] = G1;
+       paneArray[7] = H1;
+       paneArray[8] = A2;
+       paneArray[9] = B2;
+       paneArray[10] = C2;
+       paneArray[11] = D2;
+       paneArray[12] = E2;
+       paneArray[13] = F2;
+       paneArray[14] = G2;
+       paneArray[15] = H2;
+       paneArray[16] = A3;
+       paneArray[17] = B3;
+       paneArray[18] = C3;
+       paneArray[19] = D3;
+       paneArray[20] = E3;
+       paneArray[21] = F3;
+       paneArray[22] = G3;
+       paneArray[23] = H3;
+       paneArray[24] = A4;
+       paneArray[25] = B4;
+       paneArray[26] = C4;
+       paneArray[27] = D4;
+       paneArray[28] = E4;
+       paneArray[29] = F4;
+       paneArray[30] = G4;
+       paneArray[31] = H4;
+       paneArray[32] = A5;
+       paneArray[33] = B5;
+       paneArray[34] = C5;
+       paneArray[35] = D5;
+       paneArray[36] = E5;
+       paneArray[37] = F5;
+       paneArray[38] = G5;
+       paneArray[39] = H5;
+       paneArray[40] = A6;
+       paneArray[41] = B6;
+       paneArray[42] = C6;
+       paneArray[43] = D6;
+       paneArray[44] = E6;
+       paneArray[45] = F6;
+       paneArray[46] = G6;
+       paneArray[47] = H6;
+       paneArray[48] = A7;
+       paneArray[49] = B7;
+       paneArray[50] = C7;
+       paneArray[51] = D7;
+       paneArray[52] = E7;
+       paneArray[53] = F7;
+       paneArray[54] = G7;
+       paneArray[55] = H7;
+       paneArray[56] = A8;
+       paneArray[57] = B8;
+       paneArray[58] = C8;
+       paneArray[59] = D8;
+       paneArray[60] = E8;
+       paneArray[61] = F8;
+       paneArray[62] = G8;
+       paneArray[63] = H8;
+       
+       
+       
+       
+       
+       
+       Spielbrett spielbrett = new Spielbrett();
+       
+       for(int i = 0; i < 64; i++){
+                                
+                Position pos = Position.values()[i];
+                Image value = null;
+
+                Figur figur = spielbrett.getFigurAufFeld(pos);
+                if(figur != null){
+                       
+                    if(figur instanceof Laeufer){
+                        if(figur.getFarbe() == Farbe.WEISS){
+                            value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");     
+                        }
+                        else{
+                            value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");             
+                        }                              
+                    }
+                    if(figur instanceof Springer){
+                        if(figur.getFarbe() == Farbe.WEISS){
+                            value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");     
+                        }
+                        else{
+                            value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");             
+                        }                 
+                    }
+                    if(figur instanceof Koenig){
+                        if(figur.getFarbe() == Farbe.WEISS){
+                            value = new Image("Frontend/Ressources/Pieces/Wood/KingW.png");     
+                        }
+                        else{
+                            value = new Image("Frontend/Ressources/Pieces/Wood/KingB.png");             
+                        }                    
+                    }
+                    if(figur instanceof Dame){
+                        if(figur.getFarbe() == Farbe.WEISS){
+                            value = new Image("Frontend/Ressources/Pieces/Wood/QueenW.png");     
+                        }
+                        else{
+                            value = new Image("Frontend/Ressources/Pieces/Wood/QueenB.png");             
+                        }                      
+                    }
+                    if(figur instanceof Bauer){
+                        if(figur.getFarbe() == Farbe.WEISS){
+                            value = new Image("Frontend/Ressources/Pieces/Wood/PawnW.png");     
+                        }
+                        else{
+                            value = new Image("Frontend/Ressources/Pieces/Wood/PawnB.png");             
+                        }                   
+                    }
+                    if(figur instanceof Turm){
+                        if(figur.getFarbe() == Farbe.WEISS){
+                            value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");     
+                        }
+                        else{
+                            value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");             
+                        }                     
+                    }
+                    
+                    if(value != null){
+                        ImageView imgView = new ImageView(value);
+                        imgView.setFitHeight(70);
+                        imgView.setFitWidth(70);
+                        imgView.setLayoutX(3);
+                        imgView.setLayoutY(3);
+                        paneArray[i].getChildren().add(imgView);
+                    }
+                    value = null;
+                    
+                }
+                else{
+                }
+                
+            }
+    }
     
     
 
@@ -249,7 +379,7 @@ public class SpielbrettFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //initSpielbrett();
+        initSpielbrett();
     } 
     
 }
