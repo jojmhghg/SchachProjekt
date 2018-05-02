@@ -21,35 +21,24 @@ public class Dame extends Figur{
     }
 
     @Override
-    public LinkedList<Position> getMoves(Spielbrett spielbrett, Position eigenePosition) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getFigurName() {
-        return "Dame";
-    }
-    
-    
-    public Position[] moveDame(Position position){
-        Spielbrett spielbrett = new Spielbrett();
-        Position[] positions = new Position[26];
-        
-        int i = 0;
-        int step = 1;
-        int minGegnerischeGrundreihe = 0;
-        int maxGegnerischeGrundreihe = 0;
-        int minEigeneGrundreihe = 0;
-        int maxEigeneGrundreihe = 0;
-        int linkeReihe = 0;
-        int rechteReihe = 7;
-        int forward = 0;
+    public LinkedList<Position> getMoves(Spielbrett spielbrett, Position position) {
+        LinkedList<Position> moves = new LinkedList<>();
+        int step;
+        int minGegnerischeGrundreihe;
+        int maxGegnerischeGrundreihe;
+        int minEigeneGrundreihe;
+        int maxEigeneGrundreihe;
+        int linkeSpalte = 0;
+        int rechteSpalte = 7;
+        int forward;
         int right = 1;
+        int schraegObenLinks = 7;
+        int schraegObenRechts = 9;
         Farbe color;
-        boolean next = true;
-        boolean backward = true;
-        boolean welchesNext = true;
-        boolean leftRichtung = true;
+        boolean next;
+        boolean backward;
+        boolean welchesNext;
+        boolean leftRichtung;
         if(this.farbe == Farbe.WEISS){
             minEigeneGrundreihe = 0;
             maxEigeneGrundreihe = 7;
@@ -67,6 +56,10 @@ public class Dame extends Figur{
             color = Farbe.WEISS;
         }  
         //Fuer Vorwaertszuege und Rueckwaertzuege
+        step = 0;
+        next = true;
+        welchesNext = true;
+        backward = true;
         while(next){
             int minWelcheGrundreihe;
             int maxWelcheGrundreihe;
@@ -76,6 +69,7 @@ public class Dame extends Figur{
                 maxWelcheGrundreihe = maxEigeneGrundreihe;
                 welchesForward = forward;
             } 
+            //Rückwärts
             else{
                 minWelcheGrundreihe = minGegnerischeGrundreihe;
                 maxWelcheGrundreihe = maxGegnerischeGrundreihe;
@@ -83,52 +77,46 @@ public class Dame extends Figur{
                 welchesNext = false;
             }
             //Nur wenn Dame nicht auf gegnerischer/eigener Grundreihe steht, gibt es noch moegliche Zuege
-            if((position.ordinal() + (step - 1)*welchesForward) >= minWelcheGrundreihe && (position.ordinal() + (step - 1)*welchesForward) <= maxWelcheGrundreihe ){ 
+            if(!((position.ordinal() + (step)*welchesForward) >= minWelcheGrundreihe) && !((position.ordinal() + (step)*welchesForward) <= maxWelcheGrundreihe)){ 
                 //Wenn Feld(er) vor der Dame frei sind, sind Zuege moeglich
                 if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welchesForward]) == null){
-                    while(i < 27){
-                        if(positions[i] == null){
-                            positions[i] = Position.values()[position.ordinal() + step*welchesForward];
-                            i = 27;
-                        }
-                        i++;
-                    }
+                    moves.add(Position.values()[position.ordinal() + step*welchesForward]);
                     step++;
                 }
+            
                 //Wenn eine gegnerische Figur in der Reihe vorwaerts/rueckwaerts steht, dann ist Zug moeglich
                 else if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welchesForward]) != null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welchesForward]).farbe == color){
-                    while(i < 27){
-                        if(positions[i] == null){
-                            positions[i] = Position.values()[position.ordinal() + step*welchesForward];
-                            i = 27;
-                        }
-                        i++;
-                    }
+                    moves.add(Position.values()[position.ordinal() + step*welchesForward]);
                     step++;
                 }
                 else{
                     backward = false;
                     next = welchesNext;
+                    step = 0;
                 }
             }
             else{
                 backward = false;
                 next = welchesNext;
+                step = 0;
             }
-            
         }
-        
+
         //Fuer Seitwaertszuege
+        next = true;
+        step = 0;
+        welchesNext = true;
+        leftRichtung = true;
         while(next){
-            step = 0;
             int welcheReihe;
             int welcheRichtung;
             if(!leftRichtung){
-                welcheReihe = rechteReihe;
+                welcheReihe = rechteSpalte;
                 welcheRichtung = right;
             } 
+            //Nach links
             else{
-                welcheReihe = linkeReihe;
+                welcheReihe = linkeSpalte;
                 welcheRichtung = -right;
                 welchesNext = false;
             }   
@@ -136,45 +124,101 @@ public class Dame extends Figur{
             if((position.ordinal() + (step)*welcheRichtung) % 8 != welcheReihe){ 
                 //Wenn Feld(er) neben der Dame frei sind, sind Zuege moeglich
                 if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]) == null){
-                    while(i < 27){
-                        if(positions[i] == null){
-                            positions[i] = Position.values()[position.ordinal() + step*welcheRichtung];
-                            i = 27;
-                        }
-                        i++;
-                    }
+                            moves.add(Position.values()[position.ordinal() + step*welcheRichtung]);
                     step++;
-                
                 }
                 //Wenn eine gegnerische Figur in der Reihe links/rechts steht, dann ist Zug moeglich
                 else if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]) != null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]).farbe == color){
-                    while(i < 27){
-                        if(positions[i] == null){
-                            positions[i] = Position.values()[position.ordinal() + step*welcheRichtung];
-                            i = 27;
-                        }
-                        i++;
-                    }
+                    moves.add(Position.values()[position.ordinal() + step*welcheRichtung]);
                     step++;
                 }
                 else{
                     leftRichtung = false;
                     next = welchesNext;
+                    step = 0;
                 }
             }
             else{
                 leftRichtung = false;
                 next = welchesNext;
+                step = 0;
             }
-            
+
         }
         
         //Fuer Schraege Zuege
-        while(next){
+        int counter = 0;
+        while(counter < 4){
+            step = 0;
+            int welcheReiheMin = 0;
+            int welcheReiheMax = 0;
+            int welcheSpalte = 0;
+            int welcheRichtung = 0;
+            switch(counter){
+                //Schräg-Oben-Links
+                case 0:
+                    welcheRichtung = schraegObenLinks;
+                    welcheReiheMin = 56;
+                    welcheReiheMax = 63;
+                    welcheSpalte = linkeSpalte;
+                    break;
+                    
+                //Schräg-Oben-Rechts
+                case 1:
+                    welcheRichtung = schraegObenRechts;
+                    welcheReiheMin = 56;
+                    welcheReiheMax = 63;
+                    welcheSpalte = rechteSpalte;
+                    break;
+                
+                //Schräg-Unten-Links    
+                case 2:
+                    welcheRichtung = -schraegObenLinks;
+                    welcheReiheMin = 0;
+                    welcheReiheMax = 7;
+                    welcheSpalte = linkeSpalte;
+                    break;
+                    
+                //Schräg-Unten-Rechts
+                case 3:
+                    welcheRichtung = -schraegObenRechts;
+                    welcheReiheMin = 0;
+                    welcheReiheMax = 7;
+                    welcheSpalte = rechteSpalte;
+                    break;
+            }
             
+          
+            
+            //Nur wenn Dame nicht auf aeussester Reihe/Spalte steht, gibt es noch moegliche Zuege in die jeweiligen Richtung
+            if((position.ordinal() + (step)*welcheRichtung) % 8 != welcheSpalte && !((position.ordinal() + (step)*welcheRichtung) >= welcheReiheMin && (position.ordinal() + (step)*welcheRichtung) <= welcheReiheMax)){ 
+                //Wenn Feld(er) schraeg neben der Dame frei sind, sind Zuege moeglich
+                if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]) == null){
+                    moves.add(Position.values()[position.ordinal() + step*welcheRichtung]);
+                    step++;
+                
+                }
+                //Wenn eine gegnerische Figur in der Reihe links/rechts steht, dann ist Zug moeglich
+                else if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]) != null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]).farbe == color){
+                    moves.add(Position.values()[position.ordinal() + step*welcheRichtung]);
+                    step++;
+                }
+                else{
+                    counter++;
+                }
+            }
+            else{
+                counter++;
+            }
         }
-        
-        return positions;
+        return moves;
     }
+
+    @Override
+    public String getFigurName() {
+        return "Dame";
+    }
+    
+
 }
 
