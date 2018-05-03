@@ -64,41 +64,49 @@ public class Dame extends Figur{
             int minWelcheGrundreihe;
             int maxWelcheGrundreihe;
             int welchesForward;
+            //Rückwärts
             if(!backward){
                 minWelcheGrundreihe = minEigeneGrundreihe;
                 maxWelcheGrundreihe = maxEigeneGrundreihe;
-                welchesForward = forward;
+                welchesForward = -forward;
+                welchesNext = false;
             } 
-            //Rückwärts
+            //Vorwärts
             else{
                 minWelcheGrundreihe = minGegnerischeGrundreihe;
                 maxWelcheGrundreihe = maxGegnerischeGrundreihe;
-                welchesForward = -forward;
-                welchesNext = false;
+                welchesForward = forward;
             }
             //Nur wenn Dame nicht auf gegnerischer/eigener Grundreihe steht, gibt es noch moegliche Zuege
-            if(!((position.ordinal() + (step)*welchesForward) >= minWelcheGrundreihe) && !((position.ordinal() + (step)*welchesForward) <= maxWelcheGrundreihe)){ 
+            if(!(((position.ordinal() + (step)*welchesForward) >= minWelcheGrundreihe) && ((position.ordinal() + (step)*welchesForward) <= maxWelcheGrundreihe))){ 
+                step++;
                 //Wenn Feld(er) vor der Dame frei sind, sind Zuege moeglich
                 if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welchesForward]) == null){
                     moves.add(Position.values()[position.ordinal() + step*welchesForward]);
-                    step++;
                 }
             
                 //Wenn eine gegnerische Figur in der Reihe vorwaerts/rueckwaerts steht, dann ist Zug moeglich
                 else if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welchesForward]) != null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welchesForward]).farbe == color){
                     moves.add(Position.values()[position.ordinal() + step*welchesForward]);
-                    step++;
                 }
                 else{
-                    backward = false;
-                    next = welchesNext;
-                    step = 0;
+                    if(backward){
+                        backward = false;
+                        step = 0;
+                    }
+                    else{
+                        next = welchesNext;
+                    }
                 }
             }
             else{
-                backward = false;
-                next = welchesNext;
-                step = 0;
+                if(backward){
+                    backward = false;
+                    step = 0;
+                }
+                else{
+                    next = welchesNext;
+                }
             }
         }
 
@@ -113,24 +121,23 @@ public class Dame extends Figur{
             if(!leftRichtung){
                 welcheReihe = rechteSpalte;
                 welcheRichtung = right;
+                welchesNext = false;
             } 
             //Nach links
             else{
                 welcheReihe = linkeSpalte;
                 welcheRichtung = -right;
-                welchesNext = false;
             }   
             //Nur wenn Dame nicht auf aeussester Reihe steht, gibt es noch moegliche Zuege in die jeweiligen Richtung
-            if((position.ordinal() + (step)*welcheRichtung) % 8 != welcheReihe){ 
+            if((position.ordinal() + (step)*welcheRichtung) % 8 != welcheReihe){
+                step++;
                 //Wenn Feld(er) neben der Dame frei sind, sind Zuege moeglich
                 if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]) == null){
                             moves.add(Position.values()[position.ordinal() + step*welcheRichtung]);
-                    step++;
                 }
                 //Wenn eine gegnerische Figur in der Reihe links/rechts steht, dann ist Zug moeglich
                 else if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]) != null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]).farbe == color){
                     moves.add(Position.values()[position.ordinal() + step*welcheRichtung]);
-                    step++;
                 }
                 else{
                     leftRichtung = false;
@@ -148,8 +155,8 @@ public class Dame extends Figur{
         
         //Fuer Schraege Zuege
         int counter = 0;
+         step = 0;
         while(counter < 4){
-            step = 0;
             int welcheReiheMin = 0;
             int welcheReiheMax = 0;
             int welcheSpalte = 0;
@@ -173,7 +180,7 @@ public class Dame extends Figur{
                 
                 //Schräg-Unten-Links    
                 case 2:
-                    welcheRichtung = -schraegObenLinks;
+                    welcheRichtung = -schraegObenRechts;
                     welcheReiheMin = 0;
                     welcheReiheMax = 7;
                     welcheSpalte = linkeSpalte;
@@ -181,36 +188,37 @@ public class Dame extends Figur{
                     
                 //Schräg-Unten-Rechts
                 case 3:
-                    welcheRichtung = -schraegObenRechts;
+                    welcheRichtung = -schraegObenLinks;
                     welcheReiheMin = 0;
                     welcheReiheMax = 7;
                     welcheSpalte = rechteSpalte;
                     break;
             }
             
-          
-            
+            System.out.println(counter);
+           
             //Nur wenn Dame nicht auf aeussester Reihe/Spalte steht, gibt es noch moegliche Zuege in die jeweiligen Richtung
-            if((position.ordinal() + (step)*welcheRichtung) % 8 != welcheSpalte && !((position.ordinal() + (step)*welcheRichtung) >= welcheReiheMin && (position.ordinal() + (step)*welcheRichtung) <= welcheReiheMax)){ 
+            if((position.ordinal() + (step)*welcheRichtung) % 8 != welcheSpalte && (!(((position.ordinal() + (step)*welcheRichtung) >= welcheReiheMin) && ((position.ordinal() + (step)*welcheRichtung) <= welcheReiheMax)))){
+                step++;
                 //Wenn Feld(er) schraeg neben der Dame frei sind, sind Zuege moeglich
                 if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]) == null){
                     moves.add(Position.values()[position.ordinal() + step*welcheRichtung]);
-                    step++;
                 
                 }
                 //Wenn eine gegnerische Figur in der Reihe links/rechts steht, dann ist Zug moeglich
                 else if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]) != null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]).farbe == color){
                     moves.add(Position.values()[position.ordinal() + step*welcheRichtung]);
-                    step++;
                 }
                 else{
                     counter++;
+                    step = 0;
                 }
             }
             else{
                 counter++;
+                step = 0;
             }
-        }
+        }       
         return moves;
     }
 
