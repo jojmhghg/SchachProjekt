@@ -6,9 +6,13 @@
 package Test;
 
 import Backend.Enums.Farbe;
+import Backend.Enums.Position;
+import Backend.Feld;
 import Backend.Optionen;
 import Backend.Partie;
 import Backend.SpielException;
+import Backend.Spielbrett;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,22 +22,24 @@ import java.util.logging.Logger;
  */
 public class TestPartie {
     
-    
     public TestPartie(){
         
     }
     
     public void start(){
         
+        
         System.out.println("1. Teste Erstellen einer neuen Partie: \n");
         neuesSpielfeldTest(Farbe.WEISS, 5, true);
-        System.out.println("");
+        /*System.out.println("");
         neuesSpielfeldTest(Farbe.SCHWARZ, 10, false);
         System.out.println("");
         neuesSpielfeldTest(Farbe.WEISS, 30, false);
+        */
         
-        System.out.println("\n\n\n\n2. Teste Laden einer Partie: \n");
-        ladePartieTest();
+        
+        /*System.out.println("\n\n\n\n2. Teste Laden einer Partie: \n");
+        ladePartieTest();*/
     }
     
     public void neuesSpielfeldTest(Farbe farbe, int partiezeit, boolean gegenKI){
@@ -52,7 +58,7 @@ public class TestPartie {
         }
     }
     
-    public void ladePartieTest(){
+    /*public void ladePartieTest(){
         try {
             Partie partie = new Partie("tmp");
             
@@ -60,11 +66,20 @@ public class TestPartie {
         } catch (SpielException ex) {
             Logger.getLogger(TestPartie.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }*/
     
     private void printPartie(Partie partie){
+        LinkedList<Position> moves = new LinkedList<>();
+        
         partie.getSpielbrett().printSpielbrett();
-          
+        
+        moves = partie.getSpielbrett().getMovesFuerFeld(Position.D5);
+        for(int i = 0; i < moves.size(); i++){
+            Position move = (Position)moves.get(i);
+            System.out.println(move);
+        }
+        
+        
         System.out.println("KI-Gegner: " + partie.isKiGegner());
         System.out.println("Farbe Spieler 1: " + partie.getFarbe().toString());
         System.out.println("Partiezeit: " + partie.getPartiezeit());

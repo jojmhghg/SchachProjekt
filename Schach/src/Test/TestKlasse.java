@@ -20,7 +20,7 @@ public class TestKlasse {
      */
     public static void main(String[] args) {
         
-        TestEinstellungen testEinstellungen = new TestEinstellungen();
+        //TestEinstellungen testEinstellungen = new TestEinstellungen();
         //testEinstellungen.start();
         
         TestPartie testSonstige = new TestPartie();

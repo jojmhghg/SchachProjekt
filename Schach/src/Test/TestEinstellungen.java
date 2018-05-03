@@ -2,6 +2,7 @@ package Test;
 
 
 import Backend.Einstellungen;
+import Backend.Enums.Position;
 import Backend.SpielException;
 
 /*
