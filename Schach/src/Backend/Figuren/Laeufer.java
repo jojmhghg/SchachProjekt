@@ -38,7 +38,7 @@ public class Laeufer extends Figur{
         }  
         //Fuer Schraege Zuege
         int counter = 0;
-        step = 0;
+         step = 0;
         while(counter < 4){
             int welcheReiheMin = 0;
             int welcheReiheMax = 0;
@@ -63,7 +63,7 @@ public class Laeufer extends Figur{
                 
                 //Schräg-Unten-Links    
                 case 2:
-                    welcheRichtung = -schraegObenLinks;
+                    welcheRichtung = -schraegObenRechts;
                     welcheReiheMin = 0;
                     welcheReiheMax = 7;
                     welcheSpalte = linkeSpalte;
@@ -71,36 +71,38 @@ public class Laeufer extends Figur{
                     
                 //Schräg-Unten-Rechts
                 case 3:
-                    welcheRichtung = -schraegObenRechts;
+                    welcheRichtung = -schraegObenLinks;
                     welcheReiheMin = 0;
                     welcheReiheMax = 7;
                     welcheSpalte = rechteSpalte;
                     break;
             }
             
-          
-            
+           
             //Nur wenn Dame nicht auf aeussester Reihe/Spalte steht, gibt es noch moegliche Zuege in die jeweiligen Richtung
-            if((position.ordinal() + (step)*welcheRichtung) % 8 != welcheSpalte && !((position.ordinal() + (step)*welcheRichtung) >= welcheReiheMin && (position.ordinal() + (step)*welcheRichtung) <= welcheReiheMax)){ 
+            if((position.ordinal() + (step)*welcheRichtung) % 8 != welcheSpalte && (!(((position.ordinal() + (step)*welcheRichtung) >= welcheReiheMin) && ((position.ordinal() + (step)*welcheRichtung) <= welcheReiheMax)))){
+                step++;
                 //Wenn Feld(er) schraeg neben der Dame frei sind, sind Zuege moeglich
                 if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]) == null){
                     moves.add(Position.values()[position.ordinal() + step*welcheRichtung]);
-                    step++;
                 
                 }
                 //Wenn eine gegnerische Figur in der Reihe links/rechts steht, dann ist Zug moeglich
                 else if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]) != null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + step*welcheRichtung]).farbe == color){
                     moves.add(Position.values()[position.ordinal() + step*welcheRichtung]);
-                    step++;
+                    counter++;
+                    step = 0;
                 }
                 else{
                     counter++;
+                    step = 0;
                 }
             }
             else{
                 counter++;
+                step = 0;
             }
-        }
+        }       
         return moves;
     }
 
