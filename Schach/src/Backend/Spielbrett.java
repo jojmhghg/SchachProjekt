@@ -85,14 +85,14 @@ public class Spielbrett {
         this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));*/
         
         this.spielbrett[Position.D5.ordinal()].setFigur(new Dame(Farbe.WEISS));
-        this.spielbrett[Position.D6.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.D4.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.C5.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.E5.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.C6.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.E6.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.C4.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.E4.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+        this.spielbrett[Position.D6.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+        this.spielbrett[Position.D4.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+        this.spielbrett[Position.C5.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+        this.spielbrett[Position.E5.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+        this.spielbrett[Position.C6.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+        this.spielbrett[Position.E6.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+        this.spielbrett[Position.C4.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+        this.spielbrett[Position.E4.ordinal()].setFigur(new Bauer(Farbe.WEISS));
 
     }
     
