@@ -21,8 +21,91 @@ public class Springer extends Figur{
     }
 
     @Override
-    public LinkedList<Position> getMoves(Spielbrett spielbrett, Position eigenePosition) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public LinkedList<Position> getMoves(Spielbrett spielbrett, Position position) {
+        LinkedList<Position> moves = new LinkedList<>();
+        
+        int min = 0;
+        int max = 63;
+        int vorneVorneLinks = 15;
+        int vorneVorneRechts = 17;
+        int vorneLinksLinks = 6;
+        int vorneRechtsRechts = 10;
+        int runterRunterRechts = -vorneVorneLinks;
+        int runterRunterLinks = -vorneVorneRechts;
+        int runterRechtsRechts = -vorneLinksLinks;
+        int runterLinksLinks = -vorneRechtsRechts;
+        int counter = 0;
+        Farbe color;
+        if(this.farbe == Farbe.WEISS){           
+            color = Farbe.SCHWARZ;
+        }
+        else{
+            color = Farbe.WEISS;
+        }  
+        
+        while(counter < 9){
+            int welcheRichtung = 0;
+            switch(counter){
+                case 1:
+                    welcheRichtung = vorneVorneLinks;
+                    break;
+                    
+                case 2:
+                    welcheRichtung = vorneVorneRechts;
+                    break;
+                    
+                case 3:
+                    welcheRichtung = vorneLinksLinks;
+                    break;
+                    
+                case 4:
+                    welcheRichtung = vorneRechtsRechts;
+                    break;
+                    
+                case 5:
+                    welcheRichtung = -vorneVorneLinks;
+                    break;
+                    
+                case 6:
+                    welcheRichtung = -vorneVorneRechts;
+                    break;
+                    
+                case 7:
+                    welcheRichtung = -vorneLinksLinks;
+                    break;
+                    
+                case 8:
+                    welcheRichtung = -vorneRechtsRechts;
+                    break;
+            }
+            //Wenn Zielfeld im Bereich des moeglichen ist
+            if(((position.ordinal() + welcheRichtung) >= 0) && ((position.ordinal() + welcheRichtung) <= 63)){
+                //Wenn Zielfeld leer ist
+                if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + welcheRichtung]) == null){
+                    moves.add(Position.values()[position.ordinal() + welcheRichtung]);
+                    counter++;
+                }
+                else if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + welcheRichtung]).farbe == color){
+                    moves.add(Position.values()[position.ordinal() + welcheRichtung]);
+                    counter++;
+                }
+                else{
+                    counter++;
+                }
+            }
+            else{
+                counter++;
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        return moves;
     }
 
     @Override
