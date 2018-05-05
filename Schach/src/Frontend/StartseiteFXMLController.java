@@ -61,7 +61,7 @@ public class StartseiteFXMLController implements Initializable {
             optionenStage.setScene(new Scene(optionenScene));
             optionenStage.show();
             // Hide this current window (if this is what you want)
-            //((Node)(event.getSource())).getScene().getWindow().hide();
+            ((Node)(event.getSource())).getScene().getWindow().hide();
         }
         catch (IOException e) {
         }

@@ -45,7 +45,7 @@
                               <Font size="14.0" />
                            </font>
                         </JFXToggleButton>
-                        <JFXButton buttonType="RAISED" layoutX="335.0" layoutY="215.0" onAction="#goToChessBoard" style="-fx-background-color: #DEB887; -fx-opacity: 80%;" text="Los geht !">
+                        <JFXButton buttonType="RAISED" layoutX="335.0" layoutY="215.0" onAction="#goToChessBoard" style="-fx-background-color: #DEB887; -fx-opacity: 80%;" text="Los geht's !">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>

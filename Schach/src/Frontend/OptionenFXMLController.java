@@ -107,9 +107,10 @@ public class OptionenFXMLController implements Initializable {
             startSeiteScene = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
             Stage startSeiteStage;
             startSeiteStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            startSeiteStage.show();
+            //startSeiteStage.show();
             // Hide this current window (if this is what you want)
             ((Node)(event.getSource())).getScene().getWindow().hide();
+            startSeiteStage.show();
         } catch (IOException ex) {
             Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
