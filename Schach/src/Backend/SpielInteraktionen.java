@@ -16,9 +16,9 @@ import java.util.LinkedList;
 public interface SpielInteraktionen {
     
     /* --- Methoden die das Spiel betreffen --- */
-    public void setUsername(String username);
+    public void setUsername(String username) throws SpielException;
     public String getUsername();
-    public void setHighlightingAus(Boolean highlightingAus);
+    public void setHighlightingAus(Boolean highlightingAus) throws SpielException;
     public boolean isHighlightingAus();
     
     /* --- Methoden die eine Partie betreffen --- */

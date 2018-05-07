@@ -302,6 +302,7 @@ public class Partie {
      * @param dateiname Name der Datei 
      */
     public void speichereSpiel(String dateiname) {
+        //TODO
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
@@ -340,6 +341,6 @@ public class Partie {
      * Hilfsmethode, die die Schnittstelle zur KI ist
      */
     private void kiZieht(){
-        
+        //TODO
     }
 }

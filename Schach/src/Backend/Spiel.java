@@ -24,7 +24,7 @@ public class Spiel implements SpielInteraktionen {
     }
 
     @Override
-    public void setUsername(String username) {
+    public void setUsername(String username) throws SpielException {
         this.einstellungen.setUsername(username);
     }
 
@@ -34,7 +34,7 @@ public class Spiel implements SpielInteraktionen {
     }
 
     @Override
-    public void setHighlightingAus(Boolean highlightingAus) {
+    public void setHighlightingAus(Boolean highlightingAus) throws SpielException{
         this.einstellungen.setHighlightingAus(highlightingAus);
     }
 

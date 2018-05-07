@@ -37,7 +37,7 @@ public class TestEinstellungen {
             System.out.println("    Methode funktioniert!");
             
             System.out.println("\nTeste Methode setUsername()");           
-            String username = "Testuser";       
+            String username = "timtim";       
             System.out.println("    Eingabe: " + username);
             einstellungen.setUsername(username);
             String neuerUsername = einstellungen.getUsername();
@@ -50,7 +50,7 @@ public class TestEinstellungen {
             }
             
             System.out.println("\nTeste Methode setHighlightingAus()");           
-            Boolean highlightingAus = false;       
+            Boolean highlightingAus = true;       
             System.out.println("    Eingabe: " + highlightingAus);
             einstellungen.setHighlightingAus(highlightingAus);
             Boolean ergebnis = einstellungen.isHighlightingAus();
