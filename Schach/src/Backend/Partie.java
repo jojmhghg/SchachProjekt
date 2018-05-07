@@ -8,8 +8,10 @@ package Backend;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
@@ -300,10 +302,68 @@ public class Partie {
      * Speichert das Spiel in einer Datei mit dem angegebenen Namen
      * 
      * @param dateiname Name der Datei 
+     * @throws Backend.SpielException falls übergebener Name = tmp
      */
-    public void speichereSpiel(String dateiname) {
-        //TODO
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void speichereSpiel(String dateiname) throws SpielException {
+        
+        if(dateiname.equals("tmp")){
+            throw new SpielException("ungültiger Speichername");
+        }
+        
+        String seperator = System.getProperty("file.separator");      
+        // relativer Pfad zu den Einstellungen (angepasst für jedes OS)
+        File file = new File("." + seperator + "saves" + seperator + dateiname + ".txt");
+                
+        try {
+            
+            // Falls Datei nicht existiert...
+            if (!file.isFile()){
+                // ... Datei anlegen
+                if(!file.createNewFile()){
+                    throw new SpielException("Speicherdatei konnte nicht erstellt werden!");
+                }        
+            }
+        
+            // Datei beschreiben
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+
+            //Gegner
+            bw.write(String.valueOf(this.kiGegner));
+            bw.newLine();
+            //Farbe
+            bw.write(this.farbe.toString());
+            bw.newLine();
+            //Partiezeit
+            bw.write(String.valueOf(this.partiezeit));
+            bw.newLine();
+            //verbleibende Zeit Spieler 1          
+            bw.write(String.valueOf(this.verbleibendeZeitSpieler1));
+            bw.newLine();
+            //verbleibende Zeit Spieler 2
+            bw.write(String.valueOf(this.verbleibendeZeitSpieler2));
+            bw.newLine();
+            //Gewinner
+            if(this.gewinner == null){
+                bw.newLine();
+            }
+            else{
+                bw.write(this.gewinner.toString());
+                bw.newLine();
+            }
+            
+            //Züge
+            for(Zug zug : this.ablauf){
+                bw.write(String.valueOf(zug.getUrsprung().ordinal()));
+                bw.write(" ");
+                bw.write(String.valueOf(zug.getZiel().ordinal()));
+                bw.newLine();
+            }
+
+            bw.close();
+        
+        } catch (IOException ex) {
+            throw new SpielException("Speicherdatei konnte nicht erstellt werden!");
+        }
     }
     
     

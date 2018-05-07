@@ -18,10 +18,10 @@ public class test {
      */
     public static void main(String[] args) {
         
-        TestEinstellungen tp = new TestEinstellungen();
-        tp.start();
+        TestSpeichern ts = new TestSpeichern();
+        ts.start();
 
-
+        
         
     }
 }
