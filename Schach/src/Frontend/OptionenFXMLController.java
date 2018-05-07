@@ -62,16 +62,19 @@ public class OptionenFXMLController implements Initializable {
     private Label onOff;
     @FXML
     private ToggleGroup KIEinAusLokal;
-    
-    ObservableList<String> partieZeitList =  FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt" );
-    
+
+    ObservableList<String> partieZeitList = FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt");
+
     SpielbrettFXMLController spielbrett;
-    
-    public OptionenFXMLController(){ 
+
+    public Backend.SpielInteraktionen stub;
+
+    public OptionenFXMLController() {
     }
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -79,11 +82,32 @@ public class OptionenFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         partieZeitLokal.setItems(partieZeitList);
         partieZeitOnline.setItems(partieZeitList);
-    }    
+    }
+
+    public void loadStubFromController() throws IOException {
+
+        /**
+         * Startseite.FXML wird hier geladen um stub zu bekommen
+         *
+         * 
+         */
+        FXMLLoader loadStub = new FXMLLoader();
+        loadStub.setLocation(getClass().getResource("Startseite.fxml"));
+        //Parent loadStubParent = loadStub.load();
+
+        //Scene loadStubScene = new Scene(loadStubParent);
+
+        StartseiteFXMLController controller1 = loadStub.getController();
+
+        stub = controller1.stub;
+    }
 
     @FXML
     private void goToChessBoard(ActionEvent event) {
         try {
+            
+            loadStubFromController();
+            
             Parent chessBoardScene;
             chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
             Stage chessBoardStage = new Stage();
@@ -94,49 +118,48 @@ public class OptionenFXMLController implements Initializable {
 
             chessBoardStage.show();
             // Hide this current window (if this is what you want)
-            ((Node)(event.getSource())).getScene().getWindow().hide();
+            ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException ex) {
             Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @FXML
     private void backToStartPage(ActionEvent event) {
         try {
             Parent startSeiteScene;
             startSeiteScene = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
             Stage startSeiteStage;
-            startSeiteStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            startSeiteStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             //startSeiteStage.show();
             // Hide this current window (if this is what you want)
-            ((Node)(event.getSource())).getScene().getWindow().hide();
+            ((Node) (event.getSource())).getScene().getWindow().hide();
             startSeiteStage.show();
         } catch (IOException ex) {
             Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @FXML
-    private void toggleKiGegner(){
-    
-        kiGegnerToggler.selectedProperty().addListener(new ChangeListener<Boolean>(){
-        
+    private void toggleKiGegner() {
+
+        kiGegnerToggler.selectedProperty().addListener(new ChangeListener<Boolean>() {
+
             @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2){
-                if(kiGegnerToggler.isSelected() == true){
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+                if (kiGegnerToggler.isSelected() == true) {
                     onOff.setText("EIN");
-                }
-                else{
+                } else {
                     onOff.setText("AUS");
                 }
             }
-    
+
         });
 
     }
 
     private void loadStandardBoard() {
-            
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
