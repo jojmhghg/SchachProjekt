@@ -27,7 +27,7 @@ import javafx.stage.StageStyle;
  * @author Edwrard Nana
  */
 public class StartseiteFXMLController implements Initializable {
-    
+
     @FXML
     private Button spielStarten;
     @FXML
@@ -37,18 +37,21 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private JFXButton partieLaden;
     
+    Backend.SpielInteraktionen stub; 
+
     public StartseiteFXMLController() {
+        
     }
-    
+
     @FXML
-    private void powerOff(ActionEvent event){
+    private void powerOff(ActionEvent event) {
 //        Stage stage;
 //        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
 //        stage.close();
         Platform.exit();
         System.exit(0);
     }
-    
+
     @FXML
     private void goToOptionen(ActionEvent event) {
         Parent optionenScene;
@@ -61,15 +64,14 @@ public class StartseiteFXMLController implements Initializable {
             optionenStage.setScene(new Scene(optionenScene));
             optionenStage.show();
             // Hide this current window (if this is what you want)
-            ((Node)(event.getSource())).getScene().getWindow().hide();
-        }
-        catch (IOException e) {
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+        } catch (IOException e) {
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-    }    
-    
+    }
+
 }

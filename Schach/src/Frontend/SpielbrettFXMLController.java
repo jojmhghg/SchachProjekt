@@ -223,12 +223,32 @@ public class SpielbrettFXMLController implements Initializable {
 
     private Spiel spiel;
     private Pane[] paneArray;
-    
+
     Scene scene;
 
     Spielbrett spielbrett = new Spielbrett();
 
     Image value = null;
+    
+    public Backend.SpielInteraktionen stub;
+    
+    public void loadStubFromController() throws IOException {
+
+        /**
+         * Optionen.FXML wird hier geladen um stub zu bekommen
+         *
+         * 
+         */
+        FXMLLoader loadStub = new FXMLLoader();
+        loadStub.setLocation(getClass().getResource("Optionen.fxml"));
+        //Parent loadStubParent = loadStub.load();
+
+        //Scene loadStubScene = new Scene(loadStubParent);
+
+        StartseiteFXMLController controller1 = loadStub.getController();
+
+        stub = controller1.stub;
+    }
 
     public void initSpielbrett() {
 
@@ -363,7 +383,7 @@ public class SpielbrettFXMLController implements Initializable {
                     imgView.setLayoutX(3);
                     imgView.setLayoutY(3);
                     paneArray[i].getChildren().add(imgView);
-                    
+
                     imgView.addEventFilter(MouseEvent.DRAG_DETECTED, event -> {
                         System.out.println(pos);
                         //onClicked(event);
@@ -378,7 +398,7 @@ public class SpielbrettFXMLController implements Initializable {
 //                        onDragOver(event);
                         imgView.startDragAndDrop(TransferMode.MOVE);
                         event.consume();
-                        
+
                     });
 //                    imgView.addEventFilter(MouseEvent.DRAG_DETECTED, new EventHandler<MouseEvent>() {
 //
@@ -440,7 +460,7 @@ public class SpielbrettFXMLController implements Initializable {
 
         }
 
-        event.consume(); 
+        event.consume();
     }
 
     /**
@@ -545,12 +565,12 @@ public class SpielbrettFXMLController implements Initializable {
 
             // Anzeige des von Quell- und Zielfeld auf der Konsole zu Debug
             // Zwecken.
-            System.out.println("OnDragDropped: "+quellFeld + " drop " + zielFeld);
+            System.out.println("OnDragDropped: " + quellFeld + " drop " + zielFeld);
             // Sollten Quellfeld und Zielfeld ungleich sein, die Figur dem
             // Zielfeld hinzufügen.
             int quelle = Integer.parseInt(quellFeld.getId());
             int ziel = Integer.parseInt(zielFeld.getId());
-            
+
             zieheFigur();
 
 //                zielfeld.getChildren().add(figur);
@@ -597,8 +617,8 @@ public class SpielbrettFXMLController implements Initializable {
             // der Bewegungsvorgang ist beendet worden
             figurInBewegung = false;
             // TODO Computerspieler starten
-            
-            System.out.println("onDragDone: "+ quellFeld + " done " + zielFeld);
+
+            System.out.println("onDragDone: " + quellFeld + " done " + zielFeld);
         }
 
         // event.consume(); ??
@@ -725,6 +745,11 @@ public class SpielbrettFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            loadStubFromController();
+        } catch (IOException ex) {
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         initSpielbrett();
     }
 
@@ -734,19 +759,19 @@ public class SpielbrettFXMLController implements Initializable {
 
         try {
             if (quellFeld != zielFeld) {
-                //if (aktion.zieheFigur(Position.A1, Position.E1)) {
-                aktion.zieheFigur(Position.A1, Position.E1);
+                //if (aktion.zieheFigur(Position.A2, Position.A3)) {
+                aktion.zieheFigur(Position.A2, Position.A3);
                 // Zu schlagende Figur wird ins löschfeld verschoben
                 if (!zielFeld.getChildren().isEmpty()) {
                     löschfeld.getChildren().add(zielFeld.getChildren().get(0));
                 }
             }
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                // }
-            }catch (SpielException ex) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            // }
+        } catch (SpielException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        }
+    }
 
 }
