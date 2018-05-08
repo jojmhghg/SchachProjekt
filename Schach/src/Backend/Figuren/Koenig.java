@@ -76,7 +76,10 @@ public class Koenig extends Figur{
                 welchesForward = forward;
             }
             //Nur wenn Dame nicht auf gegnerischer/eigener Grundreihe steht, gibt es noch moegliche Zuege
-            if(!(((position.ordinal() + welchesForward) >= minWelcheGrundreihe) && ((position.ordinal() + welchesForward) <= maxWelcheGrundreihe))){ 
+            if(!(((position.ordinal()) >= minWelcheGrundreihe) && ((position.ordinal()) <= maxWelcheGrundreihe))){
+                System.out.println("huhu");
+                System.out.println(welchesForward);
+                //System.out.println(Position.values()[position.ordinal() + welchesForward]);
                 //Wenn Feld(er) vor der Dame frei sind, sind Zuege moeglich
                 if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + welchesForward]) == null){
                     moves.add(Position.values()[position.ordinal() + welchesForward]);

@@ -83,6 +83,7 @@ public class Spielbrett {
         this.spielbrett[Position.F7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+        
     }
     
     /**
@@ -130,7 +131,7 @@ public class Spielbrett {
             throw new SpielException("Keine Figur auf dem Feld " + startposition);
         }
         
-        LinkedList<Position> moves = this.getMovesFuerFeld(startposition);
+        LinkedList<Position> moves = this.getMovesFuerFeld(startposition);  //TODO Teste ob Koenig im Schach steht
         if(moves.contains(zielposition)){
             this.spielbrett[startposition.ordinal()].setFigur(null);
             this.spielbrett[zielposition.ordinal()].setFigur(figur);

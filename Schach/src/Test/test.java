@@ -18,9 +18,10 @@ public class test {
      */
     public static void main(String[] args) {
         
-        TestSpeichern ts = new TestSpeichern();
-        ts.start();
-
+        //TestSpeichern ts = new TestSpeichern();
+        //ts.start();
+        //TestPartie tp = new TestPartie();
+        //tp.start();
         
         
     }

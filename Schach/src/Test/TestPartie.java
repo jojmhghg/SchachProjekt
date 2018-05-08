@@ -71,7 +71,7 @@ public class TestPartie {
         
         partie.getSpielbrett().printSpielbrett();
         
-        moves = partie.getSpielbrett().getMovesFuerFeld(Position.D5);
+        moves = partie.getSpielbrett().getMovesFuerFeld(Position.E1);
         for(int i = 0; i < moves.size(); i++){
             Position move = (Position)moves.get(i);
             System.out.println(move);

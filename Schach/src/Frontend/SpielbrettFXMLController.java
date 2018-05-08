@@ -522,7 +522,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     @FXML
-    public void speichernButtonClicked(ActionEvent event){
+    public void speichernButtonClicked(ActionEvent event) throws SpielException{
         Date date = new Date();
         String filename;
         filename = date.toInstant().toString();
