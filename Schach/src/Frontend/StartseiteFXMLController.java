@@ -5,10 +5,15 @@
  */
 package Frontend;
 
+import Backend.Spiel;
+import Backend.SpielException;
+import Backend.SpielInteraktionen;
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +42,7 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private JFXButton partieLaden;
     
-    Backend.SpielInteraktionen stub; 
+    SpielInteraktionen spiel; 
 
     public StartseiteFXMLController() {
         
@@ -45,9 +50,6 @@ public class StartseiteFXMLController implements Initializable {
 
     @FXML
     private void powerOff(ActionEvent event) {
-//        Stage stage;
-//        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-//        stage.close();
         Platform.exit();
         System.exit(0);
     }
@@ -60,7 +62,6 @@ public class StartseiteFXMLController implements Initializable {
             Stage optionenStage = new Stage();
             optionenStage.initModality(Modality.APPLICATION_MODAL);
             optionenStage.initStyle(StageStyle.UNDECORATED);
-            //optionenStage.setTitle("Einstellungen - Schach by Team Deep Blue");
             optionenStage.setScene(new Scene(optionenScene));
             optionenStage.show();
             // Hide this current window (if this is what you want)
@@ -71,7 +72,11 @@ public class StartseiteFXMLController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        try {
+            spiel = new Spiel();
+        } catch (SpielException ex) {
+            Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

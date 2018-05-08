@@ -7,26 +7,18 @@ package Frontend;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
-import Backend.Figuren.Bauer;
-import Backend.Figuren.Dame;
 import Backend.Figuren.Figur;
-import Backend.Figuren.Koenig;
-import Backend.Figuren.Laeufer;
-import Backend.Figuren.Springer;
-import Backend.Figuren.Turm;
 import Backend.Spiel;
-import Backend.Partie;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
 import Backend.Spielbrett;
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,15 +31,11 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -210,44 +198,33 @@ public class SpielbrettFXMLController implements Initializable {
     private GridPane gridBoard;
     @FXML
     private Label position;
+    
+    Label restZeit;
 
     private ImageView figurToMove = new ImageView();
-    private Pane quellFeld = new Pane();
-    private Pane feld = new Pane();
-    private Pane zielFeld = new Pane();
-    private final Pane löschfeld = new Pane();
-    private Point2D startpunkt = new Point2D(0, 0);
-    private Point2D aktuelleposition = new Point2D(0, 0);
-    private Point2D endpunkt = new Point2D(0, 0);
-    private boolean figurInBewegung = false;
 
-    private Spiel spiel;
     private Pane[] paneArray;
-
-    Scene scene;
-
-    Spielbrett spielbrett = new Spielbrett();
-
-    Image value = null;
     
-    public Backend.SpielInteraktionen stub;
+    SpielInteraktionen spiel;
+    Spielbrett spielbrett;
     
-    public void loadStubFromController() throws IOException {
-
-        /**
-         * Optionen.FXML wird hier geladen um stub zu bekommen
-         *
-         * 
-         */
+    // Attribute zum Ziehen von Figuren
+    private Pane quellFeld;
+    private Position quellPosition;
+    private LinkedList<Position> moves; 
+    
+    public void loadSpielFromController() throws IOException {
         FXMLLoader loadStub = new FXMLLoader();
         loadStub.setLocation(getClass().getResource("Optionen.fxml"));
-        //Parent loadStubParent = loadStub.load();
+        Parent loadStubParent = loadStub.load();
 
-        //Scene loadStubScene = new Scene(loadStubParent);
+        Scene loadStubScene = new Scene(loadStubParent);
 
-        StartseiteFXMLController controller1 = loadStub.getController();
+        OptionenFXMLController controller1 = loadStub.getController();
 
-        stub = controller1.stub;
+        spielbrett = controller1.spielbrett;
+        spiel = controller1.spiel;
+        
     }
 
     public void initSpielbrett() {
@@ -317,13 +294,17 @@ public class SpielbrettFXMLController implements Initializable {
         paneArray[61] = F8;
         paneArray[62] = G8;
         paneArray[63] = H8;
-
+ 
+        Image value = null;
+        Position pos;
+        Figur figur;
+        
         //Spielbrett spielbrett = new Spielbrett(spiel.neuePartie(partieoptionen)); //Zu benutzen
         for (int i = 0; i < 64; i++) {
 
-            Position pos = Position.values()[i];
+            pos = Position.values()[i];          
 
-            Figur figur = spielbrett.getFigurAufFeld(pos);
+            figur = spielbrett.getFigurAufFeld(pos);
             if (figur != null) {
 
                 switch (figur.getFigurName()) {
@@ -384,338 +365,120 @@ public class SpielbrettFXMLController implements Initializable {
                     imgView.setLayoutY(3);
                     paneArray[i].getChildren().add(imgView);
 
-                    imgView.addEventFilter(MouseEvent.DRAG_DETECTED, event -> {
-                        System.out.println(pos);
-                        //onClicked(event);
-                        //onMouseMoved(event);
-                        //secondClick(event);
-                        imgView.startFullDrag();
-                        onDragDetected(event);
-//                        onDragDone(event);
-//                        onDragDropped(event);
-//                        onDragEntered(event);
-//                        onDragExited(event);
-//                        onDragOver(event);
-                        imgView.startDragAndDrop(TransferMode.MOVE);
-                        event.consume();
-
-                    });
-//                    imgView.addEventFilter(MouseEvent.DRAG_DETECTED, new EventHandler<MouseEvent>() {
-//
-//                        @Override
-//                        public void handle(MouseEvent mouseEvent) {
-//                            imgView.startFullDrag();
-//                        }
-//                    });
+                    
 
                 }
                 value = null;
 
-            } else {
-            }
-
+            } 
+            paneArray[i].addEventFilter(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
+                try {
+                    //System.out.print(pos);
+                    onClicked(event);
+                } catch (SpielException ex) {
+                    Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
     }
 
     /**
-     * Eine Figur bemerkt, das sie bewegt werden soll.
-     *
-     * @param event
+     * Methode onCliked erkennt wenn das Maus links oder Rechts angeklickt wurde, 
+     * und handelt es dementsprechend
      */
-    @FXML
-    protected void onDragDetected(MouseEvent event) {
+    private void onClicked(MouseEvent event) throws SpielException {    
+        
+        MouseButton button = event.getButton();
+        switch (button) {
+            case PRIMARY: //Starte den Zug               
+                Pane tmpPane =  (Pane) event.getSource(); 
+                ImageView tmpView = null;
+                
+                if(tmpPane.getChildren().size() > 0){
+                    tmpView = (ImageView) tmpPane.getChildren().get(0);
+                }
+                
+                int tmp = 0;
+                for(int i = 0; i < 64; i++){
+                    if(this.paneArray[i] == tmpPane){
+                        tmp = i;
+                    }                        
+                }
+                Position pos = Position.values()[tmp];
+                
+                if(this.quellFeld == null){      
+                    this.moves = spiel.getMoeglicheZuege(pos);
+                    this.quellPosition = pos;
+                    
+                    if(moves != null){
+                        highlight();
+                        figurToMove = tmpView;    // Festhalten welche Figur bewegt werden soll.
+                        quellFeld = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
+                        figurToMove.setEffect(new DropShadow());  
+                    }
+                }
+                else{
+                    // teste ob neues Feld ein möglicher zug ist
+                    if(moves.contains(pos)){
+                        highlightAus();
+                        spiel.zieheFigur(quellPosition, pos);
+                        if(tmpPane.getChildren().size() > 0){
+                            tmpPane.getChildren().remove(0);
+                        }
+                        tmpPane.getChildren().add(figurToMove);
+                        
+                        moves = null;
+                        this.quellPosition = null;
+                        quellFeld = null;
+                        updateScreen();
+                    }
+                    else{
+                        // falls kein möglicher Zug -> neue Figur auswählen
+                        if(figurToMove != null){
+                            figurToMove.setEffect(null);
+                        }
+                       
+                       this.moves = spiel.getMoeglicheZuege(pos);
+                       highlight();
+                       this.quellPosition = pos;
+                       
+                        if(moves != null){
+                            figurToMove = tmpView;    // Festhalten welche Figur bewegt werden soll.
+                            quellFeld = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
+                            if(figurToMove != null){
+                                figurToMove.setEffect(new DropShadow());  
+                            }
+                        }
+                    }
+                }
+                    //Figur figurToMove = spielbrett.getFigurAufFeld(pos);
+                    
+                       
 
-        // Sicherstellen das die Quelle des ausgelösten Events von einer Figur
-        // stammt, um gültigen Typecast durchzuführen.
-        if (event.getSource() instanceof ImageView) {
-
-            // Festhalten welche Figur bewegt werden soll.
-            figurToMove = (ImageView) event.getSource();
-
-            // Sicherstellen das die Quelle des ausgelösten Events von einem
-            // Feld stammt, um gültigen Typecast durchzuführen.
-            if (figurToMove.getParent() instanceof Pane) // Festhalten von welchem Feld die Figur bewegt werden soll.
-            {
-                quellFeld = (Pane) (figurToMove.getParent());
-            }
-
-            // Die Figur mit einem Schlagschatten markieren.
-            figurToMove.setEffect(new DropShadow());
-
-            // Speichern der Bilddatei der Figur im ClipboardContent, um deren
-            // Bewegung
-            // anzuzeigen.
-            Dragboard dragBoard = ((Node) figurToMove).startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            content.putImage(figurToMove.getImage());
-            dragBoard.setContent(content);
-
-            // Anzeige des Startpunktes der Bewegung zu Debug Zwecken.
-            startpunkt = new Point2D(event.getSceneX(), event.getSceneY());
-            String hilfsstring = startpunkt.toString();
-            startPositionLabel.setText("StartPunkt" + hilfsstring.substring(hilfsstring.lastIndexOf('D') + 1));
-
-            // Der Bewegungsvorgang ist gestartet worden.
-            figurInBewegung = true;
-
+                break;
+            case SECONDARY: //Bricht den Zug ab
+                moves = null;
+                quellFeld = null;
+                figurToMove.setEffect(null);
+                break;
+            default:
+                break;
         }
-
-        event.consume();
+        
     }
-
-    /**
-     * Ein Feld bemerkt, das eine Figur das Feld betritt.
-     *
-     * @param event
-     */
-    @FXML
-    protected void onDragEntered(DragEvent event) {
-
-        // Sicherstellen ob das Event durch eine Figurbewegung ausgelöst wurde.
-        if (figurInBewegung) {
-
-            // Sicherstellen das die Quelle des ausgelösten Events von einem
-            // Feld stammt, um gültigen Typecast durchzuführen.
-            if (event.getSource() instanceof Pane) // Feststellen welches Feld für das auslösen des Events betreten wurde.
-            {
-                feld = (Pane) event.getSource();
-            }
-
-            // Das Feld mit einem InnerenSchatten markieren.
-            feld.setEffect(new InnerShadow());
-
-            //event.acceptTransferModes(TransferMode.MOVE); ??
+    
+    private void highlight(){
+        for(Position pos : moves){
+            this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 5;");
         }
-        //event.consume();
     }
-
-    /**
-     * Ein Feld bemerkt, das eine Figur das Feld verlässt.
-     *
-     * @param event
-     */
-    @FXML
-    protected void onDragExited(DragEvent event) {
-
-        // sicherstellen ob das Event durch eine Figurbewegung ausgelöst wurde
-        if (figurInBewegung) {
-
-            // sicherstellen das die Quelle des ausgelösten Events von einem
-            // Feld stammt um gültigen Typecast durchzuführen
-            if (event.getSource() instanceof Pane) // feststellen welches Feld beim auslösen des Events verlassen wurde
-            {
-                feld = (Pane) event.getSource();
-            }
-
-            // den InnerenSchatten des Feldes das verlassen wird entfernen
-            feld.setEffect(null);
-
-            // sollte das Startfeld mit keinem InnerenSchatten markiert sein
-            // diese Markierung setzen
-//            if (quellFeld.getEffect() == null) {
-//                quellFeld.setEffect(new InnerShadow());
-//            }
+    
+     private void highlightAus(){
+        for(Position pos : moves){
+            this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 0;");
         }
-        // event.consume(); ??
     }
-
-    /**
-     * Ein Feld bemerkt das eine Figur das Feld überquert.
-     *
-     * @param event
-     */
-    @FXML
-    protected void onDragOver(DragEvent event) {
-
-        // Sicherstellen ob das Event durch eine Figurbewegung ausgelöst wurde.
-        if (figurInBewegung) {
-
-            // Festlegen ob die Figur bewegt werden soll oder kopiert.
-            event.acceptTransferModes(TransferMode.MOVE);
-
-            // Anzeige des aktuellen Position der Bewegung zu Debug Zwecken.
-            aktuelleposition = new Point2D(event.getSceneX(), event.getSceneY());
-            String hilfsstring = aktuelleposition.toString();
-            position.setText("Position" + hilfsstring.substring(hilfsstring.lastIndexOf('D') + 1));
-        }
-        //event.consume(); ??
-    }
-
-    /**
-     * Ein Feld bemerkt, das eine Figur auf dem Feld fallen gelassen wird.
-     *
-     * @param event
-     */
-    @FXML
-    protected void onDragDropped(DragEvent event) {
-
-        // Sicherstellen ob das Event durch eine Figurbewegung ausgelöst wurde.
-        if (figurInBewegung) {
-            // Sicherstellen das die Quelle des ausgelösten Events von einer
-            // Figur stammt, um gültigen Typecast durchzuführen.
-            if ((ImageView) event.getGestureSource() instanceof ImageView) {
-                quellFeld = (Pane) ((ImageView) event.getGestureSource()).getParent();
-            }
-
-            // Sicherstellen das die Quelle des ausgelösten Events von einer
-            // Figur stammt, um gültigen Typecast durchzuführen.
-            if ((ImageView) event.getGestureSource() instanceof ImageView) {
-                zielFeld = (Pane) event.getGestureTarget();
-            }
-
-            // Anzeige des von Quell- und Zielfeld auf der Konsole zu Debug
-            // Zwecken.
-            System.out.println("OnDragDropped: " + quellFeld + " drop " + zielFeld);
-            // Sollten Quellfeld und Zielfeld ungleich sein, die Figur dem
-            // Zielfeld hinzufügen.
-            int quelle = Integer.parseInt(quellFeld.getId());
-            int ziel = Integer.parseInt(zielFeld.getId());
-
-            zieheFigur();
-
-//                zielfeld.getChildren().add(figur);
-//                String hilfsstring = figur.getId();
-//                notiere(quelle, ziel, "Ziehe " + hilfsstring.substring(0, hilfsstring.indexOf('_')) + " von " + quelle
-//                        + " nach " + ziel);
-//                zielfarbe = "";
-//
-//            }
-            // Anzeige des Endposition der Bewegung zu Debug Zwecken.
-            endpunkt = new Point2D(event.getSceneX(), event.getSceneY());
-            String hilfsstring = endpunkt.toString();
-            endPositionLabel.setText("EndPunkt" + hilfsstring.substring(hilfsstring.lastIndexOf('D') + 1));
-
-        }
-        // event.consume(); ??
-    }
-
-    /**
-     * Abschließende Arbeiten nach Bewegung der Figur ins Zielfeld.
-     *
-     * @param event
-     */
-    @FXML
-    protected void onDragDone(DragEvent event) {
-
-        if (figurInBewegung) {
-
-            if (quellFeld.getEffect() != null) {
-                quellFeld.setEffect(null);
-            }
-
-            // Der Schlagschatten der Figur wird entfernt.
-            figurToMove.setEffect(null);
-            // Reinitialisierung aller Klassenvariablen.
-            figurToMove = new ImageView();
-            quellFeld = new Pane();
-            feld = new Pane();
-            zielFeld = new Pane();
-            startpunkt = new Point2D(0, 0);
-            aktuelleposition = new Point2D(0, 0);
-            endpunkt = new Point2D(0, 0);
-
-            // der Bewegungsvorgang ist beendet worden
-            figurInBewegung = false;
-            // TODO Computerspieler starten
-
-            System.out.println("onDragDone: " + quellFeld + " done " + zielFeld);
-        }
-
-        // event.consume(); ??
-    }
-
-//    /**
-//     * Methode onCliked erkennt wenn das Maus links oder Rechts angeklickt wurde, 
-//     * und handelt es dementsprechend
-//     */
-//    private void onClicked(DragEvent event) throws SpielException {
-//        int i = 0;
-//        //MouseButton button = event.getButton();
-//        ImageView tmp = (ImageView) event.getSource();
-//        Image img = (Image) tmp.getImage();
-//        Position pos = Position.values()[i];
-//        Figur figur = spielbrett.getFigurAufFeld(pos);
-//        SpielInteraktionen aktion = new Spiel();
-//        
-//        if (figur != null){
-//            //switch (button) {
-//                //case PRIMARY: //Starte den Zug 
-//                        //Figur figurToMove = spielbrett.getFigurAufFeld(pos);
-//                        if (event.getSource() instanceof ImageView) {
-//                            figurToMove = (ImageView) event.getSource();    // Festhalten welche Figur bewegt werden soll.
-//                            if (figurToMove.getParent() instanceof Pane)
-//                                quellFeld = (Pane) (figurToMove.getParent());     // Festhalten von welchem Feld die Figur bewegt werden soll.
-//                            figurToMove.setEffect(new DropShadow());    
-//                            
-//                            //Dragboard dragBoard;
-//                            GridPane dragboard;
-//                            //dragboard = ((Node) figurToMove).onMouseClickedProperty();    // Speichern der Bilddatei der Figur im ClipboardContent, um deren Bewegung anzuzeigen.
-//                            ClipboardContent content = new ClipboardContent();
-//                            content.putImage(figurToMove.getImage());
-//                            //dragboard.setContent(content);
-//                            //dragboard.setContent(content);
-//                            //dragboard.startDragAndDrop(TransferMode.MOVE);
-//                            
-//                            // Anzeige des Startpunktes der Bewegung zu Debug Zwecken.
-//                            startpunkt = new Point2D(event.getSceneX(), event.getSceneY()); 
-//                            String hilfsstring = startpunkt.toString();
-//                            startPositionLabel.setText("StartPunkt" + hilfsstring.substring(hilfsstring.lastIndexOf('D') + 1));
-//                            
-//                            figurInBewegung = true;     // Der Bewegungsvorgang ist gestartet worden.     
-//                        }
-//                        else{
-//                        }
-//                        
-//                        // TESTS 
-//                        System.out.println("Zug gestarted !");
-//                        System.out.println("Moegliche Zuege: " + aktion.getMoeglicheZuege(pos));
-//                        System.out.println("Spieler am Zug:" + aktion.getSpielerAmZug());
-//                        System.out.println("Moves fuer Feld: " + spielbrett.getMovesFuerFeld(pos));
-//                        System.out.println("Figur auf Feld: " + spielbrett.getFigurAufFeld(pos));
-//                    
-//                    //break;
-//                //case SECONDARY: //Bricht den Zug ab
-//                    figurToMove.setEffect(null);
-//                    figurInBewegung = false;
-//                    startPositionLabel.setText(null);
-//                    System.out.println("Zug abgebrochen ");
-//                    //break;
-//                //default:
-//                    //break;
-//            //}
-//        }
-//        else{
-//        }
-//        
-//        //System.out.println(img);
-//    }
-//    private void onMouseMoved(DragEvent event) {
-//        if (figurInBewegung = true) {
-//            event.acceptTransferModes(TransferMode.MOVE);
-//            aktuelleposition = new Point2D(event.getSceneX(), event.getSceneY());
-//            //String hilfsstring = aktuelleposition.toString();
-//        }
-//    }
-//
-//    private void secondClick(DragEvent event) {
-//        if (figurInBewegung = true) {
-//            if ((ImageView) event.getGestureSource() instanceof ImageView) {
-//                quellFeld = (Pane) ((ImageView) event.getGestureSource()).getParent();
-//            }
-//            if ((ImageView) event.getGestureSource() instanceof ImageView) {
-//                zielFeld = (Pane) event.getGestureTarget();
-//            }
-//
-//            figurToMove.setEffect(null);
-//
-//            System.out.println(quellFeld + " drop " + zielFeld);
-//
-//            //Sollten Quellfeld und Zielfeld ungleich sein, die Figur dem Zielfeld hinzufügen.
-//            int quelle = Integer.parseInt(quellFeld.getId());
-//            int ziel = Integer.parseInt(zielFeld.getId());
-//
-//        }
-//    }
+    
     @FXML
     private void goToEinstellungen(ActionEvent event) {
         Parent einstellungenScene;
@@ -723,8 +486,6 @@ public class SpielbrettFXMLController implements Initializable {
             einstellungenScene = FXMLLoader.load(getClass().getResource("Einstellungen.fxml"));
             Stage einstellungenStage = new Stage();
             einstellungenStage.initModality(Modality.APPLICATION_MODAL);
-            //einstellungenStage.initStyle(StageStyle.UNDECORATED);
-            //optionenStage.setTitle("Einstellungen - Schach by Team Deep Blue");
             einstellungenStage.setScene(new Scene(einstellungenScene));
             einstellungenStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
             einstellungenStage.show();
@@ -742,36 +503,31 @@ public class SpielbrettFXMLController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            loadStubFromController();
+            loadSpielFromController();
+            initSpielbrett();
+            moves = null;
+            quellFeld = null;
+           updateScreen();
+            
         } catch (IOException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        initSpielbrett();
-    }
-
-    private void zieheFigur() {
-
-        SpielInteraktionen aktion = spiel;
-
-        try {
-            if (quellFeld != zielFeld) {
-                //if (aktion.zieheFigur(Position.A2, Position.A3)) {
-                aktion.zieheFigur(Position.A2, Position.A3);
-                // Zu schlagende Figur wird ins löschfeld verschoben
-                if (!zielFeld.getChildren().isEmpty()) {
-                    löschfeld.getChildren().add(zielFeld.getChildren().get(0));
-                }
-            }
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            // }
-        } catch (SpielException ex) {
-            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
     }
+    
+    private void updateScreen(){
+         this.restZeitSchwarz.setText(String.valueOf(spiel.getZeitSpieler2()));
+         this.restZeitWeiss.setText(String.valueOf(spiel.getZeitSpieler1()));
+    }
 
+    @FXML
+    public void speichernButtonClicked(ActionEvent event){
+        spiel.speichereSpiel("test");
+    }
 }

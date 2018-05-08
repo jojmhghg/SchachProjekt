@@ -8,6 +8,8 @@ package Backend;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -97,7 +99,11 @@ public class Spiel implements SpielInteraktionen {
 
     @Override
     public void speichereSpiel(String dateiname) {
-        this.partie.speichereSpiel(dateiname);
+        try {
+            this.partie.speichereSpiel(dateiname);
+        } catch (SpielException ex) {
+            Logger.getLogger(Spiel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 

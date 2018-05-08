@@ -5,6 +5,10 @@
  */
 package Frontend;
 
+import Backend.Enums.Farbe;
+import Backend.Optionen;
+import Backend.SpielException;
+import Backend.SpielInteraktionen;
 import Backend.Spielbrett;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -27,6 +31,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -43,7 +48,7 @@ public class OptionenFXMLController implements Initializable {
     @FXML
     private JFXRadioButton weissLokal;
     @FXML
-    private ToggleGroup Farbe;
+    private ToggleGroup farbeLokal;
     @FXML
     private JFXRadioButton schwarz;
     @FXML
@@ -65,9 +70,8 @@ public class OptionenFXMLController implements Initializable {
 
     ObservableList<String> partieZeitList = FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt");
 
-    SpielbrettFXMLController spielbrett;
-
-    public Backend.SpielInteraktionen stub;
+    Spielbrett spielbrett;
+    SpielInteraktionen spiel;
 
     public OptionenFXMLController() {
     }
@@ -80,41 +84,48 @@ public class OptionenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        partieZeitLokal.setItems(partieZeitList);
-        partieZeitOnline.setItems(partieZeitList);
+        try {
+            partieZeitLokal.setItems(partieZeitList);
+            partieZeitLokal.getSelectionModel().selectLast();
+            partieZeitOnline.setItems(partieZeitList);
+            partieZeitOnline.getSelectionModel().selectLast();
+            loadSpielFromController();
+            this.spielbrett = new Spielbrett();
+        } catch (IOException ex) {
+            Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public void loadStubFromController() throws IOException {
-
-        /**
-         * Startseite.FXML wird hier geladen um stub zu bekommen
-         *
-         * 
-         */
+    public void loadSpielFromController() throws IOException {
         FXMLLoader loadStub = new FXMLLoader();
         loadStub.setLocation(getClass().getResource("Startseite.fxml"));
-        //Parent loadStubParent = loadStub.load();
+        Parent loadStubParent = loadStub.load();
 
-        //Scene loadStubScene = new Scene(loadStubParent);
+        Scene loadStubScene = new Scene(loadStubParent);
 
         StartseiteFXMLController controller1 = loadStub.getController();
 
-        stub = controller1.stub;
+        spiel = controller1.spiel;
     }
 
     @FXML
     private void goToChessBoard(ActionEvent event) {
         try {
-            
-            loadStubFromController();
+            Optionen partieoptionen;
+            try {
+                int time = getChoosedTime();
+                Farbe farbe = choosedColor();
+                partieoptionen = new Optionen(farbe, time, getChoosedGegner());
+                spielbrett = spiel.neuePartie(partieoptionen);        
+            } catch (SpielException ex) {
+                Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             Parent chessBoardScene;
             chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
             Stage chessBoardStage = new Stage();
-            chessBoardStage.setTitle("Schach Spiel by Team Deep Blue");
             chessBoardStage.setScene(new Scene(chessBoardScene));
             chessBoardStage.initStyle(StageStyle.UNDECORATED);
-            //loadStandardBoard();
 
             chessBoardStage.show();
             // Hide this current window (if this is what you want)
@@ -131,9 +142,7 @@ public class OptionenFXMLController implements Initializable {
             startSeiteScene = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
             Stage startSeiteStage;
             startSeiteStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            //startSeiteStage.show();
-            // Hide this current window (if this is what you want)
-            ((Node) (event.getSource())).getScene().getWindow().hide();
+            startSeiteStage.setScene(new Scene(startSeiteScene));
             startSeiteStage.show();
         } catch (IOException ex) {
             Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
@@ -157,10 +166,39 @@ public class OptionenFXMLController implements Initializable {
         });
 
     }
+    
+    private boolean getChoosedGegner(){
+        return kiGegnerToggler.isSelected();
+    }
 
-    private void loadStandardBoard() {
-
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private int getChoosedTime() {
+        SpielbrettFXMLController option = new SpielbrettFXMLController();
+        String selected;
+        selected = partieZeitLokal.getValue();
+        
+        switch(selected){
+            case "5":
+                return 5;
+            case "10":
+                return 10;
+            case "15":
+                return 15;
+            case "30":
+                return 30;
+            case "60":
+                return 60;
+            default:
+                return -1;
+        }
+    }
+    
+    private Farbe choosedColor(){
+         if (weissLokal.isSelected()){
+            return Farbe.WEISS;
+        }
+        else{
+             return Farbe.SCHWARZ;
+        }
     }
 
 }
