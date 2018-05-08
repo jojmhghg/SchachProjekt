@@ -15,9 +15,11 @@ import java.util.LinkedList;
  * @author timtim
  */
 public class Koenig extends Figur{
-
+    boolean nochNichtGezogen;
+    
     public Koenig(Farbe farbe) {
         super(farbe);
+        this.nochNichtGezogen = true;
     }
 
     @Override
@@ -77,8 +79,6 @@ public class Koenig extends Figur{
             }
             //Nur wenn Dame nicht auf gegnerischer/eigener Grundreihe steht, gibt es noch moegliche Zuege
             if(!(((position.ordinal()) >= minWelcheGrundreihe) && ((position.ordinal()) <= maxWelcheGrundreihe))){
-                System.out.println("huhu");
-                System.out.println(welchesForward);
                 //System.out.println(Position.values()[position.ordinal() + welchesForward]);
                 //Wenn Feld(er) vor der Dame frei sind, sind Zuege moeglich
                 if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + welchesForward]) == null){
@@ -240,4 +240,8 @@ public class Koenig extends Figur{
         return "König";
     }
     
+    @Override
+    public void setNochNichtGezogen(boolean nochNichtGezogen) {
+        this.nochNichtGezogen = nochNichtGezogen;
+    }
 }

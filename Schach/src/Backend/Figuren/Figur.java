@@ -17,13 +17,17 @@ import java.util.LinkedList;
 public abstract class Figur {
     
     protected Farbe farbe;
-    
+    protected boolean nochNichtGezogen;
     public Figur(Farbe farbe){
         this.farbe = farbe;
     }
     
+    
+    
     public abstract LinkedList<Position> getMoves(Spielbrett spielbrett, Position eigenePosition);
     public abstract String getFigurName();
+
+    public abstract void setNochNichtGezogen(boolean nochNichtGezogen);
     
     public Farbe getFarbe(){
         return this.farbe;
