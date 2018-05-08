@@ -9,6 +9,7 @@ import Backend.Spiel;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
 import com.jfoenix.controls.JFXButton;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,7 +23,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -68,6 +71,27 @@ public class StartseiteFXMLController implements Initializable {
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
         }
+    }
+    
+    @FXML
+    private void partieLaden(ActionEvent event) {
+        FileChooser chooser = new FileChooser();
+        File selectedFile = chooser.showOpenDialog(null);
+        
+        if(selectedFile != null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Partie erfolgreich geladen");
+            alert.setContentText("Dateiname: " + selectedFile.getName());
+            alert.showAndWait();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Wählen Sie eine .txt Datei ");
+            alert.setContentText("Partie laden abgebrochen !");
+
+            alert.showAndWait();
+         }
     }
 
     @Override

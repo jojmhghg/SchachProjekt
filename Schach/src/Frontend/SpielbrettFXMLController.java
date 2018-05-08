@@ -8,38 +8,50 @@ package Frontend;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Figuren.Figur;
-import Backend.Spiel;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
 import Backend.Spielbrett;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -198,6 +210,8 @@ public class SpielbrettFXMLController implements Initializable {
     private GridPane gridBoard;
     @FXML
     private Label position;
+    @FXML
+    private MenuItem partieLaden;
     
     Label restZeit;
 
@@ -486,8 +500,9 @@ public class SpielbrettFXMLController implements Initializable {
             einstellungenScene = FXMLLoader.load(getClass().getResource("Einstellungen.fxml"));
             Stage einstellungenStage = new Stage();
             einstellungenStage.initModality(Modality.APPLICATION_MODAL);
+            einstellungenStage.initStyle(StageStyle.UNDECORATED);
             einstellungenStage.setScene(new Scene(einstellungenScene));
-            einstellungenStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
+            //einstellungenStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
             einstellungenStage.show();
             // Hide this current window (if this is what you want)
             //((Node)(event.getSource())).getScene().getWindow().hide();
@@ -500,6 +515,85 @@ public class SpielbrettFXMLController implements Initializable {
         Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
         spielBrettStage.close();
     }
+    
+    private void updateScreen(){
+         this.restZeitSchwarz.setText(String.valueOf(spiel.getZeitSpieler2()));
+         this.restZeitWeiss.setText(String.valueOf(spiel.getZeitSpieler1()));
+    }
+
+    @FXML
+    public void speichernButtonClicked(ActionEvent event){
+        Date date = new Date();
+        String filename;
+        filename = date.toInstant().toString();
+        
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Partie speichern - Schach Spiel");
+        alert.setHeaderText("Geben Sie bitte den Name der Datei an");
+
+        ButtonType speichern = new ButtonType("Speichern");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(speichern, buttonTypeCancel);
+        
+        // Create the newfilename and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        
+        TextField newfilename = new TextField();
+        newfilename.setPromptText("Dateiname");
+
+        grid.add(new Label("Dateiname:"), 0, 0);
+        grid.add(newfilename, 1, 0);
+        
+        // Enable/Disable login button depending on whether a newfilename was entered.
+        Node speichernButton = alert.getDialogPane().lookupButton(speichern);
+        speichernButton.setDisable(true);
+        
+        // Do some validation (using the Java 8 lambda syntax).
+        newfilename.textProperty().addListener((observable, oldValue, newValue) -> {
+            speichernButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        alert.getDialogPane().setContent(grid);
+
+        // Request focus on the newfilename field by default.
+        Platform.runLater(() -> newfilename.requestFocus());
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == speichern) {
+            spiel.speichereSpiel(newfilename.getText());
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+
+//        spiel.speichereSpiel(filename);
+//        System.out.println(filename);
+    }
+    
+    @FXML
+    private void partieLaden(ActionEvent event) {
+        FileChooser chooser = new FileChooser();
+        File selectedFile = chooser.showOpenDialog(null);
+        
+        if(selectedFile != null){
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Partie erfolgreich geladen");
+            alert.setContentText("Dateiname: " + selectedFile.getName());
+            alert.showAndWait();
+        }else{
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Wählen Sie eine .txt Datei ");
+            alert.setContentText("Partie laden abgebrochen !");
+
+            alert.showAndWait();
+         }
+    }
+    
 
     /**
      * Initializes the controller class.
@@ -519,15 +613,5 @@ public class SpielbrettFXMLController implements Initializable {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-    
-    private void updateScreen(){
-         this.restZeitSchwarz.setText(String.valueOf(spiel.getZeitSpieler2()));
-         this.restZeitWeiss.setText(String.valueOf(spiel.getZeitSpieler1()));
-    }
-
-    @FXML
-    public void speichernButtonClicked(ActionEvent event){
-        spiel.speichereSpiel("test");
     }
 }

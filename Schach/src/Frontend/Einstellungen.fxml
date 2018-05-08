@@ -1,8 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="Frontend.EinstellungenFXMLController">
-    
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.EinstellungenFXMLController">
+   <children>
+      <ImageView fitHeight="430.0" fitWidth="630.0" layoutX="-74.0" layoutY="-81.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Ressources/backgroundStartSeite.PNG" />
+         </image>
+      </ImageView>
+      <Text fontSmoothingType="LCD" layoutX="28.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Einstellungen">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </Text>
+      <Text layoutX="54.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Spielername">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <JFXTextField fx:id="spielername" focusColor="BLACK" layoutX="160.0" layoutY="102.0" />
+      <Text layoutX="54.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlighting">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <JFXToggleButton fx:id="highlightingButton" layoutX="160.0" layoutY="137.0" text=".">
+         <toggleGroup>
+            <ToggleGroup fx:id="highlighting" />
+         </toggleGroup>
+      </JFXToggleButton>
+      <JFXButton fx:id="backToSpielbrett" cancelButton="true" contentDisplay="BOTTOM" layoutX="409.0" layoutY="-12.0" onAction="#backToSpielbrett">
+         <graphic>
+            <FontAwesomeIconView glyphName="ARROW_CIRCLE_LEFT" size="35" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="speichern" buttonType="RAISED" layoutX="295.0" layoutY="210.0" onAction="#speichern" ripplerFill="#c68137" style="-fx-background-color: #DEB887; -fx-opacity: 80%;" text="Speichern">
+         <graphic>
+            <FontAwesomeIconView glyphName="CHECK_CIRCLE_ALT" size="35" />
+         </graphic>
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+   </children>
 </AnchorPane>

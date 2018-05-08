@@ -7,7 +7,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -122,13 +121,13 @@
                   <MenuItem mnemonicParsing="false" text="Aufgeben" />
                   <MenuItem mnemonicParsing="false" text="Neue Partie" />
                   <MenuItem mnemonicParsing="false" onAction="#speichernButtonClicked" text="Speichern" />
-                  <MenuItem mnemonicParsing="false" text="Partie laden" />
+                  <MenuItem fx:id="partieLaden" mnemonicParsing="false" onAction="#partieLaden" text="Partie laden" />
               <MenuItem mnemonicParsing="false" onAction="#beenden" text="Beenden" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Einstellungen">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#goToEinstellungen" text="Öffen" />
+                  <MenuItem mnemonicParsing="false" onAction="#goToEinstellungen" text="Öffnen" />
                </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Hilfe">
@@ -198,11 +197,5 @@
             <InnerShadow />
          </effect>
       </JFXListView>
-      <Label fx:id="startPosition" layoutX="114.0" layoutY="692.0" />
-      <Text layoutX="25.0" layoutY="705.0" strokeType="OUTSIDE" strokeWidth="0.0" text="StartPosition" />
-      <Text layoutX="25.0" layoutY="730.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EndPosition" />
-      <Label fx:id="endPosition" layoutX="101.0" layoutY="717.0" />
-      <TextArea fx:id="statusAusgabe" layoutX="316.0" layoutY="680.0" prefHeight="58.0" prefWidth="317.0" />
-      <Label fx:id="position" layoutX="25.0" layoutY="672.0" text="Aktuelle Position" />
    </children>
 </AnchorPane>
