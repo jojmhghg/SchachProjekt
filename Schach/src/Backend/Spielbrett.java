@@ -83,6 +83,12 @@ public class Spielbrett {
         this.spielbrett[Position.F7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+        /*this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));
+        this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+        this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+        this.spielbrett[Position.E8.ordinal()].setFigur(new Koenig(Farbe.SCHWARZ));
+        this.spielbrett[Position.A8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
+        this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));*/
     }
     
     /**
