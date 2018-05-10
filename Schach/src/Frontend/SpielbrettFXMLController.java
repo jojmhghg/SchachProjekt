@@ -13,9 +13,10 @@ import Backend.SpielException;
 import Backend.SpielInteraktionen;
 import Backend.Spielbrett;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -41,7 +42,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -533,8 +533,15 @@ public class SpielbrettFXMLController implements Initializable {
     }
     
     public void updateScreen(){
-         this.restZeitSchwarz.setText(String.valueOf(spiel.getZeitSpieler2()));
-         this.restZeitWeiss.setText(String.valueOf(spiel.getZeitSpieler1()));
+        Long neueZeitSpieler1;
+        Long neueZeitSpieler2;
+        DateFormat formatter = new SimpleDateFormat("mm:ss");
+        
+        neueZeitSpieler1 = spiel.getZeitSpieler1();     //Zu spieler1 gehoert die Farbe Schwarz
+        neueZeitSpieler2 = spiel.getZeitSpieler2();     //Zu spieler2 gehoert die Farbe Weiss
+
+        this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+        this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
     }
 
     @FXML
@@ -586,9 +593,6 @@ public class SpielbrettFXMLController implements Initializable {
         } else {
             // ... user chose CANCEL or closed the dialog
         }
-
-//        spiel.speichereSpiel(filename);
-//        System.out.println(filename);
     }
     
     @FXML
@@ -605,7 +609,7 @@ public class SpielbrettFXMLController implements Initializable {
         }else{
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Warning Dialog");
-            alert.setHeaderText("Wählen Sie eine .txt Datei ");
+            alert.setHeaderText("Wählen Sie bitte eine .txt Datei ");
             alert.setContentText("Partie laden abgebrochen !");
 
             alert.showAndWait();
