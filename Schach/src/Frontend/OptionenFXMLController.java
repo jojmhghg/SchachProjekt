@@ -71,6 +71,7 @@ public class OptionenFXMLController implements Initializable {
     ObservableList<String> partieZeitList = FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt");
 
     Spielbrett spielbrett;
+    Optionen optionen;
     SpielInteraktionen spiel;
     SpielbrettFXMLController spielbrettFXMLController;
 
@@ -106,6 +107,7 @@ public class OptionenFXMLController implements Initializable {
 
         StartseiteFXMLController controller1 = loadStub.getController();
 
+        optionen = controller1.optionen;
         spiel = controller1.spiel;
     }
 
@@ -127,10 +129,11 @@ public class OptionenFXMLController implements Initializable {
             Stage chessBoardStage = new Stage();
             chessBoardStage.setScene(new Scene(chessBoardScene));
             chessBoardStage.initStyle(StageStyle.UNDECORATED);
-
             chessBoardStage.show();
             
-//            spielbrettFXMLController.setSpielername();
+            System.out.println(spiel.getUsername());
+//            spielbrettFXMLController.loadSpielername();
+           
             // Hide this current window (if this is what you want)
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException ex) {

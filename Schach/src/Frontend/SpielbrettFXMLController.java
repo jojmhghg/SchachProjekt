@@ -542,6 +542,8 @@ public class SpielbrettFXMLController implements Initializable {
 
         this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
         this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+        
+        //this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
     }
 
     @FXML
@@ -616,15 +618,19 @@ public class SpielbrettFXMLController implements Initializable {
          }
     }
     
-    public void setSpielername(){
-        if(optionenFXMLController.choosedColor() == Farbe.WEISS) {
+    @FXML
+    public void loadSpielername(){
+//        if(optionenFXMLController.choosedColor() == Farbe.WEISS) { // NulPointer: Das laden von "optionenFXMLController" funktionniert noch nicht
             this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
-        }
-        else if(optionenFXMLController.choosedColor() == Farbe.SCHWARZ) {
-            this.spielernameSchwarz.setText(String.valueOf(spiel.getUsername()));
-        }
-        else{
-        }
+            //this.spielernameWeiss.setText(spiel.getUsername());
+            //spielernameWeiss.setText(spiel.getUsername());
+//        }
+//        else if(optionenFXMLController.choosedColor() == Farbe.SCHWARZ) {
+//            this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
+            //this.spielernameSchwarz.setText(spiel.getUsername());
+//        }
+//        else{
+//        }
     }
  
 
@@ -642,7 +648,7 @@ public class SpielbrettFXMLController implements Initializable {
             possibleMoves = null;
             quellPane = null;
             updateScreen();
-            //setSpielername();
+            loadSpielername();
 
         } catch (IOException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);

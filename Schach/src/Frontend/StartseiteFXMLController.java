@@ -5,6 +5,7 @@
  */
 package Frontend;
 
+import Backend.Optionen;
 import Backend.Spiel;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
@@ -45,7 +46,8 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private JFXButton partieLaden;
     
-    SpielInteraktionen spiel; 
+    SpielInteraktionen spiel;
+    Optionen optionen;
 
     public StartseiteFXMLController() {
         
