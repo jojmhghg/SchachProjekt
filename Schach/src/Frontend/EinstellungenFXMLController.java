@@ -5,6 +5,10 @@
  */
 package Frontend;
 
+import Backend.Einstellungen;
+import Backend.SpielException;
+import Backend.SpielInteraktionen;
+import Backend.Spielbrett;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
@@ -19,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
@@ -40,6 +45,23 @@ public class EinstellungenFXMLController implements Initializable {
     @FXML
     private JFXButton speichern;
     
+    SpielInteraktionen spiel;
+    Einstellungen einstellung;
+
+    public void loadSpielFromController() throws IOException {
+        FXMLLoader loadStub = new FXMLLoader();
+        loadStub.setLocation(getClass().getResource("Spielbrett.fxml"));
+        Parent loadStubParent = loadStub.load();
+
+        Scene loadStubScene = new Scene(loadStubParent);
+
+        SpielbrettFXMLController controller1 = loadStub.getController();
+
+        einstellung = controller1.einstellung;
+        spiel = controller1.spiel;
+        
+    }
+    
     @FXML
     private void backToSpielbrett(ActionEvent event) {
         try {
@@ -59,9 +81,45 @@ public class EinstellungenFXMLController implements Initializable {
     
     @FXML
     private void speichern(ActionEvent event) {
-        backToSpielbrett(event);
+        
+        String newSpielername;
+        newSpielername = spielername.getText();
+        
+        if(!spielername.toString().isEmpty()) {
+            try {
+                System.out.println(newSpielername);
+                spiel.setUsername(newSpielername);
+                getChoosedHighlighting();
+                spiel.isHighlightingAus();
+                backToSpielbrett(event);
+            } catch (SpielException ex) {
+                Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            System.out.println("Username ist Leer!!!");
+        }
     }
     
+    private void getChoosedHighlighting(){
+        if(highlightingButton.isSelected() == false) {
+            try {
+                spiel.setHighlightingAus(false);
+            } catch (SpielException ex) {
+                Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            spiel.isHighlightingAus();
+        }
+    }
+    
+        private void loadEinstellungen() {
+        System.out.println(spiel.getUsername());
+        spiel.getUsername();
+        spiel.isHighlightingAus();
+        throw new UnsupportedOperationException("Ein Fehler ist aufgetretten"); //To change body of generated methods, choose Tools | Templates.
+    }
 
     /**
      * Initializes the controller class.
@@ -70,7 +128,13 @@ public class EinstellungenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            //loadEinstellungen();
+            loadSpielFromController();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
     
 }

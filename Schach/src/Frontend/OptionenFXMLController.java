@@ -72,6 +72,7 @@ public class OptionenFXMLController implements Initializable {
 
     Spielbrett spielbrett;
     SpielInteraktionen spiel;
+    SpielbrettFXMLController spielbrettFXMLController;
 
     public OptionenFXMLController() {
     }
@@ -128,6 +129,8 @@ public class OptionenFXMLController implements Initializable {
             chessBoardStage.initStyle(StageStyle.UNDECORATED);
 
             chessBoardStage.show();
+            
+//            spielbrettFXMLController.setSpielername();
             // Hide this current window (if this is what you want)
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException ex) {
@@ -192,7 +195,7 @@ public class OptionenFXMLController implements Initializable {
         }
     }
     
-    private Farbe choosedColor(){
+    public Farbe choosedColor(){
          if (weissLokal.isSelected()){
             return Farbe.WEISS;
         }

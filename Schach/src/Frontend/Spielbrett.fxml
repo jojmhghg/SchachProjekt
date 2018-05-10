@@ -120,7 +120,7 @@
                   <MenuItem mnemonicParsing="false" text="Remis anbieten" />
                   <MenuItem mnemonicParsing="false" text="Aufgeben" />
                   <MenuItem mnemonicParsing="false" text="Neue Partie" />
-                  <MenuItem mnemonicParsing="false" onAction="#speichernButtonClicked" text="Speichern" />
+                  <MenuItem mnemonicParsing="false" onAction="#partieSpeichern" text="Speichern" />
                   <MenuItem fx:id="partieLaden" mnemonicParsing="false" onAction="#partieLaden" text="Partie laden" />
               <MenuItem mnemonicParsing="false" onAction="#beenden" text="Beenden" />
             </items>
@@ -177,7 +177,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="869.0" layoutY="142.0" text="Schwarz">
+      <Label layoutX="892.0" layoutY="143.0" text="Schwarz">
          <font>
             <Font size="20.0" />
          </font>
@@ -187,15 +187,25 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Text>
-      <JFXListView layoutX="702.0" layoutY="175.0" prefHeight="400.0" prefWidth="143.0" style="-fx-background-color: #FFDEAD;">
+      <JFXListView layoutX="702.0" layoutY="200.0" prefHeight="375.0" prefWidth="143.0" style="-fx-background-color: #FFDEAD;">
          <effect>
             <InnerShadow />
          </effect>
       </JFXListView>
-      <JFXListView layoutX="856.0" layoutY="175.0" prefHeight="400.0" prefWidth="143.0" style="-fx-background-color: #D2691E;">
+      <JFXListView layoutX="856.0" layoutY="200.0" prefHeight="375.0" prefWidth="143.0" style="-fx-background-color: #D2691E;">
          <effect>
             <InnerShadow />
          </effect>
       </JFXListView>
+      <Label fx:id="spielernameWeiss" layoutX="756.0" layoutY="173.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="spielernameSchwarz" layoutX="910.0" layoutY="173.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

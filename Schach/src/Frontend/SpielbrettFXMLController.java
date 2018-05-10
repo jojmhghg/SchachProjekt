@@ -5,6 +5,7 @@
  */
 package Frontend;
 
+import Backend.Einstellungen;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Figuren.Figur;
@@ -212,6 +213,10 @@ public class SpielbrettFXMLController implements Initializable {
     private Label position;
     @FXML
     private MenuItem partieLaden;
+    @FXML
+    private Label spielernameSchwarz;
+    @FXML
+    private Label spielernameWeiss;
     
     Label restZeit;
 
@@ -221,12 +226,14 @@ public class SpielbrettFXMLController implements Initializable {
     
     SpielInteraktionen spiel;
     Spielbrett spielbrett;
+    Einstellungen einstellung;
+    OptionenFXMLController optionenFXMLController;
     
     // Attribute zum Ziehen von Figuren
     private Pane quellFeld;
     private Position quellPosition;
     private LinkedList<Position> moves; 
-    
+
     public void loadSpielFromController() throws IOException {
         FXMLLoader loadStub = new FXMLLoader();
         loadStub.setLocation(getClass().getResource("Optionen.fxml"));
@@ -238,7 +245,6 @@ public class SpielbrettFXMLController implements Initializable {
 
         spielbrett = controller1.spielbrett;
         spiel = controller1.spiel;
-        
     }
 
     public void initSpielbrett() {
@@ -450,6 +456,7 @@ public class SpielbrettFXMLController implements Initializable {
                         // falls kein möglicher Zug -> neue Figur auswählen
                         if(figurToMove != null){
                             figurToMove.setEffect(null);
+                            highlightAus();
                         }
                        
                        this.moves = spiel.getMoeglicheZuege(pos);
@@ -465,9 +472,6 @@ public class SpielbrettFXMLController implements Initializable {
                         }
                     }
                 }
-                    //Figur figurToMove = spielbrett.getFigurAufFeld(pos);
-                    
-                       
 
                 break;
             case SECONDARY: //Bricht den Zug ab
@@ -516,21 +520,23 @@ public class SpielbrettFXMLController implements Initializable {
         spielBrettStage.close();
     }
     
-    private void updateScreen(){
+    public void updateScreen(){
          this.restZeitSchwarz.setText(String.valueOf(spiel.getZeitSpieler2()));
          this.restZeitWeiss.setText(String.valueOf(spiel.getZeitSpieler1()));
     }
 
     @FXML
-    public void speichernButtonClicked(ActionEvent event) throws SpielException{
+    public void partieSpeichern(ActionEvent event) throws SpielException{
         Date date = new Date();
         String filename;
         filename = date.toInstant().toString();
         
+        //Create Alert box
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Partie speichern - Schach Spiel");
         alert.setHeaderText("Geben Sie bitte den Name der Datei an");
-
+        
+        //Create buttons
         ButtonType speichern = new ButtonType("Speichern");
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
@@ -594,9 +600,21 @@ public class SpielbrettFXMLController implements Initializable {
          }
     }
     
+    public void setSpielername(){
+        if(optionenFXMLController.choosedColor() == Farbe.WEISS) {
+            this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
+        }
+        else if(optionenFXMLController.choosedColor() == Farbe.SCHWARZ) {
+            this.spielernameSchwarz.setText(String.valueOf(spiel.getUsername()));
+        }
+        else{
+        }
+    }
+ 
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -607,8 +625,9 @@ public class SpielbrettFXMLController implements Initializable {
             initSpielbrett();
             moves = null;
             quellFeld = null;
-           updateScreen();
-            
+            updateScreen();
+            //setSpielername();
+
         } catch (IOException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
