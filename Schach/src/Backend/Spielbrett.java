@@ -179,12 +179,12 @@ public class Spielbrett {
     public LinkedList<Position> getMovesFuerFeld(Position position) throws SpielException{ 
         Figur figur = this.spielbrett[position.ordinal()].getFigur();
 
-        if(figur.getFarbe() != this.amZug){
-            throw new SpielException("Nicht deine Figur!");
-        }
-        
         if(figur == null){
             throw new SpielException("Keine Figur auf dem Feld " + position);
+        }
+        
+        if(figur.getFarbe() != this.amZug){
+            throw new SpielException("Nicht deine Figur!");
         }
         //TODO: testen ob liste mit moves hinsichtlich schachregeln okay ist.
         //d.h. ob danach könig nicht im schach steht, etc.

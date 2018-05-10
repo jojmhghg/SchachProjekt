@@ -431,71 +431,47 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 Position pos = Position.values()[tmp];
                 
-                //Falls bisher noch kein Feld angeklickt war...
-                if(this.quellPane == null){   
-                    //... werden die möglichen Züge des ausgewählten Panes geladen & gespeichert
+                // highlighting ausmachen
+                if(selectedFigur != null){
+                    selectedFigur.setEffect(null);
+                    highlightAus();
+                }
+                
+                //... teste ob neues Feld ein möglicher zug ist
+                // Falls ja:
+                if(possibleMoves != null && possibleMoves.contains(pos)){
+                    spiel.zieheFigur(quellPosition, pos);
+                    if(tmpPane.getChildren().size() > 0){
+                        tmpPane.getChildren().remove(0);
+                    }
+                    tmpPane.getChildren().add(selectedFigur);
+
+                    possibleMoves = null;
+                    quellPane = null;
+                    selectedFigur.setEffect(null);
+                    selectedFigur = null;
+                    quellPosition = null; 
+                    updateScreen();
+                }
+                // Falls nein:
+                else{
                     try{
                         this.possibleMoves = spiel.getMoeglicheZuege(pos);
                     }
                     catch(SpielException e){
                         this.possibleMoves = null;
                     }
-                    //... die Position des ausgewählten Panes gespeichert
-                    this.quellPosition = pos;
-                    
-                    //... und falls es mögliche Züge gibt, diese sichtbar gemacht
-                    if(possibleMoves != null){
+
+                    if(possibleMoves != null){                       
                         highlight();
+                        this.quellPosition = pos;
                         selectedFigur = tmpView;    // Festhalten welche Figur bewegt werden soll.
                         quellPane = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
-                        selectedFigur.setEffect(new DropShadow());  
-                    }
-                }
-                //Falls bereits ein Feld angeklickt war, ...
-                else{
-                    //... teste ob neues Feld ein möglicher zug ist
-                    // Falls ja:
-                    if(possibleMoves.contains(pos)){
-                        highlightAus();
-                        spiel.zieheFigur(quellPosition, pos);
-                        if(tmpPane.getChildren().size() > 0){
-                            tmpPane.getChildren().remove(0);
-                        }
-                        tmpPane.getChildren().add(selectedFigur);
-                        
-                        possibleMoves = null;
-                        this.quellPosition = null;
-                        quellPane = null;
-                        updateScreen();
-                    }
-                    // Falls nein:
-                    else{
-                        // falls kein möglicher Zug -> neue Figur auswählen
                         if(selectedFigur != null){
-                            selectedFigur.setEffect(null);
-                            highlightAus();
-                        }
-                       
-                        try{
-                            this.possibleMoves = spiel.getMoeglicheZuege(pos);
-                        }
-                        catch(SpielException e){
-                            this.possibleMoves = null;
-                        }
-                        
-                        
-                        this.quellPosition = pos;
-                       
-                        if(possibleMoves != null){
-                            highlight();
-                            selectedFigur = tmpView;    // Festhalten welche Figur bewegt werden soll.
-                            quellPane = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
-                            if(selectedFigur != null){
-                                selectedFigur.setEffect(new DropShadow());  
-                            }
+                            selectedFigur.setEffect(new DropShadow());  
                         }
                     }
-                }
+                }                
                 break;
                 
             //Rechtsklick:
@@ -503,19 +479,22 @@ public class SpielbrettFXMLController implements Initializable {
                 possibleMoves = null;
                 quellPane = null;
                 selectedFigur.setEffect(null);
+                selectedFigur = null;
+                quellPosition = null;      
                 break;
             default:
                 break;
-        }
-        
+        }       
     }
     
     /**
      * Hilfsmethode um Felder zu highlighten
      */
     private void highlight(){
-        for(Position pos : possibleMoves){
-            this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 5;");
+        if(possibleMoves != null){
+            for(Position pos : possibleMoves){
+                this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 5;");
+            }
         }
     }
     
@@ -523,8 +502,10 @@ public class SpielbrettFXMLController implements Initializable {
      * Hilfsmethode um gehighlightete Felder wieder normal zu machen
      */
     private void highlightAus(){
-        for(Position pos : possibleMoves){
-            this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 0;");
+        if(possibleMoves != null){
+            for(Position pos : possibleMoves){
+                this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 0;");
+            }
         }
     }
     
