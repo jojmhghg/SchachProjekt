@@ -219,9 +219,6 @@ public class SpielbrettFXMLController implements Initializable {
     private Label spielernameWeiss;
     
     Label restZeit;
-
-    private ImageView figurToMove = new ImageView();
-
     private Pane[] paneArray;
     
     SpielInteraktionen spiel;
@@ -230,10 +227,16 @@ public class SpielbrettFXMLController implements Initializable {
     OptionenFXMLController optionenFXMLController;
     
     // Attribute zum Ziehen von Figuren
-    private Pane quellFeld;
+    private ImageView selectedFigur;
+    private Pane quellPane;
     private Position quellPosition;
-    private LinkedList<Position> moves; 
+    private LinkedList<Position> possibleMoves; 
 
+    /**
+     * lädt Daten aus dem Optionen-Controller 
+     * 
+     * @throws IOException 
+     */
     public void loadSpielFromController() throws IOException {
         FXMLLoader loadStub = new FXMLLoader();
         loadStub.setLocation(getClass().getResource("Optionen.fxml"));
@@ -247,8 +250,11 @@ public class SpielbrettFXMLController implements Initializable {
         spiel = controller1.spiel;
     }
 
+    /**
+     * initialisiert die GUI-Objekte & plaziert dort die Figuren
+     */
     public void initSpielbrett() {
-
+        //Alle Panes (Schachfelder) in ein Array speichern, um besseren Zugriff darauf zu haben
         paneArray = new Pane[64];
         paneArray[0] = A1;
         paneArray[1] = B1;
@@ -315,15 +321,14 @@ public class SpielbrettFXMLController implements Initializable {
         paneArray[62] = G8;
         paneArray[63] = H8;
  
+        selectedFigur = new ImageView();
         Image value = null;
+        
+        //Ab hier werden die Figuren plaziert
         Position pos;
         Figur figur;
-        
-        //Spielbrett spielbrett = new Spielbrett(spiel.neuePartie(partieoptionen)); //Zu benutzen
         for (int i = 0; i < 64; i++) {
-
             pos = Position.values()[i];          
-
             figur = spielbrett.getFigurAufFeld(pos);
             if (figur != null) {
 
@@ -376,7 +381,6 @@ public class SpielbrettFXMLController implements Initializable {
                         }
                         break;
                 }
-
                 if (value != null) {
                     ImageView imgView = new ImageView(value);
                     imgView.setFitHeight(70);
@@ -384,12 +388,8 @@ public class SpielbrettFXMLController implements Initializable {
                     imgView.setLayoutX(3);
                     imgView.setLayoutY(3);
                     paneArray[i].getChildren().add(imgView);
-
-                    
-
                 }
                 value = null;
-
             } 
             paneArray[i].addEventFilter(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
                 try {
@@ -406,18 +406,23 @@ public class SpielbrettFXMLController implements Initializable {
      * Methode onCliked erkennt wenn das Maus links oder Rechts angeklickt wurde, 
      * und handelt es dementsprechend
      */
-    private void onClicked(MouseEvent event) throws SpielException {    
-        
+    private void onClicked(MouseEvent event) throws SpielException {           
+        //Um zwischen Rechts- und Linksklick zu unterscheiden
         MouseButton button = event.getButton();
+        
         switch (button) {
-            case PRIMARY: //Starte den Zug               
+            //Linksklick:
+            case PRIMARY: //Starte den Zug  
+                // angeklickte Pane
                 Pane tmpPane =  (Pane) event.getSource(); 
-                ImageView tmpView = null;
                 
+                //Null oder Bild der Figur des ausgewählten Panes
+                ImageView tmpView = null;                
                 if(tmpPane.getChildren().size() > 0){
                     tmpView = (ImageView) tmpPane.getChildren().get(0);
                 }
                 
+                //Hier wird die Position auf dem Schachbrett des ausgewählten Panes bestimmt
                 int tmp = 0;
                 for(int i = 0; i < 64; i++){
                     if(this.paneArray[i] == tmpPane){
@@ -426,58 +431,78 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 Position pos = Position.values()[tmp];
                 
-                if(this.quellFeld == null){      
-                    this.moves = spiel.getMoeglicheZuege(pos);
+                //Falls bisher noch kein Feld angeklickt war...
+                if(this.quellPane == null){   
+                    //... werden die möglichen Züge des ausgewählten Panes geladen & gespeichert
+                    try{
+                        this.possibleMoves = spiel.getMoeglicheZuege(pos);
+                    }
+                    catch(SpielException e){
+                        this.possibleMoves = null;
+                    }
+                    //... die Position des ausgewählten Panes gespeichert
                     this.quellPosition = pos;
                     
-                    if(moves != null){
+                    //... und falls es mögliche Züge gibt, diese sichtbar gemacht
+                    if(possibleMoves != null){
                         highlight();
-                        figurToMove = tmpView;    // Festhalten welche Figur bewegt werden soll.
-                        quellFeld = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
-                        figurToMove.setEffect(new DropShadow());  
+                        selectedFigur = tmpView;    // Festhalten welche Figur bewegt werden soll.
+                        quellPane = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
+                        selectedFigur.setEffect(new DropShadow());  
                     }
                 }
+                //Falls bereits ein Feld angeklickt war, ...
                 else{
-                    // teste ob neues Feld ein möglicher zug ist
-                    if(moves.contains(pos)){
+                    //... teste ob neues Feld ein möglicher zug ist
+                    // Falls ja:
+                    if(possibleMoves.contains(pos)){
                         highlightAus();
                         spiel.zieheFigur(quellPosition, pos);
                         if(tmpPane.getChildren().size() > 0){
                             tmpPane.getChildren().remove(0);
                         }
-                        tmpPane.getChildren().add(figurToMove);
+                        tmpPane.getChildren().add(selectedFigur);
                         
-                        moves = null;
+                        possibleMoves = null;
                         this.quellPosition = null;
-                        quellFeld = null;
+                        quellPane = null;
                         updateScreen();
                     }
+                    // Falls nein:
                     else{
                         // falls kein möglicher Zug -> neue Figur auswählen
-                        if(figurToMove != null){
-                            figurToMove.setEffect(null);
+                        if(selectedFigur != null){
+                            selectedFigur.setEffect(null);
                             highlightAus();
                         }
                        
-                       this.moves = spiel.getMoeglicheZuege(pos);
-                       highlight();
-                       this.quellPosition = pos;
+                        try{
+                            this.possibleMoves = spiel.getMoeglicheZuege(pos);
+                        }
+                        catch(SpielException e){
+                            this.possibleMoves = null;
+                        }
+                        
+                        
+                        this.quellPosition = pos;
                        
-                        if(moves != null){
-                            figurToMove = tmpView;    // Festhalten welche Figur bewegt werden soll.
-                            quellFeld = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
-                            if(figurToMove != null){
-                                figurToMove.setEffect(new DropShadow());  
+                        if(possibleMoves != null){
+                            highlight();
+                            selectedFigur = tmpView;    // Festhalten welche Figur bewegt werden soll.
+                            quellPane = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
+                            if(selectedFigur != null){
+                                selectedFigur.setEffect(new DropShadow());  
                             }
                         }
                     }
                 }
-
                 break;
+                
+            //Rechtsklick:
             case SECONDARY: //Bricht den Zug ab
-                moves = null;
-                quellFeld = null;
-                figurToMove.setEffect(null);
+                possibleMoves = null;
+                quellPane = null;
+                selectedFigur.setEffect(null);
                 break;
             default:
                 break;
@@ -485,14 +510,20 @@ public class SpielbrettFXMLController implements Initializable {
         
     }
     
+    /**
+     * Hilfsmethode um Felder zu highlighten
+     */
     private void highlight(){
-        for(Position pos : moves){
+        for(Position pos : possibleMoves){
             this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 5;");
         }
     }
     
-     private void highlightAus(){
-        for(Position pos : moves){
+    /**
+     * Hilfsmethode um gehighlightete Felder wieder normal zu machen
+     */
+    private void highlightAus(){
+        for(Position pos : possibleMoves){
             this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 0;");
         }
     }
@@ -623,8 +654,8 @@ public class SpielbrettFXMLController implements Initializable {
         try {
             loadSpielFromController();
             initSpielbrett();
-            moves = null;
-            quellFeld = null;
+            possibleMoves = null;
+            quellPane = null;
             updateScreen();
             //setSpielername();
 

@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -127,28 +128,15 @@ public class Spielbrett {
      */
     public void setFigurAufFeld(Position startposition, Position zielposition) throws SpielException{  
         Figur figur = this.spielbrett[startposition.ordinal()].getFigur();
-        
-        setKoenigTurmAlsGezogen(figur);
-        
-        if(figur.getFarbe() != this.amZug){
-            throw new SpielException("Nicht deine Figur!");
-        }
-        
-        if(figur == null){
-            throw new SpielException("Keine Figur auf dem Feld " + startposition);
-        }
-        
+              
         LinkedList<Position> moves = this.getMovesFuerFeld(startposition);  //TODO Teste ob Koenig im Schach steht
-        if(moves.contains(zielposition)){
+        if(moves.contains(zielposition)){    
             this.spielbrett[startposition.ordinal()].setFigur(null);
             this.spielbrett[zielposition.ordinal()].setFigur(figur);
+            setKoenigTurmAlsGezogen(figur);
         }
         else{
-            String exception = "";
-            for(Position pos : moves){
-                exception += pos.toString() + " ";
-            }
-            throw new SpielException("Ungültiger Zug! " + moves.size());
+            throw new SpielException("Ungültiges Zielfeld!");
         }  
         
         // Jetzt ist anderer Spieler am Zug
@@ -166,11 +154,17 @@ public class Spielbrett {
         }
     }
     
-    public void setKoenigTurmAlsGezogen(Figur figur){
-        if(figur.getFigurName() == "König"){
+    /**
+     * Hilfsmethode um König bzw Turm als gezogen zu markieren, damit man mit 
+     * dieser Figur keine Rochade mehr machen kann
+     * 
+     * @param figur zu überprüfende Figur
+     */
+    private void setKoenigTurmAlsGezogen(Figur figur){
+        if(figur.getFigurName().equals("König")){
             figur.setNochNichtGezogen(false);
         }
-        if(figur.getFigurName() == "Turm"){
+        else if(figur.getFigurName().equals("Turm")){
             figur.setNochNichtGezogen(false);
         }
     }
@@ -180,8 +174,18 @@ public class Spielbrett {
      * 
      * @param position Position der Figur auf Spielbrett
      * @return LinkedList alles Positionen, die die Figur erreichen kann und darf
+     * @throws Backend.SpielException
      */
-    public LinkedList<Position> getMovesFuerFeld(Position position){ 
+    public LinkedList<Position> getMovesFuerFeld(Position position) throws SpielException{ 
+        Figur figur = this.spielbrett[position.ordinal()].getFigur();
+
+        if(figur.getFarbe() != this.amZug){
+            throw new SpielException("Nicht deine Figur!");
+        }
+        
+        if(figur == null){
+            throw new SpielException("Keine Figur auf dem Feld " + position);
+        }
         //TODO: testen ob liste mit moves hinsichtlich schachregeln okay ist.
         //d.h. ob danach könig nicht im schach steht, etc.
         // NUR TODO, falls Steven das nicht bei den Figuren impl kann

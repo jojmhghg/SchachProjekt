@@ -32,7 +32,7 @@ public interface SpielInteraktionen {
     public long getZeitSpieler2();
     public long getPartiezeit();
     public LinkedList<Zug> getMitschrift();   
-    public LinkedList<Position> getMoeglicheZuege(Position position);
+    public LinkedList<Position> getMoeglicheZuege(Position position) throws SpielException;
     
     public void speichereSpiel(String dateiname)throws SpielException;  
 }

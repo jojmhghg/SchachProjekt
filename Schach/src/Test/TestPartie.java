@@ -71,7 +71,11 @@ public class TestPartie {
         
         partie.getSpielbrett().printSpielbrett();
         
-        moves = partie.getSpielbrett().getMovesFuerFeld(Position.A2);
+        try {
+            moves = partie.getSpielbrett().getMovesFuerFeld(Position.A2);
+        } catch (SpielException ex) {
+            Logger.getLogger(TestPartie.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(int i = 0; i < moves.size(); i++){
             Position move = (Position)moves.get(i);
             System.out.println(move);

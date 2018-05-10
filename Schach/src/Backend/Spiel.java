@@ -88,7 +88,7 @@ public class Spiel implements SpielInteraktionen {
     }
 
     @Override
-    public LinkedList<Position> getMoeglicheZuege(Position position) {
+    public LinkedList<Position> getMoeglicheZuege(Position position) throws SpielException{
         return this.partie.getSpielbrett().getMovesFuerFeld(position);
     }
 
