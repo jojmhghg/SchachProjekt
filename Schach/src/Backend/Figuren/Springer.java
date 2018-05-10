@@ -21,6 +21,11 @@ public class Springer extends Figur{
     }
 
     @Override
+    public void setNochNichtGezogen(boolean nochNichtGezogen) {
+        this.nochNichtGezogen = nochNichtGezogen;
+    }
+    
+    @Override
     public LinkedList<Position> getMoves(Spielbrett spielbrett, Position position) {
         LinkedList<Position> moves = new LinkedList<>();
         

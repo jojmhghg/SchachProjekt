@@ -18,6 +18,7 @@ public class Turm extends Figur{
 
     public Turm(Farbe farbe) {
         super(farbe);
+        this.nochNichtGezogen = true;
     }
 
     @Override
@@ -173,4 +174,8 @@ public class Turm extends Figur{
         return "Turm";
     }
     
+    
+    public void setNochNichtGezogen(boolean nochNichtGezogen) {
+        this.nochNichtGezogen = nochNichtGezogen;
+    }
 }

@@ -83,7 +83,12 @@ public class Spielbrett {
         this.spielbrett[Position.F7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        
+        /*this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));
+        this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+        this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+        this.spielbrett[Position.E8.ordinal()].setFigur(new Koenig(Farbe.SCHWARZ));
+        this.spielbrett[Position.A8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
+        this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));*/
     }
     
     /**
@@ -123,6 +128,8 @@ public class Spielbrett {
     public void setFigurAufFeld(Position startposition, Position zielposition) throws SpielException{  
         Figur figur = this.spielbrett[startposition.ordinal()].getFigur();
         
+        setKoenigTurmAlsGezogen(figur);
+        
         if(figur.getFarbe() != this.amZug){
             throw new SpielException("Nicht deine Figur!");
         }
@@ -156,6 +163,15 @@ public class Spielbrett {
         // setze Attribut Schach
         if(checkSchach(this.amZug)){
             this.schach = this.amZug;
+        }
+    }
+    
+    public void setKoenigTurmAlsGezogen(Figur figur){
+        if(figur.getFigurName() == "König"){
+            figur.setNochNichtGezogen(false);
+        }
+        if(figur.getFigurName() == "Turm"){
+            figur.setNochNichtGezogen(false);
         }
     }
     
