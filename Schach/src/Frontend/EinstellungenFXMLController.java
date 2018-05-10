@@ -99,7 +99,7 @@ public class EinstellungenFXMLController implements Initializable {
         else{
             System.out.println("Username ist Leer!!!");
         }
-        spielbrettFXMLController.loadSpielername();     //TODO Hier soll der name nach dem speichern nun auf dem spielbrett aktualisiert werden.
+        //spielbrettFXMLController.loadSpielername();     //TODO Hier soll der name nach dem speichern nun auf dem spielbrett aktualisiert werden.
     }
     
     private void getChoosedHighlighting(){
