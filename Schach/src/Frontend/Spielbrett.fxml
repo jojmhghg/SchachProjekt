@@ -133,7 +133,7 @@
           <Menu mnemonicParsing="false" text="Hilfe">
             <items>
                   <MenuItem mnemonicParsing="false" text="Spielregeln" />
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#goToAbout" text="About" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Donate" />

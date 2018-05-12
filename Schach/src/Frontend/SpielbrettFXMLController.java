@@ -44,8 +44,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -69,8 +67,6 @@ public class SpielbrettFXMLController implements Initializable {
 
     @FXML
     private Pane A8;
-    @FXML
-    private ImageView piece;
     @FXML
     private Pane B8;
     @FXML
@@ -204,15 +200,7 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private MenuBar myMenuBar;
     @FXML
-    private Label startPositionLabel;
-    @FXML
-    private Label endPositionLabel;
-    @FXML
-    private TextArea statusAusgabe;
-    @FXML
     private GridPane gridBoard;
-    @FXML
-    private Label position;
     @FXML
     private MenuItem partieLaden;
     @FXML
@@ -224,7 +212,6 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private JFXListView<String> listZuegeSchwarz;
     
-    Label restZeit;
     private Pane[] paneArray;
     
     SpielInteraktionen spiel;
@@ -399,8 +386,8 @@ public class SpielbrettFXMLController implements Initializable {
             } 
             paneArray[i].addEventFilter(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
                 try {
-                    //System.out.print(pos);
                     onClicked(event);
+                    //rotateBoard();
                 } catch (SpielException ex) {
                     Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -451,13 +438,18 @@ public class SpielbrettFXMLController implements Initializable {
                         tmpPane.getChildren().remove(0);
                     }
                     tmpPane.getChildren().add(selectedFigur);
-                    
-                    //Populate listView
+
+                    //Populate listView and apply rotation
                     if (spiel.getSpielerAmZug() == Farbe.WEISS) {
-                        listZuegeSchwarz.getItems().add("  "+quellPosition + "        ---->     " + pos);
+                        listZuegeSchwarz.getItems().add("  " + quellPosition + "        ---->     " + pos);
+                        //rotateBoard();
+                        //selectedFigur.rotateProperty().setValue(180);
                     } else if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
-                        listZuegeWeiss.getItems().add("  "+quellPosition + "        ---->     " + pos);
+                        listZuegeWeiss.getItems().add("  " + quellPosition + "        ---->     " + pos);
+                        //rotateBoardAgain();
+                        //selectedFigur.rotationAxisProperty().setValue(value);
                     }
+                    
                     //Reset all and Update screen
                     possibleMoves = null;
                     quellPane = null;
@@ -551,9 +543,6 @@ public class SpielbrettFXMLController implements Initializable {
         //Update Time
         refreshTime();
 
-        //Update Zuege von Spieler WEISS
-        //Position posi = possibleMoves.
-        //System.out.println(posi);
         LinkedList<Zug> zuege = spiel.getMitschrift();
         System.out.println(zuege); //TODO   Offizierles Format wird noch nicht richtig ausgeben
     }
@@ -676,7 +665,37 @@ public class SpielbrettFXMLController implements Initializable {
 //        timeline.setCycleCount(Animation.INDEFINITE);
 //        timeline.play();
     }
-
+    
+    private void rotateBoard() {
+        Double degree = 0.0;
+        if (spiel.getSpielerAmZug() == Farbe.WEISS) {
+            gridBoard.rotateProperty().setValue(degree);
+        }
+    }
+    
+    private void rotateBoardAgain() {
+        Double degree = 180.0;
+        if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
+            gridBoard.rotateProperty().setValue(degree);
+        }
+    }
+    
+    
+    @FXML
+    private void goToAbout(ActionEvent event) {
+        Parent aboutScene;
+        try {
+            aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
+            Stage aboutStage = new Stage();
+            aboutStage.initModality(Modality.APPLICATION_MODAL);
+            //aboutStage.initStyle(StageStyle.UNDECORATED);
+            aboutStage.setScene(new Scene(aboutScene));
+            aboutStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            aboutStage.show();
+        } catch (IOException e) {
+        }
+    }
+    
     /**
      * Initializes the controller class.
      *

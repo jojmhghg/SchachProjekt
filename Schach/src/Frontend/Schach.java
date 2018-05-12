@@ -22,13 +22,11 @@ public class Schach extends Application {
     @Override
     public void start(Stage mainStage) throws Exception {
         Parent root;
-        //JFXMasonryPane root = new JFXMasonryPane();
         root = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
         
         Scene scene = new Scene(root);
         mainStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
         mainStage.initStyle(StageStyle.UNDECORATED);
-        //mainStage.setTitle("Schach Spiel - by Team Deep Blue");
         mainStage.setResizable(false);
         mainStage.setScene(scene);
         mainStage.show();
