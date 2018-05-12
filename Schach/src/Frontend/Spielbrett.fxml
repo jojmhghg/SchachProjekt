@@ -187,12 +187,12 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Text>
-      <JFXListView layoutX="702.0" layoutY="200.0" prefHeight="375.0" prefWidth="143.0" style="-fx-background-color: #FFDEAD;">
+      <JFXListView fx:id="listZuegeWeiss" layoutX="702.0" layoutY="200.0" prefHeight="375.0" prefWidth="143.0" style="-fx-background-color: #FFDEAD;">
          <effect>
             <InnerShadow />
          </effect>
       </JFXListView>
-      <JFXListView layoutX="856.0" layoutY="200.0" prefHeight="375.0" prefWidth="143.0" style="-fx-background-color: #D2691E;">
+      <JFXListView fx:id="listZuegeSchwarz" layoutX="856.0" layoutY="200.0" prefHeight="375.0" prefWidth="143.0" style="-fx-background-color: #D2691E;">
          <effect>
             <InnerShadow />
          </effect>

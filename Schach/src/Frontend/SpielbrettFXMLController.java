@@ -12,6 +12,8 @@ import Backend.Figuren.Figur;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
 import Backend.Spielbrett;
+import Backend.Zug;
+import com.jfoenix.controls.JFXListView;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +25,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,6 +58,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -196,10 +202,6 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private Label restZeitSchwarz;
     @FXML
-    private TableColumn spielZuegeWeiss;
-    @FXML
-    private TableColumn spielZuegeSchwarz;
-    @FXML
     private MenuBar myMenuBar;
     @FXML
     private Label startPositionLabel;
@@ -217,6 +219,10 @@ public class SpielbrettFXMLController implements Initializable {
     private Label spielernameSchwarz;
     @FXML
     private Label spielernameWeiss;
+    @FXML
+    private JFXListView<String> listZuegeWeiss;
+    @FXML
+    private JFXListView<String> listZuegeSchwarz;
     
     Label restZeit;
     private Pane[] paneArray;
@@ -430,13 +436,13 @@ public class SpielbrettFXMLController implements Initializable {
                     }                        
                 }
                 Position pos = Position.values()[tmp];
-                
+
                 // highlighting ausmachen
                 if(selectedFigur != null){
                     selectedFigur.setEffect(null);
                     highlightAus();
                 }
-                
+                               
                 //... teste ob neues Feld ein möglicher zug ist
                 // Falls ja:
                 if(possibleMoves != null && possibleMoves.contains(pos)){
@@ -445,12 +451,19 @@ public class SpielbrettFXMLController implements Initializable {
                         tmpPane.getChildren().remove(0);
                     }
                     tmpPane.getChildren().add(selectedFigur);
-
+                    
+                    //Populate listView
+                    if (spiel.getSpielerAmZug() == Farbe.WEISS) {
+                        listZuegeSchwarz.getItems().add("  "+quellPosition + "        ---->     " + pos);
+                    } else if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
+                        listZuegeWeiss.getItems().add("  "+quellPosition + "        ---->     " + pos);
+                    }
+                    //Reset all and Update screen
                     possibleMoves = null;
                     quellPane = null;
                     selectedFigur.setEffect(null);
                     selectedFigur = null;
-                    quellPosition = null; 
+                    quellPosition = null;
                     updateScreen();
                 }
                 // Falls nein:
@@ -519,6 +532,7 @@ public class SpielbrettFXMLController implements Initializable {
             einstellungenStage.initModality(Modality.APPLICATION_MODAL);
             einstellungenStage.initStyle(StageStyle.UNDECORATED);
             einstellungenStage.setScene(new Scene(einstellungenScene));
+            einstellungenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             //einstellungenStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
             einstellungenStage.show();
             // Hide this current window (if this is what you want)
@@ -534,17 +548,14 @@ public class SpielbrettFXMLController implements Initializable {
     }
     
     public void updateScreen(){
-        Long neueZeitSpieler1;
-        Long neueZeitSpieler2;
-        DateFormat formatter = new SimpleDateFormat("mm:ss");
-        
-        neueZeitSpieler1 = spiel.getZeitSpieler1();     //Zu spieler1 gehoert die Farbe Schwarz
-        neueZeitSpieler2 = spiel.getZeitSpieler2();     //Zu spieler2 gehoert die Farbe Weiss
+        //Update Time
+        refreshTime();
 
-        this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
-        this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
-        
-        //this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
+        //Update Zuege von Spieler WEISS
+        //Position posi = possibleMoves.
+        //System.out.println(posi);
+        LinkedList<Zug> zuege = spiel.getMitschrift();
+        System.out.println(zuege); //TODO   Offizierles Format wird noch nicht richtig ausgeben
     }
 
     @FXML
@@ -620,7 +631,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
     
     @FXML
-    public void loadSpielername(){
+    public void loadSpielername(){  //Erstmal Public weil eventuell in anderen Methoden aufgerufen
 //        if(optionenFXMLController.choosedColor() == Farbe.WEISS) { // NulPointer: Das laden von "optionenFXMLController" funktionniert noch nicht
             this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
             //this.spielernameWeiss.setText(spiel.getUsername());
@@ -633,7 +644,38 @@ public class SpielbrettFXMLController implements Initializable {
 //        else{
 //        }
     }
- 
+
+    
+    private void refreshTime() {
+        Long neueZeitSpieler1;
+        Long neueZeitSpieler2;
+        DateFormat formatter = new SimpleDateFormat("mm:ss");
+        Label timeLabel = new Label();
+        
+        //Hilfmethode fuer ein Live Countdown
+//        final Timeline timeline = new Timeline(
+//                new KeyFrame(
+//                        Duration.millis(500),
+//                        event -> {
+//                            final long diff = neueZeitSpieler1 - System.currentTimeMillis();
+//                            if (diff < 0) {
+//                                timeLabel.setText(formatter.format(0));
+//                            } else {
+//                                timeLabel.setText(formatter.format(diff));
+//                            }
+//                        }
+//                )
+//        
+//        );
+        
+        neueZeitSpieler1 = spiel.getZeitSpieler1();     //Zu spieler1 gehoert die Farbe Schwarz
+        neueZeitSpieler2 = spiel.getZeitSpieler2();     //Zu spieler2 gehoert die Farbe Weiss
+        this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+        this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+        
+//        timeline.setCycleCount(Animation.INDEFINITE);
+//        timeline.play();
+    }
 
     /**
      * Initializes the controller class.

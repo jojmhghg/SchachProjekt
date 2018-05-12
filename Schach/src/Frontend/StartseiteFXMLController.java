@@ -26,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -65,6 +66,7 @@ public class StartseiteFXMLController implements Initializable {
         try {
             optionenScene = FXMLLoader.load(getClass().getResource("Optionen.fxml"));
             Stage optionenStage = new Stage();
+            optionenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             optionenStage.initModality(Modality.APPLICATION_MODAL);
             optionenStage.initStyle(StageStyle.UNDECORATED);
             optionenStage.setScene(new Scene(optionenScene));

@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -25,7 +26,7 @@ public class Schach extends Application {
         root = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
         
         Scene scene = new Scene(root);
-        
+        mainStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
         mainStage.initStyle(StageStyle.UNDECORATED);
         //mainStage.setTitle("Schach Spiel - by Team Deep Blue");
         mainStage.setResizable(false);

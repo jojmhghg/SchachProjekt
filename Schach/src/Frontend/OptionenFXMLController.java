@@ -33,6 +33,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -128,6 +129,7 @@ public class OptionenFXMLController implements Initializable {
             chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
             Stage chessBoardStage = new Stage();
             chessBoardStage.setScene(new Scene(chessBoardScene));
+            chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             chessBoardStage.initStyle(StageStyle.UNDECORATED);
             chessBoardStage.show();
             
