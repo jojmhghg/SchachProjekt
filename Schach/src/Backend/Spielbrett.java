@@ -135,7 +135,8 @@ public class Spielbrett {
         Figur figur = this.spielbrett[startposition.ordinal()].getFigur();
               
         LinkedList<Position> moves = this.getMovesFuerFeld(startposition);  //TODO Teste ob Koenig im Schach steht
-        if(moves.contains(zielposition)){    
+        if(moves.contains(zielposition)){
+            deleteBauerBeiEnPassant(figur, startposition, zielposition);
             this.spielbrett[startposition.ordinal()].setFigur(null);
             this.spielbrett[zielposition.ordinal()].setFigur(figur);
             setKoenigTurmAlsGezogen(figur);
@@ -184,6 +185,19 @@ public class Spielbrett {
                     figur.setWievielterZug(wievielterZug+1);
                 }
             }
+        }
+    }
+    
+    private void deleteBauerBeiEnPassant(Figur figur, Position startposition, Position zielposition){
+        if(this.spielbrett[zielposition.ordinal()].getFigur() == null && figur.getFigurName().equals("Bauer")){
+            if((startposition.ordinal() % 8) != (zielposition.ordinal() % 8)){
+                if(figur.getFarbe() == Farbe.WEISS){
+                    this.spielbrett[zielposition.ordinal() - 8].setFigur(null);
+                }
+                else{
+                    this.spielbrett[zielposition.ordinal() + 8].setFigur(null);
+                }
+            }    
         }
     }
 
