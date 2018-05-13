@@ -35,7 +35,7 @@ public class Koenig extends Figur{
         int right = 1;
         int schraegObenLinks = 7;
         int schraegObenRechts = 9;
-        int startFeldHochade;
+        int startFeldRochade;
         int startFeldRechterTurm;
         int startFeldLinkerTurm;
         int welcherTurm;
@@ -52,7 +52,7 @@ public class Koenig extends Figur{
             maxGegnerischeGrundreihe = 63;
             forward = 8;
             color = Farbe.SCHWARZ;
-            startFeldHochade = 4;
+            startFeldRochade = 4;
             startFeldRechterTurm = 7;
             startFeldLinkerTurm = 0;
         }
@@ -63,7 +63,7 @@ public class Koenig extends Figur{
             maxGegnerischeGrundreihe = 7;
             forward = -8;
             color = Farbe.WEISS;
-            startFeldHochade = 60;
+            startFeldRochade = 60;
             startFeldRechterTurm = 56;
             startFeldLinkerTurm = 63;
         }  
@@ -243,7 +243,7 @@ public class Koenig extends Figur{
                 counter++;
             }
         }  
-        //Fuer Hochade
+        //Fuer Rochade
         next = true;
         welchesNext = true;
         leftRichtung = true;
@@ -265,7 +265,7 @@ public class Koenig extends Figur{
                 wievieleFelder = 3;
                 leftRichtung = false;
             }
-            if(position.ordinal() == startFeldHochade && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + welcheRichtung]) == null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + 2*welcheRichtung]) == null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + wievieleFelder * welcheRichtung]) == null){
+            if(position.ordinal() == startFeldRochade && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + welcheRichtung]) == null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + 2*welcheRichtung]) == null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + wievieleFelder * welcheRichtung]) == null){
                 if(this.nochNichtGezogen && spielbrett.getFigurAufFeld(Position.values()[welcherTurm]).getFigurName() == "Turm" && spielbrett.getFigurAufFeld(Position.values()[welcherTurm]).nochNichtGezogen){
                     moves.add(Position.values()[position.ordinal() + 2*welcheRichtung]);
                 }

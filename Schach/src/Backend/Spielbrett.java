@@ -54,7 +54,7 @@ public class Spielbrett {
             this.spielbrett[i] = new Feld();
         }
         
-        /*this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+        this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
         this.spielbrett[Position.B1.ordinal()].setFigur(new Springer(Farbe.WEISS));
         this.spielbrett[Position.C1.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
         this.spielbrett[Position.D1.ordinal()].setFigur(new Dame(Farbe.WEISS));
@@ -88,10 +88,10 @@ public class Spielbrett {
         this.spielbrett[Position.E7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.F7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));*/
-        this.spielbrett[Position.E4.ordinal()].setFigur(new Bauer(Farbe.WEISS));
-        this.spielbrett[Position.D7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        /*this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+        this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+        /*this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));
+        this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+        this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
         this.spielbrett[Position.E8.ordinal()].setFigur(new Koenig(Farbe.SCHWARZ));
         this.spielbrett[Position.A8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
         this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));*/
@@ -141,10 +141,11 @@ public class Spielbrett {
             this.spielbrett[zielposition.ordinal()].setFigur(figur);
             setKoenigTurmAlsGezogen(figur);
             setBauerGezogenBeiDoppelt(figur, startposition, zielposition);
+            rochade(figur, startposition, zielposition);
         }
         else{
             throw new SpielException("Ungültiges Zielfeld!");
-        }  
+        } 
         
         // Jetzt ist anderer Spieler am Zug
         if(this.amZug == Farbe.WEISS){
@@ -217,6 +218,37 @@ public class Spielbrett {
         }
     }
 
+    private void rochade(Figur figur, Position startposition, Position zielposition){
+        int linkerTurm;
+        int rechterTurm;
+        int linkerTurmZiel;
+        int rechterTurmZiel;
+        if(figur.getFigurName().equals("König")){
+            if(Math.abs(startposition.ordinal() - zielposition.ordinal()) == 2){
+                if(figur.getFarbe() == Farbe.WEISS){
+                    linkerTurm = 0;
+                    rechterTurm = 7;
+                    linkerTurmZiel = 3;
+                    rechterTurmZiel = 5;
+                }
+                else{
+                    linkerTurm = 56;
+                    rechterTurm = 63;
+                    linkerTurmZiel = 59;
+                    rechterTurmZiel = 61;
+                }
+                if(zielposition.ordinal() < startposition.ordinal()){
+                    this.spielbrett[linkerTurmZiel].setFigur(getFigurAufFeld(Position.values()[linkerTurm]));
+                    this.spielbrett[linkerTurm].setFigur(null);
+                }
+                else{
+                    this.spielbrett[rechterTurmZiel].setFigur(getFigurAufFeld(Position.values()[rechterTurm]));
+                    this.spielbrett[rechterTurm].setFigur(null);
+                }
+            }
+        }
+    }
+    
     public int getWievielterZug() {
         return wievielterZug;
     }
