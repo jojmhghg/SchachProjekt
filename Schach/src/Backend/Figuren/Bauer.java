@@ -18,6 +18,13 @@ public class Bauer extends Figur{
 
     public Bauer(Farbe farbe) {
         super(farbe);
+        this.nochNichtGezogen = true;
+        this.wievielterZug = 0;
+    }
+
+    @Override
+    public void setWievielterZug(int wievielterZug) {
+        this.wievielterZug = wievielterZug;
     }
 
     @Override
@@ -34,6 +41,9 @@ public class Bauer extends Figur{
         int forward;
         int left;
         int right;
+        int enPassantLeft = -1;
+        int enPassantMin;
+        int enPassantMax;
         Farbe color;
         if(this.farbe == Farbe.WEISS){
             min = 8;
@@ -41,6 +51,8 @@ public class Bauer extends Figur{
             forward = 8;
             left = 7;
             right = 9;
+            enPassantMin = 32;
+            enPassantMax = 39;
             color = Farbe.SCHWARZ;
         }
         else{
@@ -49,6 +61,8 @@ public class Bauer extends Figur{
             forward = -8;
             left = -9;
             right = -7;
+            enPassantMin = 31;
+            enPassantMax = 24;
             color = Farbe.WEISS;
         }
         
@@ -74,6 +88,28 @@ public class Bauer extends Figur{
         if((position.ordinal() % 8) != 7){
             if(!(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + right]) == null) && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + right]).farbe == color){
                 moves.add(Position.values()[position.ordinal() + right]);
+            }
+        }
+        //En Passant
+        //Wenn Bauer auf der 4. bzw, 5.Reihe steht
+        if(position.ordinal() >= enPassantMin && position.ordinal() <= enPassantMax){
+            //Wenn Bauer nicht auf der 1.Spalte steht
+            //Nach links
+            if((position.ordinal() % 8) != 0){
+                if(!(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]) == null) && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]).getFigurName() == "Bauer" && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]).farbe == color){
+                    if(!spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]).nochNichtGezogen && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]).wievielterZug == spielbrett.getWievielterZug()){
+                        moves.add(Position.values()[position.ordinal() + left]);
+                    }
+                }
+            }
+            //Wenn Bauer nicht auf der 8.Spalte steht
+            //Nach rechts
+            if((position.ordinal() % 8) != 7){
+                if(!(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() - enPassantLeft]) == null) && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() - enPassantLeft]).getFigurName() == "Bauer" && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() - enPassantLeft]).farbe == color){
+                    if(!spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + -enPassantLeft]).nochNichtGezogen && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + -enPassantLeft]).wievielterZug == spielbrett.getWievielterZug()){
+                        moves.add(Position.values()[position.ordinal() + right]);
+                    }
+                }
             }
         }
         return moves;

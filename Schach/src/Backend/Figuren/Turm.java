@@ -175,11 +175,19 @@ public class Turm extends Figur{
     }
     
     
+    @Override
     public void setNochNichtGezogen(boolean nochNichtGezogen) {
         this.nochNichtGezogen = nochNichtGezogen;
     }
 
+    @Override
     public boolean isNochNichtGezogen() {
         return nochNichtGezogen;
     }
+    
+    @Override
+    public void setWievielterZug(int wievielterZug) {
+        this.wievielterZug = wievielterZug;
+    }
+    
 }

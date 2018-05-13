@@ -285,6 +285,11 @@ public class Koenig extends Figur{
     }
 
     @Override
+    public void setWievielterZug(int wievielterZug) {
+        this.wievielterZug = wievielterZug;
+    }
+    
+    @Override
     public boolean isNochNichtGezogen() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

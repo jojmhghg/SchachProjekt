@@ -37,6 +37,10 @@ public class Spielbrett {
     private Farbe amZug;
     
     /**
+     * 
+     */
+    private int wievielterZug;
+    /**
      * Konstruktor um ein neues Spielbrett zu erstellen
      * Standardaufstellung!
      */
@@ -44,12 +48,13 @@ public class Spielbrett {
         this.schach = null;
         this.amZug = Farbe.WEISS;
         this.spielbrett = new Feld[64];
+        this.wievielterZug = 0;
                
         for(int i = 0; i < 64; i++){
             this.spielbrett[i] = new Feld();
         }
         
-        this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+        /*this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
         this.spielbrett[Position.B1.ordinal()].setFigur(new Springer(Farbe.WEISS));
         this.spielbrett[Position.C1.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
         this.spielbrett[Position.D1.ordinal()].setFigur(new Dame(Farbe.WEISS));
@@ -83,10 +88,10 @@ public class Spielbrett {
         this.spielbrett[Position.E7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.F7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        /*this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));
-        this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
-        this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+        this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));*/
+        this.spielbrett[Position.E4.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+        this.spielbrett[Position.D7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+        /*this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
         this.spielbrett[Position.E8.ordinal()].setFigur(new Koenig(Farbe.SCHWARZ));
         this.spielbrett[Position.A8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
         this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));*/
@@ -134,6 +139,7 @@ public class Spielbrett {
             this.spielbrett[startposition.ordinal()].setFigur(null);
             this.spielbrett[zielposition.ordinal()].setFigur(figur);
             setKoenigTurmAlsGezogen(figur);
+            setBauerGezogenBeiDoppelt(figur, startposition, zielposition);
         }
         else{
             throw new SpielException("Ungültiges Zielfeld!");
@@ -152,6 +158,7 @@ public class Spielbrett {
         if(checkSchach(this.amZug)){
             this.schach = this.amZug;
         }
+        wievielterZug++;
     }
     
     /**
@@ -167,6 +174,21 @@ public class Spielbrett {
         else if(figur.getFigurName().equals("Turm")){
             figur.setNochNichtGezogen(false);
         }
+    }
+    
+    private void setBauerGezogenBeiDoppelt(Figur figur, Position startposition, Position zielposition){
+        if(figur.getFigurName().equals("Bauer")){
+            if(startposition.ordinal() <= 15 && startposition.ordinal() >= 8 || startposition.ordinal() <= 55 && startposition.ordinal() >= 48){
+                if(zielposition.ordinal() <= 31 && zielposition.ordinal() >= 24 || zielposition.ordinal() <= 39 && zielposition.ordinal() >= 32){
+                    figur.setNochNichtGezogen(false);
+                    figur.setWievielterZug(wievielterZug+1);
+                }
+            }
+        }
+    }
+
+    public int getWievielterZug() {
+        return wievielterZug;
     }
     
     /**

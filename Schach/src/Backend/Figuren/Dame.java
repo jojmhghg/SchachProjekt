@@ -251,5 +251,11 @@ public class Dame extends Figur{
     public boolean isNochNichtGezogen() {
         return nochNichtGezogen;
     }
+    
+    @Override
+    public void setWievielterZug(int wievielterZug) {
+        this.wievielterZug = wievielterZug;
+    }
+    
 }
 
