@@ -177,6 +177,14 @@ public class Spielbrett {
         }
     }
     
+    /**
+     * Hilfsmethode um Bauer zu kennzeichnen sollte er einen doppelten
+     * Schritt machen
+     * 
+     * @param figur zu überprüfende Figur
+     * @param startposition
+     * @param zielposition 
+     */
     private void setBauerGezogenBeiDoppelt(Figur figur, Position startposition, Position zielposition){
         if(figur.getFigurName().equals("Bauer")){
             if(startposition.ordinal() <= 15 && startposition.ordinal() >= 8 || startposition.ordinal() <= 55 && startposition.ordinal() >= 48){
@@ -188,6 +196,14 @@ public class Spielbrett {
         }
     }
     
+    /**
+     * Hilfsmethode um zu schauen ob es En Passant war und die geschlagene Figur
+     * zu löschen
+     * 
+     * @param figur
+     * @param startposition
+     * @param zielposition 
+     */
     private void deleteBauerBeiEnPassant(Figur figur, Position startposition, Position zielposition){
         if(this.spielbrett[zielposition.ordinal()].getFigur() == null && figur.getFigurName().equals("Bauer")){
             if((startposition.ordinal() % 8) != (zielposition.ordinal() % 8)){
