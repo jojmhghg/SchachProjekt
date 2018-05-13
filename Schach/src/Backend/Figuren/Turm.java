@@ -178,4 +178,8 @@ public class Turm extends Figur{
     public void setNochNichtGezogen(boolean nochNichtGezogen) {
         this.nochNichtGezogen = nochNichtGezogen;
     }
+
+    public boolean isNochNichtGezogen() {
+        return nochNichtGezogen;
+    }
 }

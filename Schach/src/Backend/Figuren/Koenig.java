@@ -283,4 +283,9 @@ public class Koenig extends Figur{
     public void setNochNichtGezogen(boolean nochNichtGezogen) {
         this.nochNichtGezogen = nochNichtGezogen;
     }
+
+    @Override
+    public boolean isNochNichtGezogen() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

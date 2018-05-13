@@ -20,8 +20,8 @@ public class test {
         
         //TestSpeichern ts = new TestSpeichern();
         //ts.start();
-        //TestPartie tp = new TestPartie();
-        //tp.start();
+        TestPartie tp = new TestPartie();
+        tp.start();
         
         
     }

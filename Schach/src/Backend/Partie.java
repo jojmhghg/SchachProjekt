@@ -73,6 +73,8 @@ public class Partie {
      * 
      * @param optionen Zu übernehmende Partieeinstellungen
      */
+    
+    
     public Partie(Optionen optionen){
         this.kiGegner = optionen.getKiGegner();
         this.farbe = optionen.getFarbe();

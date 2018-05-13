@@ -118,4 +118,8 @@ public class Springer extends Figur{
         return "Springer";
     }
     
+    @Override
+    public boolean isNochNichtGezogen() {
+        return nochNichtGezogen;
+    }
 }

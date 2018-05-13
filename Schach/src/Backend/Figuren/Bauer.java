@@ -79,8 +79,16 @@ public class Bauer extends Figur{
         return moves;
     }
 
+    
+    @Override
+    public boolean isNochNichtGezogen() {
+        return nochNichtGezogen;
+    }
+    
     @Override
     public String getFigurName() {
         return "Bauer";
     }
+    
+    
 }

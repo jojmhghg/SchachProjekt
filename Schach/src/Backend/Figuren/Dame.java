@@ -247,6 +247,9 @@ public class Dame extends Figur{
         return "Dame";
     }
     
-
+    @Override
+    public boolean isNochNichtGezogen() {
+        return nochNichtGezogen;
+    }
 }
 

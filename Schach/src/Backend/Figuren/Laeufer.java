@@ -116,4 +116,8 @@ public class Laeufer extends Figur{
         return "Läufer";
     }
     
+    @Override
+    public boolean isNochNichtGezogen() {
+        return nochNichtGezogen;
+    }
 }
