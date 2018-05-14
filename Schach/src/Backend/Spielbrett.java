@@ -40,11 +40,17 @@ public class Spielbrett {
      * 
      */
     private int wievielterZug;
+    
+    private boolean enPassant;
+    private boolean rochade;
+    
     /**
      * Konstruktor um ein neues Spielbrett zu erstellen
      * Standardaufstellung!
      */
     public Spielbrett() {
+        this.enPassant = false;
+        this.rochade = false;
         this.schach = null;
         this.amZug = Farbe.WEISS;
         this.spielbrett = new Feld[64];
@@ -54,47 +60,47 @@ public class Spielbrett {
             this.spielbrett[i] = new Feld();
         }
         
-        this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
-        this.spielbrett[Position.B1.ordinal()].setFigur(new Springer(Farbe.WEISS));
-        this.spielbrett[Position.C1.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
-        this.spielbrett[Position.D1.ordinal()].setFigur(new Dame(Farbe.WEISS));
+//        this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+//        this.spielbrett[Position.B1.ordinal()].setFigur(new Springer(Farbe.WEISS));
+//        this.spielbrett[Position.C1.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
+//        this.spielbrett[Position.D1.ordinal()].setFigur(new Dame(Farbe.WEISS));
+//        this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));
+//        this.spielbrett[Position.F1.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
+//        this.spielbrett[Position.G1.ordinal()].setFigur(new Springer(Farbe.WEISS));
+//        this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
+//        
+//        this.spielbrett[Position.A2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+//        this.spielbrett[Position.B2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+//        this.spielbrett[Position.C2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+//        this.spielbrett[Position.D2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+//        this.spielbrett[Position.E2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+//        this.spielbrett[Position.F2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+//        this.spielbrett[Position.G2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+//        this.spielbrett[Position.H2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+//        
+//        this.spielbrett[Position.A8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
+//        this.spielbrett[Position.B8.ordinal()].setFigur(new Springer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.C8.ordinal()].setFigur(new Laeufer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.D8.ordinal()].setFigur(new Dame(Farbe.SCHWARZ));
+//        this.spielbrett[Position.E8.ordinal()].setFigur(new Koenig(Farbe.SCHWARZ));
+//        this.spielbrett[Position.F8.ordinal()].setFigur(new Laeufer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.G8.ordinal()].setFigur(new Springer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
+//        
+//        this.spielbrett[Position.A7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.B7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.C7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.D7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.E7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.F7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+//        this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));
-        this.spielbrett[Position.F1.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
-        this.spielbrett[Position.G1.ordinal()].setFigur(new Springer(Farbe.WEISS));
-        this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
-        
-        this.spielbrett[Position.A2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
-        this.spielbrett[Position.B2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
-        this.spielbrett[Position.C2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
-        this.spielbrett[Position.D2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
-        this.spielbrett[Position.E2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
-        this.spielbrett[Position.F2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
-        this.spielbrett[Position.G2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
-        this.spielbrett[Position.H2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
-        
-        this.spielbrett[Position.A8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
-        this.spielbrett[Position.B8.ordinal()].setFigur(new Springer(Farbe.SCHWARZ));
-        this.spielbrett[Position.C8.ordinal()].setFigur(new Laeufer(Farbe.SCHWARZ));
-        this.spielbrett[Position.D8.ordinal()].setFigur(new Dame(Farbe.SCHWARZ));
-        this.spielbrett[Position.E8.ordinal()].setFigur(new Koenig(Farbe.SCHWARZ));
-        this.spielbrett[Position.F8.ordinal()].setFigur(new Laeufer(Farbe.SCHWARZ));
-        this.spielbrett[Position.G8.ordinal()].setFigur(new Springer(Farbe.SCHWARZ));
-        this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
-        
-        this.spielbrett[Position.A7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.B7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.C7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.D7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.E7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.F7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        /*this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));
         this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
         this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
         this.spielbrett[Position.E8.ordinal()].setFigur(new Koenig(Farbe.SCHWARZ));
         this.spielbrett[Position.A8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
-        this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));*/
+        this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
     }
     
     /**
@@ -132,6 +138,8 @@ public class Spielbrett {
      * @throws Backend.SpielException falls keine Figur auf startposition oder ungültiger Zug
      */
     public void setFigurAufFeld(Position startposition, Position zielposition) throws SpielException{  
+        this.enPassant = false;
+        this.rochade = false;
         Figur figur = this.spielbrett[startposition.ordinal()].getFigur();
               
         LinkedList<Position> moves = this.getMovesFuerFeld(startposition);  //TODO Teste ob Koenig im Schach steht
@@ -214,6 +222,7 @@ public class Spielbrett {
                 else{
                     this.spielbrett[zielposition.ordinal() + 8].setFigur(null);
                 }
+                this.enPassant = true;
             }    
         }
     }
@@ -225,6 +234,7 @@ public class Spielbrett {
         int rechterTurmZiel;
         if(figur.getFigurName().equals("König")){
             if(Math.abs(startposition.ordinal() - zielposition.ordinal()) == 2){
+                this.rochade = true;
                 if(figur.getFarbe() == Farbe.WEISS){
                     linkerTurm = 0;
                     rechterTurm = 7;
@@ -274,6 +284,14 @@ public class Spielbrett {
         //d.h. ob danach könig nicht im schach steht, etc.
         // NUR TODO, falls Steven das nicht bei den Figuren impl kann
         return this.spielbrett[position.ordinal()].getMoves(this, position);
+    }
+    
+    public boolean getEnPassant(){
+        return this.enPassant;
+    }
+    
+    public boolean getRochade(){
+        return this.rochade;
     }
     
     /**

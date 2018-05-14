@@ -8,6 +8,7 @@ package Frontend;
 import Backend.Einstellungen;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
+import Backend.Figuren.Bauer;
 import Backend.Figuren.Figur;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
@@ -446,11 +447,62 @@ public class SpielbrettFXMLController implements Initializable {
                 //... teste ob neues Feld ein möglicher zug ist
                 // Falls ja:
                 if(possibleMoves != null && possibleMoves.contains(pos)){
-                    spiel.zieheFigur(quellPosition, pos);
+                    spiel.zieheFigur(quellPosition, pos);                    
                     if(tmpPane.getChildren().size() > 0){
                         tmpPane.getChildren().remove(0);
                     }
-                    tmpPane.getChildren().add(selectedFigur);               
+                    tmpPane.getChildren().add(selectedFigur); 
+                       
+                    if(spiel.getEnPassant()){
+                        if(quellPosition.ordinal() > pos.ordinal()){
+                            if(quellPosition.ordinal() - 8 > pos.ordinal()){
+                                //Lösche quellPosi - 1
+                                this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
+                            }
+                            else{
+                                //Lösche quellPosi + 1
+                                this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
+                            }
+                        }
+                        else{
+                            if(quellPosition.ordinal() + 8 > pos.ordinal()){
+                                //Lösche quellPosi + 1
+                                this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
+                            }
+                            else{
+                                //Lösche quellPosi - 1
+                                this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
+                            }
+                        }
+                    }
+                    
+                    if(spiel.getRochade()){
+                        ImageView turm;
+                        switch(pos){
+                            case C1:
+                                turm = (ImageView) this.paneArray[0].getChildren().get(0);
+                                this.paneArray[3].getChildren().add(turm);
+                                break;
+                                
+                            case C8:
+                                turm = (ImageView) this.paneArray[56].getChildren().get(0);
+                                this.paneArray[59].getChildren().add(turm);
+                                break;
+                                
+                            case G1: 
+                                turm = (ImageView) this.paneArray[7].getChildren().get(0);
+                                this.paneArray[5].getChildren().add(turm);
+                                break;
+                                
+                            case G8:
+                                turm = (ImageView) this.paneArray[63].getChildren().get(0);
+                                this.paneArray[61].getChildren().add(turm);
+                                break;
+                              
+                            default:
+                                break;
+                        }
+                    }
                     
                     //Reset all and Update screen
                     possibleMoves = null;

@@ -183,8 +183,6 @@ public class Partie {
         this.endeLetzterZug = (int) new Date().getTime();
         
         this.gewinner = gewinnerTmp;
-        
-        spielbrett.printSpielbrett();
     }
     
        

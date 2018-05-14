@@ -127,4 +127,5 @@ public class Bauer extends Figur{
     }
     
     
+    
 }
