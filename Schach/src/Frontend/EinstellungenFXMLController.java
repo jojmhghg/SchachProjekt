@@ -82,15 +82,16 @@ public class EinstellungenFXMLController implements Initializable {
     @FXML
     private void speichern(ActionEvent event) {
         
-        String newSpielername;
-        newSpielername = spielername.getText();
+        String newSpielername = spielername.getText();
         
-        if(!spielername.toString().isEmpty()) {
+        if(!newSpielername.isEmpty()) {
             try {
-                System.out.println(newSpielername);
                 spiel.setUsername(newSpielername);
-                getChoosedHighlighting();
-                spiel.isHighlightingAus();
+                try {
+                    spiel.setHighlightingAus(!highlightingButton.isSelected());
+                } catch (SpielException ex) {
+                    Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 backToSpielbrett(event);
             } catch (SpielException ex) {
                 Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
@@ -101,26 +102,6 @@ public class EinstellungenFXMLController implements Initializable {
         }
         //spielbrettFXMLController.loadSpielername();     //TODO Hier soll der name nach dem speichern nun auf dem spielbrett aktualisiert werden.
     }
-    
-    private void getChoosedHighlighting(){
-        if(highlightingButton.isSelected() == false) {
-            try {
-                spiel.setHighlightingAus(false);
-            } catch (SpielException ex) {
-                Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        else{
-            spiel.isHighlightingAus();
-        }
-    }
-    
-        private void loadEinstellungen() {
-        System.out.println(spiel.getUsername());
-        spiel.getUsername();
-        spiel.isHighlightingAus();
-        throw new UnsupportedOperationException("Ein Fehler ist aufgetretten"); //To change body of generated methods, choose Tools | Templates.
-    }
 
     /**
      * Initializes the controller class.
@@ -129,9 +110,11 @@ public class EinstellungenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            //loadEinstellungen();
+        try {           
             loadSpielFromController();
+            
+            spielername.setText(spiel.getUsername());
+            highlightingButton.setSelected(!spiel.isHighlightingAus());
             
         } catch (IOException ex) {
             Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
