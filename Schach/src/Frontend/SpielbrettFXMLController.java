@@ -393,6 +393,19 @@ public class SpielbrettFXMLController implements Initializable {
                 }
             });
         }
+        
+        possibleMoves = null;
+        quellPane = null;
+        updateScreen();
+        loadSpielername();
+
+        LinkedList<Zug> zuege = spiel.getMitschrift();
+        for(int i = 0; i < zuege.size(); i = i + 2){
+            listZuegeWeiss.getItems().add(zuege.get(i).getMitschrift());
+        }
+        for(int i = 1; i < zuege.size(); i = i + 2){
+            listZuegeSchwarz.getItems().add(zuege.get(i).getMitschrift());
+        }
     }
 
     /**
@@ -437,18 +450,7 @@ public class SpielbrettFXMLController implements Initializable {
                     if(tmpPane.getChildren().size() > 0){
                         tmpPane.getChildren().remove(0);
                     }
-                    tmpPane.getChildren().add(selectedFigur);
-
-                    //Populate listView and apply rotation
-                    if (spiel.getSpielerAmZug() == Farbe.WEISS) {
-                        listZuegeSchwarz.getItems().add("  " + quellPosition + "        ---->     " + pos);
-                        //rotateBoard();
-                        //selectedFigur.rotateProperty().setValue(180);
-                    } else if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
-                        listZuegeWeiss.getItems().add("  " + quellPosition + "        ---->     " + pos);
-                        //rotateBoardAgain();
-                        //selectedFigur.rotationAxisProperty().setValue(value);
-                    }
+                    tmpPane.getChildren().add(selectedFigur);               
                     
                     //Reset all and Update screen
                     possibleMoves = null;
@@ -543,8 +545,19 @@ public class SpielbrettFXMLController implements Initializable {
         //Update Time
         refreshTime();
 
-        LinkedList<Zug> zuege = spiel.getMitschrift();
-        System.out.println(zuege); //TODO   Offizierles Format wird noch nicht richtig ausgeben
+        if(spiel.getMitschrift().size() > 0){
+            //Populate listView and apply rotation
+            if (spiel.getSpielerAmZug() == Farbe.WEISS) {
+                listZuegeSchwarz.getItems().add(spiel.getMitschrift().getLast().getMitschrift());
+                //rotateBoard();
+                //selectedFigur.rotateProperty().setValue(180);
+            } else if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
+                listZuegeWeiss.getItems().add(spiel.getMitschrift().getLast().getMitschrift());
+                //rotateBoardAgain();
+                //selectedFigur.rotationAxisProperty().setValue(value);
+            }
+        }
+
     }
 
     @FXML
@@ -604,11 +617,23 @@ public class SpielbrettFXMLController implements Initializable {
         File selectedFile = chooser.showOpenDialog(null);
         
         if(selectedFile != null){
+            for(int i = 0; i < 64; i++){
+                    if(paneArray[i].getChildren().size() > 0){
+                        paneArray[i].getChildren().remove(0);
+                    }
+            }
+            try {
+                spielbrett = spiel.partieLaden("test1");
+            } catch (SpielException ex) {
+                Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            initSpielbrett();
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
             alert.setHeaderText("Partie erfolgreich geladen");
             alert.setContentText("Dateiname: " + selectedFile.getName());
             alert.showAndWait();
+            
         }else{
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Warning Dialog");
@@ -706,12 +731,8 @@ public class SpielbrettFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             loadSpielFromController();
-            initSpielbrett();
-            possibleMoves = null;
-            quellPane = null;
-            updateScreen();
-            loadSpielername();
-
+            initSpielbrett();         
+                            
         } catch (IOException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }

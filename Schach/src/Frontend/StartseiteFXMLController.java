@@ -9,6 +9,7 @@ import Backend.Optionen;
 import Backend.Spiel;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
+import Backend.Spielbrett;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +49,7 @@ public class StartseiteFXMLController implements Initializable {
     private JFXButton partieLaden;
     
     SpielInteraktionen spiel;
+    Spielbrett spielbrett;
     Optionen optionen;
 
     public StartseiteFXMLController() {
@@ -83,11 +85,29 @@ public class StartseiteFXMLController implements Initializable {
         File selectedFile = chooser.showOpenDialog(null);
         
         if(selectedFile != null){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Partie erfolgreich geladen");
-            alert.setContentText("Dateiname: " + selectedFile.getName());
-            alert.showAndWait();
+            String name = "test1";
+            try {   
+                spielbrett = spiel.partieLaden(name);
+            } catch (SpielException ex) {
+                Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            Parent chessBoardScene;
+            try {
+                chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
+                 Stage chessBoardStage = new Stage();
+                chessBoardStage.setScene(new Scene(chessBoardScene));
+                chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+                chessBoardStage.initStyle(StageStyle.UNDECORATED);
+                chessBoardStage.show();
+
+    //            spielbrettFXMLController.loadSpielername();
+           
+                 // Hide this current window (if this is what you want)
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+            } catch (IOException ex) {
+                Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog");
