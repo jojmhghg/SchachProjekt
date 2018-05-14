@@ -61,8 +61,8 @@ public class Bauer extends Figur{
             forward = -8;
             left = -9;
             right = -7;
-            enPassantMin = 31;
-            enPassantMax = 24;
+            enPassantMin = 24;
+            enPassantMax = 31;
             color = Farbe.WEISS;
         }
         
@@ -112,6 +112,7 @@ public class Bauer extends Figur{
                 }
             }
         }
+        System.out.println("?");
         return moves;
     }
 
