@@ -601,15 +601,26 @@ public class SpielbrettFXMLController implements Initializable {
             //Populate listView and apply rotation
             if (spiel.getSpielerAmZug() == Farbe.WEISS) {
                 listZuegeSchwarz.getItems().add(spiel.getMitschrift().getLast().getMitschrift());
-                //rotateBoard();
+                rotateBoard();
                 //selectedFigur.rotateProperty().setValue(180);
             } else if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
                 listZuegeWeiss.getItems().add(spiel.getMitschrift().getLast().getMitschrift());
-                //rotateBoardAgain();
+                rotateBoard();
                 //selectedFigur.rotationAxisProperty().setValue(value);
             }
         }
 
+    }
+    
+    private void rotateBoard() {
+        Double degree = gridBoard.rotateProperty().getValue();
+        gridBoard.rotateProperty().setValue(degree + 180);
+        
+        for(int i = 0; i < 64; i++){
+            if(this.paneArray[i].getChildren().size() > 0){
+                ((ImageView) this.paneArray[i].getChildren().get(0)).rotateProperty().setValue(degree + 180);
+            }
+        }
     }
 
     @FXML
@@ -742,21 +753,6 @@ public class SpielbrettFXMLController implements Initializable {
 //        timeline.setCycleCount(Animation.INDEFINITE);
 //        timeline.play();
     }
-    
-    private void rotateBoard() {
-        Double degree = 0.0;
-        if (spiel.getSpielerAmZug() == Farbe.WEISS) {
-            gridBoard.rotateProperty().setValue(degree);
-        }
-    }
-    
-    private void rotateBoardAgain() {
-        Double degree = 180.0;
-        if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
-            gridBoard.rotateProperty().setValue(degree);
-        }
-    }
-    
     
     @FXML
     private void goToAbout(ActionEvent event) {

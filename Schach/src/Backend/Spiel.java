@@ -7,7 +7,6 @@ package Backend;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
-import Backend.Figuren.Figur;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,6 +62,16 @@ public class Spiel implements SpielInteraktionen {
         this.partie.zieheFigur(ausgangsposition, zielposition);
     }
 
+    @Override
+    public Farbe getFarbe(){
+        return this.partie.getFarbe();
+    }
+    
+    @Override
+    public boolean getKiGegner(){
+        return this.partie.isKiGegner();
+    }
+       
     @Override
     public boolean getEnPassant(){
         return this.partie.getSpielbrett().getEnPassant();
