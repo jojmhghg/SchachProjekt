@@ -625,9 +625,6 @@ public class SpielbrettFXMLController implements Initializable {
 
     @FXML
     public void partieSpeichern(ActionEvent event) throws SpielException{
-        Date date = new Date();
-        String filename;
-        filename = date.toInstant().toString();
         
         //Create Alert box
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -677,8 +674,9 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private void partieLaden(ActionEvent event) {
         FileChooser chooser = new FileChooser();
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));  //Set Initial Directory  
         File selectedFile = chooser.showOpenDialog(null);
-        
+        //Delete pieces on board and load pieces positions from the file
         if(selectedFile != null){
             for(int i = 0; i < 64; i++){
                     if(paneArray[i].getChildren().size() > 0){
@@ -686,7 +684,7 @@ public class SpielbrettFXMLController implements Initializable {
                     }
             }
             try {
-                spielbrett = spiel.partieLaden("test1");
+                spielbrett = spiel.partieLaden(selectedFile.getName().substring(0, selectedFile.getName().length()-4));
             } catch (SpielException ex) {
                 Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -761,7 +759,6 @@ public class SpielbrettFXMLController implements Initializable {
             aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
             Stage aboutStage = new Stage();
             aboutStage.initModality(Modality.APPLICATION_MODAL);
-            //aboutStage.initStyle(StageStyle.UNDECORATED);
             aboutStage.setScene(new Scene(aboutScene));
             aboutStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             aboutStage.show();
