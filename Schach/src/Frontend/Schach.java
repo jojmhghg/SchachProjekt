@@ -5,6 +5,7 @@
  */
 package Frontend;
 
+import Backend.Spiel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,13 +19,19 @@ import javafx.stage.StageStyle;
  * @author Edwrard Nana
  */
 public class Schach extends Application {
+    Spiel spielBackend;
     
     @Override
     public void start(Stage mainStage) throws Exception {
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("Startseite.fxml"));
+        Parent root = loader.load();
         
         Scene scene = new Scene(root);
+        
+        StartseiteFXMLController controller = loader.getController();
+        controller.loadData();
+        
         mainStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
         mainStage.initStyle(StageStyle.UNDECORATED);
         mainStage.setResizable(false);

@@ -47,13 +47,18 @@ public class StartseiteFXMLController implements Initializable {
     private JFXButton partieFortsetzen;
     @FXML
     private JFXButton partieLaden;
-    
+
     SpielInteraktionen spiel;
     Spielbrett spielbrett;
     Optionen optionen;
+    Spiel spielBackend;
 
     public StartseiteFXMLController() {
-        
+
+    }
+
+    public void loadData() {
+        //TODO
     }
 
     @FXML
@@ -64,9 +69,16 @@ public class StartseiteFXMLController implements Initializable {
 
     @FXML
     private void goToOptionen(ActionEvent event) {
-        Parent optionenScene;
+        //Parent optionenScene;
         try {
-            optionenScene = FXMLLoader.load(getClass().getResource("Optionen.fxml"));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("Optionen.fxml"));
+            Parent optionenScene = loader.load();
+
+            OptionenFXMLController controller = loader.getController();
+            controller.loadData();
+
+            //optionenScene = FXMLLoader.load(getClass().getResource("Optionen.fxml"));
             Stage optionenStage = new Stage();
             optionenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             optionenStage.initModality(Modality.APPLICATION_MODAL);
@@ -78,44 +90,49 @@ public class StartseiteFXMLController implements Initializable {
         } catch (IOException e) {
         }
     }
-    
+
     @FXML
     private void partieLaden(ActionEvent event) {
         FileChooser chooser = new FileChooser();
         File selectedFile = chooser.showOpenDialog(null);
-        
-        if(selectedFile != null){
+
+        if (selectedFile != null) {
             String name = "test1";
-            try {   
+            try {
                 spielbrett = spiel.partieLaden(name);
             } catch (SpielException ex) {
                 Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            Parent chessBoardScene;
+
+            //Parent chessBoardScene;
             try {
-                chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
-                 Stage chessBoardStage = new Stage();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("Spielbrett.fxml"));
+                Parent chessBoardScene = loader.load();
+
+                SpielbrettFXMLController controller = loader.getController();
+                controller.loadData();
+
+                Stage chessBoardStage = new Stage();
                 chessBoardStage.setScene(new Scene(chessBoardScene));
                 chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
                 chessBoardStage.initStyle(StageStyle.UNDECORATED);
                 chessBoardStage.show();
 
-    //            spielbrettFXMLController.loadSpielername();
-           
-                 // Hide this current window (if this is what you want)
+                //            spielbrettFXMLController.loadSpielername();
+                // Hide this current window (if this is what you want)
                 ((Node) (event.getSource())).getScene().getWindow().hide();
             } catch (IOException ex) {
                 Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog");
             alert.setHeaderText("Wählen Sie eine .txt Datei ");
             alert.setContentText("Partie laden abgebrochen !");
 
             alert.showAndWait();
-         }
+        }
     }
 
     @Override
