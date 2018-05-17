@@ -80,18 +80,14 @@ public class EinstellungenFXMLController implements Initializable {
     }
 
     @FXML
-    private void speichern(ActionEvent event) {
+    private void speichern(ActionEvent event) throws IOException {
         
         String newSpielername = spielername.getText();
         
         if(!newSpielername.isEmpty()) {
             try {
                 spiel.setUsername(newSpielername);
-                try {
-                    spiel.setHighlightingAus(!highlightingButton.isSelected());
-                } catch (SpielException ex) {
-                    Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                spiel.setHighlightingAus(!highlightingButton.isSelected());
                 backToSpielbrett(event);
             } catch (SpielException ex) {
                 Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,7 +96,6 @@ public class EinstellungenFXMLController implements Initializable {
         else{
             System.out.println("Username ist Leer!!!");
         }
-        //spielbrettFXMLController.loadSpielername();     //TODO Hier soll der name nach dem speichern nun auf dem spielbrett aktualisiert werden.
     }
 
     /**
