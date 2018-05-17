@@ -256,6 +256,11 @@ public class Dame extends Figur{
     public void setWievielterZug(int wievielterZug) {
         this.wievielterZug = wievielterZug;
     }
+
+    @Override
+    public String getFigurABK() {
+        return "D";
+    }
     
 }
 

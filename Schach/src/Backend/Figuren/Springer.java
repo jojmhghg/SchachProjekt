@@ -128,4 +128,9 @@ public class Springer extends Figur{
         this.wievielterZug = wievielterZug;
     }
     
+    @Override
+    public String getFigurABK() {
+        return "S";
+    }
+    
 }

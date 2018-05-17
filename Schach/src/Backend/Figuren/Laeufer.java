@@ -125,5 +125,9 @@ public class Laeufer extends Figur{
     public void setWievielterZug(int wievielterZug) {
         this.wievielterZug = wievielterZug;
     }
+    @Override
+    public String getFigurABK() {
+        return "L";
+    }
     
 }

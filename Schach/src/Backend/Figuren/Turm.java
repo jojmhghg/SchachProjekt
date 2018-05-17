@@ -190,4 +190,8 @@ public class Turm extends Figur{
         this.wievielterZug = wievielterZug;
     }
     
+    @Override
+    public String getFigurABK() {
+        return "T";
+    }
 }

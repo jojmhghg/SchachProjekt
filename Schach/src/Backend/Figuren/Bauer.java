@@ -127,6 +127,9 @@ public class Bauer extends Figur{
         return "Bauer";
     }
     
-    
+    @Override
+    public String getFigurABK() {
+        return "";
+    }
     
 }

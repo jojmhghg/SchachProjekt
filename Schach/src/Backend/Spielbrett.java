@@ -28,6 +28,14 @@ public class Spielbrett {
      */
     private final Feld[] spielbrett;
     /**
+     * Gibt die Position des weisen Königs auf dem Schachbrett an
+     */
+    private Position posWhiteKing;
+    /**
+     * Gibt die Position des schwarzen Königs auf dem Schachbrett an
+     */
+    private Position posBlackKing;
+    /**
      * Gibt an ob und wer gerade im Schach steht
      */
     private Farbe schach;
@@ -65,6 +73,7 @@ public class Spielbrett {
         this.spielbrett[Position.C1.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
         this.spielbrett[Position.D1.ordinal()].setFigur(new Dame(Farbe.WEISS));
         this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));
+        this.posWhiteKing = Position.E1;
         this.spielbrett[Position.F1.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
         this.spielbrett[Position.G1.ordinal()].setFigur(new Springer(Farbe.WEISS));
         this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
@@ -83,6 +92,7 @@ public class Spielbrett {
         this.spielbrett[Position.C8.ordinal()].setFigur(new Laeufer(Farbe.SCHWARZ));
         this.spielbrett[Position.D8.ordinal()].setFigur(new Dame(Farbe.SCHWARZ));
         this.spielbrett[Position.E8.ordinal()].setFigur(new Koenig(Farbe.SCHWARZ));
+        this.posBlackKing = Position.E8;
         this.spielbrett[Position.F8.ordinal()].setFigur(new Laeufer(Farbe.SCHWARZ));
         this.spielbrett[Position.G8.ordinal()].setFigur(new Springer(Farbe.SCHWARZ));
         this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
@@ -138,19 +148,41 @@ public class Spielbrett {
      * @throws Backend.SpielException falls keine Figur auf startposition oder ungültiger Zug
      */
     public void setFigurAufFeld(Position startposition, Position zielposition) throws SpielException{  
+        // Reseten der temporären Informationen
         this.enPassant = false;
         this.rochade = false;
+        
+        // Welche Figur wird gezogen?
         Figur figur = this.spielbrett[startposition.ordinal()].getFigur();
-              
+        // Wo kann die Figur hinziehen?
         LinkedList<Position> moves = this.getMovesFuerFeld(startposition);  //TODO Teste ob Koenig im Schach steht
+        // Ist Zielfeld ein gültiger Zug? 
         if(moves.contains(zielposition)){
+            // Falls en Passant: geschlagener Bauer wird entfernt 
             deleteBauerBeiEnPassant(figur, startposition, zielposition);
+            // Figur wird auf altem Feld entfernt
             this.spielbrett[startposition.ordinal()].setFigur(null);
+            // Figur wird auf neues Feld gesetzt
             this.spielbrett[zielposition.ordinal()].setFigur(figur);
+            // Falls Figur ein Turm oder König war, wird diese nun als bewegt gesetzt (Wichtig für Rochade)
             setKoenigTurmAlsGezogen(figur);
+            // Falls Bauer 2 Felder nach vorne, setze ihn als 2 Felder gezogen (Wichtig für en Passant)
             setBauerGezogenBeiDoppelt(figur, startposition, zielposition);
+            // Falls man eine Rochade macht, wird hier auch der Turm bewegt
             rochade(figur, startposition, zielposition);
+            
+            // Falls der König gezogen wurde, ...
+            if(figur instanceof Koenig){
+                // ... wird seine neue Position gespeichert
+                if(this.amZug == Farbe.WEISS){
+                    this.posWhiteKing = zielposition;
+                }
+                else{
+                    this.posBlackKing = zielposition;
+                }
+            }
         }
+        // Wenn nein: werfe Fehler
         else{
             throw new SpielException("Ungültiges Zielfeld!");
         } 
@@ -301,7 +333,12 @@ public class Spielbrett {
      * @return true, falls ja; sonst false
      */
     private boolean checkSchach(Farbe spieler){
-        return true;
+        if(spieler == Farbe.WEISS){
+            return ((Koenig) this.spielbrett[posWhiteKing.ordinal()].getFigur()).imSchach(this, posWhiteKing);
+        }
+        else{
+            return ((Koenig) this.spielbrett[posBlackKing.ordinal()].getFigur()).imSchach(this, posBlackKing);
+        }
     }
     
     /**

@@ -280,6 +280,9 @@ public class Partie {
      * @throws SpielException Wirft Fehler, falls ungültiger Zug
      */
     public void zieheFigur(Position ursprung, Position ziel) throws SpielException{
+        //Notation des Zuges vor dem Ziehen merken
+        String notation = this.getNotation(ursprung, ziel);
+        
         //ziehe figur
         this.spielbrett.setFigurAufFeld(ursprung, ziel);   
         
@@ -290,14 +293,38 @@ public class Partie {
             this.berechneVerbleibendeZeit((int) (d.getTime() - this.endeLetzterZug));
             this.endeLetzterZug = (int) d.getTime();
         }
-           
+        
+        // Sonderregeln zu Notation hinzufügen
+        if(spielbrett.getEnPassant()){
+            notation = ursprung.toString() + "x" + ziel.toString() + " e.p.";
+        }
+        else if(spielbrett.getRochade()){
+            if(ursprung.ordinal() > ziel.ordinal()){
+                notation = "0-0-0";
+            }
+            else{
+                notation = "0-0";
+            }
+        }
+        
         //Zug abspeichern
-        this.ablauf.add(new Zug(ursprung, ziel, "test"));
+        this.ablauf.add(new Zug(ursprung, ziel, notation));
         
         //jetzt zieht KI, falls es ein PvE-Spiel ist
         if(this.kiGegner){
             this.kiZieht();
         }
+    }
+    
+    private String getNotation(Position ursprung, Position ziel){
+        String connector = "x";
+        if(this.spielbrett.getFigurAufFeld(ziel) == null){
+            connector = "-";
+        }
+        
+        String figur = this.spielbrett.getFigurAufFeld(ursprung).getFigurABK();
+        
+        return figur + ursprung.toString() + connector + ziel.toString();
     }
     
     /**

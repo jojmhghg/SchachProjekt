@@ -15,6 +15,7 @@ import java.util.LinkedList;
  * @author timtim
  */
 public class Koenig extends Figur{
+    
     boolean nochNichtGezogen;
     
     public Koenig(Farbe farbe) {
@@ -291,6 +292,15 @@ public class Koenig extends Figur{
     
     @Override
     public boolean isNochNichtGezogen() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public String getFigurABK() {
+        return "K";
+    }
+
+    public boolean imSchach(Spielbrett spielbrett, Position position) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
