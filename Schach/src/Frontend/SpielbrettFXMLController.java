@@ -253,6 +253,8 @@ public class SpielbrettFXMLController implements Initializable {
     private Pane quellPane;
     private Position quellPosition;
     private LinkedList<Position> possibleMoves; 
+    
+    private Position posKingImSchach;
 
     /**
      * lädt Daten aus dem Optionen-Controller 
@@ -639,10 +641,19 @@ public class SpielbrettFXMLController implements Initializable {
             }
         }
         
-        if(spiel.imSchach() == spiel.getSpielerAmZug()){
-            System.out.println(spiel.getSpielerAmZug().toString() + " steht im Schach!");
+        if(posKingImSchach != null){
+            this.paneArray[posKingImSchach.ordinal()].setStyle("");
+            posKingImSchach = null;
         }
-
+        if(spiel.imSchach() == spiel.getSpielerAmZug()){
+            if(spiel.getSpielerAmZug() == Farbe.SCHWARZ){
+                posKingImSchach = spiel.getPositionBlackKing();
+            }
+            else{
+               posKingImSchach = spiel.getPositionWhiteKing();
+            }
+            this.paneArray[posKingImSchach.ordinal()].setStyle("-fx-border-color:  #cc0000; -fx-border-width: 5;");
+        }
     }
     
     @FXML

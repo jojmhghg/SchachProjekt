@@ -176,10 +176,29 @@ public class Spielbrett {
     
     /**
      * Gibt zurück ob ein König und welcher im Schach steht
+     * 
      * @return Farbe des Königs der im Schach steht
      */
     public Farbe getSchach(){
         return this.schach;
+    }
+    
+    /**
+     * Gibt die Position des schwarzen Königs zurück
+     * 
+     * @return Position des schwarzen Königs
+     */
+    public Position getPosBlackKing(){
+        return this.posBlackKing;
+    }
+    
+    /**
+     * Gibt die Position des weisen Königs zurück
+     * 
+     * @return Position des weisen Königs
+     */
+    public Position getPosWhiteKing(){
+        return this.posWhiteKing;
     }
     
     /**

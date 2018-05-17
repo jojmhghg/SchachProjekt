@@ -63,6 +63,16 @@ public class Spiel implements SpielInteraktionen {
     }
 
     @Override
+    public Position getPositionBlackKing(){
+        return this.partie.getSpielbrett().getPosBlackKing();
+    }
+    
+    @Override
+    public Position getPositionWhiteKing(){
+        return this.partie.getSpielbrett().getPosWhiteKing();
+    }
+    
+    @Override
     public Farbe getFarbe(){
         return this.partie.getFarbe();
     }

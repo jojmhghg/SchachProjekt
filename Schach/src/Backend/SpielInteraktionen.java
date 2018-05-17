@@ -26,6 +26,8 @@ public interface SpielInteraktionen {
     public Spielbrett partieLaden(String speicherstand) throws SpielException;
     public void zieheFigur(Position ausgangsposition, Position zielposition) throws SpielException;
     
+    public Position getPositionBlackKing();
+    public Position getPositionWhiteKing();
     public Farbe getFarbe();
     public boolean getKiGegner();  
     public boolean getEnPassant();
