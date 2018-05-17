@@ -340,7 +340,7 @@ public class SpielbrettFXMLController implements Initializable {
         Position pos;
         Figur figur;
         for (int i = 0; i < 64; i++) {
-            pos = Position.values()[i];          
+            pos = Position.values()[i];    
             figur = spielbrett.getFigurAufFeld(pos);
             if (figur != null) {
 
@@ -870,6 +870,12 @@ public class SpielbrettFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initSpielbrett();                                    
+        try {
+            this.spielbrett = new Spielbrett();
+            this.spiel = new Spiel();                                    
+            initSpielbrett();
+        } catch (SpielException ex) {
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
