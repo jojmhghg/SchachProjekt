@@ -19,11 +19,6 @@ public class Dame extends Figur{
     public Dame(Farbe farbe) {
         super(farbe);
     }
-
-    @Override
-    public void setNochNichtGezogen(boolean nochNichtGezogen) {
-        this.nochNichtGezogen = nochNichtGezogen;
-    }
     
     @Override
     public LinkedList<Position> getMoves(Spielbrett spielbrett, Position position) {
@@ -245,16 +240,6 @@ public class Dame extends Figur{
     @Override
     public String getFigurName() {
         return "Dame";
-    }
-    
-    @Override
-    public boolean isNochNichtGezogen() {
-        return nochNichtGezogen;
-    }
-    
-    @Override
-    public void setWievielterZug(int wievielterZug) {
-        this.wievielterZug = wievielterZug;
     }
 
     @Override

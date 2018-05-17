@@ -117,6 +117,64 @@ public class Spielbrett {
     }
     
     /**
+     * Konstruktor um ein Spielbrett zu klonen
+     */
+    private Spielbrett(Spielbrett spielbrett) {
+        this.enPassant = spielbrett.getEnPassant();
+        this.rochade = spielbrett.getRochade();
+        this.schach = spielbrett.getSchach();
+        this.amZug = spielbrett.getSpielerAmZug();
+        this.spielbrett = new Feld[64];
+        this.wievielterZug = spielbrett.getWievielterZug();
+        this.posWhiteKing = spielbrett.posWhiteKing;
+        this.posBlackKing = spielbrett.posBlackKing;
+        
+        Figur tmpFigur;
+        Farbe tmpFarbe;
+        for(int i = 0; i < 64; i++){
+            this.spielbrett[i] = new Feld();
+            if(spielbrett.getFigurAufFeld(Position.values()[i]) != null){
+                tmpFigur = spielbrett.getFigurAufFeld(Position.values()[i]);
+                tmpFarbe = tmpFigur.getFarbe();
+                switch(tmpFigur.getFigurName()){
+                    case "Bauer":
+                        this.spielbrett[i].setFigur(new Bauer(tmpFarbe));
+                        ((Bauer) this.spielbrett[i].getFigur()).setWievielterZug(((Bauer) tmpFigur).getWievielterZug());
+                        ((Bauer) this.spielbrett[i].getFigur()).setNochNichtGezogen(((Bauer) tmpFigur).isNochNichtGezogen());
+                        break;
+                        
+                    case "Turm":
+                        this.spielbrett[i].setFigur(new Turm(tmpFarbe));
+                        ((Turm) this.spielbrett[i].getFigur()).setNochNichtGezogen(((Turm) tmpFigur).isNochNichtGezogen());
+                        break;
+                        
+                    case "Springer":
+                        this.spielbrett[i].setFigur(new Springer(tmpFarbe));
+                        break;
+                        
+                    case "Läufer":
+                        this.spielbrett[i].setFigur(new Laeufer(tmpFarbe));
+                        break;
+                        
+                    case "König":
+                        this.spielbrett[i].setFigur(new Koenig(tmpFarbe));
+                        ((Koenig) this.spielbrett[i].getFigur()).setNochNichtGezogen(((Koenig) tmpFigur).isNochNichtGezogen());
+                        break;
+                        
+                    case "Dame":
+                        this.spielbrett[i].setFigur(new Dame(tmpFarbe));
+                        break;
+                        
+                    default:
+                        
+                        break;
+                }
+                this.spielbrett[i].setFigur(tmpFigur);
+            }
+        } 
+    }
+    
+    /**
      * Gibt zurück ob ein König und welcher im Schach steht
      * @return Farbe des Königs der im Schach steht
      */
@@ -172,8 +230,8 @@ public class Spielbrett {
      * Gibt alle möglichen Züge für eine Figur auf der übergeben Position zurück
      * 
      * @param position Position der Figur auf Spielbrett
-     * @return LinkedList alles Positionen, die die Figur erreichen kann und darf
-     * @throws Backend.SpielException
+     * @return LinkedList aller Positionen, welche die Figur erreichen kann und darf
+     * @throws Backend.SpielException falls auf Position keine Figur oder eine gegnerische
      */
     public LinkedList<Position> getMovesFuerFeld(Position position) throws SpielException{ 
         Figur figur = this.spielbrett[position.ordinal()].getFigur();
@@ -188,8 +246,18 @@ public class Spielbrett {
         
         // Mögliche Züge werden berechnet
         LinkedList<Position> moves =  this.spielbrett[position.ordinal()].getMoves(this, position);
+        LinkedList<Position> resultMoves = new LinkedList<>();
+                
+        Spielbrett tmpSpielbrett;
+        for(Position move : moves){
+            tmpSpielbrett = new Spielbrett(this);
+            tmpSpielbrett.setFigurAufFeld(position, move);
+            if(!tmpSpielbrett.checkSchach(this.getSpielerAmZug())){
+                resultMoves.add(move);
+            }
+        }
         
-        return moves;
+        return resultMoves;
     }
     
     /**
@@ -309,11 +377,11 @@ public class Spielbrett {
      * @param figur zu überprüfende Figur
      */
     private void setKoenigTurmAlsGezogen(Figur figur){
-        if(figur.getFigurName().equals("König")){
-            figur.setNochNichtGezogen(false);
+        if(figur instanceof Koenig){
+            ((Koenig) figur).setNochNichtGezogen(false);
         }
-        else if(figur.getFigurName().equals("Turm")){
-            figur.setNochNichtGezogen(false);
+        else if(figur instanceof Turm){
+            ((Turm) figur).setNochNichtGezogen(false);
         }
     }
     
@@ -326,11 +394,11 @@ public class Spielbrett {
      * @param zielposition 
      */
     private void setBauerGezogenBeiDoppelt(Figur figur, Position startposition, Position zielposition){
-        if(figur.getFigurName().equals("Bauer")){
+        if(figur instanceof Bauer){
             if(startposition.ordinal() <= 15 && startposition.ordinal() >= 8 || startposition.ordinal() <= 55 && startposition.ordinal() >= 48){
                 if(zielposition.ordinal() <= 31 && zielposition.ordinal() >= 24 || zielposition.ordinal() <= 39 && zielposition.ordinal() >= 32){
-                    figur.setNochNichtGezogen(false);
-                    figur.setWievielterZug(wievielterZug+1);
+                    ((Bauer) figur).setNochNichtGezogen(false);
+                    ((Bauer) figur).setWievielterZug(wievielterZug + 1);
                 }
             }
         }

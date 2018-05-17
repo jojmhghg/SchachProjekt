@@ -19,11 +19,6 @@ public class Springer extends Figur{
     public Springer(Farbe farbe) {
         super(farbe);
     }
-
-    @Override
-    public void setNochNichtGezogen(boolean nochNichtGezogen) {
-        this.nochNichtGezogen = nochNichtGezogen;
-    }
     
     @Override
     public LinkedList<Position> getMoves(Spielbrett spielbrett, Position position) {
@@ -103,29 +98,12 @@ public class Springer extends Figur{
             }
         }
         
-        
-        
-        
-        
-        
-        
-        
         return moves;
     }
 
     @Override
     public String getFigurName() {
         return "Springer";
-    }
-    
-    @Override
-    public boolean isNochNichtGezogen() {
-        return nochNichtGezogen;
-    }
-    
-    @Override
-    public void setWievielterZug(int wievielterZug) {
-        this.wievielterZug = wievielterZug;
     }
     
     @Override

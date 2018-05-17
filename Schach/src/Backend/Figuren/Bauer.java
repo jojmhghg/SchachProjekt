@@ -16,20 +16,29 @@ import java.util.LinkedList;
  */
 public class Bauer extends Figur{
 
+    private boolean nochNichtGezogen;
+    private int wievielterZug;
+    
     public Bauer(Farbe farbe) {
         super(farbe);
         this.nochNichtGezogen = true;
         this.wievielterZug = 0;
     }
 
-    @Override
+    public void setNochNichtGezogen(boolean nochNichtGezogen) {
+        this.nochNichtGezogen = nochNichtGezogen;
+    }
+    
+    public boolean isNochNichtGezogen() {
+        return nochNichtGezogen;
+    }
+    
     public void setWievielterZug(int wievielterZug) {
         this.wievielterZug = wievielterZug;
     }
-
-    @Override
-    public void setNochNichtGezogen(boolean nochNichtGezogen) {
-        this.nochNichtGezogen = nochNichtGezogen;
+    
+    public int getWievielterZug() {
+        return this.wievielterZug;
     }
     
     @Override
@@ -96,8 +105,8 @@ public class Bauer extends Figur{
             //Wenn Bauer nicht auf der 1.Spalte steht
             //Nach links
             if((position.ordinal() % 8) != 0){
-                if(!(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]) == null) && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]).getFigurName() == "Bauer" && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]).farbe == color){
-                    if(!spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]).nochNichtGezogen && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]).wievielterZug == spielbrett.getWievielterZug()){
+                if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]) != null && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]) instanceof Bauer && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft]).farbe == color){
+                    if(!((Bauer) spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft])).nochNichtGezogen && ((Bauer) spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + enPassantLeft])).getWievielterZug() == spielbrett.getWievielterZug()){
                         moves.add(Position.values()[position.ordinal() + left]);
                     }
                 }
@@ -105,8 +114,8 @@ public class Bauer extends Figur{
             //Wenn Bauer nicht auf der 8.Spalte steht
             //Nach rechts
             if((position.ordinal() % 8) != 7){
-                if(!(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() - enPassantLeft]) == null) && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() - enPassantLeft]).getFigurName() == "Bauer" && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() - enPassantLeft]).farbe == color){
-                    if(!spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + -enPassantLeft]).nochNichtGezogen && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + -enPassantLeft]).wievielterZug == spielbrett.getWievielterZug()){
+                if(!(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() - enPassantLeft]) == null) && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() - enPassantLeft]) instanceof Bauer && spielbrett.getFigurAufFeld(Position.values()[position.ordinal() - enPassantLeft]).farbe == color){
+                    if(!((Bauer) spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + -enPassantLeft])).nochNichtGezogen && ((Bauer) spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + -enPassantLeft])).getWievielterZug() == spielbrett.getWievielterZug()){
                         moves.add(Position.values()[position.ordinal() + right]);
                     }
                 }
@@ -114,13 +123,7 @@ public class Bauer extends Figur{
         }
         return moves;
     }
-
-    
-    @Override
-    public boolean isNochNichtGezogen() {
-        return nochNichtGezogen;
-    }
-    
+     
     @Override
     public String getFigurName() {
         return "Bauer";

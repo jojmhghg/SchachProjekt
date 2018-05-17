@@ -19,11 +19,6 @@ public class Laeufer extends Figur{
     public Laeufer(Farbe farbe) {
         super(farbe);
     }
-
-    @Override
-    public void setNochNichtGezogen(boolean nochNichtGezogen) {
-        this.nochNichtGezogen = nochNichtGezogen;
-    }
     
     @Override
     public LinkedList<Position> getMoves(Spielbrett spielbrett, Position position) {
@@ -116,15 +111,6 @@ public class Laeufer extends Figur{
         return "Läufer";
     }
     
-    @Override
-    public boolean isNochNichtGezogen() {
-        return nochNichtGezogen;
-    }
-    
-    @Override
-    public void setWievielterZug(int wievielterZug) {
-        this.wievielterZug = wievielterZug;
-    }
     @Override
     public String getFigurABK() {
         return "L";

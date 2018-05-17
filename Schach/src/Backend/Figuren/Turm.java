@@ -16,11 +16,21 @@ import java.util.LinkedList;
  */
 public class Turm extends Figur{
 
+    private boolean nochNichtGezogen;
+    
     public Turm(Farbe farbe) {
         super(farbe);
         this.nochNichtGezogen = true;
     }
 
+    public void setNochNichtGezogen(boolean nochNichtGezogen) {
+        this.nochNichtGezogen = nochNichtGezogen;
+    }
+
+    public boolean isNochNichtGezogen() {
+        return nochNichtGezogen;
+    }
+    
     @Override
     public LinkedList<Position> getMoves(Spielbrett spielbrett, Position position) {
         LinkedList<Position> moves = new LinkedList<>();
@@ -172,22 +182,6 @@ public class Turm extends Figur{
     @Override
     public String getFigurName() {
         return "Turm";
-    }
-    
-    
-    @Override
-    public void setNochNichtGezogen(boolean nochNichtGezogen) {
-        this.nochNichtGezogen = nochNichtGezogen;
-    }
-
-    @Override
-    public boolean isNochNichtGezogen() {
-        return nochNichtGezogen;
-    }
-    
-    @Override
-    public void setWievielterZug(int wievielterZug) {
-        this.wievielterZug = wievielterZug;
     }
     
     @Override
