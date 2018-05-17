@@ -249,9 +249,33 @@ public class Spielbrett {
         LinkedList<Position> resultMoves = new LinkedList<>();
                 
         Spielbrett tmpSpielbrett;
+        Figur tmpFigur;
         for(Position move : moves){
-            tmpSpielbrett = new Spielbrett(this);
-            tmpSpielbrett.setFigurAufFeld(position, move);
+            tmpSpielbrett = new Spielbrett(this);     
+            tmpFigur = tmpSpielbrett.getFigurAufFeld(position);
+            // Falls en Passant: geschlagener Bauer wird entfernt 
+            deleteBauerBeiEnPassant(tmpFigur, position, move);
+            // Figur wird auf altem Feld entfernt
+            tmpSpielbrett.spielbrett[position.ordinal()].setFigur(null);
+            // Figur wird auf neues Feld gesetzt
+            tmpSpielbrett.spielbrett[move.ordinal()].setFigur(tmpFigur);
+            // Falls Figur ein Turm oder König war, wird diese nun als bewegt gesetzt (Wichtig für Rochade)
+            setKoenigTurmAlsGezogen(tmpFigur);
+            // Falls Bauer 2 Felder nach vorne, setze ihn als 2 Felder gezogen (Wichtig für en Passant)
+            setBauerGezogenBeiDoppelt(figur, position, move);
+            // Falls man eine Rochade macht, wird hier auch der Turm bewegt
+            rochade(tmpFigur, position, move);
+            
+            // Falls der König gezogen wurde, ...
+            if(tmpFigur instanceof Koenig){
+                // ... wird seine neue Position gespeichert
+                if(tmpSpielbrett.amZug == Farbe.WEISS){
+                    tmpSpielbrett.posWhiteKing = move;
+                }
+                else{
+                    tmpSpielbrett.posBlackKing = move;
+                }
+            }
             if(!tmpSpielbrett.checkSchach(this.getSpielerAmZug())){
                 resultMoves.add(move);
             }
@@ -413,7 +437,7 @@ public class Spielbrett {
      * @param zielposition 
      */
     private void deleteBauerBeiEnPassant(Figur figur, Position startposition, Position zielposition){
-        if(this.spielbrett[zielposition.ordinal()].getFigur() == null && figur.getFigurName().equals("Bauer")){
+        if(this.spielbrett[zielposition.ordinal()].getFigur() == null && figur instanceof Bauer){
             if((startposition.ordinal() % 8) != (zielposition.ordinal() % 8)){
                 if(figur.getFarbe() == Farbe.WEISS){
                     this.spielbrett[zielposition.ordinal() - 8].setFigur(null);
@@ -438,7 +462,7 @@ public class Spielbrett {
         int rechterTurm;
         int linkerTurmZiel;
         int rechterTurmZiel;
-        if(figur.getFigurName().equals("König")){
+        if(figur instanceof Koenig){
             if(Math.abs(startposition.ordinal() - zielposition.ordinal()) == 2){
                 this.rochade = true;
                 if(figur.getFarbe() == Farbe.WEISS){
