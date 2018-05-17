@@ -48,17 +48,11 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private JFXButton partieLaden;
 
-    SpielInteraktionen spiel;
+    Spiel spiel;
     Spielbrett spielbrett;
-    Optionen optionen;
-    Spiel spielBackend;
 
-    public StartseiteFXMLController() {
-
-    }
-
-    public void loadData() {
-        //TODO
+    public void loadData() throws SpielException {
+        spiel = new Spiel();
     }
 
     @FXML
@@ -76,7 +70,7 @@ public class StartseiteFXMLController implements Initializable {
             Parent optionenScene = loader.load();
 
             OptionenFXMLController controller = loader.getController();
-            controller.loadData();
+            controller.loadData(spiel);
 
             //optionenScene = FXMLLoader.load(getClass().getResource("Optionen.fxml"));
             Stage optionenStage = new Stage();
@@ -97,21 +91,16 @@ public class StartseiteFXMLController implements Initializable {
         File selectedFile = chooser.showOpenDialog(null);
 
         if (selectedFile != null) {
-            String name = "test1";
             try {
+                String name = "test1";
                 spielbrett = spiel.partieLaden(name);
-            } catch (SpielException ex) {
-                Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            //Parent chessBoardScene;
-            try {
+            
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("Spielbrett.fxml"));
                 Parent chessBoardScene = loader.load();
 
                 SpielbrettFXMLController controller = loader.getController();
-                controller.loadData();
+                controller.loadData(spiel, spielbrett);
 
                 Stage chessBoardStage = new Stage();
                 chessBoardStage.setScene(new Scene(chessBoardScene));
@@ -122,7 +111,7 @@ public class StartseiteFXMLController implements Initializable {
                 //            spielbrettFXMLController.loadSpielername();
                 // Hide this current window (if this is what you want)
                 ((Node) (event.getSource())).getScene().getWindow().hide();
-            } catch (IOException ex) {
+            } catch (IOException | SpielException ex) {
                 Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -137,11 +126,7 @@ public class StartseiteFXMLController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            spiel = new Spiel();
-        } catch (SpielException ex) {
-            Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
 }

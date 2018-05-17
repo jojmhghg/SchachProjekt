@@ -6,9 +6,9 @@
 package Frontend;
 
 import Backend.Einstellungen;
+import Backend.Spiel;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
-import Backend.Spielbrett;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
@@ -45,26 +45,11 @@ public class EinstellungenFXMLController implements Initializable {
     @FXML
     private JFXButton speichern;
     
-    SpielInteraktionen spiel;
-    Einstellungen einstellung;
+    Spiel spiel;
     SpielbrettFXMLController spielbrettFXMLController;
 
-    public void loadSpielFromController() throws IOException {
-        FXMLLoader loadStub = new FXMLLoader();
-        loadStub.setLocation(getClass().getResource("Spielbrett.fxml"));
-        Parent loadStubParent = loadStub.load();
-
-        Scene loadStubScene = new Scene(loadStubParent);
-
-        SpielbrettFXMLController controller1 = loadStub.getController();
-
-        einstellung = controller1.einstellung;
-        spiel = controller1.spiel;
-         
-    }
-    
-    public void loadData() {
-        //TODO
+    public void loadData(Spiel spiel) {
+            this.spiel = spiel;
     }
     
     @FXML
@@ -75,7 +60,7 @@ public class EinstellungenFXMLController implements Initializable {
             Parent spielbrettScene = loader.load();
 
             SpielbrettFXMLController controller = loader.getController();
-            controller.loadData();
+            //controller.loadData();
             
             
             //spielbrettScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
@@ -115,16 +100,9 @@ public class EinstellungenFXMLController implements Initializable {
      * @param rb
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        try {           
-            loadSpielFromController();
-            
-            spielername.setText(spiel.getUsername());
-            highlightingButton.setSelected(!spiel.isHighlightingAus());
-            
-        } catch (IOException ex) {
-            Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void initialize(URL url, ResourceBundle rb) {                            
+        spielername.setText(spiel.getUsername());
+        highlightingButton.setSelected(!spiel.isHighlightingAus());
     }    
     
 }

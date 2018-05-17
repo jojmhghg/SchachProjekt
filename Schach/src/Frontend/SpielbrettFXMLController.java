@@ -9,6 +9,7 @@ import Backend.Einstellungen;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Figuren.Figur;
+import Backend.Spiel;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
 import Backend.Spielbrett;
@@ -243,7 +244,7 @@ public class SpielbrettFXMLController implements Initializable {
     
     private Pane[] paneArray;
     
-    SpielInteraktionen spiel;
+    Spiel spiel;
     Spielbrett spielbrett;
     Einstellungen einstellung;
     OptionenFXMLController optionenFXMLController;
@@ -255,27 +256,10 @@ public class SpielbrettFXMLController implements Initializable {
     private LinkedList<Position> possibleMoves; 
     
     private Position posKingImSchach;
-
-    /**
-     * lädt Daten aus dem Optionen-Controller 
-     * 
-     * @throws IOException 
-     */
-    public void loadSpielFromController() throws IOException {
-        FXMLLoader loadStub = new FXMLLoader();
-        loadStub.setLocation(getClass().getResource("Optionen.fxml"));
-        Parent loadStubParent = loadStub.load();
-
-        Scene loadStubScene = new Scene(loadStubParent);
-
-        OptionenFXMLController controller1 = loadStub.getController();
-
-        spielbrett = controller1.spielbrett;
-        spiel = controller1.spiel;
-    }
-    
-    public void loadData() {
-        //TODO
+   
+    public void loadData(Spiel spiel, Spielbrett spielbrett) {
+        this.spiel = spiel;
+        this.spielbrett = spielbrett;
     }
 
     /**
@@ -613,7 +597,7 @@ public class SpielbrettFXMLController implements Initializable {
             Parent einstellungenScene = loader.load();
 
             EinstellungenFXMLController controller = loader.getController();
-            controller.loadData();
+            controller.loadData(spiel);
             
             //einstellungenScene = FXMLLoader.load(getClass().getResource("Einstellungen.fxml"));
             Stage einstellungenStage = new Stage();
@@ -886,13 +870,6 @@ public class SpielbrettFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            loadSpielFromController();
-            initSpielbrett();         
-                            
-        } catch (IOException ex) {
-            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        initSpielbrett();                                    
     }
 }

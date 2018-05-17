@@ -73,8 +73,7 @@ public class OptionenFXMLController implements Initializable {
     ObservableList<String> partieZeitList = FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt");
 
     Spielbrett spielbrett;
-    Optionen optionen;
-    SpielInteraktionen spiel;
+    Spiel spiel;
     SpielbrettFXMLController spielbrettFXMLController;
 
     public OptionenFXMLController() {
@@ -88,33 +87,16 @@ public class OptionenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
             partieZeitLokal.setItems(partieZeitList);
             partieZeitLokal.getSelectionModel().selectLast();
             partieZeitOnline.setItems(partieZeitList);
             partieZeitOnline.getSelectionModel().selectLast();
-            loadSpielFromController();
+            
             this.spielbrett = new Spielbrett();
-        } catch (IOException ex) {
-            Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
-    public void loadData() {
-        //TODO
-    }
-
-    public void loadSpielFromController() throws IOException {
-        FXMLLoader loadStub = new FXMLLoader();
-        loadStub.setLocation(getClass().getResource("Startseite.fxml"));
-        Parent loadStubParent = loadStub.load();
-
-        Scene loadStubScene = new Scene(loadStubParent);
-
-        StartseiteFXMLController controller1 = loadStub.getController();
-
-        optionen = controller1.optionen;
-        spiel = controller1.spiel;
+    public void loadData(Spiel spiel) {
+        this.spiel = spiel;
     }
 
     @FXML
@@ -126,30 +108,28 @@ public class OptionenFXMLController implements Initializable {
                 Farbe farbe = choosedColor();
                 partieoptionen = new Optionen(farbe, time, getChoosedGegner());
                 spielbrett = spiel.neuePartie(partieoptionen);        
-            } catch (SpielException ex) {
+                      
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("Spielbrett.fxml"));
+                Parent chessBoardScene = loader.load();
+
+                SpielbrettFXMLController controller = loader.getController();
+                controller.loadData(spiel, spielbrett);
+
+                //chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
+                Stage chessBoardStage = new Stage();
+                chessBoardStage.setScene(new Scene(chessBoardScene));
+                chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+                chessBoardStage.initStyle(StageStyle.UNDECORATED);
+                chessBoardStage.show();
+
+    //            spielbrettFXMLController.loadSpielername();
+
+                // Hide this current window (if this is what you want)
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+             } catch (SpielException ex) {
                 Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("Spielbrett.fxml"));
-            Parent chessBoardScene = loader.load();
-
-            SpielbrettFXMLController controller = loader.getController();
-            controller.loadData();
-            
-            
-            //chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
-            Stage chessBoardStage = new Stage();
-            chessBoardStage.setScene(new Scene(chessBoardScene));
-            chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
-            chessBoardStage.initStyle(StageStyle.UNDECORATED);
-            chessBoardStage.show();
-            
-           
-//            spielbrettFXMLController.loadSpielername();
-           
-            // Hide this current window (if this is what you want)
-            ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException ex) {
             Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -164,7 +144,11 @@ public class OptionenFXMLController implements Initializable {
             Parent startSeiteScene = loader.load();
 
             StartseiteFXMLController controller = loader.getController();
-            controller.loadData();
+            try {
+                controller.loadData();
+            } catch (SpielException ex) {
+                Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             //startSeiteScene = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
             Stage startSeiteStage;
