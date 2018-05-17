@@ -277,6 +277,10 @@ public class SpielbrettFXMLController implements Initializable {
         spielbrett = controller1.spielbrett;
         spiel = controller1.spiel;
     }
+    
+    public void loadData() {
+        //TODO
+    }
 
     /**
      * initialisiert die GUI-Objekte & plaziert dort die Figuren
@@ -605,9 +609,17 @@ public class SpielbrettFXMLController implements Initializable {
     
     @FXML
     private void goToEinstellungen(ActionEvent event) {
-        Parent einstellungenScene;
+        
         try {
-            einstellungenScene = FXMLLoader.load(getClass().getResource("Einstellungen.fxml"));
+            
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("Einstellungen.fxml"));
+            Parent einstellungenScene = loader.load();
+
+            EinstellungenFXMLController controller = loader.getController();
+            controller.loadData();
+            
+            //einstellungenScene = FXMLLoader.load(getClass().getResource("Einstellungen.fxml"));
             Stage einstellungenStage = new Stage();
             einstellungenStage.initModality(Modality.APPLICATION_MODAL);
             einstellungenStage.initStyle(StageStyle.UNDECORATED);
@@ -837,9 +849,17 @@ public class SpielbrettFXMLController implements Initializable {
     
     @FXML
     private void goToAbout(ActionEvent event) {
-        Parent aboutScene;
+        
         try {
-            aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("About.fxml"));
+            Parent aboutScene = loader.load();
+
+            AboutController controller = loader.getController();
+            controller.loadData();
+            
+            
+            //aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
             Stage aboutStage = new Stage();
             aboutStage.initModality(Modality.APPLICATION_MODAL);
             aboutStage.setScene(new Scene(aboutScene));

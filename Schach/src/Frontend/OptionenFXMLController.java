@@ -7,6 +7,7 @@ package Frontend;
 
 import Backend.Enums.Farbe;
 import Backend.Optionen;
+import Backend.Spiel;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
 import Backend.Spielbrett;
@@ -98,6 +99,10 @@ public class OptionenFXMLController implements Initializable {
             Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void loadData() {
+        //TODO
+    }
 
     public void loadSpielFromController() throws IOException {
         FXMLLoader loadStub = new FXMLLoader();
@@ -125,8 +130,15 @@ public class OptionenFXMLController implements Initializable {
                 Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            Parent chessBoardScene;
-            chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("Spielbrett.fxml"));
+            Parent chessBoardScene = loader.load();
+
+            SpielbrettFXMLController controller = loader.getController();
+            controller.loadData();
+            
+            
+            //chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
             Stage chessBoardStage = new Stage();
             chessBoardStage.setScene(new Scene(chessBoardScene));
             chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
@@ -146,8 +158,15 @@ public class OptionenFXMLController implements Initializable {
     @FXML
     private void backToStartPage(ActionEvent event) {
         try {
-            Parent startSeiteScene;
-            startSeiteScene = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
+            
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("Startseite.fxml"));
+            Parent startSeiteScene = loader.load();
+
+            StartseiteFXMLController controller = loader.getController();
+            controller.loadData();
+            
+            //startSeiteScene = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
             Stage startSeiteStage;
             startSeiteStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             startSeiteStage.setScene(new Scene(startSeiteScene));

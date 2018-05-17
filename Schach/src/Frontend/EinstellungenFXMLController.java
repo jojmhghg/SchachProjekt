@@ -63,11 +63,22 @@ public class EinstellungenFXMLController implements Initializable {
          
     }
     
+    public void loadData() {
+        //TODO
+    }
+    
     @FXML
     private void backToSpielbrett(ActionEvent event) {
         try {
-            Parent spielbrettScene;
-            spielbrettScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("Spielbrett.fxml"));
+            Parent spielbrettScene = loader.load();
+
+            SpielbrettFXMLController controller = loader.getController();
+            controller.loadData();
+            
+            
+            //spielbrettScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
             Stage spielbrettStage;
             spielbrettStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             spielbrettStage.show();
