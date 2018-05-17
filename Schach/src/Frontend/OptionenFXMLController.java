@@ -133,7 +133,7 @@ public class OptionenFXMLController implements Initializable {
             chessBoardStage.initStyle(StageStyle.UNDECORATED);
             chessBoardStage.show();
             
-            System.out.println(spiel.getUsername());
+           
 //            spielbrettFXMLController.loadSpielername();
            
             // Hide this current window (if this is what you want)

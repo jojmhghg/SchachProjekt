@@ -91,6 +91,11 @@ public class Spiel implements SpielInteraktionen {
     public Farbe getGewinner() {
         return this.partie.getGewinner();
     }
+    
+    @Override
+    public Farbe imSchach() {
+        return this.partie.getSpielbrett().getSchach();
+    }
 
     @Override
     public long getZeitSpieler1() {

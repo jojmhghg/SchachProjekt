@@ -7,6 +7,7 @@ package Backend;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
+import Backend.Figuren.Figur;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

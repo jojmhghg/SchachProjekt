@@ -32,6 +32,7 @@ public interface SpielInteraktionen {
     public boolean getRochade();
     public Farbe getSpielerAmZug();
     public Farbe getGewinner();  
+    public Farbe imSchach(); 
     public long getZeitSpieler1();
     public long getZeitSpieler2();
     public long getPartiezeit();

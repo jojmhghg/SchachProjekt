@@ -8,7 +8,6 @@ package Frontend;
 import Backend.Einstellungen;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
-import Backend.Figuren.Bauer;
 import Backend.Figuren.Figur;
 import Backend.SpielException;
 import Backend.SpielInteraktionen;
@@ -20,15 +19,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,7 +53,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -643,6 +637,10 @@ public class SpielbrettFXMLController implements Initializable {
                 rotateBoard();
                 changePositionTextSchwarz();
             }
+        }
+        
+        if(spiel.imSchach() == spiel.getSpielerAmZug()){
+            System.out.println(spiel.getSpielerAmZug().toString() + " steht im Schach!");
         }
 
     }

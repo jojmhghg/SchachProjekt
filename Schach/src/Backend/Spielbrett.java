@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -36,25 +35,29 @@ public class Spielbrett {
      */
     private Position posBlackKing;
     /**
-     * Gibt an ob und wer gerade im Schach steht
+     * Gibt an, ob und wer gerade im Schach steht
      */
     private Farbe schach;
     /**
-     * Gibt an welcher Spieler am Zug ist
+     * Gibt an, welcher Spieler am Zug ist
      */
-    private Farbe amZug;
-    
+    private Farbe amZug;   
     /**
-     * 
+     * Gibt an, wie viel Züge schon gespielt wurden
      */
     private int wievielterZug;
-    
+    /**
+     * Gibt an, ob gerade ein en Passant gemacht wurde
+     */
     private boolean enPassant;
+    /**
+     * Gibt an, ob gerade eine Rochade gemacht wurde
+     */
     private boolean rochade;
     
     /**
      * Konstruktor um ein neues Spielbrett zu erstellen
-     * Standardaufstellung!
+     * Mit Standardaufstellung!
      */
     public Spielbrett() {
         this.enPassant = false;
@@ -63,7 +66,9 @@ public class Spielbrett {
         this.amZug = Farbe.WEISS;
         this.spielbrett = new Feld[64];
         this.wievielterZug = 0;
-               
+        this.posWhiteKing = Position.E1;
+        this.posBlackKing = Position.E8;
+        
         for(int i = 0; i < 64; i++){
             this.spielbrett[i] = new Feld();
         }
@@ -72,8 +77,7 @@ public class Spielbrett {
         this.spielbrett[Position.B1.ordinal()].setFigur(new Springer(Farbe.WEISS));
         this.spielbrett[Position.C1.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
         this.spielbrett[Position.D1.ordinal()].setFigur(new Dame(Farbe.WEISS));
-        this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));
-        this.posWhiteKing = Position.E1;
+        this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));        
         this.spielbrett[Position.F1.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
         this.spielbrett[Position.G1.ordinal()].setFigur(new Springer(Farbe.WEISS));
         this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
@@ -92,7 +96,6 @@ public class Spielbrett {
         this.spielbrett[Position.C8.ordinal()].setFigur(new Laeufer(Farbe.SCHWARZ));
         this.spielbrett[Position.D8.ordinal()].setFigur(new Dame(Farbe.SCHWARZ));
         this.spielbrett[Position.E8.ordinal()].setFigur(new Koenig(Farbe.SCHWARZ));
-        this.posBlackKing = Position.E8;
         this.spielbrett[Position.F8.ordinal()].setFigur(new Laeufer(Farbe.SCHWARZ));
         this.spielbrett[Position.G8.ordinal()].setFigur(new Springer(Farbe.SCHWARZ));
         this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
@@ -130,12 +133,63 @@ public class Spielbrett {
     }
     
     /**
+     * Gibt zurück wie viel Züge schon gespielt wurden
+     * 
+     * @return wie viel züge schon gespielt wurden 
+     */
+    public int getWievielterZug() {
+        return wievielterZug;
+    }
+    
+    /**
+     * Gibt zurück ob man gerade ein en Passant gemacht hat
+     * 
+     * @return true = ja, false = nein
+     */
+    public boolean getEnPassant(){
+        return this.enPassant;
+    }
+    
+    /**
+     * Gibt zurück ob man gerade eine Rochade gemacht hat
+     * 
+     * @return true = ja, false = nein
+     */
+    public boolean getRochade(){
+        return this.rochade;
+    }
+    
+    /**
      * Gibt die Figur auf einem bestimmten Feld zurück
      * @param position Position auf Spielbrett
      * @return Objekt von der Klasse Figur
      */
     public Figur getFigurAufFeld(Position position){        
         return this.spielbrett[position.ordinal()].getFigur();
+    }
+    
+    /**
+     * Gibt alle möglichen Züge für eine Figur auf der übergeben Position zurück
+     * 
+     * @param position Position der Figur auf Spielbrett
+     * @return LinkedList alles Positionen, die die Figur erreichen kann und darf
+     * @throws Backend.SpielException
+     */
+    public LinkedList<Position> getMovesFuerFeld(Position position) throws SpielException{ 
+        Figur figur = this.spielbrett[position.ordinal()].getFigur();
+
+        if(figur == null){
+            throw new SpielException("Keine Figur auf dem Feld " + position);
+        }
+        
+        if(figur.getFarbe() != this.amZug){
+            throw new SpielException("Nicht deine Figur!");
+        }
+        
+        // Mögliche Züge werden berechnet
+        LinkedList<Position> moves =  this.spielbrett[position.ordinal()].getMoves(this, position);
+        
+        return moves;
     }
     
     /**
@@ -151,6 +205,7 @@ public class Spielbrett {
         // Reseten der temporären Informationen
         this.enPassant = false;
         this.rochade = false;
+        this.schach = null;
         
         // Welche Figur wird gezogen?
         Figur figur = this.spielbrett[startposition.ordinal()].getFigur();
@@ -195,12 +250,56 @@ public class Spielbrett {
             this.amZug = Farbe.WEISS;
         }
         
-        // Teste ob der andere Spieler nun im Schach steht und wenn ja,
-        // setze Attribut Schach
-        if(checkSchach(this.amZug)){
+        // Teste ob der andere Spieler nun im Schach steht und wenn ja, setze Attribut Schach
+        if(checkSchach(this.amZug)){           
             this.schach = this.amZug;
         }
         wievielterZug++;
+    }
+    
+    /*** ------------------------------------ Hilfsmethoden ------------------------------ ***/
+    
+    /**
+     * Hilfsmethode zur Darstellung des Spielbretts im Terminal
+     * Genutzt zu Testzwecken
+     */
+    public void printSpielbrett(){
+        System.out.print("******************** Spielbrett: *************************************");
+        System.out.println("**********************************************************\n");
+        
+        Figur figur;
+        int counter;
+        int j = 56;
+        
+        while(j > -8){
+            counter = 0;
+            for(int i = j; i < j + 8; i++){
+                figur = this.spielbrett[i].getFigur();
+
+                if(figur != null){
+
+                    if(figur instanceof Springer){
+                        System.out.print(figur.getFigurName() + " " + figur.getFarbe().getAbk() + "\t");
+                    }
+                    else{
+                        System.out.print(figur.getFigurName() + "\t " + figur.getFarbe().getAbk() + "\t");
+                    }
+                }
+                else{
+                    System.out.print("leer\t\t");
+                }
+
+                if(counter >= 7){
+                    System.out.println("");
+                    counter = -1;
+                    j = j - 8;
+                }
+                counter++;
+            }
+        }
+        
+        System.out.print("\n\n**********************************************************************");
+        System.out.println("**********************************************************\n");
     }
     
     /**
@@ -259,6 +358,13 @@ public class Spielbrett {
         }
     }
 
+    /**
+     * Hilfsmethode, die Turm bei Rochade zieht
+     * 
+     * @param figur Gezogene Figur (Rochade nur falls diese Figur König ist)
+     * @param startposition Startposition der Figur (Benutzt um zu Testen ob König mehr als ein Feld weit zieht)
+     * @param zielposition Zielposition der Figur (Benutzt um zu Testen ob König mehr als ein Feld weit zieht)
+     */
     private void rochade(Figur figur, Position startposition, Position zielposition){
         int linkerTurm;
         int rechterTurm;
@@ -291,41 +397,6 @@ public class Spielbrett {
         }
     }
     
-    public int getWievielterZug() {
-        return wievielterZug;
-    }
-    
-    /**
-     * Gibt alle möglichen Züge für eine Figur auf der übergeben Position zurück
-     * 
-     * @param position Position der Figur auf Spielbrett
-     * @return LinkedList alles Positionen, die die Figur erreichen kann und darf
-     * @throws Backend.SpielException
-     */
-    public LinkedList<Position> getMovesFuerFeld(Position position) throws SpielException{ 
-        Figur figur = this.spielbrett[position.ordinal()].getFigur();
-
-        if(figur == null){
-            throw new SpielException("Keine Figur auf dem Feld " + position);
-        }
-        
-        if(figur.getFarbe() != this.amZug){
-            throw new SpielException("Nicht deine Figur!");
-        }
-        //TODO: testen ob liste mit moves hinsichtlich schachregeln okay ist.
-        //d.h. ob danach könig nicht im schach steht, etc.
-        // NUR TODO, falls Steven das nicht bei den Figuren impl kann
-        return this.spielbrett[position.ordinal()].getMoves(this, position);
-    }
-    
-    public boolean getEnPassant(){
-        return this.enPassant;
-    }
-    
-    public boolean getRochade(){
-        return this.rochade;
-    }
-    
     /**
      * Testet ob Spieler im Schach steht
      * 
@@ -339,48 +410,5 @@ public class Spielbrett {
         else{
             return ((Koenig) this.spielbrett[posBlackKing.ordinal()].getFigur()).imSchach(this, posBlackKing);
         }
-    }
-    
-    /**
-     * Hilfsmethode zur Darstellung des Spielbretts im Terminal
-     * Genutzt zu Testzwecken
-     */
-    public void printSpielbrett(){
-        System.out.print("******************** Spielbrett: *************************************");
-        System.out.println("**********************************************************\n");
-        
-        Figur figur;
-        int counter;
-        int j = 56;
-        
-        while(j > -8){
-            counter = 0;
-            for(int i = j; i < j + 8; i++){
-                figur = this.spielbrett[i].getFigur();
-
-                if(figur != null){
-
-                    if(figur instanceof Springer){
-                        System.out.print(figur.getFigurName() + " " + figur.getFarbe().getAbk() + "\t");
-                    }
-                    else{
-                        System.out.print(figur.getFigurName() + "\t " + figur.getFarbe().getAbk() + "\t");
-                    }
-                }
-                else{
-                    System.out.print("leer\t\t");
-                }
-
-                if(counter >= 7){
-                    System.out.println("");
-                    counter = -1;
-                    j = j - 8;
-                }
-                counter++;
-            }
-        }
-        
-        System.out.print("\n\n**********************************************************************");
-        System.out.println("**********************************************************\n");
     }
 }

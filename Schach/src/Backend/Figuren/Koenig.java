@@ -300,7 +300,309 @@ public class Koenig extends Figur{
         return "K";
     }
 
-    public boolean imSchach(Spielbrett spielbrett, Position position) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean imSchach(Spielbrett spielbrett, Position position) {        
+        Figur tmpFigur;
+        int tmpPos;
+        boolean stop;
+        int rechterRand;
+        int linkerRand;
+        int maxZuege;
+        int entfernung;
+        
+        // Überprüfe Forwärts
+        tmpPos = position.ordinal() + 8;
+        stop = false;
+        while(!stop && tmpPos < 64){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Turm || tmpFigur instanceof Dame)){
+                    return true;
+                }
+                stop = true;
+            }
+            else{
+                tmpPos += 8;
+            }            
+        }
+        
+        // Überprüfe Rückwärts
+        tmpPos = position.ordinal() - 8;
+        stop = false;
+        while(!stop && tmpPos > 0){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Turm || tmpFigur instanceof Dame)){
+                    return true;
+                }
+                stop = true;
+            }
+            else{
+                tmpPos -= 8;
+            }            
+        }
+        
+        // Überprüfe nach links
+        tmpPos = position.ordinal() - 1;
+        stop = false;
+        linkerRand = (position.ordinal() / 8) * 8 - 1;
+        while(!stop && tmpPos > linkerRand){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Turm || tmpFigur instanceof Dame)){
+                    return true;
+                }
+                stop = true;
+            }
+            else{
+                tmpPos -= 1;
+            }            
+        }
+        
+        // Überprüfe nach rechts
+        tmpPos = position.ordinal() + 1;
+        stop = false;
+        rechterRand = (position.ordinal() / 8) * 8 + 8;
+        while(!stop && tmpPos < rechterRand){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Turm || tmpFigur instanceof Dame)){
+                    return true;
+                }
+                stop = true;
+            }
+            else{
+                tmpPos += 1;
+            }            
+        }
+        
+        // Überprüfe Forwärts-Rechts
+        tmpPos = position.ordinal() + 9;
+        stop = false;
+        rechterRand = (position.ordinal() / 8) * 8 + 8;
+        maxZuege = rechterRand - position.ordinal() - 1;
+        while(!stop && maxZuege > 0 && tmpPos < 64){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Laeufer || tmpFigur instanceof Dame)){
+                    return true;
+                }
+                stop = true;
+            }
+            else{
+                tmpPos += 9;
+                maxZuege--;
+            }            
+        }
+        
+        // Überprüfe Forwärts-Links
+        tmpPos = position.ordinal() + 7;
+        stop = false;        
+        linkerRand = (position.ordinal() / 8) * 8 - 1;
+        maxZuege = position.ordinal() - linkerRand + 1;
+        while(!stop && maxZuege > 0 && tmpPos < 64){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Laeufer || tmpFigur instanceof Dame)){
+                    return true;
+                }
+                stop = true;
+            }
+            else{
+                tmpPos += 7;
+                maxZuege--;
+            }            
+        }
+        
+        // Überprüfe Rückwärts-Rechts
+        tmpPos = position.ordinal() - 7;
+        stop = false;
+        rechterRand = (position.ordinal() / 8) * 8 + 8;
+        maxZuege = rechterRand - position.ordinal() - 1;
+        while(!stop && maxZuege > 0 && tmpPos > 0){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Laeufer || tmpFigur instanceof Dame)){
+                    return true;
+                }
+                stop = true;
+            }
+            else{
+                tmpPos -= 7;
+                maxZuege--;
+            }            
+        }
+        
+        // Überprüfe Rückwärts-Links
+        tmpPos = position.ordinal() - 9;
+        stop = false;        
+        linkerRand = (position.ordinal() / 8) * 8 - 1;
+        maxZuege = position.ordinal() - linkerRand + 1;
+        while(!stop && maxZuege > 0 && tmpPos > 0){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Laeufer || tmpFigur instanceof Dame)){
+                    return true;
+                }
+                stop = true;
+            }
+            else{
+                tmpPos -= 9;
+                maxZuege--;
+            }            
+        }
+        
+        // Überprüfe Bauern
+        if(this.farbe == Farbe.WEISS){
+            // Überprüfe Forwärts-Rechts
+            tmpPos = position.ordinal() + 9;
+            rechterRand = (position.ordinal() / 8) * 8 + 8;
+            maxZuege = rechterRand - position.ordinal() - 1;            
+            if(maxZuege > 0 && tmpPos < 64){
+                tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+                if(tmpFigur != null){
+                    if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Bauer)){
+                        return true;
+                    }
+                    stop = true;
+                }           
+            }
+            // Überprüfe Forwärts-Links
+            tmpPos = position.ordinal() + 7;
+            linkerRand = (position.ordinal() / 8) * 8 - 1;
+            maxZuege = position.ordinal() - linkerRand + 1;
+            if(maxZuege > 0 && tmpPos < 64){
+                tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+                if(tmpFigur != null){
+                    if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Bauer)){
+                        return true;
+                    }
+                }           
+            }
+        }
+        else{
+            // Überprüfe Rückwärts-Rechts
+            tmpPos = position.ordinal() - 7;
+            rechterRand = (position.ordinal() / 8) * 8 + 8;
+            maxZuege = rechterRand - position.ordinal() - 1;
+            if(maxZuege > 0 && tmpPos > 0){
+                tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+                if(tmpFigur != null){
+                    if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Bauer)){
+                        return true;
+                    }
+                }           
+            }
+            // Überprüfe Rückwärts-Links
+            tmpPos = position.ordinal() - 9;       
+            linkerRand = (position.ordinal() / 8) * 8 - 1;
+            maxZuege = position.ordinal() - linkerRand + 1;
+            if(maxZuege > 0 && tmpPos > 0){
+                tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+                if(tmpFigur != null){
+                    if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Bauer)){
+                        return true;
+                    }
+                }          
+            }
+        }
+               
+        // Überprüfe Springer: 1 vor 2 links
+        tmpPos = position.ordinal() + 6;       
+        entfernung = (tmpPos / 8) - (position.ordinal() / 8);
+        if(tmpPos < 64 && entfernung == 1){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Springer)){
+                    return true;
+                }
+            }          
+        }
+        
+        // Überprüfe Springer: 1 vor 2 rechts
+        tmpPos = position.ordinal() + 10;
+        entfernung = (tmpPos / 8) - (position.ordinal() / 8);
+        if(tmpPos < 64 && entfernung == 1){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Springer)){
+                    return true;
+                }
+            }          
+        }
+        
+        // Überprüfe Springer: 2 vor 1 links
+        tmpPos = position.ordinal() + 15;
+        entfernung = (tmpPos / 8) - (position.ordinal() / 8);
+        if(tmpPos < 64 && entfernung == 2){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Springer)){
+                    return true;
+                }
+            }          
+        }
+        
+        // Überprüfe Springer: 2 vor 1 rechts
+        tmpPos = position.ordinal() + 17;
+        entfernung = (tmpPos / 8) - (position.ordinal() / 8);
+        if(tmpPos < 64 && entfernung == 2){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Springer)){
+                    return true;
+                }
+            }          
+        }
+        
+        // Überprüfe Springer: 1 zurück 2 links
+        tmpPos = position.ordinal() - 6;   
+        entfernung = (tmpPos / 8) - (position.ordinal() / 8);
+        if(tmpPos > 0 && entfernung == -1){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Springer)){
+                    return true;
+                }
+            }          
+        }
+        
+        // Überprüfe Springer: 1 zurück 2 rechts
+        tmpPos = position.ordinal() - 10;
+        entfernung = (tmpPos / 8) - (position.ordinal() / 8);
+        if(tmpPos > 0 && entfernung == -1){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Springer)){
+                    return true;
+                }
+            }          
+        }
+        
+        // Überprüfe Springer: 2 zurück 1 links
+        tmpPos = position.ordinal() - 15;
+        entfernung = (tmpPos / 8) - (position.ordinal() / 8);
+        if(tmpPos > 0 && entfernung == -2){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Springer)){
+                    return true;
+                }
+            }          
+        }
+        
+        // Überprüfe Springer: 2 zurück 1 rechts
+        tmpPos = position.ordinal() - 17;
+        entfernung = (tmpPos / 8) - (position.ordinal() / 8);
+        if(tmpPos > 0 && entfernung == -2){
+            tmpFigur = spielbrett.getFigurAufFeld(Position.values()[tmpPos]);
+            if(tmpFigur != null){
+                if(this.farbe != tmpFigur.getFarbe() && (tmpFigur instanceof Springer)){
+                    return true;
+                }
+            }          
+        }
+        
+        
+        return false;
     }
 }

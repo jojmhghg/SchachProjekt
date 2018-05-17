@@ -112,7 +112,6 @@ public class Bauer extends Figur{
                 }
             }
         }
-        System.out.println("?");
         return moves;
     }
 
