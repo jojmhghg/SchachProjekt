@@ -139,21 +139,21 @@
             <Menu mnemonicParsing="false" text="Donate" />
         </menus>
       </MenuBar>
-      <Text fontSmoothingType="LCD" layoutX="11.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="8" />
-      <Text fontSmoothingType="LCD" layoutX="11.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="7" />
-      <Text fontSmoothingType="LCD" layoutX="11.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="6" />
-      <Text fontSmoothingType="LCD" layoutX="11.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="5" />
-      <Text fontSmoothingType="LCD" layoutX="11.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="4" />
-      <Text fontSmoothingType="LCD" layoutX="11.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="3" />
-      <Text fontSmoothingType="LCD" layoutX="11.0" layoutY="543.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="2" />
-      <Text fontSmoothingType="LCD" layoutX="11.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="1" />
-      <Text fontSmoothingType="LCD" layoutX="135.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="B" />
-      <Text fontSmoothingType="LCD" layoutX="210.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="C" />
-      <Text fontSmoothingType="LCD" layoutX="277.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="D" />
-      <Text fontSmoothingType="LCD" layoutX="357.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="E" />
-      <Text fontSmoothingType="LCD" layoutX="434.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="F" />
-      <Text fontSmoothingType="LCD" layoutX="508.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="G" />
-      <Text fontSmoothingType="LCD" layoutX="582.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="H" />
+      <Text fx:id="acht" fontSmoothingType="LCD" layoutX="11.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="8" />
+      <Text fx:id="sieben" fontSmoothingType="LCD" layoutX="11.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="7" />
+      <Text fx:id="sechs" fontSmoothingType="LCD" layoutX="11.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="6" />
+      <Text fx:id="fuenf" fontSmoothingType="LCD" layoutX="11.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="5" />
+      <Text fx:id="vier" fontSmoothingType="LCD" layoutX="11.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="4" />
+      <Text fx:id="drei" fontSmoothingType="LCD" layoutX="11.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="3" />
+      <Text fx:id="zwei" fontSmoothingType="LCD" layoutX="11.0" layoutY="543.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="2" />
+      <Text fx:id="eins" fontSmoothingType="LCD" layoutX="11.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="1" />
+      <Text fx:id="b" fontSmoothingType="LCD" layoutX="135.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="B" />
+      <Text fx:id="c" fontSmoothingType="LCD" layoutX="210.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="C" />
+      <Text fx:id="d" fontSmoothingType="LCD" layoutX="277.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="D" />
+      <Text fx:id="e" fontSmoothingType="LCD" layoutX="357.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="E" />
+      <Text fx:id="f" fontSmoothingType="LCD" layoutX="434.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="F" />
+      <Text fx:id="g" fontSmoothingType="LCD" layoutX="508.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="G" />
+      <Text fx:id="h" fontSmoothingType="LCD" layoutX="582.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="H" />
       <SplitPane disable="true" dividerPositions="0.5" layoutX="629.0" layoutY="55.0" prefHeight="600.0" prefWidth="6.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
@@ -182,7 +182,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Text fontSmoothingType="LCD" layoutX="64.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A">
+      <Text fx:id="a" fontSmoothingType="LCD" layoutX="64.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

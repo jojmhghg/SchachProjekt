@@ -53,6 +53,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -65,7 +66,40 @@ import javafx.util.Duration;
  * @author Edwrard Nana
  */
 public class SpielbrettFXMLController implements Initializable {
-
+    
+    @FXML
+    private Text acht;
+    @FXML
+    private Text sieben;
+    @FXML
+    private Text sechs;
+    @FXML
+    private Text fuenf;
+    @FXML
+    private Text vier;
+    @FXML
+    private Text drei;
+    @FXML
+    private Text zwei;
+    @FXML
+    private Text eins;
+    @FXML
+    private Text a;
+    @FXML
+    private Text b;
+    @FXML
+    private Text c;
+    @FXML
+    private Text d;
+    @FXML
+    private Text e;
+    @FXML
+    private Text f;
+    @FXML
+    private Text g;
+    @FXML
+    private Text h;
+    
     @FXML
     private Pane A8;
     @FXML
@@ -593,25 +627,27 @@ public class SpielbrettFXMLController implements Initializable {
         spielBrettStage.close();
     }
     
-    public void updateScreen(){
+    @FXML
+    public void updateScreen() {
         //Update Time
         refreshTime();
 
-        if(spiel.getMitschrift().size() > 0){
-            //Populate listView and apply rotation
+        //Populate listView and apply rotation
+        if (spiel.getMitschrift().size() > 0) {
             if (spiel.getSpielerAmZug() == Farbe.WEISS) {
                 listZuegeSchwarz.getItems().add(spiel.getMitschrift().getLast().getMitschrift());
                 rotateBoard();
-                //selectedFigur.rotateProperty().setValue(180);
+                changePositionTextWeiss();
             } else if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
                 listZuegeWeiss.getItems().add(spiel.getMitschrift().getLast().getMitschrift());
                 rotateBoard();
-                //selectedFigur.rotationAxisProperty().setValue(value);
+                changePositionTextSchwarz();
             }
         }
 
     }
     
+    @FXML
     private void rotateBoard() {
         Double degree = gridBoard.rotateProperty().getValue();
         gridBoard.rotateProperty().setValue(degree + 180);
@@ -621,6 +657,53 @@ public class SpielbrettFXMLController implements Initializable {
                 ((ImageView) this.paneArray[i].getChildren().get(0)).rotateProperty().setValue(degree + 180);
             }
         }
+    }
+    
+    @FXML
+    private void changePositionTextSchwarz() {
+        //Buchstaben 
+        a.setText("H");
+        b.setText("G");
+        c.setText("F");
+        d.setText("E");
+        e.setText("D");
+        f.setText("C");
+        g.setText("B");
+        h.setText("A");
+        
+        //Zahlen
+        eins.setText("8");
+        zwei.setText("7");
+        drei.setText("6");
+        vier.setText("5");
+        fuenf.setText("4");
+        sechs.setText("3");
+        sieben.setText("2");
+        acht.setText("1");
+    }
+    
+        
+    @FXML
+    private void changePositionTextWeiss() {
+        //Buchstaben 
+        a.setText("A");
+        b.setText("B");
+        c.setText("C");
+        d.setText("D");
+        e.setText("E");
+        f.setText("F");
+        g.setText("G");
+        h.setText("H");
+        
+        //Zahlen
+        eins.setText("1");
+        zwei.setText("2");
+        drei.setText("3");
+        vier.setText("4");
+        fuenf.setText("5");
+        sechs.setText("6");
+        sieben.setText("7");
+        acht.setText("8");
     }
 
     @FXML
