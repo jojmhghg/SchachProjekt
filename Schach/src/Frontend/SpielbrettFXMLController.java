@@ -774,11 +774,19 @@ public class SpielbrettFXMLController implements Initializable {
         File selectedFile = chooser.showOpenDialog(null);
         //Delete pieces on board and load pieces positions from the file
         if(selectedFile != null){
+            
+            //Clean Chess board before load
             for(int i = 0; i < 64; i++){
                     if(paneArray[i].getChildren().size() > 0){
                         paneArray[i].getChildren().remove(0);
                     }
             }
+            
+            //Clean List view before load
+            listZuegeSchwarz.getItems().clear();
+            listZuegeWeiss.getItems().clear();
+            
+            //load and init board
             try {
                 spielbrett = spiel.partieLaden(selectedFile.getName().substring(0, selectedFile.getName().length()-4));
             } catch (SpielException ex) {
