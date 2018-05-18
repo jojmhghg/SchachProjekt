@@ -115,12 +115,22 @@ public class OptionenFXMLController implements Initializable {
 
                 SpielbrettFXMLController controller = loader.getController();
                 controller.loadData(spiel, spielbrett);
-
+                
                 //chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
                 Stage chessBoardStage = new Stage();
                 chessBoardStage.setScene(new Scene(chessBoardScene));
                 chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
                 chessBoardStage.initStyle(StageStyle.UNDECORATED);
+                
+                //Zeit aktualisieren
+                controller.refreshTime();
+                
+                
+                //Spielbrett drehen drehen wenn Schwarz als Farbe gewaelt wurde
+                if (choosedColor() == Farbe.SCHWARZ) {
+                    controller.rotateBoard();
+                }
+
                 chessBoardStage.show();
 
     //            spielbrettFXMLController.loadSpielername();

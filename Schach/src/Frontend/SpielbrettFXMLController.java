@@ -653,7 +653,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
     
     @FXML
-    private void rotateBoard() {
+    public void rotateBoard() {
         Double degree = gridBoard.rotateProperty().getValue();
         gridBoard.rotateProperty().setValue(degree + 180);
         
@@ -809,7 +809,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     
-    private void refreshTime() {
+    public void refreshTime() {
         Long neueZeitSpieler1;
         Long neueZeitSpieler2;
         DateFormat formatter = new SimpleDateFormat("mm:ss");
