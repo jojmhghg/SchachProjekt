@@ -46,13 +46,13 @@ import javafx.stage.StageStyle;
 public class OptionenFXMLController implements Initializable {
 
     @FXML
-    private JFXRadioButton weiss;
+    private JFXRadioButton weissOnline;
     @FXML
     private JFXRadioButton weissLokal;
     @FXML
     private ToggleGroup farbeLokal;
     @FXML
-    private JFXRadioButton schwarz;
+    private JFXRadioButton schwarzOnline;
     @FXML
     private JFXRadioButton schwarzLokal;
     @FXML
@@ -105,7 +105,7 @@ public class OptionenFXMLController implements Initializable {
             Optionen partieoptionen;
             try {
                 int time = getChoosedTime();
-                Farbe farbe = choosedColor();
+                Farbe farbe = choosedColorLokal();
                 partieoptionen = new Optionen(farbe, time, getChoosedGegner());
                 spielbrett = spiel.neuePartie(partieoptionen);        
                       
@@ -124,16 +124,16 @@ public class OptionenFXMLController implements Initializable {
                 
                 //Zeit aktualisieren
                 controller.refreshTime();
-                
-                
-                //Spielbrett drehen drehen wenn Schwarz als Farbe gewaelt wurde
-                if (choosedColor() == Farbe.SCHWARZ) {
-                    controller.rotateBoard();
+                                
+                //Set Username 
+                if (choosedColorLokal() == Farbe.SCHWARZ) {
+                    controller.loadSpielernameSchwarz();
+                }else if (choosedColorLokal() == Farbe.WEISS) {
+                    controller.loadSpielernameWeiss();
                 }
-
+                
+                //Show the page
                 chessBoardStage.show();
-
-    //            spielbrettFXMLController.loadSpielername();
 
                 // Hide this current window (if this is what you want)
                 ((Node) (event.getSource())).getScene().getWindow().hide();
@@ -213,7 +213,7 @@ public class OptionenFXMLController implements Initializable {
         }
     }
     
-    public Farbe choosedColor(){
+    public Farbe choosedColorLokal(){
          if (weissLokal.isSelected()){
             return Farbe.WEISS;
         }
@@ -221,5 +221,13 @@ public class OptionenFXMLController implements Initializable {
              return Farbe.SCHWARZ;
         }
     }
-
+    
+    public Farbe choosedColorOnline() {
+        if (weissOnline.isSelected()) {
+            return Farbe.WEISS;
+        } else {
+            return Farbe.SCHWARZ;
+        }
+    }
+    
 }

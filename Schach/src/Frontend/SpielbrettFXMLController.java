@@ -416,7 +416,7 @@ public class SpielbrettFXMLController implements Initializable {
         possibleMoves = null;
         quellPane = null;
         updateScreen();
-        loadSpielername();
+        //loadSpielernameWeiss();
 
         LinkedList<Zug> zuege = spiel.getMitschrift();
         for(int i = 0; i < zuege.size(); i = i + 2){
@@ -794,18 +794,13 @@ public class SpielbrettFXMLController implements Initializable {
     }
     
     @FXML
-    public void loadSpielername(){  //Erstmal Public weil eventuell in anderen Methoden aufgerufen
-//        if(optionenFXMLController.choosedColor() == Farbe.WEISS) { // NulPointer: Das laden von "optionenFXMLController" funktionniert noch nicht
+    public void loadSpielernameWeiss(){
             this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
-            //this.spielernameWeiss.setText(spiel.getUsername());
-            //spielernameWeiss.setText(spiel.getUsername());
-//        }
-//        else if(optionenFXMLController.choosedColor() == Farbe.SCHWARZ) {
-//            this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
-            //this.spielernameSchwarz.setText(spiel.getUsername());
-//        }
-//        else{
-//        }
+    }
+    
+    @FXML
+    public void loadSpielernameSchwarz(){
+        this.spielernameSchwarz.setText(String.valueOf(spiel.getUsername()));
     }
 
     

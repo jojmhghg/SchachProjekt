@@ -103,7 +103,7 @@
                               <Font size="14.0" />
                            </font>
                         </Text>
-                        <JFXRadioButton fx:id="weiss" layoutX="113.0" layoutY="132.0" selected="true" text="Weiß">
+                        <JFXRadioButton fx:id="weissOnline" layoutX="113.0" layoutY="132.0" selected="true" text="Weiß">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -111,7 +111,7 @@
                               <ToggleGroup fx:id="FarbeOnline" />
                            </toggleGroup>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="schwarz" layoutX="206.0" layoutY="131.0" text="Schwarz" toggleGroup="$FarbeOnline">
+                        <JFXRadioButton fx:id="schwarzOnline" layoutX="206.0" layoutY="131.0" text="Schwarz" toggleGroup="$FarbeOnline">
                            <font>
                               <Font size="14.0" />
                            </font>
