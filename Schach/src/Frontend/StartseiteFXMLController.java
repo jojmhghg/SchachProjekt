@@ -86,41 +86,23 @@ public class StartseiteFXMLController implements Initializable {
     }
 
     @FXML
-    private void partieLaden(ActionEvent event) {
-        FileChooser chooser = new FileChooser();
-        File selectedFile = chooser.showOpenDialog(null);
-
-        if (selectedFile != null) {
-            try {
-                String name = "test1";
-                spielbrett = spiel.partieLaden(name);
+    private void goToPartieLaden(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("PartieLaden.fxml"));
+            Parent partieLadenScene = loader.load();
             
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("Spielbrett.fxml"));
-                Parent chessBoardScene = loader.load();
-
-                SpielbrettFXMLController controller = loader.getController();
-                controller.loadData(spiel, spielbrett);
-
-                Stage chessBoardStage = new Stage();
-                chessBoardStage.setScene(new Scene(chessBoardScene));
-                chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
-                chessBoardStage.initStyle(StageStyle.UNDECORATED);
-                chessBoardStage.show();
-
-                //            spielbrettFXMLController.loadSpielername();
-                // Hide this current window (if this is what you want)
-                ((Node) (event.getSource())).getScene().getWindow().hide();
-            } catch (IOException | SpielException ex) {
-                Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning Dialog");
-            alert.setHeaderText("Wählen Sie eine .txt Datei ");
-            alert.setContentText("Partie laden abgebrochen !");
-
-            alert.showAndWait();
+            PartieLadenFXMLController controller = loader.getController();
+            controller.loadData(spiel, spielbrett);
+            
+            Stage partieLadenStage = new Stage();
+            partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            partieLadenStage.initModality(Modality.APPLICATION_MODAL);
+            //partieLadenStage.initStyle(StageStyle.UNDECORATED);
+            partieLadenStage.setScene(new Scene(partieLadenScene));
+            partieLadenStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

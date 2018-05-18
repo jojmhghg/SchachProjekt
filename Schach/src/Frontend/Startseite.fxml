@@ -29,7 +29,7 @@
             <FontAwesomeIconView fill="#b52626" glyphName="POWER_OFF" size="30" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="partieLaden" buttonType="RAISED" layoutX="420.0" layoutY="378.0" onAction="#partieLaden" ripplerFill="BLACK" style="-fx-background-color: #DEB887;" text="Partie laden" textAlignment="CENTER">
+      <JFXButton fx:id="partieLaden" buttonType="RAISED" layoutX="420.0" layoutY="378.0" onAction="#goToPartieLaden" ripplerFill="BLACK" style="-fx-background-color: #DEB887;" text="Partie laden" textAlignment="CENTER">
          <font>
             <Font name="System Italic" size="13.0" />
          </font>

@@ -759,6 +759,14 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
     
+    public void cleanBoard(){
+        for (int i = 0; i < 64; i++) {
+            if (paneArray[i].getChildren().size() > 0) {
+                paneArray[i].getChildren().remove(0);
+            }
+        }
+    }
+    
     @FXML
     private void partieLaden(ActionEvent event) {
         FileChooser chooser = new FileChooser();
@@ -777,6 +785,7 @@ public class SpielbrettFXMLController implements Initializable {
                 Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
             initSpielbrett();
+            
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
             alert.setHeaderText("Partie erfolgreich geladen");
