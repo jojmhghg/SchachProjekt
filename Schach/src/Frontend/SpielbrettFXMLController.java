@@ -837,8 +837,13 @@ public class SpielbrettFXMLController implements Initializable {
         
         neueZeitSpieler1 = spiel.getZeitSpieler1();     //Zu spieler1 gehoert die Farbe Schwarz
         neueZeitSpieler2 = spiel.getZeitSpieler2();     //Zu spieler2 gehoert die Farbe Weiss
-        this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
-        this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+        if (spiel.getPartiezeit() == -1) {
+            this.restZeitSchwarz.setText("Unbegrenzt");
+            this.restZeitWeiss.setText("Unbegrenzt");
+        } else {
+            this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+            this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+        }
         
 //        timeline.setCycleCount(Animation.INDEFINITE);
 //        timeline.play();
