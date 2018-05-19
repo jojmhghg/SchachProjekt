@@ -24,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
@@ -83,14 +84,18 @@ public class EinstellungenFXMLController implements Initializable {
         if(!newSpielername.isEmpty()) {
             try {
                 spiel.setUsername(newSpielername);
-                spiel.setHighlightingAus(!highlightingButton.isSelected());
+                spiel.setHighlightingAus(highlightingButton.isSelected());
                 backToSpielbrett(event);
             } catch (SpielException ex) {
                 Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else{
-            System.out.println("Username ist Leer!!!");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog - Partie speichern");
+            alert.setHeaderText("Partie speichern abgebrochen !");
+            alert.setContentText("Der Spielername ist leer !!");
+            alert.showAndWait();
         }
     }
 
@@ -100,9 +105,14 @@ public class EinstellungenFXMLController implements Initializable {
      * @param rb
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {                            
-        spielername.setText(spiel.getUsername());
-        highlightingButton.setSelected(!spiel.isHighlightingAus());
+    public void initialize(URL url, ResourceBundle rb) {
+        try {
+            this.spiel = new Spiel();
+            spielername.setText(spiel.getUsername());
+            highlightingButton.setSelected(spiel.isHighlightingAus());
+        } catch (SpielException ex) {
+            Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
     
 }

@@ -82,8 +82,8 @@ public class PartieLadenFXMLController implements Initializable {
         else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog - Partie laden");
-            alert.setHeaderText("Geben Sie bitte eine gültige Dateiname ein ");
-            alert.setContentText("Partie laden abgebrochen !");
+            alert.setHeaderText("Partie laden abgebrochen !");
+            alert.setContentText("Geben Sie bitte eine gültige Dateiname ein");
             
             alert.showAndWait();
         }
