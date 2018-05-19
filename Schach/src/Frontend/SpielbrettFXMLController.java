@@ -634,10 +634,11 @@ public class SpielbrettFXMLController implements Initializable {
                 listZuegeSchwarz.getItems().add(spiel.getMitschrift().getLast().getMitschrift());
             } else if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
                 listZuegeWeiss.getItems().add(spiel.getMitschrift().getLast().getMitschrift()); 
-            }          
+            }
+            rotateBoard();
         }
         
-        rotateBoard();
+        
         
         if(posKingImSchach != null){
             this.paneArray[posKingImSchach.ordinal()].setStyle("");
