@@ -25,8 +25,12 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -54,6 +58,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -256,7 +261,10 @@ public class SpielbrettFXMLController implements Initializable {
     private LinkedList<Position> possibleMoves; 
     
     private Position posKingImSchach;
-   
+    
+//                                        private final long starttime = spiel.getZeitSpieler1();
+//    private long seconds = starttime;
+    
     public void loadData(Spiel spiel, Spielbrett spielbrett) {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
@@ -769,45 +777,53 @@ public class SpielbrettFXMLController implements Initializable {
     
     @FXML
     private void partieLaden(ActionEvent event) {
-        FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));  //Set Initial Directory  
-        File selectedFile = chooser.showOpenDialog(null);
-        //Delete pieces on board and load pieces positions from the file
-        if(selectedFile != null){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("PartieLaden.fxml"));
+            Parent partieLadenScene = loader.load();
             
-            //Clean Chess board before load
-            for(int i = 0; i < 64; i++){
-                    if(paneArray[i].getChildren().size() > 0){
-                        paneArray[i].getChildren().remove(0);
-                    }
-            }
+            PartieLadenFXMLController controller = loader.getController();
+            controller.loadData(spiel, spielbrett);
             
-            //Clean List view before load
-            listZuegeSchwarz.getItems().clear();
-            listZuegeWeiss.getItems().clear();
-            
-            //load and init board
-            try {
-                spielbrett = spiel.partieLaden(selectedFile.getName().substring(0, selectedFile.getName().length()-4));
-            } catch (SpielException ex) {
-                Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            initSpielbrett();
-            
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Partie erfolgreich geladen");
-            alert.setContentText("Dateiname: " + selectedFile.getName());
-            alert.showAndWait();
-            
-        }else{
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Warning Dialog");
-            alert.setHeaderText("Wählen Sie bitte eine .txt Datei ");
-            alert.setContentText("Partie laden abgebrochen !");
-
-            alert.showAndWait();
-         }
+            Stage partieLadenStage = new Stage();
+            partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            partieLadenStage.initModality(Modality.APPLICATION_MODAL);
+            //partieLadenStage.initStyle(StageStyle.UNDECORATED);
+            partieLadenStage.setScene(new Scene(partieLadenScene));
+            partieLadenStage.show();
+            ((Node) myMenuBar).getScene().getWindow().hide();
+        } catch (IOException ex) {
+            Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        FileChooser chooser = new FileChooser();
+//        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));  //Set Initial Directory  
+//        File selectedFile = chooser.showOpenDialog(null);
+//        //Delete pieces on board and load pieces positions from the file
+//        if(selectedFile != null){
+//            
+//            //Clean Chess board before load
+//            cleanBoard();
+//            
+//            //Clean List view before load
+//            listZuegeSchwarz.getItems().clear();
+//            listZuegeWeiss.getItems().clear();
+//            
+//            //load and init board
+//            try {
+//                spielbrett = spiel.partieLaden(selectedFile.getName().substring(0, selectedFile.getName().length()-4));
+//            } catch (SpielException ex) {
+//                Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            initSpielbrett();
+//            
+//        }else{
+//            Alert alert = new Alert(AlertType.WARNING);
+//            alert.setTitle("Warning Dialog");
+//            alert.setHeaderText("Wählen Sie bitte eine .txt Datei ");
+//            alert.setContentText("Partie laden abgebrochen !");
+//
+//            alert.showAndWait();
+//         }
     }
     
     @FXML
@@ -819,7 +835,34 @@ public class SpielbrettFXMLController implements Initializable {
     public void loadSpielernameSchwarz(){
         this.spielernameSchwarz.setText(String.valueOf(spiel.getUsername()));
     }
+    
+    private void doTime() {
 
+        Timeline time = new Timeline();
+
+        KeyFrame frame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                //final long starttime = spiel.getZeitSpieler1();
+                final long starttime = 15;
+                long seconds = starttime;
+                seconds--;
+                System.out.println(seconds);
+                //restZeitWeiss.setText("Countdown: " + seconds.toString());
+                if (seconds <= 0) {
+                    time.stop();
+                }
+            }
+        });
+
+        time.getKeyFrames().add(frame);
+        if (time != null) {
+            time.stop();
+        }
+        time.setCycleCount(Timeline.INDEFINITE);
+        time.play();
+    }
     
     public void refreshTime() {
         Long neueZeitSpieler1;
@@ -832,11 +875,13 @@ public class SpielbrettFXMLController implements Initializable {
 //                new KeyFrame(
 //                        Duration.millis(500),
 //                        event -> {
-//                            final long diff = neueZeitSpieler1 - System.currentTimeMillis();
-//                            if (diff < 0) {
+//                             final long starttime = 15;
+//                             long seconds = starttime;
+//                                seconds--;
+//                            if (seconds < 0) {
 //                                timeLabel.setText(formatter.format(0));
 //                            } else {
-//                                timeLabel.setText(formatter.format(diff));
+//                                timeLabel.setText(formatter.format(seconds));
 //                            }
 //                        }
 //                )
@@ -891,6 +936,7 @@ public class SpielbrettFXMLController implements Initializable {
             this.spielbrett = new Spielbrett();
             this.spiel = new Spiel();                                    
             initSpielbrett();
+            doTime();
         } catch (SpielException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }

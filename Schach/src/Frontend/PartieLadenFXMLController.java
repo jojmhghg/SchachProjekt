@@ -22,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -68,9 +69,10 @@ public class PartieLadenFXMLController implements Initializable {
                 spielbrettStage.initStyle(StageStyle.UNDECORATED);
                 spielbrettStage.setScene(new Scene(spielbrettScene));
                 spielbrettStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
-                ((Node) (event.getSource())).getScene().getWindow().hide();
                 spielbrettStage.show();
                 
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+                //((Node) (event.getSource())).getParent().getScene().getWindow().hide();
                 controller.cleanBoard();
                 controller.initSpielbrett();
             } catch (SpielException ex) {
@@ -78,7 +80,12 @@ public class PartieLadenFXMLController implements Initializable {
             }
         }
         else{
-            System.out.println("Datei name ist Leer!!!");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog - Partie laden");
+            alert.setHeaderText("Geben Sie bitte eine gültige Dateiname ein ");
+            alert.setContentText("Partie laden abgebrochen !");
+            
+            alert.showAndWait();
         }
     }
     
