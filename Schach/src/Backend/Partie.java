@@ -7,7 +7,6 @@ package Backend;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
-import Backend.Figuren.Figur;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -73,9 +72,7 @@ public class Partie {
      * Konstruktor (beim Erstellen einer neuen Partie)
      * 
      * @param optionen Zu übernehmende Partieeinstellungen
-     */
-    
-    
+     */ 
     public Partie(Optionen optionen){
         this.kiGegner = optionen.getKiGegner();
         this.farbe = optionen.getFarbe();
@@ -83,7 +80,7 @@ public class Partie {
         
         this.verbleibendeZeitSpieler1 = optionen.getPartiezeit() * 60 * 1000;
         this.verbleibendeZeitSpieler2 = optionen.getPartiezeit() * 60 * 1000;
-        this.endeLetzterZug = 0;
+        this.endeLetzterZug = new Date().getTime();
         
         this.gewinner = null;
         this.ablauf = new LinkedList<>();
@@ -181,7 +178,7 @@ public class Partie {
         
         this.verbleibendeZeitSpieler1 = verbleibendeZeitSpieler1Tmp;
         this.verbleibendeZeitSpieler2 = verbleibendeZeitSpieler2Tmp;
-        this.endeLetzterZug = (int) new Date().getTime();
+        this.endeLetzterZug = new Date().getTime();
         
         this.gewinner = gewinnerTmp;
     }
@@ -281,6 +278,9 @@ public class Partie {
      * @throws SpielException Wirft Fehler, falls ungültiger Zug
      */
     public void zieheFigur(Position ursprung, Position ziel) throws SpielException{
+        if(this.gewinner != null){
+            throw new SpielException(this.gewinner.toString() + " hat bereits gewonnen!");
+        }
         //Notation des Zuges vor dem Ziehen merken
         String notation = this.getNotation(ursprung, ziel);
         
@@ -291,8 +291,8 @@ public class Partie {
         //falls Partie zeitlich begrenzt ist
         if(this.partiezeit > 0){
             Date d = new Date();
-            this.berechneVerbleibendeZeit((int) (d.getTime() - this.endeLetzterZug));
-            this.endeLetzterZug = (int) d.getTime();
+            this.berechneVerbleibendeZeit(d.getTime() - this.endeLetzterZug);
+            this.endeLetzterZug = d.getTime();
         }
         
         // Sonderregeln zu Notation hinzufügen
@@ -405,10 +405,9 @@ public class Partie {
      * 
      * @param verbrauchteZeit Verbrauchte Zeit von Spieler1 für diesen Zug
      */
-    private void berechneVerbleibendeZeit(int verbrauchteZeit) {
+    private void berechneVerbleibendeZeit(long verbrauchteZeit) {
         if(this.getSpielerAmZug() == this.farbe){
             this.verbleibendeZeitSpieler1 -= verbrauchteZeit;
-        
             if(this.verbleibendeZeitSpieler1 <= 0 && this.partiezeit > 0){
                 if(this.farbe == Farbe.SCHWARZ){
                     this.gewinner = Farbe.WEISS;
@@ -420,9 +419,8 @@ public class Partie {
         }
         else{
             this.verbleibendeZeitSpieler2 -= verbrauchteZeit;
-        
             if(this.verbleibendeZeitSpieler2 <= 0 && this.partiezeit > 0){
-                 this.gewinner = this.farbe;
+                this.gewinner = this.farbe;
             }
         }   
     }
@@ -430,7 +428,8 @@ public class Partie {
     /**
      * Hilfsmethode, die die Schnittstelle zur KI ist
      */
-    private void kiZieht(){
+    private void kiZieht() throws SpielException{
         //TODO
+        throw new SpielException("KI kann noch nicht ziehen!");
     }
 }

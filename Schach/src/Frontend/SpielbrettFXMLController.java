@@ -11,11 +11,9 @@ import Backend.Enums.Position;
 import Backend.Figuren.Figur;
 import Backend.Spiel;
 import Backend.SpielException;
-import Backend.SpielInteraktionen;
 import Backend.Spielbrett;
 import Backend.Zug;
 import com.jfoenix.controls.JFXListView;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -25,7 +23,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -54,7 +51,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -432,7 +428,7 @@ public class SpielbrettFXMLController implements Initializable {
         }
         for(int i = 1; i < zuege.size(); i = i + 2){
             listZuegeSchwarz.getItems().add(zuege.get(i).getMitschrift());
-        }
+        } 
     }
 
     /**
@@ -636,14 +632,12 @@ public class SpielbrettFXMLController implements Initializable {
         if (spiel.getMitschrift().size() > 0) {
             if (spiel.getSpielerAmZug() == Farbe.WEISS) {
                 listZuegeSchwarz.getItems().add(spiel.getMitschrift().getLast().getMitschrift());
-                rotateBoard();
-                changePositionTextWeiss();
             } else if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
-                listZuegeWeiss.getItems().add(spiel.getMitschrift().getLast().getMitschrift());
-                rotateBoard();
-                changePositionTextSchwarz();
-            }
+                listZuegeWeiss.getItems().add(spiel.getMitschrift().getLast().getMitschrift()); 
+            }          
         }
+        
+        rotateBoard();
         
         if(posKingImSchach != null){
             this.paneArray[posKingImSchach.ordinal()].setStyle("");
@@ -670,53 +664,49 @@ public class SpielbrettFXMLController implements Initializable {
                 ((ImageView) this.paneArray[i].getChildren().get(0)).rotateProperty().setValue(degree + 180);
             }
         }
-    }
-    
-    @FXML
-    private void changePositionTextSchwarz() {
-        //Buchstaben 
-        a.setText("H");
-        b.setText("G");
-        c.setText("F");
-        d.setText("E");
-        e.setText("D");
-        f.setText("C");
-        g.setText("B");
-        h.setText("A");
         
-        //Zahlen
-        eins.setText("8");
-        zwei.setText("7");
-        drei.setText("6");
-        vier.setText("5");
-        fuenf.setText("4");
-        sechs.setText("3");
-        sieben.setText("2");
-        acht.setText("1");
-    }
-    
-        
-    @FXML
-    private void changePositionTextWeiss() {
-        //Buchstaben 
-        a.setText("A");
-        b.setText("B");
-        c.setText("C");
-        d.setText("D");
-        e.setText("E");
-        f.setText("F");
-        g.setText("G");
-        h.setText("H");
-        
-        //Zahlen
-        eins.setText("1");
-        zwei.setText("2");
-        drei.setText("3");
-        vier.setText("4");
-        fuenf.setText("5");
-        sechs.setText("6");
-        sieben.setText("7");
-        acht.setText("8");
+        if(a.getText().equals("H")){
+            //Buchstaben 
+            a.setText("A");
+            b.setText("B");
+            c.setText("C");
+            d.setText("D");
+            e.setText("E");
+            f.setText("F");
+            g.setText("G");
+            h.setText("H");
+
+            //Zahlen
+            eins.setText("1");
+            zwei.setText("2");
+            drei.setText("3");
+            vier.setText("4");
+            fuenf.setText("5");
+            sechs.setText("6");
+            sieben.setText("7");
+            acht.setText("8");
+        }
+        else{
+            //Buchstaben 
+            a.setText("H");
+            b.setText("G");
+            c.setText("F");
+            d.setText("E");
+            e.setText("D");
+            f.setText("C");
+            g.setText("B");
+            h.setText("A");
+
+            //Zahlen
+            eins.setText("8");
+            zwei.setText("7");
+            drei.setText("6");
+            vier.setText("5");
+            fuenf.setText("4");
+            sechs.setText("3");
+            sieben.setText("2");
+            acht.setText("1");
+        }
     }
 
     @FXML
@@ -828,7 +818,7 @@ public class SpielbrettFXMLController implements Initializable {
     
     @FXML
     public void loadSpielernameWeiss(){
-            this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
+        this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
     }
     
     @FXML
