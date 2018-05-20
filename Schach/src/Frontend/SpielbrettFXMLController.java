@@ -638,8 +638,6 @@ public class SpielbrettFXMLController implements Initializable {
             rotateBoard();
         }
         
-        
-        
         if(posKingImSchach != null){
             this.paneArray[posKingImSchach.ordinal()].setStyle("");
             posKingImSchach = null;
@@ -652,6 +650,10 @@ public class SpielbrettFXMLController implements Initializable {
                posKingImSchach = spiel.getPositionWhiteKing();
             }
             this.paneArray[posKingImSchach.ordinal()].setStyle("-fx-border-color:  #cc0000; -fx-border-width: 5;");
+        }
+        
+        if(this.spiel.getGewinner() != null){
+            //TODO hier PopUp
         }
     }
     

@@ -287,6 +287,10 @@ public class Partie {
         //ziehe figur
         this.spielbrett.setFigurAufFeld(ursprung, ziel);   
         
+        if(this.spielbrett.checkSchachmatt()){
+            this.gewinner = this.spielbrett.getSpielerAmZug().andereFarbe();
+        }
+ 
         //aktuallisiere verbleibenede Zeit und zeitpunkt des ende des zugs, 
         //falls Partie zeitlich begrenzt ist
         if(this.partiezeit > 0){

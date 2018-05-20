@@ -45,5 +45,16 @@ public enum Farbe {
                 return "(?)";
         }
     }
+    
+    public Farbe andereFarbe() {
+        switch(this){
+            case SCHWARZ:
+                return WEISS;
+            case WEISS:
+                return SCHWARZ;
+            default:
+                return null;
+        }
+    }
    
 }

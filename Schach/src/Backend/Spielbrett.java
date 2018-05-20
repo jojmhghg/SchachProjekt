@@ -45,7 +45,7 @@ public class Spielbrett {
     /**
      * Gibt an, wie viel Züge schon gespielt wurden
      */
-    private int wievielterZug;
+    private int zugCounter;
     /**
      * Gibt an, ob gerade ein en Passant gemacht wurde
      */
@@ -65,7 +65,7 @@ public class Spielbrett {
         this.schach = null;
         this.amZug = Farbe.WEISS;
         this.spielbrett = new Feld[64];
-        this.wievielterZug = 0;
+        this.zugCounter = 0;
         this.posWhiteKing = Position.E1;
         this.posBlackKing = Position.E8;
         
@@ -125,7 +125,7 @@ public class Spielbrett {
         this.schach = spielbrett.getSchach();
         this.amZug = spielbrett.getSpielerAmZug();
         this.spielbrett = new Feld[64];
-        this.wievielterZug = spielbrett.getWievielterZug();
+        this.zugCounter = spielbrett.getWievielterZug();
         this.posWhiteKing = spielbrett.posWhiteKing;
         this.posBlackKing = spielbrett.posBlackKing;
         
@@ -215,7 +215,7 @@ public class Spielbrett {
      * @return wie viel züge schon gespielt wurden 
      */
     public int getWievielterZug() {
-        return wievielterZug;
+        return zugCounter;
     }
     
     /**
@@ -352,20 +352,35 @@ public class Spielbrett {
         else{
             throw new SpielException("Ungültiges Zielfeld!");
         } 
+             
+        // Teste ob der andere Spieler nun im Schach steht und wenn ja, setze Attribut Schach
+        if(checkSchach(this.amZug.andereFarbe())){           
+            this.schach = this.amZug.andereFarbe();
+        }
         
         // Jetzt ist anderer Spieler am Zug
-        if(this.amZug == Farbe.WEISS){
-            this.amZug = Farbe.SCHWARZ;
+        this.amZug = this.amZug.andereFarbe();
+        // Und der Counter für die Züge wird erhöht
+        zugCounter++;        
+    }
+    
+    /**
+     * Testet ob Spieler am Zug im Schachmatt steht
+     * 
+     * @return true, falls ja; sonst false
+     * @throws Backend.SpielException
+     */
+    public boolean checkSchachmatt() throws SpielException{
+        Farbe spieler = this.amZug;
+        for(int i = 0; i < 64; i++){
+            Figur tmpFigur = this.spielbrett[i].getFigur();
+            if(tmpFigur != null && tmpFigur.getFarbe() == spieler){
+                if(this.getMovesFuerFeld(Position.values()[i]) != null){
+                    return false;
+                }
+            }
         }
-        else{
-            this.amZug = Farbe.WEISS;
-        }
-        
-        // Teste ob der andere Spieler nun im Schach steht und wenn ja, setze Attribut Schach
-        if(checkSchach(this.amZug)){           
-            this.schach = this.amZug;
-        }
-        wievielterZug++;
+        return true;
     }
     
     /*** ------------------------------------ Hilfsmethoden ------------------------------ ***/
@@ -441,7 +456,7 @@ public class Spielbrett {
             if(startposition.ordinal() <= 15 && startposition.ordinal() >= 8 || startposition.ordinal() <= 55 && startposition.ordinal() >= 48){
                 if(zielposition.ordinal() <= 31 && zielposition.ordinal() >= 24 || zielposition.ordinal() <= 39 && zielposition.ordinal() >= 32){
                     ((Bauer) figur).setNochNichtGezogen(false);
-                    ((Bauer) figur).setWievielterZug(wievielterZug + 1);
+                    ((Bauer) figur).setWievielterZug(zugCounter + 1);
                 }
             }
         }
