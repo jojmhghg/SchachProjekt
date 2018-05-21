@@ -48,10 +48,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderPaneBuilder;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -653,7 +656,28 @@ public class SpielbrettFXMLController implements Initializable {
         }
         
         if(this.spiel.getGewinner() != null){
-            //TODO hier PopUp
+            goToWinnerPopup();
+            System.out.println("Winner");
+        }
+    }
+    
+    @FXML
+    private void goToWinnerPopup() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("WinnerPopup.fxml"));
+            Parent winnerPopupScene = loader.load();
+
+            WinnerPopupFXMLController controller = loader.getController();
+            controller.loadData(spiel);
+
+            //aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
+            Stage winnerPopupStage = new Stage();
+            winnerPopupStage.initModality(Modality.APPLICATION_MODAL);
+            winnerPopupStage.setScene(new Scene(winnerPopupScene));
+            winnerPopupStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            winnerPopupStage.show();
+        } catch (IOException e) {
         }
     }
     
