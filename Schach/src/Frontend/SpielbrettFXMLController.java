@@ -661,6 +661,17 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
     
+    /**
+     * Hilfmethode fuer partie Laden und goToChessboard
+     */
+    public void getSpliernameForColor(){
+        if(spiel.getFarbe() == Farbe.SCHWARZ){
+            spielernameSchwarz.setText(spiel.getUsername());
+        }
+        else 
+            spielernameWeiss.setText(spiel.getUsername());
+    }
+    
     @FXML
     private void goToWinnerPopup() {
         try {
@@ -841,16 +852,6 @@ public class SpielbrettFXMLController implements Initializable {
 //
 //            alert.showAndWait();
 //         }
-    }
-    
-    @FXML
-    public void loadSpielernameWeiss(){
-        this.spielernameWeiss.setText(String.valueOf(spiel.getUsername()));
-    }
-    
-    @FXML
-    public void loadSpielernameSchwarz(){
-        this.spielernameSchwarz.setText(String.valueOf(spiel.getUsername()));
     }
     
     private void doTime() {

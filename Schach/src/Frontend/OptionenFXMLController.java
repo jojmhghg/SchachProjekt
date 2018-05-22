@@ -126,11 +126,7 @@ public class OptionenFXMLController implements Initializable {
                 controller.refreshTime();
                                 
                 //Set Username 
-                if (choosedColorLokal() == Farbe.SCHWARZ) {
-                    controller.loadSpielernameSchwarz();
-                }else if (choosedColorLokal() == Farbe.WEISS) {
-                    controller.loadSpielernameWeiss();
-                }
+                controller.getSpliernameForColor();
                 
                 //Show the page
                 chessBoardStage.show();
