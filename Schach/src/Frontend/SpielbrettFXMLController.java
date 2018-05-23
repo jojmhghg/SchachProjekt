@@ -28,7 +28,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -49,13 +48,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderPaneBuilder;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -268,8 +264,6 @@ public class SpielbrettFXMLController implements Initializable {
 
     private Position posKingImSchach;
 
-//                                        private final long starttime = spiel.getZeitSpieler1();
-//    private long seconds = starttime;
     public void loadData(Spiel spiel, Spielbrett spielbrett) {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
@@ -565,9 +559,11 @@ public class SpielbrettFXMLController implements Initializable {
                 highlightAus();
                 possibleMoves = null;
                 quellPane = null;
-                selectedFigur.setEffect(null);
                 selectedFigur = null;
                 quellPosition = null;
+                if (selectedFigur != null) {
+                    selectedFigur.setEffect(null);
+                }
                 break;
             default:
                 break;
@@ -598,7 +594,7 @@ public class SpielbrettFXMLController implements Initializable {
             }
         }
     }
-    
+
     @FXML
     private void neuePartie(ActionEvent event) {
         try {
@@ -926,33 +922,6 @@ public class SpielbrettFXMLController implements Initializable {
 //         }
     }
 
-//    private void doTime() {
-//
-//        Timeline time = new Timeline();
-//
-//        KeyFrame frame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-//
-//            @Override
-//            public void handle(ActionEvent event) {
-//                //final long starttime = spiel.getZeitSpieler1();
-//                final long starttime = 15;
-//                long seconds = starttime;
-//                seconds--;
-//                System.out.println(seconds);
-//                //restZeitWeiss.setText("Countdown: " + seconds.toString());
-//                if (seconds <= 0) {
-//                    time.stop();
-//                }
-//            }
-//        });
-//
-//        time.getKeyFrames().add(frame);
-//        if (time != null) {
-//            time.stop();
-//        }
-//        time.setCycleCount(Timeline.INDEFINITE);
-//        time.play();
-//    }
     public void refreshTime() {
         DateFormat formatter = new SimpleDateFormat("mm:ss");
 

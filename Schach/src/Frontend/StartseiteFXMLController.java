@@ -27,6 +27,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 /**
  *
@@ -77,6 +78,36 @@ public class StartseiteFXMLController implements Initializable {
             // Hide this current window (if this is what you want)
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
+        }
+    }
+    
+    @FXML
+    private void partieFortsetzen(ActionEvent event) {
+        try {
+            spielbrett = spiel.partieLaden("tmp");
+            
+                            FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("Spielbrett.fxml"));
+                Parent spielbrettScene = loader.load();
+
+                SpielbrettFXMLController controller = loader.getController();
+                controller.loadData(spiel, spielbrett);
+                controller.setSpielernameOnScreen();
+
+                Stage spielbrettStage = new Stage();
+                spielbrettStage.initModality(Modality.APPLICATION_MODAL);
+                spielbrettStage.initStyle(StageStyle.UNDECORATED);
+                spielbrettStage.setScene(new Scene(spielbrettScene));
+                spielbrettStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+                spielbrettStage.show();
+                
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+                controller.cleanBoard();
+                controller.initSpielbrett();
+        } catch (SpielException ex) {
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
