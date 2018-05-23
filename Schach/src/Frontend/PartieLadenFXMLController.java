@@ -35,6 +35,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 /**
  * FXML Controller class
@@ -45,16 +46,17 @@ public class PartieLadenFXMLController implements Initializable {
     
     Spiel spiel;
     Spielbrett spielbrett;
-    StartseiteFXMLController st;
+    Window startseiteWindow;
     
     @FXML
     private JFXButton laden;
     @FXML
     private JFXTextField filename;
     
-    public void loadData(Spiel spiel, Spielbrett spielbrett) {
+    public void loadData(Spiel spiel, Spielbrett spielbrett, Window window) {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
+        this.startseiteWindow = window;
     }
     
     @FXML
@@ -80,6 +82,7 @@ public class PartieLadenFXMLController implements Initializable {
                 spielbrettStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
                 spielbrettStage.show();
                 
+                startseiteWindow.hide();
                 ((Node) (event.getSource())).getScene().getWindow().hide();
                 //((Node) (event.getSource())).getParent().getScene().getWindow().hide();
                 controller.cleanBoard();

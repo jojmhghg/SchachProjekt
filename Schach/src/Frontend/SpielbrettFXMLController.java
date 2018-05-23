@@ -813,7 +813,7 @@ public class SpielbrettFXMLController implements Initializable {
             Parent partieLadenScene = loader.load();
             
             PartieLadenFXMLController controller = loader.getController();
-            controller.loadData(spiel, spielbrett);
+            controller.loadData(spiel, spielbrett, ((Node) myMenuBar).getScene().getWindow());
             
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
@@ -821,7 +821,6 @@ public class SpielbrettFXMLController implements Initializable {
             //partieLadenStage.initStyle(StageStyle.UNDECORATED);
             partieLadenStage.setScene(new Scene(partieLadenScene));
             partieLadenStage.show();
-            ((Node) myMenuBar).getScene().getWindow().hide();
         } catch (IOException ex) {
             Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }

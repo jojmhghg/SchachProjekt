@@ -5,13 +5,10 @@
  */
 package Frontend;
 
-import Backend.Optionen;
 import Backend.Spiel;
 import Backend.SpielException;
-import Backend.SpielInteraktionen;
 import Backend.Spielbrett;
 import com.jfoenix.controls.JFXButton;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,10 +22,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -93,7 +88,7 @@ public class StartseiteFXMLController implements Initializable {
             Parent partieLadenScene = loader.load();
             
             PartieLadenFXMLController controller = loader.getController();
-            controller.loadData(spiel, spielbrett);
+            controller.loadData(spiel, spielbrett, ((Node) (event.getSource())).getScene().getWindow());
             
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
