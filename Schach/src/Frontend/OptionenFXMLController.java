@@ -115,6 +115,7 @@ public class OptionenFXMLController implements Initializable {
 
                 SpielbrettFXMLController controller = loader.getController();
                 controller.loadData(spiel, spielbrett);
+                controller.getTime(partieZeitLokal.getValue());
                 
                 //chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
                 Stage chessBoardStage = new Stage();
