@@ -274,6 +274,15 @@ public final class Partie {
     public Farbe getGewinner() {
         return gewinner;
     }
+    
+    /**
+     * Getter für Attribut gewinner
+     * 
+     * @return Farbe des Gewinners
+     */
+    public boolean getBeendet() {
+        return beendet;
+    }
 
     
     /* --- Sonstige public Methoden --- */
@@ -345,6 +354,15 @@ public final class Partie {
         }
         
         this.speichereSpielImpl(dateiname);
+    }
+    
+    /**
+     * Spieler der gerade am Zug gibt auf. 
+     * Die Partie wird als beendet gesetzt und der andere Spieler als gewinner.
+     */
+    public void aufgeben(){
+        this.beendet = true;
+        this.gewinner = this.getSpielerAmZug().andereFarbe();
     }
     
     

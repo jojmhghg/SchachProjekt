@@ -68,6 +68,16 @@ public class Spiel implements SpielInteraktionen {
     }
 
     @Override
+    public void aufgeben(){
+        this.partie.aufgeben();
+    }
+    
+    @Override
+    public boolean getBeendet(){
+        return this.partie.getBeendet();
+    }
+        
+    @Override
     public Position getPositionBlackKing(){
         return this.partie.getSpielbrett().getPosBlackKing();
     }
