@@ -328,6 +328,8 @@ public final class Partie {
         if(this.kiGegner){
             this.kiZieht();
         }
+        
+        this.speichereSpielImpl("tmp");
     }
      
     /**
