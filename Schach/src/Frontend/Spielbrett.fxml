@@ -118,7 +118,7 @@
           <Menu mnemonicParsing="false" text="Partie">
             <items>
                   <MenuItem mnemonicParsing="false" text="Remis anbieten" />
-                  <MenuItem mnemonicParsing="false" text="Aufgeben" />
+                  <MenuItem mnemonicParsing="false" onAction="#partieAufgeben" text="Aufgeben" />
                   <MenuItem mnemonicParsing="false" onAction="#neuePartie" text="Neue Partie" />
                   <MenuItem mnemonicParsing="false" onAction="#partieSpeichern" text="Speichern" />
                   <MenuItem fx:id="partieLaden" mnemonicParsing="false" onAction="#partieLaden" text="Partie laden" />

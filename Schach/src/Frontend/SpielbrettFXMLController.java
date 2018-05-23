@@ -938,6 +938,16 @@ public class SpielbrettFXMLController implements Initializable {
             }
         }
     }
+    
+    @FXML
+    private void partieAufgeben(ActionEvent event){
+        spiel.aufgeben();
+                
+        Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
+        spielBrettStage.close();
+        
+        goToWinnerPopup();
+    }
 
     @FXML
     private void goToAbout(ActionEvent event) {
@@ -950,7 +960,6 @@ public class SpielbrettFXMLController implements Initializable {
             AboutController controller = loader.getController();
             controller.loadData();
 
-            //aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
             Stage aboutStage = new Stage();
             aboutStage.initModality(Modality.APPLICATION_MODAL);
             aboutStage.setScene(new Scene(aboutScene));
