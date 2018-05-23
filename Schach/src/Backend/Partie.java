@@ -20,9 +20,10 @@ import java.util.LinkedList;
  *
  * @author timtim
  */
-public class Partie {
+public final class Partie {
     
     /* --- Attribute --- */    
+    
     /**
      * gibt an ob man gegen einen KI-Gegner spielt (true = ja)
      */
@@ -44,27 +45,31 @@ public class Partie {
      * Verbleibende Zeit von Spieler2 in Millisekunden
      */
     private long verbleibendeZeitSpieler2;
-    
-    /**
-     * akt. Spielbrett
-     */
-    private final Spielbrett spielbrett;
-    /**
-     * Farbe des Geinners oder null
-     */
-    private Farbe gewinner;
-    /**
-     * Liste mit den vergangenen Zügen
-     */
-    private final LinkedList<Zug> ablauf;
-    
     /**
      * Hilfsattribut, das angibt wann genau (Datum in millis) der letzte Zug
      * abgeschlossen wurde.
      * Wichtig um die für einen Zug benötigte Zeit zu berechnen
      */
     private long endeLetzterZug;
-      
+    
+    /**
+     * akt. Spielbrett
+     */
+    private final Spielbrett spielbrett;
+    /**
+     * Farbe des Gewinners oder null bei Remis
+     */
+    private Farbe gewinner;
+    /**
+     * True, falls die Partie beendet ist. 
+     * Das Attribut gewinner gibt dann an, wer gewonnen hat
+     */
+    private boolean beendet;
+    /**
+     * Liste mit den vergangenen Zügen
+     */
+    private final LinkedList<Zug> ablauf;
+    
     
     /* --- Konstruktoren --- */
     
@@ -72,8 +77,9 @@ public class Partie {
      * Konstruktor (beim Erstellen einer neuen Partie)
      * 
      * @param optionen Zu übernehmende Partieeinstellungen
+     * @throws Backend.SpielException
      */ 
-    public Partie(Optionen optionen){
+    public Partie(Optionen optionen) throws SpielException{
         this.kiGegner = optionen.getKiGegner();
         this.farbeSpieler1 = optionen.getFarbe();
         this.partiezeit = optionen.getPartiezeit();
@@ -83,9 +89,12 @@ public class Partie {
         this.endeLetzterZug = new Date().getTime();
         
         this.gewinner = null;
+        this.beendet = false;
         this.ablauf = new LinkedList<>();
         
         this.spielbrett = new Spielbrett();
+        
+        this.speichereSpielImpl("tmp");
     }
     
     /**
@@ -97,16 +106,16 @@ public class Partie {
     public Partie(String speichername) throws SpielException{
         //initialisiere Spielbrett mit Grundaufstellung
         this.spielbrett = new Spielbrett();        
-        boolean kiGegnerTmp;
-        Farbe farbeTmp, gewinnerTmp;
-        int partiezeitTmp;
-        long verbleibendeZeitSpieler1Tmp, verbleibendeZeitSpieler2Tmp;
+        String errorMessage = "Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.";
         
         //Pfad zum Speicherziel für Windows
         File file = new File(".\\saves\\" + speichername + ".txt"); 
         //Pfad zum Speicherziel für Macs
         if (!file.canRead() || !file.isFile()){
             file = new File("./saves/" + speichername + ".txt"); 
+            if (!file.canRead() || !file.isFile()){
+                throw new SpielException(errorMessage);
+            }
         }
         
         try { 
@@ -115,50 +124,60 @@ public class Partie {
             
             /* --- Lade Partieeinstellungen (Optionen) --- */
             
-            // Lade Gegnereinstellungen
+            // Lade Gegnereinstellungen (KI oder Mensch)
             if((line = bufferedReader.readLine()) != null){
-                kiGegnerTmp = Boolean.parseBoolean(line);
+                this.kiGegner = Boolean.parseBoolean(line);
             }
             else{
-                throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
+                throw new SpielException(errorMessage);
             }
-            // Lade Farbe (von Spieler1)
+            // Lade Farbe von Spieler1
             if((line = bufferedReader.readLine()) != null){
-                farbeTmp = Farbe.parseFarbe(line);
+                this.farbeSpieler1 = Farbe.parseFarbe(line);
             }
             else{
-                throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
+                throw new SpielException(errorMessage);
             }
             // Lade Partiezeit
             if((line = bufferedReader.readLine()) != null){
-                partiezeitTmp = Integer.parseInt(line);
+                this.partiezeit = Integer.parseInt(line);
             }
             else{
-                throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
+                throw new SpielException(errorMessage);
             }
             // Lade verbleibende Zeit von Spieler1
             if((line = bufferedReader.readLine()) != null){
-                verbleibendeZeitSpieler1Tmp = Integer.parseInt(line);
+                this.verbleibendeZeitSpieler1 = Integer.parseInt(line);
             }
             else{
-                throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
+                throw new SpielException(errorMessage);
             }
             // Lade verbleibende Zeit von Spieler2
             if((line = bufferedReader.readLine()) != null){
-                verbleibendeZeitSpieler2Tmp = Integer.parseInt(line);
+                this.verbleibendeZeitSpieler2 = Integer.parseInt(line);
             }
             else{
-                throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
+                throw new SpielException(errorMessage);
             }
-            // Lade verbleibende Zeit von Spieler2
+            // Lade ob Partie beendet ist
             if((line = bufferedReader.readLine()) != null){
-                gewinnerTmp = Farbe.parseFarbe(line);
+                this.beendet = Boolean.parseBoolean(line);
             }
             else{
-                throw new SpielException("Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.");
+                throw new SpielException(errorMessage);
+            } 
+            // Lade wer Partie gewonnen hat, falls sie beendet ist
+            if((line = bufferedReader.readLine()) != null){
+                this.gewinner = Farbe.parseFarbe(line);
+            }
+            else{
+                throw new SpielException(errorMessage);
             }  
-            
+                       
             this.ablauf = new LinkedList<>();
+            this.endeLetzterZug = new Date().getTime();
+            
+            // Hier werden die Züge der Partie simuliert. Dadurch wird das Spielbrett & der Ablauf geladen
             int pos1, pos2;
             while((line = bufferedReader.readLine()) != null){
                 final String[] positionen = line.split(" ");
@@ -166,21 +185,10 @@ public class Partie {
                 pos2 = Integer.parseInt(positionen[1]);
                 this.zieheFigur(Position.values()[pos1], Position.values()[pos2]);
             }
-            
-            
+       
         } catch (IOException e) { 
             throw new SpielException("Spielstand '" + speichername + "' konnte nicht gefunden werden!");
         }      
-        
-        this.kiGegner = kiGegnerTmp;
-        this.farbeSpieler1 = farbeTmp;
-        this.partiezeit = partiezeitTmp;
-        
-        this.verbleibendeZeitSpieler1 = verbleibendeZeitSpieler1Tmp;
-        this.verbleibendeZeitSpieler2 = verbleibendeZeitSpieler2Tmp;
-        this.endeLetzterZug = new Date().getTime();
-        
-        this.gewinner = gewinnerTmp;
     }
     
        
@@ -278,8 +286,8 @@ public class Partie {
      * @throws SpielException Wirft Fehler, falls ungültiger Zug
      */
     public void zieheFigur(Position ursprung, Position ziel) throws SpielException{
-        if(this.gewinner != null){
-            throw new SpielException(this.gewinner.toString() + " hat bereits gewonnen!");
+        if(this.beendet){
+            throw new SpielException("Partie bereits beendet!");
         }
         //Notation des Zuges vor dem Ziehen merken
         String notation = this.getNotation(ursprung, ziel);
@@ -288,12 +296,13 @@ public class Partie {
         this.spielbrett.setFigurAufFeld(ursprung, ziel);   
         
         if(this.spielbrett.checkSchachmatt()){
+            this.beendet = true;
             this.gewinner = this.spielbrett.getSpielerAmZug().andereFarbe();
         }
- 
+
         //aktuallisiere verbleibenede Zeit und zeitpunkt des ende des zugs, 
         //falls Partie zeitlich begrenzt ist
-        if(this.partiezeit > 0){
+        if(this.partiezeit > 0){           
             Date d = new Date();
             this.berechneVerbleibendeZeit(d.getTime() - this.endeLetzterZug);
             this.endeLetzterZug = d.getTime();
@@ -320,6 +329,55 @@ public class Partie {
             this.kiZieht();
         }
     }
+     
+    /**
+     * Überprüft den Namen der Datei und wenn dieser gültig ist, wird das Spiel gespeichert
+     * 
+     * @param dateiname Name der Datei 
+     * @throws Backend.SpielException falls übergebener Name = tmp
+     */
+    public void speichereSpiel(String dateiname) throws SpielException {
+        
+        if(dateiname.equals("tmp")){
+            throw new SpielException("ungültiger Speichername");
+        }
+        
+        this.speichereSpielImpl(dateiname);
+    }
+    
+    
+    /* --- Private Methoden --- */
+    
+    /**
+     * Zieht für Zug verbrauchte Zeit von Spieler ab. Überprüft ob Zeit von Spieler abgelaufen
+     * und wenn ja, wird anderer Spieler als Gewinner gesetzt
+     * 
+     * @param verbrauchteZeit Verbrauchte Zeit von Spieler1 für diesen Zug
+     */
+    private void berechneVerbleibendeZeit(long verbrauchteZeit) {
+        if(this.getSpielerAmZug() != this.farbeSpieler1){
+            this.verbleibendeZeitSpieler1 -= verbrauchteZeit;
+            if(this.verbleibendeZeitSpieler1 <= 0 && this.partiezeit > 0){
+                this.beendet = true;
+                this.gewinner = this.farbeSpieler1.andereFarbe();
+            }
+        }
+        else{
+            this.verbleibendeZeitSpieler2 -= verbrauchteZeit;
+            if(this.verbleibendeZeitSpieler2 <= 0 && this.partiezeit > 0){
+                this.beendet = true;
+                this.gewinner = this.farbeSpieler1;
+            }
+        }   
+    }
+    
+    /**
+     * Hilfsmethode, die die Schnittstelle zur KI ist
+     */
+    private void kiZieht() throws SpielException{
+        //TODO
+        throw new SpielException("KI kann noch nicht ziehen!");
+    }
     
     private String getNotation(Position ursprung, Position ziel){
         String connector = "x";
@@ -338,11 +396,7 @@ public class Partie {
      * @param dateiname Name der Datei 
      * @throws Backend.SpielException falls übergebener Name = tmp
      */
-    public void speichereSpiel(String dateiname) throws SpielException {
-        
-        if(dateiname.equals("tmp")){
-            throw new SpielException("ungültiger Speichername");
-        }
+    private void speichereSpielImpl(String dateiname) throws SpielException {
         
         String seperator = System.getProperty("file.separator");      
         // relativer Pfad zu den Einstellungen (angepasst für jedes OS)
@@ -376,14 +430,14 @@ public class Partie {
             //verbleibende Zeit Spieler 2
             bw.write(String.valueOf(this.verbleibendeZeitSpieler2));
             bw.newLine();
+            //beendet
+            bw.write(String.valueOf(this.beendet));
+            bw.newLine();
             //Gewinner
-            if(this.gewinner == null){
-                bw.newLine();
+            if(this.gewinner != null){
+                bw.write(this.gewinner.toString());              
             }
-            else{
-                bw.write(this.gewinner.toString());
-                bw.newLine();
-            }
+            bw.newLine();
             
             //Züge
             for(Zug zug : this.ablauf){
@@ -398,37 +452,5 @@ public class Partie {
         } catch (IOException ex) {
             throw new SpielException("Speicherdatei konnte nicht erstellt werden!");
         }
-    }
-    
-    
-/* --- Private Methoden --- */
-    
-    /**
-     * Zieht für Zug verbrauchte Zeit von Spieler ab. Überprüft ob Zeit von Spieler abgelaufen
-     * und wenn ja, wird anderer Spieler als Gewinner gesetzt
-     * 
-     * @param verbrauchteZeit Verbrauchte Zeit von Spieler1 für diesen Zug
-     */
-    private void berechneVerbleibendeZeit(long verbrauchteZeit) {
-        if(this.getSpielerAmZug() != this.farbeSpieler1){
-            this.verbleibendeZeitSpieler1 -= verbrauchteZeit;
-            if(this.verbleibendeZeitSpieler1 <= 0 && this.partiezeit > 0){
-                this.gewinner = this.farbeSpieler1.andereFarbe();
-            }
-        }
-        else{
-            this.verbleibendeZeitSpieler2 -= verbrauchteZeit;
-            if(this.verbleibendeZeitSpieler2 <= 0 && this.partiezeit > 0){
-                this.gewinner = this.farbeSpieler1;
-            }
-        }   
-    }
-    
-    /**
-     * Hilfsmethode, die die Schnittstelle zur KI ist
-     */
-    private void kiZieht() throws SpielException{
-        //TODO
-        throw new SpielException("KI kann noch nicht ziehen!");
     }
 }

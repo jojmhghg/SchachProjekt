@@ -21,7 +21,12 @@ public class Spiel implements SpielInteraktionen {
     private final Einstellungen einstellungen;
     
     public Spiel() throws SpielException{
-        partie = new Partie("tmp");
+        try{
+            partie = new Partie("tmp");
+        }
+        catch(SpielException ex){
+            partie = null;
+        }
         einstellungen = new Einstellungen();
     }
 
@@ -46,7 +51,7 @@ public class Spiel implements SpielInteraktionen {
     }
 
     @Override
-    public Spielbrett neuePartie(Optionen partieoptionen) {
+    public Spielbrett neuePartie(Optionen partieoptionen) throws SpielException{
         this.partie = new Partie(partieoptionen);
         return this.partie.getSpielbrett();
     }

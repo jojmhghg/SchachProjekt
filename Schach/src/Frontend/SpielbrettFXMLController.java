@@ -273,6 +273,10 @@ public class SpielbrettFXMLController implements Initializable {
     public void loadData(Spiel spiel, Spielbrett spielbrett) {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
+        
+        initSpielbrett();
+        //doTime();
+        timerRefresh();
     }
 
     /**
@@ -673,7 +677,7 @@ public class SpielbrettFXMLController implements Initializable {
         //refreshTime();
 
         //Populate listView and apply rotation
-        if (spiel.getMitschrift().size() > 0) {
+        if (spiel.getMitschrift() != null && spiel.getMitschrift().size() > 0) {
             LinkedList<Zug> zuege = spiel.getMitschrift();
             listZuegeWeiss.getItems().clear();
             listZuegeSchwarz.getItems().clear();
@@ -969,16 +973,6 @@ public class SpielbrettFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            this.spielbrett = new Spielbrett();
-            this.spiel = new Spiel();
-            initSpielbrett();
-            //doTime();
-            
-            timerRefresh();
-
-        } catch (SpielException ex) {
-            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 }

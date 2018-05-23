@@ -22,7 +22,7 @@ public interface SpielInteraktionen {
     public boolean isHighlightingAus();
     
     /* --- Methoden die eine Partie betreffen --- */
-    public Spielbrett neuePartie(Optionen partieoptionen);
+    public Spielbrett neuePartie(Optionen partieoptionen) throws SpielException;
     public Spielbrett partieLaden(String speicherstand) throws SpielException;
     public void zieheFigur(Position ausgangsposition, Position zielposition) throws SpielException;
     
