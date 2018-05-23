@@ -10,7 +10,6 @@ import Backend.SpielException;
 import Backend.Spielbrett;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -84,7 +83,6 @@ public class PartieLadenFXMLController implements Initializable {
                 
                 startseiteWindow.hide();
                 ((Node) (event.getSource())).getScene().getWindow().hide();
-                //((Node) (event.getSource())).getParent().getScene().getWindow().hide();
                 controller.cleanBoard();
                 controller.initSpielbrett();
             } catch (SpielException ex) {

@@ -598,6 +598,32 @@ public class SpielbrettFXMLController implements Initializable {
             }
         }
     }
+    
+    @FXML
+    private void neuePartie(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("Optionen.fxml"));
+            Parent optionenScene = loader.load();
+
+            OptionenFXMLController controller = loader.getController();
+            controller.loadData(spiel);
+
+            //optionenScene = FXMLLoader.load(getClass().getResource("Optionen.fxml"));
+            Stage optionenStage = new Stage();
+            optionenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            optionenStage.initModality(Modality.APPLICATION_MODAL);
+            optionenStage.initStyle(StageStyle.UNDECORATED);
+            optionenStage.setScene(new Scene(optionenScene));
+            optionenStage.show();
+            // Hide this current window (if this is what you want)
+            Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
+            spielBrettStage.close();
+        } catch (IOException ex) {
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     @FXML
     private void goToEinstellungen(ActionEvent event) {
