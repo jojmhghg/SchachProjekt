@@ -5,10 +5,8 @@
  */
 package Frontend;
 
-import Backend.Einstellungen;
 import Backend.Spiel;
 import Backend.SpielException;
-import Backend.SpielInteraktionen;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
@@ -23,7 +21,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
@@ -49,31 +46,14 @@ public class EinstellungenFXMLController implements Initializable {
     Spiel spiel;
     SpielbrettFXMLController spielbrettFXMLController;
 
-    public void loadData(Spiel spiel) {
-            this.spiel = spiel;
+    public void loadData(Spiel spiel, SpielbrettFXMLController spielbrettFXMLController) {
+        this.spiel = spiel;
+        this.spielbrettFXMLController = spielbrettFXMLController;
     }
     
     @FXML
     private void backToSpielbrett(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("Spielbrett.fxml"));
-            Parent spielbrettScene = loader.load();
-
-            SpielbrettFXMLController controller = loader.getController();
-            //controller.loadData();
-            
-            
-            //spielbrettScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
-            Stage spielbrettStage;
-            spielbrettStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            spielbrettStage.show();
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-            
-        } catch (IOException ex) {
-            Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        ((Node) (event.getSource())).getScene().getWindow().hide();
     }
 
     @FXML
@@ -85,6 +65,7 @@ public class EinstellungenFXMLController implements Initializable {
             try {
                 spiel.setUsername(newSpielername);
                 spiel.setHighlightingAus(highlightingButton.isSelected());
+                spielbrettFXMLController.setSpielernameOnScreen();
                 backToSpielbrett(event);
             } catch (SpielException ex) {
                 Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);

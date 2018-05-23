@@ -30,7 +30,7 @@ public class Partie {
     /**
      * Gibt die Farbe vom Spieler1 an
      */
-    private final Farbe farbe;
+    private final Farbe farbeSpieler1;
     
     /**
      * eingestellte Partiezeit pro Spieler
@@ -75,7 +75,7 @@ public class Partie {
      */ 
     public Partie(Optionen optionen){
         this.kiGegner = optionen.getKiGegner();
-        this.farbe = optionen.getFarbe();
+        this.farbeSpieler1 = optionen.getFarbe();
         this.partiezeit = optionen.getPartiezeit();
         
         this.verbleibendeZeitSpieler1 = optionen.getPartiezeit() * 60 * 1000;
@@ -173,7 +173,7 @@ public class Partie {
         }      
         
         this.kiGegner = kiGegnerTmp;
-        this.farbe = farbeTmp;
+        this.farbeSpieler1 = farbeTmp;
         this.partiezeit = partiezeitTmp;
         
         this.verbleibendeZeitSpieler1 = verbleibendeZeitSpieler1Tmp;
@@ -219,7 +219,7 @@ public class Partie {
      * @return Farbe
      */
     public Farbe getFarbe() {
-        return farbe;
+        return farbeSpieler1;
     }
     
     /**
@@ -365,7 +365,7 @@ public class Partie {
             bw.write(String.valueOf(this.kiGegner));
             bw.newLine();
             //Farbe
-            bw.write(this.farbe.toString());
+            bw.write(this.farbeSpieler1.toString());
             bw.newLine();
             //Partiezeit
             bw.write(String.valueOf(this.partiezeit));
@@ -410,21 +410,16 @@ public class Partie {
      * @param verbrauchteZeit Verbrauchte Zeit von Spieler1 für diesen Zug
      */
     private void berechneVerbleibendeZeit(long verbrauchteZeit) {
-        if(this.getSpielerAmZug() == this.farbe){
+        if(this.getSpielerAmZug() != this.farbeSpieler1){
             this.verbleibendeZeitSpieler1 -= verbrauchteZeit;
             if(this.verbleibendeZeitSpieler1 <= 0 && this.partiezeit > 0){
-                if(this.farbe == Farbe.SCHWARZ){
-                    this.gewinner = Farbe.WEISS;
-                }
-                else{
-                    this.gewinner = Farbe.SCHWARZ;
-                }
+                this.gewinner = this.farbeSpieler1.andereFarbe();
             }
         }
         else{
             this.verbleibendeZeitSpieler2 -= verbrauchteZeit;
             if(this.verbleibendeZeitSpieler2 <= 0 && this.partiezeit > 0){
-                this.gewinner = this.farbe;
+                this.gewinner = this.farbeSpieler1;
             }
         }   
     }

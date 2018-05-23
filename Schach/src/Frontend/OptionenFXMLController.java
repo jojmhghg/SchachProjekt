@@ -126,7 +126,7 @@ public class OptionenFXMLController implements Initializable {
                 controller.refreshTime();
                                 
                 //Set Username 
-                controller.getSpliernameForColor();
+                controller.setSpielernameOnScreen();
                 
                 //Show the page
                 chessBoardStage.show();

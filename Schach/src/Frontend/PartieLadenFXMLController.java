@@ -71,7 +71,7 @@ public class PartieLadenFXMLController implements Initializable {
 
                 SpielbrettFXMLController controller = loader.getController();
                 controller.loadData(spiel, spielbrett);
-                controller.getSpliernameForColor();
+                controller.setSpielernameOnScreen();
 
                 Stage spielbrettStage = new Stage();
                 spielbrettStage.initModality(Modality.APPLICATION_MODAL);

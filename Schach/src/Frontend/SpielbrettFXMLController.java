@@ -423,15 +423,11 @@ public class SpielbrettFXMLController implements Initializable {
         possibleMoves = null;
         quellPane = null;
         updateScreen();
-        //loadSpielernameWeiss();
 
-        LinkedList<Zug> zuege = spiel.getMitschrift();
-        for(int i = 0; i < zuege.size(); i = i + 2){
-            listZuegeWeiss.getItems().add(zuege.get(i).getMitschrift());
-        }
-        for(int i = 1; i < zuege.size(); i = i + 2){
-            listZuegeSchwarz.getItems().add(zuege.get(i).getMitschrift());
-        } 
+        int size = spiel.getMitschrift().size();
+        if(size % 2 == 0 && size > 0){
+            rotateBoard();
+        }      
     }
 
     /**
@@ -576,11 +572,14 @@ public class SpielbrettFXMLController implements Initializable {
      * Hilfsmethode um Felder zu highlighten
      */
     private void highlight(){
-        if(possibleMoves != null){
-            for(Position pos : possibleMoves){
-                this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 5;");
-            }
+        if(!spiel.isHighlightingAus()){
+           if(possibleMoves != null){
+                for(Position pos : possibleMoves){
+                    this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 5;");
+                }
+            } 
         }
+        
     }
     
     /**
@@ -597,14 +596,13 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private void goToEinstellungen(ActionEvent event) {
         
-        try {
-            
+        try {           
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("Einstellungen.fxml"));
             Parent einstellungenScene = loader.load();
 
             EinstellungenFXMLController controller = loader.getController();
-            controller.loadData(spiel);
+            controller.loadData(spiel, this);
             
             //einstellungenScene = FXMLLoader.load(getClass().getResource("Einstellungen.fxml"));
             Stage einstellungenStage = new Stage();
@@ -633,12 +631,16 @@ public class SpielbrettFXMLController implements Initializable {
 
         //Populate listView and apply rotation
         if (spiel.getMitschrift().size() > 0) {
-            if (spiel.getSpielerAmZug() == Farbe.WEISS) {
-                listZuegeSchwarz.getItems().add(spiel.getMitschrift().getLast().getMitschrift());
-            } else if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
-                listZuegeWeiss.getItems().add(spiel.getMitschrift().getLast().getMitschrift()); 
+            LinkedList<Zug> zuege = spiel.getMitschrift();
+            listZuegeWeiss.getItems().clear();
+            listZuegeSchwarz.getItems().clear();
+            for(int i = 0; i < zuege.size(); i = i + 2){
+                listZuegeWeiss.getItems().add(zuege.get(i).getMitschrift());
             }
-            rotateBoard();
+            for(int i = 1; i < zuege.size(); i = i + 2){
+                listZuegeSchwarz.getItems().add(zuege.get(i).getMitschrift());
+            } 
+            rotateBoard();          
         }
         
         if(posKingImSchach != null){
@@ -664,7 +666,7 @@ public class SpielbrettFXMLController implements Initializable {
     /**
      * Hilfmethode fuer partie Laden und goToChessboard
      */
-    public void getSpliernameForColor(){
+    public void setSpielernameOnScreen(){
         if(spiel.getFarbe() == Farbe.SCHWARZ){
             spielernameSchwarz.setText(spiel.getUsername());
         }
@@ -883,41 +885,21 @@ public class SpielbrettFXMLController implements Initializable {
     }
     
     public void refreshTime() {
-        Long neueZeitSpieler1;
-        Long neueZeitSpieler2;
         DateFormat formatter = new SimpleDateFormat("mm:ss");
-        Label timeLabel = new Label();
         
-        //Hilfmethode fuer ein Live Countdown
-//        final Timeline timeline = new Timeline(
-//                new KeyFrame(
-//                        Duration.millis(500),
-//                        event -> {
-//                             final long starttime = 15;
-//                             long seconds = starttime;
-//                                seconds--;
-//                            if (seconds < 0) {
-//                                timeLabel.setText(formatter.format(0));
-//                            } else {
-//                                timeLabel.setText(formatter.format(seconds));
-//                            }
-//                        }
-//                )
-//        
-//        );
-        
-        neueZeitSpieler1 = spiel.getZeitSpieler1();     //Zu spieler1 gehoert die Farbe Schwarz
-        neueZeitSpieler2 = spiel.getZeitSpieler2();     //Zu spieler2 gehoert die Farbe Weiss
         if (spiel.getPartiezeit() == -1) {
             this.restZeitSchwarz.setText("Unbegrenzt");
             this.restZeitWeiss.setText("Unbegrenzt");
         } else {
-            this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
-            this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+            if(this.spiel.getFarbe() == Farbe.WEISS){
+                this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+                this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+            }
+            else{
+                this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+                this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+            }         
         }
-        
-//        timeline.setCycleCount(Animation.INDEFINITE);
-//        timeline.play();
     }
     
     @FXML

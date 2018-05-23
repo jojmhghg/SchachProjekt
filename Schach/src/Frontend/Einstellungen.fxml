@@ -29,7 +29,7 @@
          </font>
       </Text>
       <JFXTextField fx:id="spielername" focusColor="BLACK" layoutX="160.0" layoutY="102.0" promptText="Spielername" />
-      <Text layoutX="54.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlighting">
+      <Text layoutX="54.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlighting aus">
          <font>
             <Font size="14.0" />
          </font>
