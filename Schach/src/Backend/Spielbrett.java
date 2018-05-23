@@ -372,10 +372,14 @@ public class Spielbrett {
      */
     public boolean checkSchachmatt() throws SpielException{
         Farbe spieler = this.amZug;
+        Figur tmpFigur;
+        LinkedList<Position> tmpList;
+        
         for(int i = 0; i < 64; i++){
-            Figur tmpFigur = this.spielbrett[i].getFigur();
+            tmpFigur = this.spielbrett[i].getFigur();
             if(tmpFigur != null && tmpFigur.getFarbe() == spieler){
-                if(this.getMovesFuerFeld(Position.values()[i]) != null){
+                tmpList = this.getMovesFuerFeld(Position.values()[i]);
+                if(tmpList != null && tmpList.size() > 0){
                     return false;
                 }
             }

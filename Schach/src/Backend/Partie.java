@@ -298,10 +298,10 @@ public final class Partie {
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
         }
-        //Notation des Zuges vor dem Ziehen merken
-        String notation = this.getNotation(ursprung, ziel);
+        // Notation des Zuges vor dem Ziehen merken
+        String notation = this.getNotationTeil1(ursprung, ziel);
         
-        //ziehe figur
+        // ziehe figur
         this.spielbrett.setFigurAufFeld(ursprung, ziel);   
         
         if(this.spielbrett.checkSchachmatt()){
@@ -309,26 +309,16 @@ public final class Partie {
             this.gewinner = this.spielbrett.getSpielerAmZug().andereFarbe();
         }
 
-        //aktuallisiere verbleibenede Zeit und zeitpunkt des ende des zugs, 
-        //falls Partie zeitlich begrenzt ist
+        // aktuallisiere verbleibenede Zeit und zeitpunkt des ende des zugs, 
+        // falls Partie zeitlich begrenzt ist
         if(this.partiezeit > 0){           
             Date d = new Date();
             this.berechneVerbleibendeZeit(d.getTime() - this.endeLetzterZug);
             this.endeLetzterZug = d.getTime();
         }
         
-        // Sonderregeln zu Notation hinzufügen
-        if(spielbrett.getEnPassant()){
-            notation = ursprung.toString() + "x" + ziel.toString() + " e.p.";
-        }
-        else if(spielbrett.getRochade()){
-            if(ursprung.ordinal() > ziel.ordinal()){
-                notation = "0-0-0";
-            }
-            else{
-                notation = "0-0";
-            }
-        }
+        // Notation bei Sonderfällen
+        notation = this.getNotationTeil2(ursprung, ziel, notation);
         
         //Zug abspeichern
         this.ablauf.add(new Zug(ursprung, ziel, notation));
@@ -399,7 +389,15 @@ public final class Partie {
         throw new SpielException("KI kann noch nicht ziehen!");
     }
     
-    private String getNotation(Position ursprung, Position ziel){
+    /**
+     * Gibt den ersten Teil der Notation des Zuges aus. Die Figuren dürfen 
+     * hierfür noch nicht gezogen sein.
+     * 
+     * @param ursprung
+     * @param ziel
+     * @return 
+     */
+    private String getNotationTeil1(Position ursprung, Position ziel){
         String connector = "x";
         if(this.spielbrett.getFigurAufFeld(ziel) == null){
             connector = "-";
@@ -408,6 +406,42 @@ public final class Partie {
         String figur = this.spielbrett.getFigurAufFeld(ursprung).getFigurABK();
         
         return figur + ursprung.toString() + connector + ziel.toString();
+    }
+    
+    /**
+     * Gibt den zweiten Teil der Notation des Zuges aus. Die Figuren müssen 
+     * hierfür schon gezogen sein.
+     * 
+     * @param ursprung
+     * @param ziel
+     * @param notation
+     * @return 
+     */
+    private String getNotationTeil2(Position ursprung, Position ziel, String notation){
+        // En Passant
+        if(spielbrett.getEnPassant()){
+            notation = ursprung.toString() + "x" + ziel.toString() + " e.p.";
+        }
+        // Rochade
+        else if(spielbrett.getRochade()){
+            if(ursprung.ordinal() > ziel.ordinal()){
+                notation = "0-0-0";
+            }
+            else{
+                notation = "0-0";
+            }
+        }
+        
+        // Schachmatt
+        if(this.gewinner != null){
+            notation += "#";
+        }
+        // Schach
+        else if(this.spielbrett.getSchach() != null){
+            notation += "+";
+        } 
+        
+        return notation;
     }
     
     /**
