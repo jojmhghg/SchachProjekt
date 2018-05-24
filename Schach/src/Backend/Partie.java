@@ -306,7 +306,14 @@ public final class Partie {
         
         if(this.spielbrett.checkZugMoeglich()){
             this.beendet = true;
-            this.gewinner = this.spielbrett.getSpielerAmZug().andereFarbe();
+            if(this.spielbrett.checkSchachmattOrPatt()){
+                this.gewinner = this.spielbrett.getSpielerAmZug().andereFarbe();
+            }
+            else{
+                //Hier sollte kein Gewinner rauskommen, sprich 1/2 zu 1/2
+                this.gewinner = Farbe.SCHWARZ;
+            }
+            
         }
 
         // aktuallisiere verbleibenede Zeit und zeitpunkt des ende des zugs, 
