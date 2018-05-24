@@ -108,12 +108,6 @@ public class Spielbrett {
         this.spielbrett[Position.F7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-//        this.spielbrett[Position.E1.ordinal()].setFigur(new Koenig(Farbe.WEISS));
-//        this.spielbrett[Position.A1.ordinal()].setFigur(new Turm(Farbe.WEISS));
-//        this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
-//        this.spielbrett[Position.E8.ordinal()].setFigur(new Koenig(Farbe.SCHWARZ));
-//        this.spielbrett[Position.A8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
-//        this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
     }
     
     /**
@@ -172,6 +166,7 @@ public class Spielbrett {
                 this.spielbrett[i].setFigur(tmpFigur);
             }
         } 
+        
     }
     
     /**
@@ -370,6 +365,8 @@ public class Spielbrett {
         if(checkSchach(this.amZug.andereFarbe())){           
             this.schach = this.amZug.andereFarbe();
         }
+        
+        gibStringStockfish();
         
         // Jetzt ist anderer Spieler am Zug
         this.amZug = this.amZug.andereFarbe();
@@ -616,4 +613,133 @@ public class Spielbrett {
             return ((Koenig) this.spielbrett[posBlackKing.ordinal()].getFigur()).imSchach(this, posBlackKing);
         }
     }
+    
+    public void gibStringStockfish(){
+        Farbe tmpFarbe;
+        Figur tmpFigur;
+        LinkedList<String> tmpList = new LinkedList<>();
+        int tmpCounter = 0;
+        String tmpString;
+        for(int i = 0; i < 64; i++){
+            if(i % 8 == 0 && i > 1){
+                if(tmpCounter != 0){
+                            tmpString = Integer.toString(tmpCounter);
+                            tmpList.add(tmpString);
+                }
+                tmpList.add("/");
+                tmpCounter = 0;
+            }
+            
+            tmpFigur = this.spielbrett[i].getFigur();
+            if(tmpFigur != null){
+                tmpFarbe = tmpFigur.getFarbe();
+                
+                switch (tmpFigur.getFigurName()){
+                    case "König":
+                        if(tmpCounter != 0){
+                            tmpString = Integer.toString(tmpCounter);
+                            tmpList.add(tmpString);
+                        }
+                        if(tmpFarbe == Farbe.WEISS){
+                            tmpList.add("K");
+                        }
+                        else{
+                            tmpList.add("k");
+                        }
+                        tmpCounter = 0;
+                        break;
+
+                    case "Dame":
+                        if(tmpCounter != 0){
+                            tmpString = Integer.toString(tmpCounter);
+                            tmpList.add(tmpString);
+                        }
+                        if(tmpFarbe == Farbe.WEISS){
+                            tmpList.add("Q");
+                        }
+                        else{
+                            tmpList.add("q");
+                        }
+                        tmpCounter = 0;
+                        break;
+
+                    case "Turm":
+                        if(tmpCounter != 0){
+                            tmpString = Integer.toString(tmpCounter);
+                            tmpList.add(tmpString);
+                        }
+                        if(tmpFarbe == Farbe.WEISS){
+                            tmpList.add("R");
+                        }
+                        else{
+                            tmpList.add("r");
+                        }
+                        tmpCounter = 0;
+                        break;
+
+                    case "Läufer":
+                        if(tmpCounter != 0){
+                            tmpString = Integer.toString(tmpCounter);
+                            tmpList.add(tmpString);
+                        }
+                        if(tmpFarbe == Farbe.WEISS){
+                            tmpList.add("B");
+                        }
+                        else{
+                            tmpList.add("b");
+                        }
+                        tmpCounter = 0;
+                        break;
+
+                    case "Springer":
+                        if(tmpCounter != 0){
+                            tmpString = Integer.toString(tmpCounter);
+                            tmpList.add(tmpString);
+                        }
+                        if(tmpFarbe == Farbe.WEISS){
+                            tmpList.add("N");
+                        }
+                        else{
+                            tmpList.add("n");
+                        }
+                        tmpCounter = 0;
+                        break;
+
+                    case "Bauer":
+                        if(tmpCounter != 0){
+                            tmpString = Integer.toString(tmpCounter);
+                            tmpList.add(tmpString);
+                        }
+                        if(tmpFarbe == Farbe.WEISS){
+                            tmpList.add("P");
+                        }
+                        else{
+                            tmpList.add("p");
+                        }
+                        tmpCounter = 0;
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+            else{
+                tmpCounter++;
+            }
+        }
+        String string = tmpList.getLast();
+        for(int i = tmpList.size()-2; i >= 0; i--){
+            string = string + tmpList.get(i);
+        }
+        if(amZug == Farbe.WEISS){
+            string = string + " w";
+        }
+        else{
+            string = string + " s";
+        }
+        
+        string = string + " 0 " + zugCounter + 1;
+        System.out.println(string);
+    }
+    
 }
