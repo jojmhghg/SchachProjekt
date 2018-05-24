@@ -352,6 +352,19 @@ public class Spielbrett {
         else{
             throw new SpielException("Ungültiges Zielfeld!");
         } 
+        
+        if(figur instanceof Bauer){
+            if(this.amZug == Farbe.WEISS){
+                if(zielposition.ordinal() >= 56 && zielposition.ordinal() <= 63){
+                    umwandlung(zielposition, Farbe.WEISS);
+                }
+            }
+            else{
+                if(zielposition.ordinal() >= 0 && zielposition.ordinal() <= 7){
+                    umwandlung(zielposition, Farbe.SCHWARZ);
+                }
+            }
+        }
              
         // Teste ob der andere Spieler nun im Schach steht und wenn ja, setze Attribut Schach
         if(checkSchach(this.amZug.andereFarbe())){           
@@ -361,16 +374,16 @@ public class Spielbrett {
         // Jetzt ist anderer Spieler am Zug
         this.amZug = this.amZug.andereFarbe();
         // Und der Counter für die Züge wird erhöht
-        zugCounter++;        
+        zugCounter++;
     }
     
     /**
-     * Testet ob Spieler am Zug im Schachmatt steht
+     * Testet ob Spieler am Zug moegliche Zuege hat
      * 
      * @return true, falls ja; sonst false
      * @throws Backend.SpielException
      */
-    public boolean checkSchachmatt() throws SpielException{
+    public boolean checkZugMoeglich() throws SpielException{
         Farbe spieler = this.amZug;
         Figur tmpFigur;
         LinkedList<Position> tmpList;
@@ -384,8 +397,70 @@ public class Spielbrett {
                 }
             }
         }
+        if(checkSchach(this.amZug)){
+            
+        }
+        //Nicht im Schach ist Patt
+        else{
+            
+        }
         return true;
     }
+    
+    /**
+     * Testet ob Spieler am Zug im Schach steht und somit Matt ist
+     * oder nicht im Schach steht und somit Patt ist
+     * 
+     * @return true, falls im Schach steht
+     */
+    public boolean checkSchachmattOrPatt(){
+        if(checkSchach(this.amZug)){
+            return true;
+        }
+        //Nicht im Schach ist Patt
+        else{
+            return false;
+        }
+    }
+    /**
+     * Loescht Bauern auf gegnerischer Grundreihe und setzt dort die
+     * gewünschte neue Figur
+     * 
+     * @param position
+     * @param farbe 
+     */
+    public void umwandlung(Position position, Farbe farbe){
+        //Methode "welcheFigur()" muss noch implementiert werden, zudem ist
+        //Schnittstelle zwischen Frontend und Backend
+        switch(welcheFigur()){
+            case "Dame":
+                this.spielbrett[position.ordinal()].setFigur(null);
+                this.spielbrett[position.ordinal()].setFigur(new Dame(farbe));
+                break;
+                
+            case "Turm":
+                this.spielbrett[position.ordinal()].setFigur(null);
+                this.spielbrett[position.ordinal()].setFigur(new Turm(farbe));
+                break;
+                
+            case "Springer":
+                this.spielbrett[position.ordinal()].setFigur(null);
+                this.spielbrett[position.ordinal()].setFigur(new Springer(farbe));
+                break;
+                
+            case "Laeufer":
+                this.spielbrett[position.ordinal()].setFigur(null);
+                this.spielbrett[position.ordinal()].setFigur(new Laeufer(farbe));
+                break;
+        }
+    }
+    
+    //Diese Methode muss ins Frontend implementiert werden, ist nur hier wegen der
+    //Fehlermeldung, damit sie nicht angezeigt wird
+    public String welcheFigur(){
+        return "Test";
+    }
+    
     
     /*** ------------------------------------ Hilfsmethoden ------------------------------ ***/
     

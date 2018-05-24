@@ -304,7 +304,7 @@ public final class Partie {
         // ziehe figur
         this.spielbrett.setFigurAufFeld(ursprung, ziel);   
         
-        if(this.spielbrett.checkSchachmatt()){
+        if(this.spielbrett.checkZugMoeglich()){
             this.beendet = true;
             this.gewinner = this.spielbrett.getSpielerAmZug().andereFarbe();
         }
