@@ -310,8 +310,8 @@ public final class Partie {
                 this.gewinner = this.spielbrett.getSpielerAmZug().andereFarbe();
             }
             else{
-                //Hier sollte kein Gewinner rauskommen, sprich 1/2 zu 1/2
-                this.gewinner = Farbe.SCHWARZ;
+                //Wenn Gewinner "null" ist, ist Unentschieden
+                this.gewinner = null;
             }
             
         }
