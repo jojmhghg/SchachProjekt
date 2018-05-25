@@ -38,6 +38,10 @@ public class Spielbrett {
      * Gibt an, ob und wer gerade im Schach steht
      */
     private Farbe schach;
+
+    public Feld[] getSpielbrett() {
+        return spielbrett;
+    }
     /**
      * Gibt an, welcher Spieler am Zug ist
      */
@@ -378,11 +382,12 @@ public class Spielbrett {
             this.schach = this.amZug.andereFarbe();
         }
         
-        gibStringStockfish();
         
         // Jetzt ist anderer Spieler am Zug
         this.amZug = this.amZug.andereFarbe();
         // Und der Counter für die Züge wird erhöht
+        SchnittstelleStockfish schnittstelleStockfish = new SchnittstelleStockfish();
+        schnittstelleStockfish.stockfishEngine(this);
         zugCounter++;
     }
     
@@ -626,10 +631,12 @@ public class Spielbrett {
         }
     }
     
-    public void gibStringStockfish(){
+    public String gibStringStockfish(){
         Farbe tmpFarbe;
         Figur tmpFigur;
         LinkedList<String> tmpList = new LinkedList<>();
+        LinkedList<String> tmp2List = new LinkedList<>();
+        LinkedList<String> tmp3List = new LinkedList<>();
         int tmpCounter = 0;
         int tmpZugCounter;
         String tmpString;
@@ -740,8 +747,37 @@ public class Spielbrett {
                 tmpCounter++;
             }
         }
-        String string = tmpList.getLast();
-        for(int i = tmpList.size()-2; i >= 0; i--){
+        String string ="";
+        
+        /*for(int i = tmpList.size()-1; i >= 0; i--){
+            string = string + tmpList.get(i);
+        }*/
+        //System.out.println(tmpList);
+        /*for(int j = 0; j < 8; j++){
+            String whileSchleife = "";
+            do{
+                if(tmpList.size() != 0){
+                    whileSchleife = tmpList.getLast();
+                    tmp2List.add(whileSchleife);
+                    tmpList.removeLast();
+                }
+                else{
+                    whileSchleife = "/";
+                }
+            }while(whileSchleife != "/");
+            whileSchleife = "";
+            do{
+                if(tmp2List.size() != 0){
+                    whileSchleife = tmp2List.getLast();
+                    tmp3List.add(whileSchleife);
+                    tmp2List.removeLast();
+                }
+                else{
+                    whileSchleife = "/";
+                }
+            }while(whileSchleife != "/");
+        }*/
+        for(int i = 0; i < tmpList.size(); i++){
             string = string + tmpList.get(i);
         }
         if(amZug == Farbe.WEISS){
@@ -762,7 +798,7 @@ public class Spielbrett {
         string = string + " " + enPassantKI;
         
         string = string + " 0 " + tmpZugCounter;
-            System.out.println(string);
+        return string;
     }
     
     
