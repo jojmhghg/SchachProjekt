@@ -54,7 +54,15 @@ public class Spielbrett {
      * Gibt an, ob gerade eine Rochade gemacht wurde
      */
     private boolean rochade;
-    
+    /**
+     * String damit die KI weiß das man enPassant schlagen könnte
+     */
+    private String enPassantKI = " - ";
+    /**
+     * String um der KI mitzuteilen, dass die Rochade noch ausgeführt werden 
+     * kann
+     */
+    private String rochadeKI = "";
     /**
      * Konstruktor um ein neues Spielbrett zu erstellen
      * Mit Standardaufstellung!
@@ -319,6 +327,10 @@ public class Spielbrett {
         LinkedList<Position> moves = this.getMovesFuerFeld(startposition);  //TODO Teste ob Koenig im Schach steht
         // Ist Zielfeld ein gültiger Zug? 
         if(moves.contains(zielposition)){
+            //Falls Bauer 2 Felder nach vorne bewegt wurde, so setze dies für die KI
+            setEnPassantKI(figur, startposition, zielposition);
+            //Falls Rochade noch ausgeführt werden kann
+            setRochadeKI();
             // Falls en Passant: geschlagener Bauer wird entfernt 
             deleteBauerBeiEnPassant(figur, startposition, zielposition);
             // Figur wird auf altem Feld entfernt
@@ -619,6 +631,7 @@ public class Spielbrett {
         Figur tmpFigur;
         LinkedList<String> tmpList = new LinkedList<>();
         int tmpCounter = 0;
+        int tmpZugCounter;
         String tmpString;
         for(int i = 0; i < 64; i++){
             if(i % 8 == 0 && i > 1){
@@ -732,14 +745,61 @@ public class Spielbrett {
             string = string + tmpList.get(i);
         }
         if(amZug == Farbe.WEISS){
-            string = string + " w";
+            string = string + " w ";
+            tmpZugCounter = (zugCounter + 2) / 2;
         }
         else{
-            string = string + " s";
+            string = string + " b ";
+            tmpZugCounter = (zugCounter + 1) / 2;
         }
         
-        string = string + " 0 " + zugCounter + 1;
-        System.out.println(string);
+        if(zugCounter == 0){
+            tmpZugCounter = 1;
+        }
+        
+        string = string + rochadeKI;
+        
+        string = string + " " + enPassantKI;
+        
+        string = string + " 0 " + tmpZugCounter;
+            System.out.println(string);
     }
     
+    
+    public void setEnPassantKI(Figur figur, Position startposition, Position zielposition){
+        if(figur instanceof Bauer){
+            if(figur.getFarbe() == Farbe.WEISS){
+                if((zielposition.ordinal() - startposition.ordinal()) == 16){
+                    enPassantKI = Position.values()[zielposition.ordinal() - 8].toString();
+                }   
+            }
+            else{
+                if((startposition.ordinal() - zielposition.ordinal()) == 16){
+                    enPassantKI = Position.values()[zielposition.ordinal() + 8].toString();
+                }
+            }
+        }
+        else{
+            enPassantKI = "-";
+        }
+    }
+    
+    public void setRochadeKI(){
+        if(((Koenig) getFigurAufFeld(posWhiteKing)).isNochNichtGezogen()){
+            if(((Turm) getFigurAufFeld(Position.A1)).isNochNichtGezogen()){
+                rochadeKI = rochadeKI + "K";
+            }
+            if(((Turm) getFigurAufFeld(Position.H1)).isNochNichtGezogen()){
+                rochadeKI = rochadeKI + "Q";
+            }
+        }
+        if(((Koenig) getFigurAufFeld(posBlackKing)).isNochNichtGezogen()){
+            if(((Turm) getFigurAufFeld(Position.A8)).isNochNichtGezogen()){
+                rochadeKI = rochadeKI + "k";
+            }
+            if(((Turm) getFigurAufFeld(Position.A8)).isNochNichtGezogen()){
+                rochadeKI = rochadeKI + "q";
+            }
+        }
+    }
 }
