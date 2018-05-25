@@ -122,7 +122,7 @@ public class OptionenFXMLController implements Initializable {
                 chessBoardStage.initStyle(StageStyle.UNDECORATED);
                 
                 //Zeit aktualisieren
-                controller.refreshTime();
+                //controller.refreshTime();
                                 
                 //Set Username 
                 controller.setSpielernameOnScreen();
