@@ -62,7 +62,7 @@ public class Spielbrett {
      * String um der KI mitzuteilen, dass die Rochade noch ausgeführt werden 
      * kann
      */
-    private String rochadeKI = "";
+    private String rochadeKI;
     /**
      * Konstruktor um ein neues Spielbrett zu erstellen
      * Mit Standardaufstellung!
@@ -785,6 +785,7 @@ public class Spielbrett {
     }
     
     public void setRochadeKI(){
+        rochadeKI = "";
         if(((Koenig) getFigurAufFeld(posWhiteKing)).isNochNichtGezogen()){
             if(((Turm) getFigurAufFeld(Position.A1)).isNochNichtGezogen()){
                 rochadeKI = rochadeKI + "K";
