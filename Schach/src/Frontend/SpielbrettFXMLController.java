@@ -245,8 +245,8 @@ public class SpielbrettFXMLController implements Initializable {
 
     private Pane[] paneArray;
     
-    int spieler1min = 3;
-    int spieler2min = 3;
+    int spieler1min = 0;
+    int spieler2min = 0;
 
     int spieler1sec = 0;
     int spieler2sec = 0;
@@ -664,32 +664,42 @@ public class SpielbrettFXMLController implements Initializable {
     }
     
     public void getTime(String partieZeit) {
-        
-        spieler1min = Integer.parseInt(partieZeit);
-        spieler1sec = 0;
-        
-        spieler2min = Integer.parseInt(partieZeit);
-        spieler2sec = 0;
-              
+
+        if (spiel.getPartiezeit() == -1) {
+            this.restZeitSchwarz.setText("Unbegrenzt");
+            this.restZeitWeiss.setText("Unbegrenzt");
+        } else {
+            spieler1min = Integer.parseInt(partieZeit);
+            spieler1sec = 0;
+
+            spieler2min = Integer.parseInt(partieZeit);
+            spieler2sec = 0;
+        }
+
     }
 
     private void storeTime() {
 
-        this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
-        
-        if (spieler1sec == 0) {
-            spieler1sec = 59;
-            spieler1min--;
-        }
-        spieler1sec--;
+        if (spiel.getPartiezeit() == -1) {
+            this.restZeitSchwarz.setText("Unbegrenzt");
+            this.restZeitWeiss.setText("Unbegrenzt");
+        } else {
+            this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
 
-        this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
-        
-        if (spieler2sec == 0) {
-            spieler2sec = 59;
-            spieler2min--;
+            if (spieler1sec == 0) {
+                spieler1sec = 59;
+                spieler1min--;
+            }
+            spieler1sec--;
+
+            this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
+
+            if (spieler2sec == 0) {
+                spieler2sec = 59;
+                spieler2min--;
+            }
+            spieler2sec--;
         }
-        spieler2sec--;
 
     }
 
@@ -922,22 +932,22 @@ public class SpielbrettFXMLController implements Initializable {
 //         }
     }
 
-    public void refreshTime() {
-        DateFormat formatter = new SimpleDateFormat("mm:ss");
-
-        if (spiel.getPartiezeit() == -1) {
-            this.restZeitSchwarz.setText("Unbegrenzt");
-            this.restZeitWeiss.setText("Unbegrenzt");
-        } else {
-            if (this.spiel.getFarbe() == Farbe.WEISS) {
-                this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
-                this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
-            } else {
-                this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
-                this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
-            }
-        }
-    }
+//    public void refreshTime() {
+//        DateFormat formatter = new SimpleDateFormat("mm:ss");
+//
+//        if (spiel.getPartiezeit() == -1) {
+//            this.restZeitSchwarz.setText("Test");
+//            this.restZeitWeiss.setText("Test");
+//        } else {
+//            if (this.spiel.getFarbe() == Farbe.WEISS) {
+//                this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+//                this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+//            } else {
+//                this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+//                this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+//            }
+//        }
+//    }
     
     @FXML
     private void partieAufgeben(ActionEvent event){
