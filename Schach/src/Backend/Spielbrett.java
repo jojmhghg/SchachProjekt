@@ -387,7 +387,7 @@ public class Spielbrett {
         this.amZug = this.amZug.andereFarbe();
         // Und der Counter für die Züge wird erhöht
         SchnittstelleStockfish schnittstelleStockfish = new SchnittstelleStockfish();
-        schnittstelleStockfish.stockfishEngine(this);
+        //schnittstelleStockfish.stockfishEngine(this);
         zugCounter++;
     }
     
@@ -640,143 +640,117 @@ public class Spielbrett {
         int tmpCounter = 0;
         int tmpZugCounter;
         String tmpString;
-        for(int i = 0; i < 64; i++){
-            if(i % 8 == 0 && i > 1){
-                if(tmpCounter != 0){
-                            tmpString = Integer.toString(tmpCounter);
-                            tmpList.add(tmpString);
+        for(int j = 0; j < 8; j++){
+            for(int i = 56 - (j*8); i <= 63 - (j*8); i++){
+                tmpFigur = this.spielbrett[i].getFigur();
+                if(tmpFigur != null){
+                    tmpFarbe = tmpFigur.getFarbe();
+
+                    switch (tmpFigur.getFigurName()){
+                        case "König":
+                            if(tmpCounter != 0){
+                                tmpString = Integer.toString(tmpCounter);
+                                tmpList.add(tmpString);
+                            }
+                            if(tmpFarbe == Farbe.WEISS){
+                                tmpList.add("K");
+                            }
+                            else{
+                                tmpList.add("k");
+                            }
+                            tmpCounter = 0;
+                            break;
+
+                        case "Dame":
+                            if(tmpCounter != 0){
+                                tmpString = Integer.toString(tmpCounter);
+                                tmpList.add(tmpString);
+                            }
+                            if(tmpFarbe == Farbe.WEISS){
+                                tmpList.add("Q");
+                            }
+                            else{
+                                tmpList.add("q");
+                            }
+                            tmpCounter = 0;
+                            break;
+
+                        case "Turm":
+                            if(tmpCounter != 0){
+                                tmpString = Integer.toString(tmpCounter);
+                                tmpList.add(tmpString);
+                            }
+                            if(tmpFarbe == Farbe.WEISS){
+                                tmpList.add("R");
+                            }
+                            else{
+                                tmpList.add("r");
+                            }
+                            tmpCounter = 0;
+                            break;
+
+                        case "Läufer":
+                            if(tmpCounter != 0){
+                                tmpString = Integer.toString(tmpCounter);
+                                tmpList.add(tmpString);
+                            }
+                            if(tmpFarbe == Farbe.WEISS){
+                                tmpList.add("B");
+                            }
+                            else{
+                                tmpList.add("b");
+                            }
+                            tmpCounter = 0;
+                            break;
+
+                        case "Springer":
+                            if(tmpCounter != 0){
+                                tmpString = Integer.toString(tmpCounter);
+                                tmpList.add(tmpString);
+                            }
+                            if(tmpFarbe == Farbe.WEISS){
+                                tmpList.add("N");
+                            }
+                            else{
+                                tmpList.add("n");
+                            }
+                            tmpCounter = 0;
+                            break;
+
+                        case "Bauer":
+                            if(tmpCounter != 0){
+                                tmpString = Integer.toString(tmpCounter);
+                                tmpList.add(tmpString);
+                            }
+                            if(tmpFarbe == Farbe.WEISS){
+                                tmpList.add("P");
+                            }
+                            else{
+                                tmpList.add("p");
+                            }
+                            tmpCounter = 0;
+                            break;
+
+                        default:
+                            break;
+                    }
                 }
+                else{
+                    tmpCounter++;
+                }
+            }
+            if(tmpCounter != 0){
+                tmpString = Integer.toString(tmpCounter);
+                tmpList.add(tmpString);
+                tmpCounter = 0;
+            }
+            if(j != 7){
                 tmpList.add("/");
                 tmpCounter = 0;
             }
-            
-            tmpFigur = this.spielbrett[i].getFigur();
-            if(tmpFigur != null){
-                tmpFarbe = tmpFigur.getFarbe();
-                
-                switch (tmpFigur.getFigurName()){
-                    case "König":
-                        if(tmpCounter != 0){
-                            tmpString = Integer.toString(tmpCounter);
-                            tmpList.add(tmpString);
-                        }
-                        if(tmpFarbe == Farbe.WEISS){
-                            tmpList.add("K");
-                        }
-                        else{
-                            tmpList.add("k");
-                        }
-                        tmpCounter = 0;
-                        break;
-
-                    case "Dame":
-                        if(tmpCounter != 0){
-                            tmpString = Integer.toString(tmpCounter);
-                            tmpList.add(tmpString);
-                        }
-                        if(tmpFarbe == Farbe.WEISS){
-                            tmpList.add("Q");
-                        }
-                        else{
-                            tmpList.add("q");
-                        }
-                        tmpCounter = 0;
-                        break;
-
-                    case "Turm":
-                        if(tmpCounter != 0){
-                            tmpString = Integer.toString(tmpCounter);
-                            tmpList.add(tmpString);
-                        }
-                        if(tmpFarbe == Farbe.WEISS){
-                            tmpList.add("R");
-                        }
-                        else{
-                            tmpList.add("r");
-                        }
-                        tmpCounter = 0;
-                        break;
-
-                    case "Läufer":
-                        if(tmpCounter != 0){
-                            tmpString = Integer.toString(tmpCounter);
-                            tmpList.add(tmpString);
-                        }
-                        if(tmpFarbe == Farbe.WEISS){
-                            tmpList.add("B");
-                        }
-                        else{
-                            tmpList.add("b");
-                        }
-                        tmpCounter = 0;
-                        break;
-
-                    case "Springer":
-                        if(tmpCounter != 0){
-                            tmpString = Integer.toString(tmpCounter);
-                            tmpList.add(tmpString);
-                        }
-                        if(tmpFarbe == Farbe.WEISS){
-                            tmpList.add("N");
-                        }
-                        else{
-                            tmpList.add("n");
-                        }
-                        tmpCounter = 0;
-                        break;
-
-                    case "Bauer":
-                        if(tmpCounter != 0){
-                            tmpString = Integer.toString(tmpCounter);
-                            tmpList.add(tmpString);
-                        }
-                        if(tmpFarbe == Farbe.WEISS){
-                            tmpList.add("P");
-                        }
-                        else{
-                            tmpList.add("p");
-                        }
-                        tmpCounter = 0;
-                        break;
-                        
-                    default:
-                        break;
-                }
-            }
-            else{
-                tmpCounter++;
-            }
         }
-        String string ="";
         
-        /*for(int i = tmpList.size()-1; i >= 0; i--){
-            string = string + tmpList.get(i);
-        }*/
-        //System.out.println(tmpList);
-        /*for(int j = 0; j < 8; j++){
-            String whileSchleife = "";
-            do{
-                if(tmpList.size() != 0){
-                    whileSchleife = tmpList.getLast();
-                    tmp2List.add(whileSchleife);
-                    tmpList.removeLast();
-                }
-                else{
-                    whileSchleife = "/";
-                }
-            }while(whileSchleife != "/");
-            whileSchleife = "";
-            do{
-                if(tmp2List.size() != 0){
-                    whileSchleife = tmp2List.getLast();
-                    tmp3List.add(whileSchleife);
-                    tmp2List.removeLast();
-                }
-                else{
-                    whileSchleife = "/";
-                }
-            }while(whileSchleife != "/");
-        }*/
+        String string ="";
         for(int i = 0; i < tmpList.size(); i++){
             string = string + tmpList.get(i);
         }
