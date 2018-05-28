@@ -15,9 +15,9 @@ public class SchnittstelleStockfish {
         Stockfish client = new Stockfish();
         String FEN = spielbrett.gibStringStockfish();
         System.out.println(FEN);
-        // initialize and connect to engine 
+        // initialize and connect to engine
         if (client.startEngine()) { 
-         //System.out.println("Engine has started.."); 
+         //System.out.println("Engine has started..");
         } 
         else{ 
          //System.out.println("Oops! Something went wrong.."); 
