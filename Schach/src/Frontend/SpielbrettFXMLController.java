@@ -14,6 +14,7 @@ import Backend.SpielException;
 import Backend.Spielbrett;
 import Backend.Zug;
 import com.jfoenix.controls.JFXListView;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -28,6 +29,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -229,6 +231,10 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private Label restZeitSchwarz;
     @FXML
+    private FontAwesomeIconView timerLogoWeiss;
+    @FXML
+    private FontAwesomeIconView timerLogoSchwarz;
+    @FXML
     private MenuBar myMenuBar;
     @FXML
     private GridPane gridBoard;
@@ -270,7 +276,6 @@ public class SpielbrettFXMLController implements Initializable {
         
         initSpielbrett();
         //doTime();
-        timerRefresh();
     }
 
     /**
@@ -417,6 +422,7 @@ public class SpielbrettFXMLController implements Initializable {
             paneArray[i].addEventFilter(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
                 try {
                     onClicked(event);
+                    timerPlay();
                     //rotateBoard();
                 } catch (SpielException ex) {
                     Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
@@ -652,9 +658,19 @@ public class SpielbrettFXMLController implements Initializable {
         spielBrettStage.close();
     }
 
-    private void timerRefresh() {
+    private void timerPlay() {
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), e -> this.storeTime())
+                new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if(spiel.getSpielerAmZug() == Farbe.SCHWARZ){
+                    SpielbrettFXMLController.this.storedTimeSchwarz();
+                }
+                else if(spiel.getSpielerAmZug() == Farbe.WEISS){
+                    SpielbrettFXMLController.this.storedTimeWeiss();
+                }
+            }
+        })
         );
 
         // If you want to repeat indefinitely:
@@ -663,11 +679,34 @@ public class SpielbrettFXMLController implements Initializable {
         timeline.play();
     }
     
+    private void timerStop() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if(spiel.getSpielerAmZug() == Farbe.SCHWARZ){
+                    SpielbrettFXMLController.this.storedTimeSchwarz();
+                }
+                else if(spiel.getSpielerAmZug() == Farbe.WEISS){
+                    SpielbrettFXMLController.this.storedTimeWeiss();
+                }
+            }
+        })
+        );
+
+        // If you want to repeat indefinitely:
+        timeline.setCycleCount(Animation.INDEFINITE);
+        
+        timeline.stop(); 
+    }
+    
     public void getTime(String partieZeit) {
 
         if (spiel.getPartiezeit() == -1) {
-            this.restZeitSchwarz.setText("Unbegrenzt");
-            this.restZeitWeiss.setText("Unbegrenzt");
+            this.restZeitSchwarz.setVisible(false);
+            timerLogoSchwarz.setVisible(false);
+            this.restZeitWeiss.setVisible(false);
+            timerLogoWeiss.setVisible(false);
         } else {
             spieler1min = Integer.parseInt(partieZeit);
             spieler1sec = 0;
@@ -677,12 +716,34 @@ public class SpielbrettFXMLController implements Initializable {
         }
 
     }
-
-    private void storeTime() {
+    
+        private void storedTimeWeiss() {
 
         if (spiel.getPartiezeit() == -1) {
-            this.restZeitSchwarz.setText("Unbegrenzt");
-            this.restZeitWeiss.setText("Unbegrenzt");
+            this.restZeitWeiss.setVisible(false);
+            timerLogoWeiss.setVisible(false);
+        } else {
+            this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
+
+            if (spieler2sec == 0) {
+                spieler2sec = 59;
+                spieler2min--;
+            }
+            spieler2sec--;
+            
+            if (spieler2min == 0 && spieler2sec == 0) {
+                timerStop();
+            }
+        }
+
+    }
+
+    private void storedTimeSchwarz() {
+
+        if (spiel.getPartiezeit() == -1) {
+            this.restZeitSchwarz.setVisible(false);
+            timerLogoSchwarz.setVisible(false);
+            
         } else {
             this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
 
@@ -691,14 +752,11 @@ public class SpielbrettFXMLController implements Initializable {
                 spieler1min--;
             }
             spieler1sec--;
-
-            this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
-
-            if (spieler2sec == 0) {
-                spieler2sec = 59;
-                spieler2min--;
+            
+            if (spieler1min == 00 && spieler1sec == 0){
+                timerStop();
             }
-            spieler2sec--;
+
         }
 
     }
