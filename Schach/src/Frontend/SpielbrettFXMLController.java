@@ -17,8 +17,6 @@ import com.jfoenix.controls.JFXListView;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -276,7 +274,6 @@ public class SpielbrettFXMLController implements Initializable {
         
         initSpielbrett();
         timerPlay();
-        //doTime();
     }
 
     /**
@@ -423,7 +420,6 @@ public class SpielbrettFXMLController implements Initializable {
             paneArray[i].addEventFilter(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
                 try {
                     onClicked(event);
-                    //rotateBoard();
                 } catch (SpielException ex) {
                     Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -611,7 +607,6 @@ public class SpielbrettFXMLController implements Initializable {
             OptionenFXMLController controller = loader.getController();
             controller.loadData(spiel);
 
-            //optionenScene = FXMLLoader.load(getClass().getResource("Optionen.fxml"));
             Stage optionenStage = new Stage();
             optionenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             optionenStage.initModality(Modality.APPLICATION_MODAL);
@@ -638,7 +633,6 @@ public class SpielbrettFXMLController implements Initializable {
             EinstellungenFXMLController controller = loader.getController();
             controller.loadData(spiel, this);
 
-            //einstellungenScene = FXMLLoader.load(getClass().getResource("Einstellungen.fxml"));
             Stage einstellungenStage = new Stage();
             einstellungenStage.initModality(Modality.APPLICATION_MODAL);
             einstellungenStage.initStyle(StageStyle.UNDECORATED);
@@ -646,8 +640,6 @@ public class SpielbrettFXMLController implements Initializable {
             einstellungenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             //einstellungenStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
             einstellungenStage.show();
-            // Hide this current window (if this is what you want)
-            //((Node)(event.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
         }
     }
@@ -731,10 +723,11 @@ public class SpielbrettFXMLController implements Initializable {
             }
             spieler2sec--;
             
-            if (spieler2min == 0 && spieler2sec == 0) {
+ 
+        }           if (spieler2min == 0 && spieler2sec == 0) {
                 timerStop();
+                goToWinnerPopup();
             }
-        }
 
     }
 
@@ -753,8 +746,10 @@ public class SpielbrettFXMLController implements Initializable {
             }
             spieler1sec--;
             
-            if (spieler1min == 00 && spieler1sec == 0){
+            if (spieler1min == 0 && spieler1sec == 0){
                 timerStop();
+                goToWinnerPopup();
+                
             }
 
         }
@@ -763,8 +758,6 @@ public class SpielbrettFXMLController implements Initializable {
 
     @FXML
     public void updateScreen() {
-        //Update Time
-        //refreshTime();
 
         //Populate listView and apply rotation
         if (spiel.getMitschrift() != null && spiel.getMitschrift().size() > 0) {
@@ -953,60 +946,13 @@ public class SpielbrettFXMLController implements Initializable {
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             partieLadenStage.initModality(Modality.APPLICATION_MODAL);
-            //partieLadenStage.initStyle(StageStyle.UNDECORATED);
             partieLadenStage.setScene(new Scene(partieLadenScene));
             partieLadenStage.show();
         } catch (IOException ex) {
             Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        FileChooser chooser = new FileChooser();
-//        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));  //Set Initial Directory  
-//        File selectedFile = chooser.showOpenDialog(null);
-//        //Delete pieces on board and load pieces positions from the file
-//        if(selectedFile != null){
-//            
-//            //Clean Chess board before load
-//            cleanBoard();
-//            
-//            //Clean List view before load
-//            listZuegeSchwarz.getItems().clear();
-//            listZuegeWeiss.getItems().clear();
-//            
-//            //load and init board
-//            try {
-//                spielbrett = spiel.partieLaden(selectedFile.getName().substring(0, selectedFile.getName().length()-4));
-//            } catch (SpielException ex) {
-//                Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            initSpielbrett();
-//            
-//        }else{
-//            Alert alert = new Alert(AlertType.WARNING);
-//            alert.setTitle("Warning Dialog");
-//            alert.setHeaderText("Wählen Sie bitte eine .txt Datei ");
-//            alert.setContentText("Partie laden abgebrochen !");
-//
-//            alert.showAndWait();
-//         }
     }
 
-//    public void refreshTime() {
-//        DateFormat formatter = new SimpleDateFormat("mm:ss");
-//
-//        if (spiel.getPartiezeit() == -1) {
-//            this.restZeitSchwarz.setText("Test");
-//            this.restZeitWeiss.setText("Test");
-//        } else {
-//            if (this.spiel.getFarbe() == Farbe.WEISS) {
-//                this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
-//                this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
-//            } else {
-//                this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
-//                this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
-//            }
-//        }
-//    }
-    
     @FXML
     private void partieAufgeben(ActionEvent event){
         spiel.aufgeben();
