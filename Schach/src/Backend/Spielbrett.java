@@ -387,7 +387,7 @@ public class Spielbrett {
         this.amZug = this.amZug.andereFarbe();
         // Und der Counter für die Züge wird erhöht
         SchnittstelleStockfish schnittstelleStockfish = new SchnittstelleStockfish();
-        //schnittstelleStockfish.stockfishEngine(this);
+        schnittstelleStockfish.stockfishEngine(this);
         zugCounter++;
     }
     

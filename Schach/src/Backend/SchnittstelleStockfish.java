@@ -36,8 +36,8 @@ public class SchnittstelleStockfish {
         //System.out.println("Legal moves : " + client.getLegalMoves(FEN)); 
 
         // draw board from a given position 
-        System.out.println("Board state :"); 
-        client.drawBoard(FEN); 
+        //System.out.println("Board state :"); 
+        //client.drawBoard(FEN); 
 
         // get the evaluation score of current position 
         //System.out.println("Evaluation score : " + client.getEvalScore(FEN, 2000)); 

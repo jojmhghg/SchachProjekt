@@ -20,7 +20,7 @@ public class Stockfish {
  private BufferedReader processReader; 
  private OutputStreamWriter processWriter; 
  
- private static final String PATH = "C:/Users/Steven/Desktop/stockfish-9-win/Windows/stockfish_9_x64.exe/"; 
+ private static final String PATH = "./lib/stockfish_9_x64.exe/"; 
  
  /**
   * Starts Stockfish engine as a process and initializes it 
