@@ -14,7 +14,7 @@
          </font>
       </Text>
       <Label fx:id="gewinnerFarbe" layoutX="286.0" layoutY="228.0" text="Label" />
-      <JFXButton layoutX="189.0" layoutY="290.0" onAction="#goToStartseite" text="Startseite" />
+      <JFXButton disable="true" layoutX="189.0" layoutY="290.0" onAction="#goToStartseite" text="Startseite" />
       <JFXButton layoutX="348.0" layoutY="290.0" onAction="#beenden" text="Beenden" />
    </children>
 </AnchorPane>

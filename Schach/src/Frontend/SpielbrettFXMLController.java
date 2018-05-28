@@ -957,8 +957,8 @@ public class SpielbrettFXMLController implements Initializable {
     private void partieAufgeben(ActionEvent event){
         spiel.aufgeben();
                 
-        Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
-        spielBrettStage.close();
+        //Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
+        //spielBrettStage.close();
         
         goToWinnerPopup();
     }
