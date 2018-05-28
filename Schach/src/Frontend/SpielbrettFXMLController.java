@@ -275,6 +275,7 @@ public class SpielbrettFXMLController implements Initializable {
         this.spielbrett = spielbrett;
         
         initSpielbrett();
+        timerPlay();
         //doTime();
     }
 
@@ -422,7 +423,6 @@ public class SpielbrettFXMLController implements Initializable {
             paneArray[i].addEventFilter(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
                 try {
                     onClicked(event);
-                    timerPlay();
                     //rotateBoard();
                 } catch (SpielException ex) {
                     Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
