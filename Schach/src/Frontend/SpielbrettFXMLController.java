@@ -17,6 +17,8 @@ import com.jfoenix.controls.JFXListView;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -274,12 +276,44 @@ public class SpielbrettFXMLController implements Initializable {
         
         initSpielbrett();
         timerPlay();
+        
     }
 
     /**
      * initialisiert die GUI-Objekte & plaziert dort die Figuren
      */
     public void initSpielbrett() {
+        System.out.println("1 "+ spiel.getZeitSpieler1());
+        //Aktuelle Zeit auf dem Spielbrett setzen
+        DateFormat formatter = new SimpleDateFormat("mm:ss");
+        String sp1 = Long.toString(spiel.getZeitSpieler1());
+        String sp2 = Long.toString(spiel.getZeitSpieler2());
+        
+        if (spiel.getPartiezeit() == -1) {
+            this.restZeitSchwarz.setVisible(false);
+            timerLogoSchwarz.setVisible(false);
+            this.restZeitWeiss.setVisible(false);
+            timerLogoWeiss.setVisible(false);
+        } else {
+            int rest = (int) (spiel.getZeitSpieler1() -  (spiel.getZeitSpieler1() / 60000) * 60000);
+            spieler1min = (int) spiel.getZeitSpieler1() / 60000;
+            spieler1sec = (int) rest / 1000;
+
+            rest = (int) (spiel.getZeitSpieler2() -  (spiel.getZeitSpieler2() / 60000) * 60000);
+            spieler2min = (int) spiel.getZeitSpieler2() / 60000;
+            spieler2sec = (int) rest / 1000;
+        }
+        
+        if(spiel.getFarbe() == Farbe.WEISS){
+            restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+            restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+        }
+        else{
+             restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+            restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+        }
+        
+        
         //Alle Panes (Schachfelder) in ein Array speichern, um besseren Zugriff darauf zu haben
         paneArray = new Pane[64];
         paneArray[0] = A1;
@@ -650,7 +684,7 @@ public class SpielbrettFXMLController implements Initializable {
         spielBrettStage.close();
     }
 
-    private void timerPlay() {
+    public void timerPlay() {
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             @Override
@@ -715,20 +749,38 @@ public class SpielbrettFXMLController implements Initializable {
             this.restZeitWeiss.setVisible(false);
             timerLogoWeiss.setVisible(false);
         } else {
-            this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
+           if(spiel.getFarbe() == Farbe.SCHWARZ){
+                  this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
 
-            if (spieler2sec == 0) {
-                spieler2sec = 59;
-                spieler2min--;
-            }
-            spieler2sec--;
-            
- 
-        }           if (spieler2min == 0 && spieler2sec == 0) {
-                timerStop();
-                goToWinnerPopup();
-            }
+                if (spieler2sec == 0) {
+                    spieler2sec = 59;
+                    spieler2min--;
+                }
+                spieler2sec--;
 
+                if (spieler2min == 0 && spieler2sec == 0){
+                    timerStop();
+                    goToWinnerPopup();
+
+                }
+            }
+            else{
+                  this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
+
+                if (spieler1sec == 0) {
+                    spieler1sec = 59;
+                    spieler1min--;
+                }
+                spieler1sec--;
+
+                if (spieler1min == 0 && spieler1sec == 0){
+                    timerStop();
+                    goToWinnerPopup();
+
+                }
+           }
+
+        }
     }
 
     private void storedTimeSchwarz() {
@@ -738,19 +790,38 @@ public class SpielbrettFXMLController implements Initializable {
             timerLogoSchwarz.setVisible(false);
             
         } else {
-            this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
+             if(spiel.getFarbe() == Farbe.WEISS){
+                  this.restZeitSchwarz.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
 
-            if (spieler1sec == 0) {
-                spieler1sec = 59;
-                spieler1min--;
+                if (spieler2sec == 0) {
+                    spieler2sec = 59;
+                    spieler2min--;
+                }
+                spieler2sec--;
+
+                if (spieler2min == 0 && spieler2sec == 0){
+                    timerStop();
+                    goToWinnerPopup();
+
+                }
             }
-            spieler1sec--;
-            
-            if (spieler1min == 0 && spieler1sec == 0){
-                timerStop();
-                goToWinnerPopup();
-                
+            else{
+                  this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
+
+                if (spieler1sec == 0) {
+                    spieler1sec = 59;
+                    spieler1min--;
+                }
+                spieler1sec--;
+
+                if (spieler1min == 0 && spieler1sec == 0){
+                    timerStop();
+                    goToWinnerPopup();
+
+                }
             }
+             
+           
 
         }
 
@@ -926,9 +997,11 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     public void cleanBoard() {
-        for (int i = 0; i < 64; i++) {
-            if (paneArray[i].getChildren().size() > 0) {
-                paneArray[i].getChildren().remove(0);
+        if(paneArray != null){
+            for (int i = 0; i < 64; i++) {
+                if (paneArray[i].getChildren().size() > 0) {
+                    paneArray[i].getChildren().remove(0);
+                }
             }
         }
     }
