@@ -265,3 +265,13 @@ and open the template in the editor.
 .H8 {
    -fx-background-image: url(Ressources/Board/Wood/h8.png) ;
 }
+
+
+
+.linkeaussenFeld{
+    -fx-background-image: url(Ressources/Board/Wood/a2.png)
+}
+
+.rechteaussenFeld{
+    -fx-background-image: url(Ressources/Board/Wood/a1.png)
+}

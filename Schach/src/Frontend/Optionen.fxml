@@ -5,36 +5,38 @@
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXToggleButton?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.MotionBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.OptionenFXMLController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.OptionenFXMLController">
    <children>
-      <ImageView fitHeight="430.0" fitWidth="630.0" layoutX="-8.0" layoutY="-15.0" pickOnBounds="true">
+      <ImageView fitHeight="519.0" fitWidth="709.0" layoutX="-8.0" layoutY="-15.0" pickOnBounds="true">
          <image>
-            <Image url="@Ressources/backgroundStartSeite.PNG" />
+            <Image url="@Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
-      <JFXButton fx:id="backToStartPage" contentDisplay="BOTTOM" layoutX="514.0" layoutY="14.0" onAction="#backToStartPage">
-         <graphic>
-            <FontAwesomeIconView glyphName="ARROW_CIRCLE_LEFT" size="35" />
-         </graphic></JFXButton>
-      <JFXTabPane layoutX="23.0" layoutY="27.0" prefHeight="319.0" prefWidth="478.0">
+      <JFXTabPane layoutX="27.0" layoutY="29.0" prefHeight="443.0" prefWidth="646.0">
          <tabs>
             <Tab text="Lokal">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Text fontSmoothingType="LCD" layoutX="31.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dauer        in Minuten" wrappingWidth="78.37890625">
+                        <Pane layoutX="8.0" layoutY="16.0" opacity="0.9" prefHeight="189.0" prefWidth="631.0" style="-fx-background-color: #DEB887;">
+                           <effect>
+                              <MotionBlur />
+                           </effect>
+                        </Pane>
+                        <Text fontSmoothingType="LCD" layoutX="31.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dauer        in Minuten" wrappingWidth="78.37890625">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                         </Text>
                         <JFXToggleButton fx:id="kiGegnerToggler" contentDisplay="GRAPHIC_ONLY" layoutX="92.0" layoutY="122.0" onAction="#toggleKiGegner" prefHeight="36.0" prefWidth="83.0" text="KI" textAlignment="CENTER">
@@ -45,19 +47,19 @@
                               <Font size="14.0" />
                            </font>
                         </JFXToggleButton>
-                        <JFXButton buttonType="RAISED" layoutX="335.0" layoutY="215.0" onAction="#goToChessBoard" style="-fx-background-color: #DEB887; -fx-opacity: 80%;" text="Los geht's !">
+                        <JFXButton buttonType="RAISED" layoutX="323.0" layoutY="347.0" onAction="#goToChessBoard" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Los geht's !">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </JFXButton>
-                        <Text fontSmoothingType="LCD" layoutX="31.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Farbe" wrappingWidth="34.3779296875">
+                        <Text fontSmoothingType="LCD" layoutX="31.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Farbe" wrappingWidth="51.3779296875">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                         </Text>
                         <JFXRadioButton fx:id="weissLokal" layoutX="103.0" layoutY="96.0" selected="true" text="Weiß">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                            <toggleGroup>
                               <ToggleGroup fx:id="FarbeLokal" />
@@ -65,12 +67,12 @@
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="schwarzLokal" layoutX="194.0" layoutY="96.0" text="Schwarz" toggleGroup="$FarbeLokal">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                         </JFXRadioButton>
-                        <Text layoutX="31.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="KI">
+                        <Text layoutX="31.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="KI">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                         </Text>
                         <JFXComboBox fx:id="partieZeitLokal" focusColor="#1e1e1e" layoutX="123.0" layoutY="41.0" prefHeight="25.0" prefWidth="143.0" />
@@ -79,6 +81,11 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
+                        <JFXButton fx:id="backToStartPage" buttonType="RAISED" layoutX="487.0" layoutY="347.0" onAction="#backToStartPage" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="zurück">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
               </content>
@@ -87,25 +94,30 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXButton buttonType="RAISED" layoutX="349.0" layoutY="219.0" onAction="#goToChessBoard" style="-fx-background-color: #DEB887; -fx-opacity: 80%;" text="Los geht !">
+                        <Pane layoutX="15.0" layoutY="27.0" opacity="0.9" prefHeight="162.0" prefWidth="616.0" style="-fx-background-color: #DEB887;">
+                           <effect>
+                              <MotionBlur />
+                           </effect>
+                        </Pane>
+                        <JFXButton buttonType="RAISED" layoutX="323.0" layoutY="339.0" onAction="#goToChessBoard" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Los geht !">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </JFXButton>
                         <Text layoutX="45.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dauer        in Minuten" wrappingWidth="78.37890625">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                         </Text>
                         <JFXComboBox fx:id="partieZeitOnline" focusColor="#a87840" layoutX="129.0" layoutY="61.0" prefHeight="25.0" prefWidth="169.0" />
                         <Text layoutX="45.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Farbe">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                         </Text>
                         <JFXRadioButton fx:id="weissOnline" layoutX="113.0" layoutY="132.0" selected="true" text="Weiß">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                            <toggleGroup>
                               <ToggleGroup fx:id="FarbeOnline" />
@@ -113,9 +125,14 @@
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="schwarzOnline" layoutX="206.0" layoutY="131.0" text="Schwarz" toggleGroup="$FarbeOnline">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                         </JFXRadioButton>
+                        <JFXButton fx:id="backToStartPage" buttonType="RAISED" layoutX="482.0" layoutY="339.0" onAction="#backToStartPage" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="zurück">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
               </content>
