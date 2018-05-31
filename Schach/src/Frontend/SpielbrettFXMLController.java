@@ -16,8 +16,6 @@ import Backend.Zug;
 import com.jfoenix.controls.JFXListView;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -951,7 +949,12 @@ public class SpielbrettFXMLController implements Initializable {
     
     @FXML
     private void partieAufgeben(ActionEvent event){
-        spiel.aufgeben();
+        try {
+            spiel.aufgeben();
+        } catch (SpielException ex) {
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            //TODO: Popup, dass aufgeben nicht möglich ist -> siehe fehlermeldung
+        }
                 
         Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
         spielBrettStage.close();

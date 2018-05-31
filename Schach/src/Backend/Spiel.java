@@ -68,8 +68,23 @@ public class Spiel implements SpielInteraktionen {
     }
 
     @Override
-    public void aufgeben(){
+    public void aufgeben() throws SpielException{
         this.partie.aufgeben();
+    }
+    
+    @Override
+    public void remisAnbieten() throws SpielException{
+        this.partie.remisAnbieten();
+    }
+    
+    @Override
+    public void remisAnnehmen() throws SpielException{
+        this.partie.remisAnnehmen();
+    }
+    
+    @Override
+    public void remisAblehnen() throws SpielException{
+        this.partie.remisAblehnen();
     }
     
     @Override
