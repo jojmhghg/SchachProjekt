@@ -66,6 +66,10 @@ public final class Partie {
      */
     private boolean beendet;
     /**
+     * Gibt an, ob von dem Spieler der davor an der Reihe war ein Remis angeboten wird.
+     */
+    private boolean remisangebot;
+    /**
      * Liste mit den vergangenen Zügen
      */
     private final LinkedList<Zug> ablauf;
@@ -90,6 +94,7 @@ public final class Partie {
         
         this.gewinner = null;
         this.beendet = false;
+        this.remisangebot = false;
         this.ablauf = new LinkedList<>();
         
         this.spielbrett = new Spielbrett();
@@ -276,6 +281,15 @@ public final class Partie {
     }
     
     /**
+     * Getter für Attribut remisangebot
+     * 
+     * @return true = remisangebot von Spieler der davor am Zug war, sonst false
+     */
+    public boolean getRemisangebot(){
+        return this.remisangebot;
+    }
+    
+    /**
      * Getter für Attribut gewinner
      * 
      * @return Farbe des Gewinners
@@ -295,9 +309,15 @@ public final class Partie {
      * @throws SpielException Wirft Fehler, falls ungültiger Zug
      */
     public void zieheFigur(Position ursprung, Position ziel) throws SpielException{
+        // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
         }
+        // Teste ob Remisangebot vorliegt -> wenn ja werfe Fehler
+        if(this.remisangebot){
+            throw new SpielException("Es liegt ein Remisangebot vor!");
+        }
+        
         // Notation des Zuges vor dem Ziehen merken
         String notation = this.getNotationTeil1(ursprung, ziel);
         
@@ -316,7 +336,7 @@ public final class Partie {
             
         }
 
-        // aktuallisiere verbleibenede Zeit und zeitpunkt des ende des zugs, 
+        // aktualisiere verbleibenede Zeit und Zeitpunkt des Endes dieses Zugs, 
         // falls Partie zeitlich begrenzt ist
         if(this.partiezeit > 0){           
             Date d = new Date();
@@ -327,7 +347,7 @@ public final class Partie {
         // Notation bei Sonderfällen
         notation = this.getNotationTeil2(ursprung, ziel, notation);
         
-        //Zug abspeichern
+        // Mitschrift aktualisieren
         this.ablauf.add(new Zug(ursprung, ziel, notation));
         
         //jetzt zieht KI, falls es ein PvE-Spiel ist
@@ -335,6 +355,7 @@ public final class Partie {
             this.kiZieht();
         }
         
+        // Spielstand in tmp-File speichern
         this.speichereSpielImpl("tmp");
     }
      
@@ -344,8 +365,7 @@ public final class Partie {
      * @param dateiname Name der Datei 
      * @throws Backend.SpielException falls übergebener Name = tmp
      */
-    public void speichereSpiel(String dateiname) throws SpielException {
-        
+    public void speichereSpiel(String dateiname) throws SpielException {       
         if(dateiname.equals("tmp")){
             throw new SpielException("ungültiger Speichername");
         }
@@ -357,9 +377,68 @@ public final class Partie {
      * Spieler der gerade am Zug gibt auf. 
      * Die Partie wird als beendet gesetzt und der andere Spieler als gewinner.
      */
-    public void aufgeben(){
+    public void aufgeben() throws SpielException{       
+        // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
+        if(this.beendet){
+            throw new SpielException("Partie bereits beendet!");
+        }
+        // Teste ob Remisangebot vorliegt -> wenn ja werfe Fehler
+        if(this.remisangebot){
+            throw new SpielException("Es liegt ein Remisangebot vor!");
+        }
+        
+        this.beendet = true;
+        this.gewinner = this.getSpielerAmZug().andereFarbe();  
+    }
+    
+    
+    public void remisAnbieten() throws SpielException{
+        /*
+        // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
+        if(this.beendet){
+            throw new SpielException("Partie bereits beendet!");
+        }
+        // Teste bereits ein remis angeboten wird -> wenn ja werfe Fehler
+        if(this.remisangebot){
+            throw new SpielException("Es liegt bereits ein Remis-Angebot vor!");
+        }
+        // Nicht möglich, wenn man gegen KI spielt
+        if(this.kiGegner){
+            throw new SpielException("Man kann dem Computer kein Remis anbieten!");
+        }
+        
         this.beendet = true;
         this.gewinner = this.getSpielerAmZug().andereFarbe();
+        */
+    }
+    
+    public void remisAnnehmen() throws SpielException{
+        /*
+        // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
+        if(this.beendet){
+            throw new SpielException("Partie bereits beendet!");
+        }
+        // Teste ob ein remis angeboten wird -> wenn nein werfe Fehler
+        if(!this.remisangebot){
+            throw new SpielException("Es liegt kein Remis-Angebot vor!");
+        }
+        
+        this.beendet = true;
+        this.gewinner = null;
+        */
+    }
+    
+    public void remisAblehnen() throws SpielException{
+        /*
+        // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
+        if(this.beendet){
+            throw new SpielException("Partie bereits beendet!");
+        }
+        // Teste ob ein remis angeboten wird -> wenn nein werfe Fehler
+        if(!this.remisangebot){
+            throw new SpielException("Es liegt kein Remis-Angebot vor!");
+        }
+        */        
     }
     
     

@@ -26,7 +26,11 @@ public interface SpielInteraktionen {
     public Spielbrett partieLaden(String speicherstand) throws SpielException;
     public void zieheFigur(Position ausgangsposition, Position zielposition) throws SpielException;
     
-    public void aufgeben();
+    public void aufgeben() throws SpielException;
+    public void remisAnbieten() throws SpielException;
+    public void remisAnnehmen() throws SpielException;
+    public void remisAblehnen() throws SpielException;
+    
     public boolean getBeendet();
     public Position getPositionBlackKing();
     public Position getPositionWhiteKing();

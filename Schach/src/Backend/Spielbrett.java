@@ -280,17 +280,12 @@ public class Spielbrett {
             tmpSpielbrett = new Spielbrett(this);     
             tmpFigur = tmpSpielbrett.getFigurAufFeld(position);
             // Falls en Passant: geschlagener Bauer wird entfernt 
-            deleteBauerBeiEnPassant(tmpFigur, position, move);
+            
+            tmpSpielbrett.deleteBauerBeiEnPassant(tmpFigur, position, move);
             // Figur wird auf altem Feld entfernt
             tmpSpielbrett.spielbrett[position.ordinal()].setFigur(null);
             // Figur wird auf neues Feld gesetzt
             tmpSpielbrett.spielbrett[move.ordinal()].setFigur(tmpFigur);
-            // Falls Figur ein Turm oder König war, wird diese nun als bewegt gesetzt (Wichtig für Rochade)
-            setKoenigTurmAlsGezogen(tmpFigur);
-            // Falls Bauer 2 Felder nach vorne, setze ihn als 2 Felder gezogen (Wichtig für en Passant)
-            setBauerGezogenBeiDoppelt(figur, position, move);
-            // Falls man eine Rochade macht, wird hier auch der Turm bewegt
-            rochade(tmpFigur, position, move);
             
             // Falls der König gezogen wurde, ...
             if(tmpFigur instanceof Koenig){
@@ -306,7 +301,6 @@ public class Spielbrett {
                 resultMoves.add(move);
             }
         }
-        
         return resultMoves;
     }
     
@@ -335,6 +329,7 @@ public class Spielbrett {
             setEnPassantKI(figur, startposition, zielposition);
             //Falls Rochade noch ausgeführt werden kann
             setRochadeKI();
+            
             // Falls en Passant: geschlagener Bauer wird entfernt 
             deleteBauerBeiEnPassant(figur, startposition, zielposition);
             // Figur wird auf altem Feld entfernt
@@ -446,24 +441,21 @@ public class Spielbrett {
     public void umwandlung(Position position, Farbe farbe){
         //Methode "welcheFigur()" muss noch implementiert werden, zudem ist
         //Schnittstelle zwischen Frontend und Backend
+        this.spielbrett[position.ordinal()].setFigur(null);
         switch(welcheFigur()){
             case "Dame":
-                this.spielbrett[position.ordinal()].setFigur(null);
                 this.spielbrett[position.ordinal()].setFigur(new Dame(farbe));
                 break;
                 
             case "Turm":
-                this.spielbrett[position.ordinal()].setFigur(null);
                 this.spielbrett[position.ordinal()].setFigur(new Turm(farbe));
                 break;
                 
             case "Springer":
-                this.spielbrett[position.ordinal()].setFigur(null);
                 this.spielbrett[position.ordinal()].setFigur(new Springer(farbe));
                 break;
                 
             case "Laeufer":
-                this.spielbrett[position.ordinal()].setFigur(null);
                 this.spielbrett[position.ordinal()].setFigur(new Laeufer(farbe));
                 break;
         }
@@ -635,8 +627,6 @@ public class Spielbrett {
         Farbe tmpFarbe;
         Figur tmpFigur;
         LinkedList<String> tmpList = new LinkedList<>();
-        LinkedList<String> tmp2List = new LinkedList<>();
-        LinkedList<String> tmp3List = new LinkedList<>();
         int tmpCounter = 0;
         int tmpZugCounter;
         String tmpString;
