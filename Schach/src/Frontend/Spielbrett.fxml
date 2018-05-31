@@ -170,8 +170,8 @@
             <Font size="40.0" />
          </font>
       </Label>
-      <FontAwesomeIconView glyphName="CLOCK_ALT" layoutX="725.0" layoutY="106.0" size="35" />
-      <FontAwesomeIconView glyphName="CLOCK_ALT" layoutX="725.0" layoutY="645.0" size="35" />
+      <FontAwesomeIconView fx:id="timerLogoWeiss" glyphName="CLOCK_ALT" layoutX="725.0" layoutY="106.0" size="35" />
+      <FontAwesomeIconView fx:id="timerLogoSchwarz" glyphName="CLOCK_ALT" layoutX="725.0" layoutY="645.0" size="35" />
       <Label layoutX="751.0" layoutY="143.0" text="Weiß">
          <font>
             <Font size="20.0" />

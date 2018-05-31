@@ -71,6 +71,7 @@ public class PartieLadenFXMLController implements Initializable {
                 Parent spielbrettScene = loader.load();
 
                 SpielbrettFXMLController controller = loader.getController();
+                controller.cleanBoard();
                 controller.loadData(spiel, spielbrett);
                 controller.setSpielernameOnScreen();
 
@@ -83,8 +84,7 @@ public class PartieLadenFXMLController implements Initializable {
                 
                 startseiteWindow.hide();
                 ((Node) (event.getSource())).getScene().getWindow().hide();
-                controller.cleanBoard();
-                controller.initSpielbrett();
+                
             } catch (SpielException ex) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Exception Dialog");
