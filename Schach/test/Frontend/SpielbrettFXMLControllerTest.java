@@ -136,7 +136,7 @@ public class SpielbrettFXMLControllerTest {
     public void testRefreshTime() {
         System.out.println("refreshTime");
         SpielbrettFXMLController instance = new SpielbrettFXMLController();
-        instance.refreshTime();
+        //instance.refreshTime();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

@@ -14,10 +14,9 @@ import Backend.SpielException;
 import Backend.Spielbrett;
 import Backend.Zug;
 import com.jfoenix.controls.JFXListView;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -28,6 +27,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -234,6 +234,10 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private Label restZeitSchwarz;
     @FXML
+    private FontAwesomeIconView timerLogoWeiss;
+    @FXML
+    private FontAwesomeIconView timerLogoSchwarz;
+    @FXML
     private MenuBar myMenuBar;
     @FXML
     private GridPane gridBoard;
@@ -274,14 +278,45 @@ public class SpielbrettFXMLController implements Initializable {
         this.spielbrett = spielbrett;
         
         initSpielbrett();
-        //doTime();
-        timerRefresh();
+        timerPlay();
+        
     }
 
     /**
      * initialisiert die GUI-Objekte & plaziert dort die Figuren
      */
     public void initSpielbrett() {
+        System.out.println("1 "+ spiel.getZeitSpieler1());
+        //Aktuelle Zeit auf dem Spielbrett setzen
+        DateFormat formatter = new SimpleDateFormat("mm:ss");
+        String sp1 = Long.toString(spiel.getZeitSpieler1());
+        String sp2 = Long.toString(spiel.getZeitSpieler2());
+        
+        if (spiel.getPartiezeit() == -1) {
+            this.restZeitSchwarz.setVisible(false);
+            timerLogoSchwarz.setVisible(false);
+            this.restZeitWeiss.setVisible(false);
+            timerLogoWeiss.setVisible(false);
+        } else {
+            int rest = (int) (spiel.getZeitSpieler1() -  (spiel.getZeitSpieler1() / 60000) * 60000);
+            spieler1min = (int) spiel.getZeitSpieler1() / 60000;
+            spieler1sec = (int) rest / 1000;
+
+            rest = (int) (spiel.getZeitSpieler2() -  (spiel.getZeitSpieler2() / 60000) * 60000);
+            spieler2min = (int) spiel.getZeitSpieler2() / 60000;
+            spieler2sec = (int) rest / 1000;
+        }
+        
+        if(spiel.getFarbe() == Farbe.WEISS){
+            restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+            restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+        }
+        else{
+             restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
+            restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
+        }
+        
+        
         //Alle Panes (Schachfelder) in ein Array speichern, um besseren Zugriff darauf zu haben
         paneArray = new Pane[64];
         paneArray[0] = A1;
@@ -422,7 +457,6 @@ public class SpielbrettFXMLController implements Initializable {
             paneArray[i].addEventFilter(MouseEvent.MOUSE_CLICKED, (MouseEvent event) -> {
                 try {
                     onClicked(event);
-                    //rotateBoard();
                 } catch (SpielException ex) {
                     Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -610,7 +644,6 @@ public class SpielbrettFXMLController implements Initializable {
             OptionenFXMLController controller = loader.getController();
             controller.loadData(spiel);
 
-            //optionenScene = FXMLLoader.load(getClass().getResource("Optionen.fxml"));
             Stage optionenStage = new Stage();
             optionenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             optionenStage.initModality(Modality.APPLICATION_MODAL);
@@ -637,7 +670,6 @@ public class SpielbrettFXMLController implements Initializable {
             EinstellungenFXMLController controller = loader.getController();
             controller.loadData(spiel, this);
 
-            //einstellungenScene = FXMLLoader.load(getClass().getResource("Einstellungen.fxml"));
             Stage einstellungenStage = new Stage();
             einstellungenStage.initModality(Modality.APPLICATION_MODAL);
             einstellungenStage.initStyle(StageStyle.UNDECORATED);
@@ -645,8 +677,6 @@ public class SpielbrettFXMLController implements Initializable {
             einstellungenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             //einstellungenStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
             einstellungenStage.show();
-            // Hide this current window (if this is what you want)
-            //((Node)(event.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
         }
     }
@@ -657,9 +687,19 @@ public class SpielbrettFXMLController implements Initializable {
         spielBrettStage.close();
     }
 
-    private void timerRefresh() {
+    public void timerPlay() {
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), e -> this.storeTime())
+                new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if(spiel.getSpielerAmZug() == Farbe.SCHWARZ){
+                    SpielbrettFXMLController.this.storedTimeSchwarz();
+                }
+                else if(spiel.getSpielerAmZug() == Farbe.WEISS){
+                    SpielbrettFXMLController.this.storedTimeWeiss();
+                }
+            }
+        })
         );
 
         // If you want to repeat indefinitely:
@@ -668,11 +708,34 @@ public class SpielbrettFXMLController implements Initializable {
         timeline.play();
     }
     
+    private void timerStop() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if(spiel.getSpielerAmZug() == Farbe.SCHWARZ){
+                    SpielbrettFXMLController.this.storedTimeSchwarz();
+                }
+                else if(spiel.getSpielerAmZug() == Farbe.WEISS){
+                    SpielbrettFXMLController.this.storedTimeWeiss();
+                }
+            }
+        })
+        );
+
+        // If you want to repeat indefinitely:
+        timeline.setCycleCount(Animation.INDEFINITE);
+        
+        timeline.stop(); 
+    }
+    
     public void getTime(String partieZeit) {
 
         if (spiel.getPartiezeit() == -1) {
-            this.restZeitSchwarz.setText("Unbegrenzt");
-            this.restZeitWeiss.setText("Unbegrenzt");
+            this.restZeitSchwarz.setVisible(false);
+            timerLogoSchwarz.setVisible(false);
+            this.restZeitWeiss.setVisible(false);
+            timerLogoWeiss.setVisible(false);
         } else {
             spieler1min = Integer.parseInt(partieZeit);
             spieler1sec = 0;
@@ -682,36 +745,93 @@ public class SpielbrettFXMLController implements Initializable {
         }
 
     }
-
-    private void storeTime() {
+    
+        private void storedTimeWeiss() {
 
         if (spiel.getPartiezeit() == -1) {
-            this.restZeitSchwarz.setText("Unbegrenzt");
-            this.restZeitWeiss.setText("Unbegrenzt");
+            this.restZeitWeiss.setVisible(false);
+            timerLogoWeiss.setVisible(false);
         } else {
-            this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
+           if(spiel.getFarbe() == Farbe.SCHWARZ){
+                  this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
 
-            if (spieler1sec == 0) {
-                spieler1sec = 59;
-                spieler1min--;
+                if (spieler2sec == 0) {
+                    spieler2sec = 59;
+                    spieler2min--;
+                }
+                spieler2sec--;
+
+                if (spieler2min == 0 && spieler2sec == 0){
+                    timerStop();
+                    goToWinnerPopup();
+
+                }
             }
-            spieler1sec--;
+            else{
+                  this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
 
-            this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
+                if (spieler1sec == 0) {
+                    spieler1sec = 59;
+                    spieler1min--;
+                }
+                spieler1sec--;
 
-            if (spieler2sec == 0) {
-                spieler2sec = 59;
-                spieler2min--;
+                if (spieler1min == 0 && spieler1sec == 0){
+                    timerStop();
+                    goToWinnerPopup();
+
+                }
+           }
+
+        }
+    }
+
+    private void storedTimeSchwarz() {
+
+        if (spiel.getPartiezeit() == -1) {
+            this.restZeitSchwarz.setVisible(false);
+            timerLogoSchwarz.setVisible(false);
+            
+        } else {
+             if(spiel.getFarbe() == Farbe.WEISS){
+                  this.restZeitSchwarz.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
+
+                if (spieler2sec == 0) {
+                    spieler2sec = 59;
+                    spieler2min--;
+                }
+                spieler2sec--;
+
+                if (spieler2min == 0 && spieler2sec == 0){
+                    timerStop();
+                    goToWinnerPopup();
+
+                }
             }
-            spieler2sec--;
+            else{
+                  this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
+
+                if (spieler1sec == 0) {
+                    spieler1sec = 59;
+                    spieler1min--;
+                }
+                spieler1sec--;
+
+                if (spieler1min == 0 && spieler1sec == 0){
+                    timerStop();
+                    goToWinnerPopup();
+
+                }
+            }
+             
+           
+
         }
 
     }
 
     @FXML
     public void updateScreen() {
-        //Update Time
-        //refreshTime();
 
         //Populate listView and apply rotation
         if (spiel.getMitschrift() != null && spiel.getMitschrift().size() > 0) {
@@ -880,9 +1000,11 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     public void cleanBoard() {
-        for (int i = 0; i < 64; i++) {
-            if (paneArray[i].getChildren().size() > 0) {
-                paneArray[i].getChildren().remove(0);
+        if(paneArray != null){
+            for (int i = 0; i < 64; i++) {
+                if (paneArray[i].getChildren().size() > 0) {
+                    paneArray[i].getChildren().remove(0);
+                }
             }
         }
     }
@@ -900,66 +1022,24 @@ public class SpielbrettFXMLController implements Initializable {
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             partieLadenStage.initModality(Modality.APPLICATION_MODAL);
-            //partieLadenStage.initStyle(StageStyle.UNDECORATED);
             partieLadenStage.setScene(new Scene(partieLadenScene));
             partieLadenStage.show();
         } catch (IOException ex) {
             Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        FileChooser chooser = new FileChooser();
-//        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));  //Set Initial Directory  
-//        File selectedFile = chooser.showOpenDialog(null);
-//        //Delete pieces on board and load pieces positions from the file
-//        if(selectedFile != null){
-//            
-//            //Clean Chess board before load
-//            cleanBoard();
-//            
-//            //Clean List view before load
-//            listZuegeSchwarz.getItems().clear();
-//            listZuegeWeiss.getItems().clear();
-//            
-//            //load and init board
-//            try {
-//                spielbrett = spiel.partieLaden(selectedFile.getName().substring(0, selectedFile.getName().length()-4));
-//            } catch (SpielException ex) {
-//                Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            initSpielbrett();
-//            
-//        }else{
-//            Alert alert = new Alert(AlertType.WARNING);
-//            alert.setTitle("Warning Dialog");
-//            alert.setHeaderText("Wählen Sie bitte eine .txt Datei ");
-//            alert.setContentText("Partie laden abgebrochen !");
-//
-//            alert.showAndWait();
-//         }
     }
 
-//    public void refreshTime() {
-//        DateFormat formatter = new SimpleDateFormat("mm:ss");
-//
-//        if (spiel.getPartiezeit() == -1) {
-//            this.restZeitSchwarz.setText("Test");
-//            this.restZeitWeiss.setText("Test");
-//        } else {
-//            if (this.spiel.getFarbe() == Farbe.WEISS) {
-//                this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
-//                this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
-//            } else {
-//                this.restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
-//                this.restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
-//            }
-//        }
-//    }
-    
     @FXML
     private void partieAufgeben(ActionEvent event){
-        spiel.aufgeben();
+        try {
+            spiel.aufgeben();
+        } catch (SpielException ex) {
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            //TODO: Popup, dass aufgeben nicht möglich ist -> siehe fehlermeldung
+        }
                 
-        Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
-        spielBrettStage.close();
+        //Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
+        //spielBrettStage.close();
         
         goToWinnerPopup();
     }

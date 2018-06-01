@@ -79,23 +79,31 @@ public class Springer extends Figur{
                     break;
             }
             //Wenn Zielfeld im Bereich des moeglichen ist
-//            if(((position.ordinal() + welcheRichtung) >= 0) && ((position.ordinal() + welcheRichtung) <= 63)){
-//                //Wenn Zielfeld leer ist
-//                if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + welcheRichtung]) == null){
-//                    moves.add(Position.values()[position.ordinal() + welcheRichtung]);
-//                    counter++;
-//                }
-//                else if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + welcheRichtung]).farbe == color){
-//                    moves.add(Position.values()[position.ordinal() + welcheRichtung]);
-//                    counter++;
-//                }
-//                else{
-//                    counter++;
-//                }
-//            }
-//            else{
-//                counter++;
-//            }
+
+            if(((position.ordinal() + welcheRichtung) >= 0) && ((position.ordinal() + welcheRichtung) <= 63)){
+                //Nur wenn kein Sprung von Seite zur anderen Seite ist
+                if(!(((position.ordinal() % 8) == 6 || (position.ordinal() % 8) == 7) && (((position.ordinal() + welcheRichtung) % 8) == 0 || ((position.ordinal() + welcheRichtung) % 8) == 1) ||
+                        ((position.ordinal() % 8) == 0 || (position.ordinal() % 8) == 1) && (((position.ordinal() + welcheRichtung) % 8) == 6 || ((position.ordinal() + welcheRichtung) % 8) == 7))){
+                    //Wenn Zielfeld leer ist
+                    if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + welcheRichtung]) == null){
+                        moves.add(Position.values()[position.ordinal() + welcheRichtung]);
+                        counter++;
+                    }
+                    else if(spielbrett.getFigurAufFeld(Position.values()[position.ordinal() + welcheRichtung]).farbe == color){
+                        moves.add(Position.values()[position.ordinal() + welcheRichtung]);
+                        counter++;
+                    }
+                    else{
+                        counter++;
+                    }
+                }
+                else{
+                    counter++;
+                }
+            }
+            else{
+                counter++;
+            }
         }
         
         return moves;

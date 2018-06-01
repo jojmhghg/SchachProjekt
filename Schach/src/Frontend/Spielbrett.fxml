@@ -188,7 +188,9 @@
             <Font size="40.0" />
          </font>
       </Label>
+
       <Label layoutX="84.0" layoutY="113.0" text="Weiß" textAlignment="CENTER">
+
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
