@@ -224,6 +224,11 @@ public class SpielbrettFXMLController implements Initializable {
     private Pane G1;
     @FXML
     private Pane H1;
+    
+    @FXML
+    private Pane L1;
+    
+    
     @FXML
     private Label restZeitWeiss;
     @FXML

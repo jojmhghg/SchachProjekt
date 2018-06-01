@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXListView?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -18,14 +16,55 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPaneSpielbrett" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.SpielbrettFXMLController">
+<AnchorPane fx:id="anchorPaneSpielbrett" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="748.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.SpielbrettFXMLController">
    <children>
-      <ImageView fitHeight="770.0" fitWidth="1044.0" layoutX="-10.0" layoutY="-8.0" pickOnBounds="true" style="-fx-font-weight: bold;">
+      <ImageView fitHeight="752.0" fitWidth="1212.0" layoutX="-12.0" pickOnBounds="true" style="-fx-font-weight: bold;">
          <image>
-            <Image url="@Ressources/backgroundStartSeite.PNG" />
+            <Image url="@Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
-      <GridPane fx:id="gridBoard" alignment="CENTER" focusTraversable="true" gridLinesVisible="true" layoutX="21.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragExited="#beenden" prefHeight="600.0" prefWidth="600.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="55.0">
+      <Pane layoutX="13.0" layoutY="50.0" opacity="0.9" prefHeight="680.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
+         <children>
+            <Label fx:id="spielernameWeiss" layoutX="10.0" layoutY="28.0" prefHeight="35.0" prefWidth="177.0" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children></Pane>
+      <Pane layoutX="930.0" layoutY="50.0" opacity="0.9" prefHeight="680.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
+         <children>
+            <Label fx:id="spielernameSchwarz" layoutX="64.0" layoutY="28.0" prefHeight="20.0" prefWidth="177.0" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="280.0" layoutY="73.0" opacity="0.9" prefHeight="640.0" prefWidth="638.0" style="-fx-background-color: #DEB887; -fx-opacity: 85%;">
+         <children>
+            <Text fx:id="acht" fontSmoothingType="LCD" layoutX="11.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="8" />
+            <Text fx:id="sieben" fontSmoothingType="LCD" layoutX="11.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="7" />
+            <Text fx:id="sechs" fontSmoothingType="LCD" layoutX="11.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="6" />
+            <Text fx:id="fuenf" fontSmoothingType="LCD" layoutX="11.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="5" />
+            <Text fx:id="vier" fontSmoothingType="LCD" layoutX="11.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="4" />
+            <Text fx:id="drei" fontSmoothingType="LCD" layoutX="11.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="3" />
+            <Text fx:id="zwei" fontSmoothingType="LCD" layoutX="11.0" layoutY="512.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="2" />
+            <Text fx:id="eins" fontSmoothingType="LCD" layoutX="11.0" layoutY="586.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="1" />
+            <Text fx:id="a" fontSmoothingType="LCD" layoutX="51.0" layoutY="633.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text fx:id="b" fontSmoothingType="LCD" layoutX="130.0" layoutY="632.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="B" />
+            <Text fx:id="c" fontSmoothingType="LCD" layoutX="203.0" layoutY="632.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="C" />
+            <Text fx:id="d" fontSmoothingType="LCD" layoutX="277.0" layoutY="632.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="D" />
+            <Text fx:id="e" fontSmoothingType="LCD" layoutX="354.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="E" />
+            <Text fx:id="f" fontSmoothingType="LCD" layoutX="430.0" layoutY="632.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="F" />
+            <Text fx:id="g" fontSmoothingType="LCD" layoutX="505.0" layoutY="632.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="G" />
+            <Text fx:id="h" fontSmoothingType="LCD" layoutX="575.0" layoutY="632.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="H" />
+         </children>
+      </Pane>
+      <GridPane fx:id="gridBoard" alignment="CENTER" focusTraversable="true" gridLinesVisible="true" layoutX="300.0" layoutY="92.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragExited="#beenden" prefHeight="600.0" prefWidth="600.0" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="92.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -113,7 +152,7 @@
             <Pane fx:id="H1" prefHeight="200.0" prefWidth="200.0" styleClass="H1" stylesheets="@Spielbrett.css" GridPane.columnIndex="7" GridPane.rowIndex="7" />
          </children>
       </GridPane>
-      <MenuBar fx:id="myMenuBar" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="1024.0">
+      <MenuBar fx:id="myMenuBar" layoutX="-1.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="1200.0" style="-fx-background-color: #DEB887; -fx-opacity: 85%;">
         <menus>
           <Menu mnemonicParsing="false" text="Partie">
             <items>
@@ -139,73 +178,119 @@
             <Menu mnemonicParsing="false" text="Donate" />
         </menus>
       </MenuBar>
-      <Text fx:id="acht" fontSmoothingType="LCD" layoutX="11.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="8" />
-      <Text fx:id="sieben" fontSmoothingType="LCD" layoutX="11.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="7" />
-      <Text fx:id="sechs" fontSmoothingType="LCD" layoutX="11.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="6" />
-      <Text fx:id="fuenf" fontSmoothingType="LCD" layoutX="11.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="5" />
-      <Text fx:id="vier" fontSmoothingType="LCD" layoutX="11.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="4" />
-      <Text fx:id="drei" fontSmoothingType="LCD" layoutX="11.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="3" />
-      <Text fx:id="zwei" fontSmoothingType="LCD" layoutX="11.0" layoutY="543.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="2" />
-      <Text fx:id="eins" fontSmoothingType="LCD" layoutX="11.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="1" />
-      <Text fx:id="b" fontSmoothingType="LCD" layoutX="135.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="B" />
-      <Text fx:id="c" fontSmoothingType="LCD" layoutX="210.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="C" />
-      <Text fx:id="d" fontSmoothingType="LCD" layoutX="277.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="D" />
-      <Text fx:id="e" fontSmoothingType="LCD" layoutX="357.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="E" />
-      <Text fx:id="f" fontSmoothingType="LCD" layoutX="434.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="F" />
-      <Text fx:id="g" fontSmoothingType="LCD" layoutX="508.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="G" />
-      <Text fx:id="h" fontSmoothingType="LCD" layoutX="582.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="H" />
-      <SplitPane disable="true" dividerPositions="0.5" layoutX="629.0" layoutY="55.0" prefHeight="600.0" prefWidth="6.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-        </items>
-      </SplitPane>
-      <Label fx:id="restZeitWeiss" alignment="CENTER" contentDisplay="RIGHT" layoutX="760.0" layoutY="65.0" prefHeight="58.0" prefWidth="192.0" style="-fx-background-color: #FFFFFF;" text="00:00">
+      <Label fx:id="restZeitWeiss" alignment="CENTER" contentDisplay="RIGHT" layoutX="36.0" layoutY="584.0" prefHeight="60.0" prefWidth="140.0" style="-fx-background-color: #FFFFFF;" text="00:00">
          <font>
             <Font size="40.0" />
          </font>
       </Label>
-      <Label fx:id="restZeitSchwarz" alignment="CENTER" contentDisplay="CENTER" layoutX="760.0" layoutY="604.0" prefHeight="58.0" prefWidth="192.0" style="-fx-background-color: #000000;" text="00:00" textFill="WHITE">
+      <Label fx:id="restZeitSchwarz" alignment="CENTER" contentDisplay="CENTER" layoutX="1022.0" layoutY="584.0" prefHeight="60.0" prefWidth="140.0" style="-fx-background-color: #000000;" text="00:00" textFill="WHITE">
          <font>
             <Font size="40.0" />
          </font>
       </Label>
-      <FontAwesomeIconView fx:id="timerLogoWeiss" glyphName="CLOCK_ALT" layoutX="725.0" layoutY="106.0" size="35" />
-      <FontAwesomeIconView fx:id="timerLogoSchwarz" glyphName="CLOCK_ALT" layoutX="725.0" layoutY="645.0" size="35" />
-      <Label layoutX="751.0" layoutY="143.0" text="Weiß">
+
+      <Label layoutX="84.0" layoutY="113.0" text="Weiß" textAlignment="CENTER">
+
          <font>
-            <Font size="20.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Label layoutX="892.0" layoutY="143.0" text="Schwarz">
+      <Label layoutX="1054.0" layoutY="108.0" text="Schwarz" textAlignment="CENTER">
          <font>
-            <Font size="20.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Text fx:id="a" fontSmoothingType="LCD" layoutX="64.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <JFXListView fx:id="listZuegeWeiss" layoutX="702.0" layoutY="200.0" prefHeight="375.0" prefWidth="143.0" style="-fx-background-color: #FFDEAD;">
+      <JFXListView fx:id="listZuegeWeiss" layoutX="24.0" layoutY="166.0" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #FFDEAD;">
          <effect>
             <InnerShadow />
          </effect>
       </JFXListView>
-      <JFXListView fx:id="listZuegeSchwarz" layoutX="856.0" layoutY="200.0" prefHeight="375.0" prefWidth="143.0" style="-fx-background-color: #D2691E;">
+      <JFXListView fx:id="listZuegeSchwarz" layoutX="1004.0" layoutY="161.0" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #D2691E;">
          <effect>
             <InnerShadow />
          </effect>
       </JFXListView>
-      <Label fx:id="spielernameWeiss" layoutX="756.0" layoutY="173.0">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Label fx:id="spielernameSchwarz" layoutX="910.0" layoutY="173.0">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
+      <GridPane fx:id="leftOutBoard" layoutX="209.0" layoutY="71.0" prefHeight="640.0" prefWidth="40.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane fx:id="L1" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" />
+            <Pane fx:id="L2" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="1" />
+            <Pane fx:id="L3" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="2" />
+            <Pane fx:id="L4" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="3" />
+            <Pane fx:id="L5" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="4" />
+            <Pane fx:id="L6" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="5" />
+            <Pane fx:id="L7" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="6" />
+            <Pane fx:id="L8" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="7" />
+            <Pane fx:id="L9" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="8" />
+            <Pane fx:id="L10" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="9" />
+            <Pane fx:id="L11" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="10" />
+            <Pane fx:id="L12" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="11" />
+            <Pane fx:id="L13" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="12" />
+            <Pane fx:id="L14" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="13" />
+            <Pane fx:id="L15" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="14" />
+            <Pane fx:id="L16" prefHeight="200.0" prefWidth="200.0" styleClass="linkeaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="15" />
+         </children>
+      </GridPane>
+      <GridPane fx:id="rightOutBoard" layoutX="949.0" layoutY="71.0" prefHeight="640.0" prefWidth="40.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Pane fx:id="R1" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" />
+            <Pane fx:id="R2" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="1" />
+            <Pane fx:id="R3" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="2" />
+            <Pane fx:id="R4" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="3" />
+            <Pane fx:id="R5" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="4" />
+            <Pane fx:id="R6" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="5" />
+            <Pane fx:id="R7" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="6" />
+            <Pane fx:id="R8" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="7" />
+            <Pane fx:id="R9" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="8" />
+            <Pane fx:id="R10" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="9" />
+            <Pane fx:id="R11" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="10" />
+            <Pane fx:id="R12" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="11" />
+            <Pane fx:id="R13" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="12" />
+            <Pane fx:id="R14" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="13" />
+            <Pane fx:id="R15" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="14" />
+            <Pane fx:id="R16" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="15" />
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

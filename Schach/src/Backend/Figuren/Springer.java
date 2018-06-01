@@ -79,6 +79,7 @@ public class Springer extends Figur{
                     break;
             }
             //Wenn Zielfeld im Bereich des moeglichen ist
+
             if(((position.ordinal() + welcheRichtung) >= 0) && ((position.ordinal() + welcheRichtung) <= 63)){
                 //Nur wenn kein Sprung von Seite zur anderen Seite ist
                 if(!(((position.ordinal() % 8) == 6 || (position.ordinal() % 8) == 7) && (((position.ordinal() + welcheRichtung) % 8) == 0 || ((position.ordinal() + welcheRichtung) % 8) == 1) ||
