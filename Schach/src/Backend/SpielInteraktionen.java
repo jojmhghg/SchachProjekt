@@ -34,7 +34,7 @@ public interface SpielInteraktionen {
     public boolean getBeendet();
     public Position getPositionBlackKing();
     public Position getPositionWhiteKing();
-    public Farbe getFarbe();
+    public Farbe getFarbeSpieler1();
     public boolean getKiGegner();  
     public boolean getEnPassant();
     public boolean getRochade();

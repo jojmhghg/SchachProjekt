@@ -26,11 +26,11 @@ public final class Partie {
     /* --- Attribute --- */    
     
     /**
-     * gibt an ob man gegen einen KI-Gegner spielt (true = ja)
+     * gibt an, ob man gegen einen KI-Gegner spielt (true = ja)
      */
     private final boolean kiGegner;
     /**
-     * Gibt die Farbe vom Spieler1 an
+     * Gibt die Farbe von Spieler1 an
      */
     private final Farbe farbeSpieler1;
     
@@ -97,7 +97,7 @@ public final class Partie {
      * Konstruktor (beim Erstellen einer neuen Partie)
      * 
      * @param optionen Zu übernehmende Partieeinstellungen
-     * @throws Backend.SpielException
+     * @throws Backend.SpielException bei Fehler beim Speichern im TMP-File
      */ 
     public Partie(Optionen optionen) throws SpielException{
         this.kiGegner = optionen.getKiGegner();
@@ -331,19 +331,10 @@ public final class Partie {
      * 
      * @param position Position der Figur auf Spielbrett
      * @return LinkedList aller Positionen, welche die Figur erreichen kann und darf
-     * @throws Backend.SpielException falls auf Position keine Figur oder eine gegnerische
      */
-    public LinkedList<Position> getMovesFuerFeld(Position position) throws SpielException{    
-        if(this.umwandeln){
-            throw new SpielException("Bereits gezogen! Nun muss Figur ausgewählt werden, zu der Bauer umgewandelt wird");
-        }
-        // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
-        if(this.beendet){
-            throw new SpielException("Partie bereits beendet!");
-        }
-        // Teste ob Remisangebot vorliegt -> wenn ja werfe Fehler
-        if(this.remisangebot){
-            throw new SpielException("Es liegt ein Remisangebot vor!");
+    public LinkedList<Position> getMovesFuerFeld(Position position){    
+        if(this.umwandeln || this.beendet || this.remisangebot){
+            return null;
         }
         
         return this.spielbrett.getMovesFuerFeld(position);
@@ -353,11 +344,14 @@ public final class Partie {
     /* --- Sonstige public Methoden --- */
     
     /**
-     * Zieht die Figur & aktuallisiert die verbleibende Zeit sowie Liste der Züge
+     * Zieht die Figur 
+     * Falls Bauer nicht umgewandelt werden muss, wird Methode aufgerufen, die
+     * die verbleibende Zeit aktualisiert, sowie die Liste der Züge usw.
+     * Ansonsten wird diese Methode später von der Methode bauerUmwandeln aufgerufen
      * 
      * @param ursprung Position der zu ziehenden Figur
      * @param ziel Zielposition
-     * @throws SpielException Wirft Fehler, falls ungültiger Zug
+     * @throws SpielException Wirft Fehler, falls Zug nicht möglich (aus verschiedensten Gründen)
      */
     public void zieheFigur(Position ursprung, Position ziel) throws SpielException{
         if(this.umwandeln){
@@ -386,6 +380,13 @@ public final class Partie {
         }
     }
     
+    /**
+     * Wandelt den Bauer in die Übergebene Figur um. 
+     * Ruft danach die Methode auf, die den Rest des Zuges abwickelt. 
+     * 
+     * @param figur Dame, Turm, Springer oder Laeufer
+     * @throws SpielException falls man Bauer nicht umwandeln kann oder Übergabeparameter ungültig ist
+     */
     public void bauerUmwandeln(String figur) throws SpielException{
         if(!this.umwandeln){
             throw new SpielException("Umwandeln nicht notwendig!");
@@ -415,10 +416,10 @@ public final class Partie {
     }
      
     /**
-     * Überprüft den Namen der Datei und wenn dieser gültig ist, wird das Spiel gespeichert
+     * Überprüft den Namen des Speichernamens und wenn dieser gültig ist, wird das Spiel gespeichert
      * 
      * @param dateiname Name der Datei 
-     * @throws Backend.SpielException falls übergebener Name = tmp
+     * @throws Backend.SpielException falls übergebener Name unültigt ist
      */
     public void speichereSpiel(String dateiname) throws SpielException {       
         if(dateiname.equals("tmp")){
@@ -430,9 +431,9 @@ public final class Partie {
     
     /**
      * Spieler der gerade am Zug gibt auf. 
-     * Die Partie wird als beendet gesetzt und der andere Spieler als gewinner.
+     * Die Partie wird als beendet gesetzt und der andere Spieler als Gewinner.
      * 
-     * @throws Backend.SpielException
+     * @throws Backend.SpielException falls man nicht aufgeben kann (z.B. da bereits beendet)
      */
     public void aufgeben() throws SpielException{       
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
@@ -448,7 +449,11 @@ public final class Partie {
         this.gewinner = this.getSpielerAmZug().andereFarbe();  
     }
     
-    
+    /**
+     * Bietet dem Gegner ein Remis an
+     * 
+     * @throws SpielException falls man kein Remis anbieten kann (z.B. da bereits beendet) 
+     */
     public void remisAnbieten() throws SpielException{        
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
@@ -466,6 +471,11 @@ public final class Partie {
         this.remisangebot = true;
     }
     
+    /**
+     * Nimmt das Angebot zum Remis an
+     * 
+     * @throws SpielException Falls kein Angebot vorliegt oder die Partie schon beendet ist 
+     */
     public void remisAnnehmen() throws SpielException{
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
@@ -480,6 +490,11 @@ public final class Partie {
         this.gewinner = null;
     }
     
+    /**
+     * Lehnt das Angebot zum Remis ab
+     * 
+     * @throws SpielException Falls kein Angebot vorliegt oder die Partie schon beendet ist 
+     */
     public void remisAblehnen() throws SpielException{
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
@@ -500,7 +515,7 @@ public final class Partie {
      * Zieht für Zug verbrauchte Zeit von Spieler ab. Überprüft ob Zeit von Spieler abgelaufen
      * und wenn ja, wird anderer Spieler als Gewinner gesetzt
      * 
-     * @param verbrauchteZeit Verbrauchte Zeit von Spieler1 für diesen Zug
+     * @param verbrauchteZeit Verbrauchte Zeit von Spieler am Zug für seinen Zug
      */
     private void berechneVerbleibendeZeit(long verbrauchteZeit) {
         if(this.getSpielerAmZug() != this.farbeSpieler1){
@@ -528,12 +543,11 @@ public final class Partie {
     }
     
     /**
-     * Gibt den zweiten Teil der Notation des Zuges aus. Die Figuren müssen 
-     * hierfür schon gezogen sein.
+     * Erstellt Notation für den Zug
      * 
-     * @param ursprung
-     * @param ziel
-     * @return 
+     * @param ursprung der Figur
+     * @param ziel der Figur
+     * @return Notation in Langschreibweise
      */
     private String getNotation(Position ursprung, Position ziel){        
         String notation;
@@ -578,9 +592,9 @@ public final class Partie {
      * die Mitschrift wird erstellt, es wird zwischengespeichert, die KI wird gezogen,
      * die Zeit der Spieler wird aktualisiert
      * 
-     * @param ursprung
-     * @param ziel
-     * @param bauerUmwandelnIn
+     * @param ursprung der Figur
+     * @param ziel der Figur
+     * @param bauerUmwandelnIn falls Bauer umgewandelt werden muss
      * @throws SpielException 
      */
     private void zugBearbeiten(Position ursprung, Position ziel, String bauerUmwandelnIn) throws SpielException{    
@@ -625,7 +639,7 @@ public final class Partie {
      * Speichert das Spiel in einer Datei mit dem angegebenen Namen
      * 
      * @param dateiname Name der Datei 
-     * @throws Backend.SpielException falls übergebener Name = tmp
+     * @throws Backend.SpielException falls Fehler beim Speichern
      */
     private void speichereSpielImpl(String dateiname) throws SpielException {
         

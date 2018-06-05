@@ -255,17 +255,16 @@ public class Spielbrett {
      * 
      * @param position Position der Figur auf Spielbrett
      * @return LinkedList aller Positionen, welche die Figur erreichen kann und darf
-     * @throws Backend.SpielException falls auf Position keine Figur oder eine gegnerische
      */
-    public LinkedList<Position> getMovesFuerFeld(Position position) throws SpielException{ 
+    public LinkedList<Position> getMovesFuerFeld(Position position){ 
         Figur figur = this.spielbrett[position.ordinal()].getFigur();
 
         if(figur == null){
-            throw new SpielException("Keine Figur auf dem Feld " + position);
+            return null;
         }
         
         if(figur.getFarbe() != this.amZug){
-            throw new SpielException("Nicht deine Figur!");
+            return null;
         }
         
         // Mögliche Züge werden berechnet

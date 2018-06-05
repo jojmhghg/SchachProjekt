@@ -309,7 +309,7 @@ public class SpielbrettFXMLController implements Initializable {
             spieler2sec = (int) rest / 1000;
         }
         
-        if(spiel.getFarbe() == Farbe.WEISS){
+        if(spiel.getFarbeSpieler1() == Farbe.WEISS){
             restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1())));
             restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2())));
         }
@@ -754,7 +754,7 @@ public class SpielbrettFXMLController implements Initializable {
             this.restZeitWeiss.setVisible(false);
             timerLogoWeiss.setVisible(false);
         } else {
-           if(spiel.getFarbe() == Farbe.SCHWARZ){
+           if(spiel.getFarbeSpieler1() == Farbe.SCHWARZ){
                   this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
 
                 if (spieler2sec == 0) {
@@ -795,7 +795,7 @@ public class SpielbrettFXMLController implements Initializable {
             timerLogoSchwarz.setVisible(false);
             
         } else {
-             if(spiel.getFarbe() == Farbe.WEISS){
+             if(spiel.getFarbeSpieler1() == Farbe.WEISS){
                   this.restZeitSchwarz.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
 
                 if (spieler2sec == 0) {
@@ -872,7 +872,7 @@ public class SpielbrettFXMLController implements Initializable {
      * Hilfmethode fuer partie Laden und goToChessboard
      */
     public void setSpielernameOnScreen() {
-        if (spiel.getFarbe() == Farbe.SCHWARZ) {
+        if (spiel.getFarbeSpieler1() == Farbe.SCHWARZ) {
             spielernameSchwarz.setText(spiel.getUsername());
         } else {
             spielernameWeiss.setText(spiel.getUsername());

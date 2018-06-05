@@ -40,6 +40,11 @@ public class Einstellungen {
      */
     private File file;
     
+    /**
+     * Konstruktor der Klasse Einstellungen
+     * 
+     * @throws SpielException 
+     */
     public Einstellungen() throws SpielException{
         
         this.seperator = System.getProperty("file.separator");
