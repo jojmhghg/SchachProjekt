@@ -155,4 +155,48 @@ public enum Position {
                 return "";
         }
     }
+     
+    /**
+     * Gibt an, ob Position zur Grundreihe des Gegners gehört. 
+     * Wichtig bei Umwandlung von Bauer
+     * 
+     * @param spielerfarbe
+     * @return 
+     */
+    public boolean istGundreiheAndereSeite(Farbe spielerfarbe) {
+        
+        if(spielerfarbe == Farbe.SCHWARZ){
+            switch(this){
+                case A1:
+                case B1:     
+                case C1:
+                case D1:         
+                case E1:
+                case F1:         
+                case G1:
+                case H1:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+        else{
+            switch(this){
+                case A8:
+                case B8:     
+                case C8:
+                case D8:         
+                case E8:
+                case F8:         
+                case G8:
+                case H8:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+    }
+    
 }

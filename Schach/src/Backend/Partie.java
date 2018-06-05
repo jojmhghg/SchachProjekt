@@ -7,6 +7,7 @@ package Backend;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
+import Backend.Figuren.Bauer;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -73,6 +74,21 @@ public final class Partie {
      * Liste mit den vergangenen Zügen
      */
     private final LinkedList<Zug> ablauf;
+    /**
+     * Gibt an, ob von dem Spieler der davor an der Reihe war ein Remis angeboten wird.
+     */
+    private boolean umwandeln;
+      
+    /**
+     * Hilfsattribut. Wird verwendet um Ursprung zwischen zu speichern, wenn man 
+     * einen Bauer umwandeln muss
+     */
+    private Position tmpUrsprung;
+    /**
+     * Hilfsattribut. Wird verwendet um Ursprung zwischen zu speichern, wenn man 
+     * einen Bauer umwandeln muss
+     */
+    private Position tmpZiel;
     
     
     /* --- Konstruktoren --- */
@@ -95,6 +111,7 @@ public final class Partie {
         this.gewinner = null;
         this.beendet = false;
         this.remisangebot = false;
+        this.umwandeln = false;
         this.ablauf = new LinkedList<>();
         
         this.spielbrett = new Spielbrett();
@@ -110,7 +127,8 @@ public final class Partie {
      */
     public Partie(String speichername) throws SpielException{
         //initialisiere Spielbrett mit Grundaufstellung
-        this.spielbrett = new Spielbrett();        
+        this.spielbrett = new Spielbrett();     
+        this.umwandeln = false;
         String errorMessage = "Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.";
         
         //Pfad zum Speicherziel für Windows
@@ -222,16 +240,16 @@ public final class Partie {
      * 
      * @return True, falls Gegner eine KI; False, sonst
      */
-    public boolean isKiGegner() {
+    public boolean istGegnerEineKI() {
         return kiGegner;
     }
 
     /**
-     * Getter für Attribut farbe
+     * Gibt an welche Farbe Spieler1 ist
      * 
-     * @return Farbe
+     * @return Farbe von Spieler1
      */
-    public Farbe getFarbe() {
+    public Farbe getFarbeSpieler1() {
         return farbeSpieler1;
     }
     
@@ -272,7 +290,8 @@ public final class Partie {
     }
 
     /**
-     * Getter für Attribut gewinner
+     * Gibt an wer gewonnen hat oder null bei Remis
+     * ACHTUNG: gibt nicht an ob Spiel beendet ist! Dies muss seperat abgefragt werden! 
      * 
      * @return Farbe des Gewinners
      */
@@ -281,7 +300,7 @@ public final class Partie {
     }
     
     /**
-     * Getter für Attribut remisangebot
+     * Gibt an, ob ein Remisangebot vorliegt
      * 
      * @return true = remisangebot von Spieler der davor am Zug war, sonst false
      */
@@ -290,12 +309,44 @@ public final class Partie {
     }
     
     /**
-     * Getter für Attribut gewinner
+     * Gibt an, ob Bauer umgewandelt werden muss
      * 
-     * @return Farbe des Gewinners
+     * @return true = bauer umgewandelt werden muss
+     */
+    public boolean getUmwadendelnNotwendig(){
+        return this.umwandeln;
+    }
+    
+    /**
+     * Gibt an, ob die Partie beendet ist
+     * 
+     * @return true = beendet, false sonst
      */
     public boolean getBeendet() {
         return beendet;
+    }
+    
+    /**
+     * Gibt alle möglichen Züge für eine Figur auf der übergeben Position zurück
+     * 
+     * @param position Position der Figur auf Spielbrett
+     * @return LinkedList aller Positionen, welche die Figur erreichen kann und darf
+     * @throws Backend.SpielException falls auf Position keine Figur oder eine gegnerische
+     */
+    public LinkedList<Position> getMovesFuerFeld(Position position) throws SpielException{    
+        if(this.umwandeln){
+            throw new SpielException("Bereits gezogen! Nun muss Figur ausgewählt werden, zu der Bauer umgewandelt wird");
+        }
+        // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
+        if(this.beendet){
+            throw new SpielException("Partie bereits beendet!");
+        }
+        // Teste ob Remisangebot vorliegt -> wenn ja werfe Fehler
+        if(this.remisangebot){
+            throw new SpielException("Es liegt ein Remisangebot vor!");
+        }
+        
+        return this.spielbrett.getMovesFuerFeld(position);
     }
 
     
@@ -309,6 +360,9 @@ public final class Partie {
      * @throws SpielException Wirft Fehler, falls ungültiger Zug
      */
     public void zieheFigur(Position ursprung, Position ziel) throws SpielException{
+        if(this.umwandeln){
+            throw new SpielException("Bereits gezogen! Nun muss Figur ausgewählt werden, zu der Bauer umgewandelt wird");
+        }
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
@@ -318,45 +372,46 @@ public final class Partie {
             throw new SpielException("Es liegt ein Remisangebot vor!");
         }
         
-        // Notation des Zuges vor dem Ziehen merken
-        String notation = this.getNotationTeil1(ursprung, ziel);
-        
         // ziehe figur
-        this.spielbrett.setFigurAufFeld(ursprung, ziel);   
+        this.spielbrett.setFigurAufFeld(ursprung, ziel); 
         
-        if(this.spielbrett.checkZugMoeglich()){
-            this.beendet = true;
-            if(this.spielbrett.checkSchachmattOrPatt()){
-                this.gewinner = this.spielbrett.getSpielerAmZug().andereFarbe();
-            }
-            else{
-                //Wenn Gewinner "null" ist, ist Unentschieden
-                this.gewinner = null;
-            }
-            
+        if(this.spielbrett.getFigurAufFeld(ziel) instanceof Bauer && ziel.istGundreiheAndereSeite(this.spielbrett.getSpielerAmZug())){
+            this.tmpUrsprung = ursprung;
+            this.tmpZiel = ziel;
+            this.umwandeln = true;
+            System.out.println("Jetzt wird umgewandelt");
         }
-
-        // aktualisiere verbleibenede Zeit und Zeitpunkt des Endes dieses Zugs, 
-        // falls Partie zeitlich begrenzt ist
-        if(this.partiezeit > 0){           
-            Date d = new Date();
-            this.berechneVerbleibendeZeit(d.getTime() - this.endeLetzterZug);
-            this.endeLetzterZug = d.getTime();
+        else{
+            zugBearbeiten(ursprung, ziel, null);
         }
-        
-        // Notation bei Sonderfällen
-        notation = this.getNotationTeil2(ursprung, ziel, notation);
-        
-        // Mitschrift aktualisieren
-        this.ablauf.add(new Zug(ursprung, ziel, notation));
-        
-        //jetzt zieht KI, falls es ein PvE-Spiel ist
-        if(this.kiGegner){
-            this.kiZieht();
+    }
+    
+    public void bauerUmwandeln(String figur) throws SpielException{
+        if(!this.umwandeln){
+            throw new SpielException("Umwandeln nicht notwendig!");
+        }
+        // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
+        if(this.beendet){
+            throw new SpielException("Partie bereits beendet!");
+        }
+        // Teste ob Remisangebot vorliegt -> wenn ja werfe Fehler
+        if(this.remisangebot){
+            throw new SpielException("Es liegt ein Remisangebot vor!");
         }
         
-        // Spielstand in tmp-File speichern
-        this.speichereSpielImpl("tmp");
+        switch(figur){
+            case "Dame":
+            case "Turm":
+            case "Springer":
+            case "Laeufer":               
+                break;
+                
+            default:
+                throw new SpielException("Bauer kann nicht in" + figur + " umgewandelt werden! Nur Dame, Turm, Springer, Laeufer sind erlaubt");
+        }
+        
+        umwandeln = false;
+        zugBearbeiten(tmpUrsprung, tmpZiel, figur);
     }
      
     /**
@@ -376,6 +431,8 @@ public final class Partie {
     /**
      * Spieler der gerade am Zug gibt auf. 
      * Die Partie wird als beendet gesetzt und der andere Spieler als gewinner.
+     * 
+     * @throws Backend.SpielException
      */
     public void aufgeben() throws SpielException{       
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
@@ -392,8 +449,7 @@ public final class Partie {
     }
     
     
-    public void remisAnbieten() throws SpielException{
-        /*
+    public void remisAnbieten() throws SpielException{        
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
@@ -405,15 +461,12 @@ public final class Partie {
         // Nicht möglich, wenn man gegen KI spielt
         if(this.kiGegner){
             throw new SpielException("Man kann dem Computer kein Remis anbieten!");
-        }
+        } 
         
-        this.beendet = true;
-        this.gewinner = this.getSpielerAmZug().andereFarbe();
-        */
+        this.remisangebot = true;
     }
     
     public void remisAnnehmen() throws SpielException{
-        /*
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
@@ -425,11 +478,9 @@ public final class Partie {
         
         this.beendet = true;
         this.gewinner = null;
-        */
     }
     
     public void remisAblehnen() throws SpielException{
-        /*
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
@@ -437,8 +488,9 @@ public final class Partie {
         // Teste ob ein remis angeboten wird -> wenn nein werfe Fehler
         if(!this.remisangebot){
             throw new SpielException("Es liegt kein Remis-Angebot vor!");
-        }
-        */        
+        }   
+        
+        this.remisangebot = false;
     }
     
     
@@ -476,34 +528,25 @@ public final class Partie {
     }
     
     /**
-     * Gibt den ersten Teil der Notation des Zuges aus. Die Figuren dürfen 
-     * hierfür noch nicht gezogen sein.
-     * 
-     * @param ursprung
-     * @param ziel
-     * @return 
-     */
-    private String getNotationTeil1(Position ursprung, Position ziel){
-        String connector = "x";
-        if(this.spielbrett.getFigurAufFeld(ziel) == null){
-            connector = "-";
-        }
-        
-        String figur = this.spielbrett.getFigurAufFeld(ursprung).getFigurABK();
-        
-        return figur + ursprung.toString() + connector + ziel.toString();
-    }
-    
-    /**
      * Gibt den zweiten Teil der Notation des Zuges aus. Die Figuren müssen 
      * hierfür schon gezogen sein.
      * 
      * @param ursprung
      * @param ziel
-     * @param notation
      * @return 
      */
-    private String getNotationTeil2(Position ursprung, Position ziel, String notation){
+    private String getNotation(Position ursprung, Position ziel){        
+        String notation;
+        
+        // Notation für Schlagen bzw. ziehen
+        String connector = "x";
+        if(this.spielbrett.getFigurAufFeld(ziel) == null){
+            connector = "-";
+        }         
+        String figurABK = this.spielbrett.getFigurAufFeld(ziel).getFigurABK();       
+        // Normale Notation zusammengesetzt
+        notation = figurABK + ursprung.toString() + connector + ziel.toString();
+
         // En Passant
         if(spielbrett.getEnPassant()){
             notation = ursprung.toString() + "x" + ziel.toString() + " e.p.";
@@ -528,6 +571,54 @@ public final class Partie {
         } 
         
         return notation;
+    }
+    
+    /**
+     * Nach dem Ziehen einer Figur wird hier getestet ob die Partie nun beendet ist,
+     * die Mitschrift wird erstellt, es wird zwischengespeichert, die KI wird gezogen,
+     * die Zeit der Spieler wird aktualisiert
+     * 
+     * @param ursprung
+     * @param ziel
+     * @param bauerUmwandelnIn
+     * @throws SpielException 
+     */
+    private void zugBearbeiten(Position ursprung, Position ziel, String bauerUmwandelnIn) throws SpielException{    
+        this.spielbrett.zugBearbeiten(ziel, bauerUmwandelnIn);
+        
+        // Teste Gegner keinen Zug mehr machen kann (Schachmatt oder Patt)     
+        if(!this.spielbrett.checkZugMoeglich()){
+            // Wenn ja ist die Partie beendet
+            this.beendet = true;
+            // Es wird nun getestet, ob der Gegner im Schach steht
+            if(this.spielbrett.getSchach() == this.spielbrett.getSpielerAmZug()){
+                // Wenn ja hat man gewonnen
+                this.gewinner = this.spielbrett.getSpielerAmZug().andereFarbe();
+            }
+            else{
+                // Sonst ist es ein Remis
+                this.gewinner = null;
+            }           
+        }
+
+        // aktualisiere verbleibenede Zeit und Zeitpunkt des Endes dieses Zugs, 
+        // falls Partie zeitlich begrenzt ist
+        if(this.partiezeit > 0){           
+            Date d = new Date();
+            this.berechneVerbleibendeZeit(d.getTime() - this.endeLetzterZug);
+            this.endeLetzterZug = d.getTime();
+        }      
+        
+        // Mitschrift aktualisieren
+        this.ablauf.add(new Zug(ursprung, ziel, this.getNotation(ursprung, ziel)));
+        
+        //jetzt zieht KI, falls es ein PvE-Spiel ist
+        if(this.kiGegner){
+            this.kiZieht();
+        }
+        
+        // Spielstand in tmp-File speichern
+        this.speichereSpielImpl("tmp");
     }
     
     /**

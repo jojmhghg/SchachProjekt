@@ -104,12 +104,12 @@ public class Spiel implements SpielInteraktionen {
     
     @Override
     public Farbe getFarbe(){
-        return this.partie.getFarbe();
+        return this.partie.getFarbeSpieler1();
     }
     
     @Override
     public boolean getKiGegner(){
-        return this.partie.isKiGegner();
+        return this.partie.istGegnerEineKI();
     }
        
     @Override
@@ -154,7 +154,7 @@ public class Spiel implements SpielInteraktionen {
 
     @Override
     public LinkedList<Position> getMoeglicheZuege(Position position) throws SpielException{
-        return this.partie.getSpielbrett().getMovesFuerFeld(position);
+        return this.partie.getMovesFuerFeld(position);
     }
 
     @Override

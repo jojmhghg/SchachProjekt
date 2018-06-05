@@ -82,8 +82,8 @@ public class TestPartie {
         }
         
         
-        System.out.println("KI-Gegner: " + partie.isKiGegner());
-        System.out.println("Farbe Spieler 1: " + partie.getFarbe().toString());
+        System.out.println("KI-Gegner: " + partie.istGegnerEineKI());
+        System.out.println("Farbe Spieler 1: " + partie.getFarbeSpieler1().toString());
         System.out.println("Partiezeit: " + partie.getPartiezeit());
         System.out.println("Zeit Spieler 1: " + partie.getVerbleibendeZeitSpieler1());
         System.out.println("Zeit Spieler 2: " + partie.getVerbleibendeZeitSpieler2());

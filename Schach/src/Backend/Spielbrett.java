@@ -38,10 +38,7 @@ public class Spielbrett {
      * Gibt an, ob und wer gerade im Schach steht
      */
     private Farbe schach;
-
-    public Feld[] getSpielbrett() {
-        return spielbrett;
-    }
+  
     /**
      * Gibt an, welcher Spieler am Zug ist
      */
@@ -67,6 +64,7 @@ public class Spielbrett {
      * kann
      */
     private String rochadeKI;
+    
     /**
      * Konstruktor um ein neues Spielbrett zu erstellen
      * Mit Standardaufstellung!
@@ -281,7 +279,7 @@ public class Spielbrett {
             tmpFigur = tmpSpielbrett.getFigurAufFeld(position);
             // Falls en Passant: geschlagener Bauer wird entfernt 
             
-            tmpSpielbrett.deleteBauerBeiEnPassant(tmpFigur, position, move);
+            tmpSpielbrett.werfeBauerBeiEnPassant(tmpFigur, position, move);
             // Figur wird auf altem Feld entfernt
             tmpSpielbrett.spielbrett[position.ordinal()].setFigur(null);
             // Figur wird auf neues Feld gesetzt
@@ -306,8 +304,6 @@ public class Spielbrett {
     
     /**
      * Setzt eine Figur auf eine bestimmte Position
-     * Der andere Spieler ist danach am Zug
-     * Checkt ob anderer Spieler nun im Schach steht 
      * 
      * @param startposition Position der zu ziehenden Figur auf Spielbrett
      * @param zielposition Ziel der zu ziehenden Figur auf Spielbrett
@@ -325,21 +321,19 @@ public class Spielbrett {
         LinkedList<Position> moves = this.getMovesFuerFeld(startposition);  //TODO Teste ob Koenig im Schach steht
         // Ist Zielfeld ein gültiger Zug? 
         if(moves.contains(zielposition)){
-            //Falls Bauer 2 Felder nach vorne bewegt wurde, so setze dies für die KI
-            setEnPassantKI(figur, startposition, zielposition);
-            //Falls Rochade noch ausgeführt werden kann
-            setRochadeKI();
+//            //Falls Bauer 2 Felder nach vorne bewegt wurde, so setze dies für die KI
+//            setEnPassantKI(figur, startposition, zielposition);
+//            //Falls Rochade noch ausgeführt werden kann
+//            setRochadeKI();
             
             // Falls en Passant: geschlagener Bauer wird entfernt 
-            deleteBauerBeiEnPassant(figur, startposition, zielposition);
+            werfeBauerBeiEnPassant(figur, startposition, zielposition);
             // Figur wird auf altem Feld entfernt
             this.spielbrett[startposition.ordinal()].setFigur(null);
             // Figur wird auf neues Feld gesetzt
             this.spielbrett[zielposition.ordinal()].setFigur(figur);
-            // Falls Figur ein Turm oder König war, wird diese nun als bewegt gesetzt (Wichtig für Rochade)
-            setKoenigTurmAlsGezogen(figur);
             // Falls Bauer 2 Felder nach vorne, setze ihn als 2 Felder gezogen (Wichtig für en Passant)
-            setBauerGezogenBeiDoppelt(figur, startposition, zielposition);
+            setFigurAlsGezogen(figur, startposition, zielposition);
             // Falls man eine Rochade macht, wird hier auch der Turm bewegt
             rochade(figur, startposition, zielposition);
             
@@ -358,17 +352,22 @@ public class Spielbrett {
         else{
             throw new SpielException("Ungültiges Zielfeld!");
         } 
+    }    
+     
+    /**
+     * Der andere Spieler ist danach am Zug
+     * Checkt ob anderer Spieler nun im Schach steht 
+     * 
+     * @param zielposition Ziel der zu ziehenden Figur auf Spielbrett
+     * @param bauerUmwandelnIn
+     */
+    public void zugBearbeiten(Position zielposition, String bauerUmwandelnIn){
+        // Welche Figur wird gezogen?
+        Figur figur = this.spielbrett[zielposition.ordinal()].getFigur();
         
         if(figur instanceof Bauer){
-            if(this.amZug == Farbe.WEISS){
-                if(zielposition.ordinal() >= 56 && zielposition.ordinal() <= 63){
-                    umwandlung(zielposition, Farbe.WEISS);
-                }
-            }
-            else{
-                if(zielposition.ordinal() >= 0 && zielposition.ordinal() <= 7){
-                    umwandlung(zielposition, Farbe.SCHWARZ);
-                }
+            if(zielposition.istGundreiheAndereSeite(this.amZug)){
+                this.bauerUmwandeln(zielposition, amZug, bauerUmwandelnIn);
             }
         }
              
@@ -381,13 +380,12 @@ public class Spielbrett {
         // Jetzt ist anderer Spieler am Zug
         this.amZug = this.amZug.andereFarbe();
         // Und der Counter für die Züge wird erhöht
-        SchnittstelleStockfish schnittstelleStockfish = new SchnittstelleStockfish();
-        schnittstelleStockfish.stockfishEngine(this);
+
         zugCounter++;
     }
     
     /**
-     * Testet ob Spieler am Zug moegliche Zuege hat
+     * Testet ob Spieler am Zug ziehen kann
      * 
      * @return true, falls ja; sonst false
      * @throws Backend.SpielException
@@ -402,47 +400,24 @@ public class Spielbrett {
             if(tmpFigur != null && tmpFigur.getFarbe() == spieler){
                 tmpList = this.getMovesFuerFeld(Position.values()[i]);
                 if(tmpList != null && tmpList.size() > 0){
-                    return false;
+                    return true;
                 }
             }
         }
-        if(checkSchach(this.amZug)){
-            
-        }
-        //Nicht im Schach ist Patt
-        else{
-            
-        }
-        return true;
+        return false;
     }
-    
-    /**
-     * Testet ob Spieler am Zug im Schach steht und somit Matt ist
-     * oder nicht im Schach steht und somit Patt ist
-     * 
-     * @return true, falls im Schach steht
-     */
-    public boolean checkSchachmattOrPatt(){
-        if(checkSchach(this.amZug)){
-            return true;
-        }
-        //Nicht im Schach ist Patt
-        else{
-            return false;
-        }
-    }
+        
     /**
      * Loescht Bauern auf gegnerischer Grundreihe und setzt dort die
      * gewünschte neue Figur
      * 
      * @param position
      * @param farbe 
+     * @param figurTyp 
      */
-    public void umwandlung(Position position, Farbe farbe){
-        //Methode "welcheFigur()" muss noch implementiert werden, zudem ist
-        //Schnittstelle zwischen Frontend und Backend
+    private void bauerUmwandeln(Position position, Farbe farbe, String figurTyp){
         this.spielbrett[position.ordinal()].setFigur(null);
-        switch(welcheFigur()){
+        switch(figurTyp){
             case "Dame":
                 this.spielbrett[position.ordinal()].setFigur(new Dame(farbe));
                 break;
@@ -460,13 +435,7 @@ public class Spielbrett {
                 break;
         }
     }
-    
-    //Diese Methode muss ins Frontend implementiert werden, ist nur hier wegen der
-    //Fehlermeldung, damit sie nicht angezeigt wird
-    public String welcheFigur(){
-        return "Test";
-    }
-    
+   
     
     /*** ------------------------------------ Hilfsmethoden ------------------------------ ***/
     
@@ -514,30 +483,21 @@ public class Spielbrett {
     }
     
     /**
-     * Hilfsmethode um König bzw Turm als gezogen zu markieren, damit man mit 
-     * dieser Figur keine Rochade mehr machen kann
+     * Hilfsmethode um Bauer, Turm oder König als gezogen zu markieren
+     * Notwendig für En Passant und Rochade
      * 
      * @param figur zu überprüfende Figur
+     * @param startposition
+     * @param zielposition 
      */
-    private void setKoenigTurmAlsGezogen(Figur figur){
+    private void setFigurAlsGezogen(Figur figur, Position startposition, Position zielposition){
         if(figur instanceof Koenig){
             ((Koenig) figur).setNochNichtGezogen(false);
         }
         else if(figur instanceof Turm){
             ((Turm) figur).setNochNichtGezogen(false);
         }
-    }
-    
-    /**
-     * Hilfsmethode um Bauer zu kennzeichnen sollte er einen doppelten
-     * Schritt machen
-     * 
-     * @param figur zu überprüfende Figur
-     * @param startposition
-     * @param zielposition 
-     */
-    private void setBauerGezogenBeiDoppelt(Figur figur, Position startposition, Position zielposition){
-        if(figur instanceof Bauer){
+        else if(figur instanceof Bauer){
             if(startposition.ordinal() <= 15 && startposition.ordinal() >= 8 || startposition.ordinal() <= 55 && startposition.ordinal() >= 48){
                 if(zielposition.ordinal() <= 31 && zielposition.ordinal() >= 24 || zielposition.ordinal() <= 39 && zielposition.ordinal() >= 32){
                     ((Bauer) figur).setNochNichtGezogen(false);
@@ -548,14 +508,14 @@ public class Spielbrett {
     }
     
     /**
-     * Hilfsmethode um zu schauen ob es En Passant war und die geschlagene Figur
-     * zu löschen
+     * Hilfsmethode, die überprüft ob ein En Passant stattgefunden hat und die 
+     * dann den geschlagenen Bauer vom Brett entfernt
      * 
      * @param figur
      * @param startposition
      * @param zielposition 
      */
-    private void deleteBauerBeiEnPassant(Figur figur, Position startposition, Position zielposition){
+    private void werfeBauerBeiEnPassant(Figur figur, Position startposition, Position zielposition){
         if(this.spielbrett[zielposition.ordinal()].getFigur() == null && figur instanceof Bauer){
             if((startposition.ordinal() % 8) != (zielposition.ordinal() % 8)){
                 if(figur.getFarbe() == Farbe.WEISS){
@@ -609,7 +569,7 @@ public class Spielbrett {
     }
     
     /**
-     * Testet ob Spieler im Schach steht
+     * Testet ob übergebener Spieler im Schach steht
      * 
      * @param spieler Farbe des Spielers der getestet werden soll
      * @return true, falls ja; sonst false
@@ -623,6 +583,11 @@ public class Spielbrett {
         }
     }
     
+    /**
+     * Hilfsmethode, die den Eingabe-String für Stockfish erstellt
+     * 
+     * @return Eingabe-String für Stockfish
+     */
     public String gibStringStockfish(){
         Farbe tmpFarbe;
         Figur tmpFigur;
