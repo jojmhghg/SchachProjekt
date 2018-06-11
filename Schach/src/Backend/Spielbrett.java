@@ -320,10 +320,6 @@ public class Spielbrett {
         LinkedList<Position> moves = this.getMovesFuerFeld(startposition);  //TODO Teste ob Koenig im Schach steht
         // Ist Zielfeld ein gültiger Zug? 
         if(moves.contains(zielposition)){
-//            //Falls Bauer 2 Felder nach vorne bewegt wurde, so setze dies für die KI
-//            setEnPassantKI(figur, startposition, zielposition);
-//            //Falls Rochade noch ausgeführt werden kann
-//            setRochadeKI();
             
             // Falls en Passant: geschlagener Bauer wird entfernt 
             werfeBauerBeiEnPassant(figur, startposition, zielposition);

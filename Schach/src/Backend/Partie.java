@@ -537,19 +537,17 @@ public final class Partie {
     
     /**
      * Hilfsmethode, die die Schnittstelle zur KI ist
+     * @param startOderZielposition Wenn true gib StartPosition zurück
+     * @throws Backend.SpielException
      */
-    public int kiZieht(boolean startOderZielposition) throws SpielException{
+    public void kiZieht() throws SpielException{
         String FEN = spielbrett.gibStringStockfish();
         String bestMove = schnittstelleStockfish.stockfishEngine(FEN);
         System.out.println(bestMove);
         String bestMoveStart = bestMove.substring(0, bestMove.length()-2);
         String bestMoveZiel = bestMove.substring(2);
-        if(startOderZielposition){
-            return convertBestMove(bestMoveStart);
-        }
-        else{
-            return convertBestMove(bestMoveZiel);
-        }
+        zieheFigur(Position.values()[convertBestMove(bestMoveStart)], Position.values()[convertBestMove(bestMoveZiel)]);
+        //TODO
     }
     
     public int convertBestMove(String rawPostion){
@@ -585,7 +583,6 @@ public final class Partie {
                     
             case 104:
                 convertedPosition = 7;
-                System.out.println("H");
                 break;
         }
         
@@ -596,7 +593,6 @@ public final class Partie {
                 
             case 50:
                 convertedPosition = convertedPosition + 8;
-                System.out.println("2");
                 break;
                 
             case 51:
@@ -713,6 +709,7 @@ public final class Partie {
         //jetzt zieht KI, falls es ein PvE-Spiel ist
         if(this.kiGegner){
             //this.kiZieht();
+            //TODO
         }
         
         // Spielstand in tmp-File speichern

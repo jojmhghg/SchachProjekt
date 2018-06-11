@@ -72,10 +72,6 @@ public class Spiel implements SpielInteraktionen {
         return this.einstellungen.isHighlightingAus();
     }
 
-    public int kiZieht(boolean startOderZielposition) throws SpielException{
-        return this.partie.kiZieht(startOderZielposition);
-    }
-    
     /**
      * Erstellt eine neue Partie
      * 
