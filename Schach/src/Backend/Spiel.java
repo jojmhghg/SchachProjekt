@@ -125,6 +125,7 @@ public class Spiel implements SpielInteraktionen {
      * 
      * @throws SpielException 
      */
+    
     @Override
     public void remisAnbieten() throws SpielException{
         this.partie.remisAnbieten();

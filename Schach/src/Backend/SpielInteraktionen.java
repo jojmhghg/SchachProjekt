@@ -47,5 +47,7 @@ public interface SpielInteraktionen {
     public LinkedList<Zug> getMitschrift();   
     public LinkedList<Position> getMoeglicheZuege(Position position) throws SpielException;
     
-    public void speichereSpiel(String dateiname)throws SpielException;  
+    public void speichereSpiel(String dateiname)throws SpielException; 
+    
+    
 }

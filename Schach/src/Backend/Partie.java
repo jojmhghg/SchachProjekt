@@ -92,6 +92,7 @@ public final class Partie {
     
     private SchnittstelleStockfish schnittstelleStockfish = new SchnittstelleStockfish();
     
+    private Spiel spiel;
     /* --- Konstruktoren --- */
     
     /**
@@ -119,6 +120,7 @@ public final class Partie {
         
         this.speichereSpielImpl("tmp");
     }
+    
     
     /**
      * Konstruktor (beim Laden einer gespeicherten Partie)
@@ -207,7 +209,7 @@ public final class Partie {
                 final String[] positionen = line.split(" ");
                 pos1 = Integer.parseInt(positionen[0]);
                 pos2 = Integer.parseInt(positionen[1]);
-                this.zieheFigur(Position.values()[pos1], Position.values()[pos2]);
+                //this.zieheFigur(Position.values()[pos1], Position.values()[pos2]);
             }
        
         } catch (IOException e) { 
@@ -366,10 +368,8 @@ public final class Partie {
         if(this.remisangebot){
             throw new SpielException("Es liegt ein Remisangebot vor!");
         }
-        
         // ziehe figur
         this.spielbrett.setFigurAufFeld(ursprung, ziel); 
-        
         if(this.spielbrett.getFigurAufFeld(ziel) instanceof Bauer && ziel.istGundreiheAndereSeite(this.spielbrett.getSpielerAmZug())){
             this.tmpUrsprung = ursprung;
             this.tmpZiel = ziel;
@@ -378,6 +378,10 @@ public final class Partie {
         }
         else{
             zugBearbeiten(ursprung, ziel, null);
+        }
+        if(this.kiGegner && farbeSpieler1 != getSpielerAmZug()){
+            this.kiZieht();
+            //TODO
         }
     }
     
@@ -537,13 +541,11 @@ public final class Partie {
     
     /**
      * Hilfsmethode, die die Schnittstelle zur KI ist
-     * @param startOderZielposition Wenn true gib StartPosition zurück
      * @throws Backend.SpielException
      */
     public void kiZieht() throws SpielException{
         String FEN = spielbrett.gibStringStockfish();
         String bestMove = schnittstelleStockfish.stockfishEngine(FEN);
-        System.out.println(bestMove);
         String bestMoveStart = bestMove.substring(0, bestMove.length()-2);
         String bestMoveZiel = bestMove.substring(2);
         zieheFigur(Position.values()[convertBestMove(bestMoveStart)], Position.values()[convertBestMove(bestMoveZiel)]);
@@ -707,7 +709,7 @@ public final class Partie {
         this.ablauf.add(new Zug(ursprung, ziel, this.getNotation(ursprung, ziel)));
         
         //jetzt zieht KI, falls es ein PvE-Spiel ist
-        if(this.kiGegner){
+        if(this.kiGegner && farbeSpieler1 != getSpielerAmZug()){
             //this.kiZieht();
             //TODO
         }

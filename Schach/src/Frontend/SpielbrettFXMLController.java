@@ -476,6 +476,7 @@ public class SpielbrettFXMLController implements Initializable {
         
     }
 
+    
     /**
      * Methode onCliked erkennt wenn das Maus links oder Rechts angeklickt
      * wurde, und handelt es dementsprechend
@@ -483,13 +484,12 @@ public class SpielbrettFXMLController implements Initializable {
     private void onClicked(MouseEvent event) throws SpielException {
         //Um zwischen Rechts- und Linksklick zu unterscheiden
         MouseButton button = event.getButton();
-
         switch (button) {
             //Linksklick:
             case PRIMARY: //Starte den Zug  
                 // angeklickte Pane
+                
                 Pane tmpPane = (Pane) event.getSource();
-
                 //Null oder Bild der Figur des ausgewählten Panes
                 ImageView tmpView = null;
                 if (tmpPane.getChildren().size() > 0) {
@@ -504,7 +504,7 @@ public class SpielbrettFXMLController implements Initializable {
                     }
                 }
                 Position pos = Position.values()[tmp];
-
+                
                 // highlighting ausmachen
                 if (selectedFigur != null) {
                     selectedFigur.setEffect(null);
@@ -865,7 +865,6 @@ public class SpielbrettFXMLController implements Initializable {
 
     @FXML
     public void updateScreen() {
-
         //Populate listView and apply rotation
         if (spiel.getMitschrift() != null && spiel.getMitschrift().size() > 0) {
             LinkedList<Zug> zuege = spiel.getMitschrift();
