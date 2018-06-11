@@ -24,6 +24,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,6 +34,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -73,6 +75,9 @@ public class OptionenFXMLController implements Initializable {
     Spielbrett spielbrett;
     Spiel spiel;
     SpielbrettFXMLController spielbrettFXMLController;
+    
+    private double xOffset = 0; 
+    private double yOffset = 0;
 
     public OptionenFXMLController() {
     }
@@ -114,13 +119,31 @@ public class OptionenFXMLController implements Initializable {
                 SpielbrettFXMLController controller = loader.getController();
                 controller.loadData(spiel, spielbrett);
                 //controller.getTime(partieZeitLokal.getValue());
-                
-                
+
                 //chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
                 Stage chessBoardStage = new Stage();
                 chessBoardStage.setScene(new Scene(chessBoardScene));
                 chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
-                chessBoardStage.initStyle(StageStyle.UNDECORATED);
+                chessBoardStage.initStyle(StageStyle.TRANSPARENT);
+                
+                                
+                //grab your root here
+                chessBoardScene.setOnMousePressed(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        xOffset = event.getSceneX();
+                        yOffset = event.getSceneY();
+                    }
+                });
+
+                //move around here
+                chessBoardScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        chessBoardStage.setX(event.getScreenX() - xOffset);
+                        chessBoardStage.setY(event.getScreenY() - yOffset);
+                    }
+                });
                 
                 //Zeit aktualisieren
                 //controller.refreshTime();

@@ -682,11 +682,42 @@ public class SpielbrettFXMLController implements Initializable {
         } catch (IOException e) {
         }
     }
+    
+    @FXML
+    private void remisAnbieten(ActionEvent event) {
+
+        try {
+            spiel.remisAnbieten();
+            
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("RemisAngebot.fxml"));
+            Parent remisAngebotScene = loader.load();
+
+            RemisAngebotFXMLController controller = loader.getController();
+            controller.loadData(spiel, this);
+
+            Stage remisAngebotStage = new Stage();
+            remisAngebotStage.initModality(Modality.APPLICATION_MODAL);
+            remisAngebotStage.initStyle(StageStyle.UNDECORATED);
+            remisAngebotStage.setScene(new Scene(remisAngebotScene));
+            remisAngebotStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            remisAngebotStage.show();
+        } catch (IOException e) {
+        } catch (SpielException ex) {
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @FXML
     private void beenden(ActionEvent event) {
         Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
         spielBrettStage.close();
+    }
+    
+    @FXML
+    private void close(ActionEvent event) {
+        Platform.exit();
+        System.exit(0);
     }
 
     public void timerPlay() {

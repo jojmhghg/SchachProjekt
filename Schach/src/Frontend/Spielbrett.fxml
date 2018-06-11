@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -23,19 +25,31 @@
             <Image url="@Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
-      <Pane layoutX="13.0" layoutY="50.0" opacity="0.9" prefHeight="680.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
+      <Pane layoutX="13.0" layoutY="62.0" opacity="0.9" prefHeight="668.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
          <children>
             <Label fx:id="spielernameWeiss" layoutX="10.0" layoutY="28.0" prefHeight="35.0" prefWidth="177.0" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
+            <FontAwesomeIconView fx:id="timerLogoWeiss" fontSmoothingType="LCD" glyphName="CLOCK_ALT" layoutX="81.0" layoutY="640.0" size="40" textAlignment="CENTER" />
+            <Label fx:id="restZeitWeiss" alignment="CENTER" contentDisplay="RIGHT" layoutX="12.0" layoutY="529.0" prefHeight="60.0" prefWidth="170.0" style="-fx-background-color: #FFFFFF;" text="00:00">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
          </children></Pane>
-      <Pane layoutX="930.0" layoutY="50.0" opacity="0.9" prefHeight="680.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
+      <Pane layoutX="931.0" layoutY="62.0" opacity="0.9" prefHeight="668.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
          <children>
             <Label fx:id="spielernameSchwarz" layoutX="64.0" layoutY="28.0" prefHeight="20.0" prefWidth="177.0" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <FontAwesomeIconView fx:id="timerLogoSchwarz" glyphName="CLOCK_ALT" layoutX="139.0" layoutY="636.0" size="40" text="" />
+            <Label fx:id="restZeitSchwarz" alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="526.0" prefHeight="60.0" prefWidth="170.0" style="-fx-background-color: #000000;" text="00:00" textFill="WHITE">
+               <font>
+                  <Font size="40.0" />
                </font>
             </Label>
          </children>
@@ -152,11 +166,11 @@
             <Pane fx:id="H1" prefHeight="200.0" prefWidth="200.0" styleClass="H1" stylesheets="@Spielbrett.css" GridPane.columnIndex="7" GridPane.rowIndex="7" />
          </children>
       </GridPane>
-      <MenuBar fx:id="myMenuBar" layoutX="-1.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="1200.0" style="-fx-background-color: #DEB887; -fx-opacity: 85%;">
+      <MenuBar fx:id="myMenuBar" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="1200.0" style="-fx-background-color: #DEB887; -fx-opacity: 85%;">
         <menus>
           <Menu mnemonicParsing="false" text="Partie">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Remis anbieten" />
+                  <MenuItem mnemonicParsing="false" onAction="#remisAnbieten" text="Remis anbieten" />
                   <MenuItem mnemonicParsing="false" onAction="#partieAufgeben" text="Aufgeben" />
                   <MenuItem mnemonicParsing="false" onAction="#neuePartie" text="Neue Partie" />
                   <MenuItem mnemonicParsing="false" onAction="#partieSpeichern" text="Speichern" />
@@ -178,16 +192,6 @@
             <Menu mnemonicParsing="false" text="Donate" />
         </menus>
       </MenuBar>
-      <Label fx:id="restZeitWeiss" alignment="CENTER" contentDisplay="RIGHT" layoutX="36.0" layoutY="584.0" prefHeight="60.0" prefWidth="140.0" style="-fx-background-color: #FFFFFF;" text="00:00">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
-      <Label fx:id="restZeitSchwarz" alignment="CENTER" contentDisplay="CENTER" layoutX="1022.0" layoutY="584.0" prefHeight="60.0" prefWidth="140.0" style="-fx-background-color: #000000;" text="00:00" textFill="WHITE">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
 
       <Label layoutX="84.0" layoutY="113.0" text="Weiß" textAlignment="CENTER">
 
@@ -292,5 +296,9 @@
             <Pane fx:id="R16" prefHeight="200.0" prefWidth="200.0" styleClass="rechteaussenFeld" stylesheets="@Spielbrett.css" GridPane.rowIndex="15" />
          </children>
       </GridPane>
+      <JFXButton contentDisplay="TOP" layoutX="1148.0" layoutY="-11.0" onAction="#close" AnchorPane.rightAnchor="0.0">
+         <graphic>
+            <FontAwesomeIconView fill="#fffbfb" glyphName="CLOSE" size="20" />
+         </graphic></JFXButton>
    </children>
 </AnchorPane>
