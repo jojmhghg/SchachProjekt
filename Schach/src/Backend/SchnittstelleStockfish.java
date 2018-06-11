@@ -11,10 +11,8 @@ package Backend;
  */
 public class SchnittstelleStockfish {
     
-    public void stockfishEngine(Spielbrett spielbrett) {
-        Stockfish client = new Stockfish();
-        String FEN = spielbrett.gibStringStockfish();
-        System.out.println(FEN);
+    public String stockfishEngine(String FEN) {
+        Stockfish client = new Stockfish();        
         // initialize and connect to engine
         if (client.startEngine()) { 
          //System.out.println("Engine has started..");
@@ -30,8 +28,7 @@ public class SchnittstelleStockfish {
         client.getOutput(0); 
 
         // get the best move for a position with a given think time 
-        System.out.println("Best move : " + client.getBestMove(FEN, 100)); 
-
+        return client.getBestMove(FEN, 500);
         // get all the legal moves from a given position 
         //System.out.println("Legal moves : " + client.getLegalMoves(FEN)); 
 
@@ -45,5 +42,5 @@ public class SchnittstelleStockfish {
         // stop the engine 
         //System.out.println("Stopping engine.."); 
         //client.stopEngine(); 
-   } 
+    } 
 }

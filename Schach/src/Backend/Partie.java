@@ -90,6 +90,7 @@ public final class Partie {
      */
     private Position tmpZiel;
     
+    private SchnittstelleStockfish schnittstelleStockfish = new SchnittstelleStockfish();
     
     /* --- Konstruktoren --- */
     
@@ -537,9 +538,92 @@ public final class Partie {
     /**
      * Hilfsmethode, die die Schnittstelle zur KI ist
      */
-    private void kiZieht() throws SpielException{
-        //TODO
-        throw new SpielException("KI kann noch nicht ziehen!");
+    public int kiZieht(boolean startOderZielposition) throws SpielException{
+        String FEN = spielbrett.gibStringStockfish();
+        String bestMove = schnittstelleStockfish.stockfishEngine(FEN);
+        System.out.println(bestMove);
+        String bestMoveStart = bestMove.substring(0, bestMove.length()-2);
+        String bestMoveZiel = bestMove.substring(2);
+        if(startOderZielposition){
+            return convertBestMove(bestMoveStart);
+        }
+        else{
+            return convertBestMove(bestMoveZiel);
+        }
+    }
+    
+    public int convertBestMove(String rawPostion){
+        int convertedPosition = 0;
+        switch(rawPostion.charAt(0)){
+            case 97:
+                convertedPosition = 0;
+                    break;
+                    
+            case 98:
+                convertedPosition = 1;
+                break;
+                
+            case 99:
+                convertedPosition = 2;
+                    break;
+                    
+            case 100:
+                convertedPosition = 3;
+                break;
+                
+            case 101:
+                convertedPosition = 4;
+                    break;
+                    
+            case 102:
+                convertedPosition = 5;
+                break;
+                
+            case 103:
+                convertedPosition = 6;
+                    break;
+                    
+            case 104:
+                convertedPosition = 7;
+                System.out.println("H");
+                break;
+        }
+        
+        switch(rawPostion.charAt(1)){
+            case 49:
+                convertedPosition = convertedPosition + 0;
+                break;
+                
+            case 50:
+                convertedPosition = convertedPosition + 8;
+                System.out.println("2");
+                break;
+                
+            case 51:
+                convertedPosition = convertedPosition + 16;
+                break;
+                
+            case 52:
+                convertedPosition = convertedPosition + 24;
+                break;
+                
+            case 53:
+                convertedPosition = convertedPosition + 32;
+                break;
+                
+            case 54:
+                convertedPosition = convertedPosition + 40;
+                break;
+                
+            case 55:
+                convertedPosition = convertedPosition + 48;
+                break;
+                
+            case 56:
+                convertedPosition = convertedPosition + 56;
+                break;               
+        }
+        return convertedPosition;
     }
     
     /**
@@ -628,7 +712,7 @@ public final class Partie {
         
         //jetzt zieht KI, falls es ein PvE-Spiel ist
         if(this.kiGegner){
-            this.kiZieht();
+            //this.kiZieht();
         }
         
         // Spielstand in tmp-File speichern
