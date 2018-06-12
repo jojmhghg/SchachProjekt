@@ -67,6 +67,7 @@ public class SpielbrettFXMLController implements Initializable {
 
     boolean startOderZiel = true;
     
+    
     @FXML
     private Text acht;
     @FXML
@@ -290,7 +291,6 @@ public class SpielbrettFXMLController implements Initializable {
      * initialisiert die GUI-Objekte & plaziert dort die Figuren
      */
     public void initSpielbrett() {
-        System.out.println("1 "+ spiel.getZeitSpieler1());
         //Aktuelle Zeit auf dem Spielbrett setzen
         DateFormat formatter = new SimpleDateFormat("mm:ss");
         String sp1 = Long.toString(spiel.getZeitSpieler1());
@@ -470,12 +470,28 @@ public class SpielbrettFXMLController implements Initializable {
         possibleMoves = null;
         quellPane = null;
         updateScreen();
-
         int size = spiel.getMitschrift().size();
         if (size % 2 == 0 && size > 0) {
             rotateBoard();
         }
-        
+        if(spiel.getKiGegner() && spiel.getFarbeSpieler1() == Farbe.SCHWARZ){
+            MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt()], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
+            rotateBoard();
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Platform.runLater(() -> {
+                    try {
+                        onClicked(event);
+                    } catch (SpielException ex) {
+                        Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+            }).start();
+        }
     }
     
     /**
@@ -489,7 +505,6 @@ public class SpielbrettFXMLController implements Initializable {
             startOderZiel = !startOderZiel;
         }
         //Um zwischen Rechts- und Linksklick zu unterscheiden
-        System.out.println(event);
         MouseButton button = event.getButton();
         switch (button) {
             //Linksklick:
@@ -582,6 +597,7 @@ public class SpielbrettFXMLController implements Initializable {
                     selectedFigur = null;
                     quellPosition = null;
                     updateScreen();
+                    
                 } // Falls nein:
                 else {
                     try {
@@ -591,13 +607,17 @@ public class SpielbrettFXMLController implements Initializable {
                     }
 
                     if (possibleMoves != null) {
-                        highlight();
                         this.quellPosition = pos;
                         selectedFigur = tmpView;    // Festhalten welche Figur bewegt werden soll.
                         quellPane = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
-                        if (selectedFigur != null) {
+                        if((spiel.getKiGegner() && spiel.getFarbeSpieler1() == spiel.getSpielerAmZug()) || !spiel.getKiGegner()){
+                            highlight(); 
+                            if (selectedFigur != null) {
                             selectedFigur.setEffect(new DropShadow());
+                            }
                         }
+                        
+                        
                     }
                 }
                 break;
@@ -616,9 +636,23 @@ public class SpielbrettFXMLController implements Initializable {
             default:
                 break;
         }
-        System.out.println(spiel.getSpielerAmZug());
-        if(spiel.getSpielerAmZug() != spiel.getFarbeSpieler1()){
-            this.onClicked(event);
+        if(spiel.getKiGegner() && spiel.getSpielerAmZug() != spiel.getFarbeSpieler1()){
+            MouseEvent event1 = new MouseEvent(paneArray[spiel.getBestMoveInt()], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
+            new Thread(() -> {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Platform.runLater(() -> {
+                    try {
+                        onClicked(event1);
+                    } catch (SpielException ex) {
+                        Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+            }).start();
+
         }
     }
 
@@ -887,7 +921,9 @@ public class SpielbrettFXMLController implements Initializable {
             for (int i = 1; i < zuege.size(); i = i + 2) {
                 listZuegeSchwarz.getItems().add(zuege.get(i).getMitschrift());
             }
-            rotateBoard();
+            if(!spiel.getKiGegner()){
+                rotateBoard();
+            }
         }
 
         if (posKingImSchach != null) {
