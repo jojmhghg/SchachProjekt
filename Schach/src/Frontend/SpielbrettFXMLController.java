@@ -65,6 +65,8 @@ import javafx.util.Duration;
  */
 public class SpielbrettFXMLController implements Initializable {
 
+    boolean startOderZiel = true;
+    
     @FXML
     private Text acht;
     @FXML
@@ -475,14 +477,19 @@ public class SpielbrettFXMLController implements Initializable {
         }
         
     }
-
     
     /**
      * Methode onCliked erkennt wenn das Maus links oder Rechts angeklickt
-     * wurde, und handelt es dementsprechend
+     * wurde, und handelt dementsprechend
      */
-    private void onClicked(MouseEvent event) throws SpielException {
+    public void onClicked(MouseEvent event) throws SpielException {
+        if(spiel.getKiGegner() && spiel.getFarbeSpieler1() != spiel.getSpielerAmZug()){
+            spiel.kiZieht(startOderZiel);
+            event = new MouseEvent(paneArray[spiel.getBestMoveInt()], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
+            startOderZiel = !startOderZiel;
+        }
         //Um zwischen Rechts- und Linksklick zu unterscheiden
+        System.out.println(event);
         MouseButton button = event.getButton();
         switch (button) {
             //Linksklick:
@@ -608,6 +615,10 @@ public class SpielbrettFXMLController implements Initializable {
                 break;
             default:
                 break;
+        }
+        System.out.println(spiel.getSpielerAmZug());
+        if(spiel.getSpielerAmZug() != spiel.getFarbeSpieler1()){
+            this.onClicked(event);
         }
     }
 

@@ -7,6 +7,7 @@ package Backend;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
+import Frontend.SpielbrettFXMLController;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +20,7 @@ public class Spiel implements SpielInteraktionen {
     
     private Partie partie;
     private final Einstellungen einstellungen;
-    
+    private SpielbrettFXMLController spielbrettFXMLController;
     public Spiel() throws SpielException{
         try{
             partie = new Partie("tmp");
@@ -320,6 +321,11 @@ public class Spiel implements SpielInteraktionen {
         }
     }
 
-
+    public int getBestMoveInt(){
+        return this.partie.getBestMoveInt();
+    }
     
+    public void kiZieht(boolean startOderZiel) throws SpielException{
+        this.partie.kiZieht(startOderZiel);
+    }
 }

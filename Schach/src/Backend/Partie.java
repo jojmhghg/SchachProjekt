@@ -8,6 +8,7 @@ package Backend;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Figuren.Bauer;
+import Frontend.SpielbrettFXMLController;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,6 +17,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 /**
  *
@@ -92,7 +95,11 @@ public final class Partie {
     
     private SchnittstelleStockfish schnittstelleStockfish = new SchnittstelleStockfish();
     
-    private Spiel spiel;
+    private SpielbrettFXMLController spielbrettFXMLController = new SpielbrettFXMLController();
+    
+    private int bestMoveInt;
+    
+    
     /* --- Konstruktoren --- */
     
     /**
@@ -380,7 +387,7 @@ public final class Partie {
             zugBearbeiten(ursprung, ziel, null);
         }
         if(this.kiGegner && farbeSpieler1 != getSpielerAmZug()){
-            this.kiZieht();
+            //this.kiZieht();
             //TODO
         }
     }
@@ -541,15 +548,20 @@ public final class Partie {
     
     /**
      * Hilfsmethode, die die Schnittstelle zur KI ist
+     * @param startOderZiel Bei True gibt es die Startposition aus
      * @throws Backend.SpielException
      */
-    public void kiZieht() throws SpielException{
+    public void kiZieht(boolean startOderZiel) throws SpielException{
         String FEN = spielbrett.gibStringStockfish();
         String bestMove = schnittstelleStockfish.stockfishEngine(FEN);
         String bestMoveStart = bestMove.substring(0, bestMove.length()-2);
         String bestMoveZiel = bestMove.substring(2);
-        zieheFigur(Position.values()[convertBestMove(bestMoveStart)], Position.values()[convertBestMove(bestMoveZiel)]);
-        //TODO
+        if(startOderZiel){
+            bestMoveInt = convertBestMove(bestMoveStart);
+        }
+        else{
+            bestMoveInt = convertBestMove(bestMoveZiel);
+        }
     }
     
     public int convertBestMove(String rawPostion){
@@ -781,4 +793,10 @@ public final class Partie {
             throw new SpielException("Speicherdatei konnte nicht erstellt werden!");
         }
     }
+
+    public int getBestMoveInt() {
+        return bestMoveInt;
+    }
+
+   
 }
