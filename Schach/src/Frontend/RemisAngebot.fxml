@@ -16,12 +16,12 @@
             <Image url="@Ressources/backgroundStartSeite.PNG" />
          </image>
       </ImageView>
-      <Text fontSmoothingType="LCD" layoutX="224.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bietet eine Remis an. ">
+      <Text fx:id="textRemisAngebot" fontSmoothingType="LCD" layoutX="224.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bietet eine Remis an. ">
          <font>
             <Font size="23.0" />
          </font>
       </Text>
-      <Text layoutX="224.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sie können die Remis annehmen oder ablehnen">
+      <Text fx:id="hinweisRemisAngebot" layoutX="224.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sie können die Remis annehmen oder ablehnen">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>

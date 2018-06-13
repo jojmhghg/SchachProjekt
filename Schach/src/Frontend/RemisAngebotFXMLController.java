@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,11 +20,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -32,6 +35,13 @@ import javafx.stage.Window;
  * @author edwrardn
  */
 public class RemisAngebotFXMLController implements Initializable {
+    
+    @FXML
+    private Text textRemisAngebot;
+    @FXML
+    private Text hinweisRemisAngebot;
+    @FXML
+    private Label remisAnbieter;
     
     Spiel spiel;
     SpielbrettFXMLController spielbrettFXMLController;
@@ -47,10 +57,16 @@ public class RemisAngebotFXMLController implements Initializable {
     private void remisAnnehmen(ActionEvent event) {
         try {
             spiel.remisAnnehmen();
+
+            textRemisAngebot.setText("unentschieden");
+            hinweisRemisAngebot.isDisabled();
+            
+            remisAnbieter.setText("Spiel");
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("Startseite.fxml"));
             Parent startseiteScene = loader.load();
-            
+
             StartseiteFXMLController controller = loader.getController();
             controller.loadData();
 
@@ -59,9 +75,15 @@ public class RemisAngebotFXMLController implements Initializable {
             startseiteStage.setScene(new Scene(startseiteScene));
             startseiteStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             startseiteStage.initStyle(StageStyle.UNDECORATED);
-            startseiteStage.show();
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-            startseiteWindow.hide();
+
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            delay.setOnFinished((e) -> {
+                startseiteStage.close();
+                startseiteStage.show();
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+                startseiteWindow.hide();
+            });
+            delay.play();
         } catch (SpielException | IOException ex) {
             Logger.getLogger(RemisAngebotFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,7 +104,6 @@ public class RemisAngebotFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
     
 }

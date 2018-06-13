@@ -831,14 +831,14 @@ public class SpielbrettFXMLController implements Initializable {
 
     }
     
-        private void storedTimeWeiss() {
+    private void storedTimeWeiss() {
 
         if (spiel.getPartiezeit() == -1) {
             this.restZeitWeiss.setVisible(false);
             timerLogoWeiss.setVisible(false);
         } else {
-           if(spiel.getFarbeSpieler1() == Farbe.SCHWARZ){
-                  this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
+            if (spiel.getFarbeSpieler1() == Farbe.SCHWARZ) {
+                this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
 
                 if (spieler2sec == 0) {
                     spieler2sec = 59;
@@ -846,14 +846,13 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 spieler2sec--;
 
-                if (spieler2min == 0 && spieler2sec == 0){
+                if (spieler2min == 0 && spieler2sec == 0) {
                     timerStop();
                     goToWinnerPopup();
 
                 }
-            }
-            else{
-                  this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
+            } else {
+                this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
 
                 if (spieler1sec == 0) {
                     spieler1sec = 59;
@@ -861,12 +860,12 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 spieler1sec--;
 
-                if (spieler1min == 0 && spieler1sec == 0){
+                if (spieler1min == 0 && spieler1sec == 0) {
                     timerStop();
                     goToWinnerPopup();
 
                 }
-           }
+            }
 
         }
     }
@@ -908,8 +907,6 @@ public class SpielbrettFXMLController implements Initializable {
 
                 }
             }
-             
-           
 
         }
 
