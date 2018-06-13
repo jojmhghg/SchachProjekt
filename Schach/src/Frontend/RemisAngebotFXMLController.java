@@ -7,6 +7,7 @@ package Frontend;
 
 import Backend.Spiel;
 import Backend.SpielException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -14,7 +15,16 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 /**
  * FXML Controller class
@@ -25,9 +35,11 @@ public class RemisAngebotFXMLController implements Initializable {
     
     Spiel spiel;
     SpielbrettFXMLController spielbrettFXMLController;
+    Window startseiteWindow;
     
-    public void loadData(Spiel spiel, SpielbrettFXMLController spielbrettFXMLController) {
+    public void loadData(Spiel spiel, SpielbrettFXMLController spielbrettFXMLController, Window window) {
         this.spiel = spiel;
+        this.startseiteWindow = window;
         this.spielbrettFXMLController = spielbrettFXMLController;
     }
     
@@ -35,10 +47,22 @@ public class RemisAngebotFXMLController implements Initializable {
     private void remisAnnehmen(ActionEvent event) {
         try {
             spiel.remisAnnehmen();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("Startseite.fxml"));
+            Parent startseiteScene = loader.load();
+            
+            StartseiteFXMLController controller = loader.getController();
+            controller.loadData();
 
-            Platform.exit();
-            System.exit(0);
-        } catch (SpielException ex) {
+            Stage startseiteStage = new Stage();
+            startseiteStage.initModality(Modality.APPLICATION_MODAL);
+            startseiteStage.setScene(new Scene(startseiteScene));
+            startseiteStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            startseiteStage.initStyle(StageStyle.UNDECORATED);
+            startseiteStage.show();
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+            startseiteWindow.hide();
+        } catch (SpielException | IOException ex) {
             Logger.getLogger(RemisAngebotFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -47,6 +71,7 @@ public class RemisAngebotFXMLController implements Initializable {
     private void remisAblehnen(ActionEvent event) {
         try {
             spiel.remisAblehnen();
+            ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (SpielException ex) {
             Logger.getLogger(RemisAngebotFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
