@@ -39,6 +39,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -757,6 +758,12 @@ public class SpielbrettFXMLController implements Initializable {
     private void beenden(ActionEvent event) {
         Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
         spielBrettStage.close();
+    }
+    
+    @FXML
+    private void minimizeWindow(ActionEvent event) {
+        Stage spielBrettStage = (Stage) ( (Button) event.getSource() ).getScene().getWindow();
+        spielBrettStage.toBack();
     }
     
     @FXML
