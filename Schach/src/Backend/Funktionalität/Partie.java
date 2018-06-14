@@ -8,7 +8,7 @@ package Backend.Funktionalität;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Figuren.Bauer;
-import Frontend.SpielbrettFXMLController;
+import Frontend.Controller.SpielbrettFXMLController;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

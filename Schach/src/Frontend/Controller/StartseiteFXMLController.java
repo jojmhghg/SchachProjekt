@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Frontend;
+package Frontend.Controller;
 
 import Backend.Spiel;
 import Backend.Funktionalität.SpielException;
@@ -64,7 +64,7 @@ public class StartseiteFXMLController implements Initializable {
         //Parent optionenScene;
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("View/Optionen.fxml"));
+            loader.setLocation(getClass().getResource("../View/Optionen.fxml"));
             Parent optionenScene = loader.load();
 
             OptionenFXMLController controller = loader.getController();
@@ -88,8 +88,8 @@ public class StartseiteFXMLController implements Initializable {
         try {
             spielbrett = spiel.partieLaden("tmp");
             
-                            FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("Spielbrett.fxml"));
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
                 Parent spielbrettScene = loader.load();
 
                 SpielbrettFXMLController controller = loader.getController();
@@ -117,7 +117,7 @@ public class StartseiteFXMLController implements Initializable {
     private void goToPartieLaden(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("PartieLaden.fxml"));
+            loader.setLocation(getClass().getResource("../View/PartieLaden.fxml"));
             Parent partieLadenScene = loader.load();
             
             PartieLadenFXMLController controller = loader.getController();

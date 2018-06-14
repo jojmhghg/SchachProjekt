@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Frontend;
+package Frontend.Controller;
 
 import Backend.Enums.Farbe;
 import Backend.Funktionalität.Optionen;
@@ -116,7 +116,7 @@ public class OptionenFXMLController implements Initializable {
                 spielbrett = spiel.neuePartie(partieoptionen);        
                       
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("View/Spielbrett.fxml"));
+                loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
                 Parent chessBoardScene = loader.load();
 
                 SpielbrettFXMLController controller = loader.getController();
@@ -172,7 +172,7 @@ public class OptionenFXMLController implements Initializable {
         try {
             
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("View/Startseite.fxml"));
+            loader.setLocation(getClass().getResource("../View/Startseite.fxml"));
             Parent startSeiteScene = loader.load();
 
             StartseiteFXMLController controller = loader.getController();

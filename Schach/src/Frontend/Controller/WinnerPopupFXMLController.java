@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Frontend;
+package Frontend.Controller;
 
 import Backend.Spiel;
 import Backend.Funktionalität.SpielException;
@@ -47,7 +47,7 @@ public class WinnerPopupFXMLController implements Initializable {
     private void goToStartseite(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("View/Startseite.fxml"));
+            loader.setLocation(getClass().getResource("../View/Startseite.fxml"));
             Parent startseiteScene = loader.load();
             
             StartseiteFXMLController controller = loader.getController();

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Frontend;
+package Frontend.Controller;
 
 import Backend.Funktionalität.Einstellungen;
 import Backend.Enums.Farbe;
@@ -690,7 +690,7 @@ public class SpielbrettFXMLController implements Initializable {
     private void neuePartie(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("View/Optionen.fxml"));
+            loader.setLocation(getClass().getResource("../View/Optionen.fxml"));
             Parent optionenScene = loader.load();
 
             OptionenFXMLController controller = loader.getController();
@@ -718,7 +718,7 @@ public class SpielbrettFXMLController implements Initializable {
             timeline.pause();
             
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("View/Einstellungen.fxml"));
+            loader.setLocation(getClass().getResource("../View/Einstellungen.fxml"));
             Parent einstellungenScene = loader.load();
 
             EinstellungenFXMLController controller = loader.getController();
@@ -742,7 +742,7 @@ public class SpielbrettFXMLController implements Initializable {
             spiel.remisAnbieten();
             
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("View/RemisAngebot.fxml"));
+            loader.setLocation(getClass().getResource("../View/RemisAngebot.fxml"));
             Parent remisAngebotScene = loader.load();
 
             RemisAngebotFXMLController controller = loader.getController();
@@ -952,7 +952,7 @@ public class SpielbrettFXMLController implements Initializable {
     private void goToWinnerPopup() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("View/WinnerPopup.fxml"));
+            loader.setLocation(getClass().getResource("../View/WinnerPopup.fxml"));
             Parent winnerPopupScene = loader.load();
 
             WinnerPopupFXMLController controller = loader.getController();
@@ -1087,7 +1087,7 @@ public class SpielbrettFXMLController implements Initializable {
         try {
             timeline.pause();
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("View/PartieLaden.fxml"));
+            loader.setLocation(getClass().getResource("../View/PartieLaden.fxml"));
             Parent partieLadenScene = loader.load();
 
             PartieLadenFXMLController controller = loader.getController();
@@ -1121,7 +1121,7 @@ public class SpielbrettFXMLController implements Initializable {
 
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("View/About.fxml"));
+            loader.setLocation(getClass().getResource("../View/About.fxml"));
             Parent aboutScene = loader.load();
 
             AboutController controller = loader.getController();

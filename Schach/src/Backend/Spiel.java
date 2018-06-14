@@ -13,7 +13,7 @@ import Backend.Funktionalität.Partie;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.Funktionalität.Zug;
-import Frontend.SpielbrettFXMLController;
+import Frontend.Controller.SpielbrettFXMLController;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

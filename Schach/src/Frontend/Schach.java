@@ -5,6 +5,7 @@
  */
 package Frontend;
 
+import Frontend.Controller.StartseiteFXMLController;
 import Backend.Spiel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,6 @@ import javafx.stage.StageStyle;
  * @author Edwrard Nana
  */
 public class Schach extends Application {
-    Spiel spielBackend;
     
     @Override
     public void start(Stage mainStage) throws Exception {
