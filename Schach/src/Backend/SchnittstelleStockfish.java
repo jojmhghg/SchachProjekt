@@ -27,7 +27,7 @@ public class SchnittstelleStockfish {
         
         // get the best move for a position with a given think time 
         String bestMove = client.getBestMove(FEN, 500);
-        
+        System.out.println(bestMove);
         client.stopEngine();
         
         return bestMove;
