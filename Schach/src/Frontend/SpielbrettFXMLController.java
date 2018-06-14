@@ -637,13 +637,13 @@ public class SpielbrettFXMLController implements Initializable {
 
             //Rechtsklick:
             case SECONDARY: //Bricht den Zug ab
-                highlightAus();
-                possibleMoves = null;
-                quellPane = null;
-                selectedFigur = null;
-                quellPosition = null;
                 if (selectedFigur != null) {
+                    highlightAus();
                     selectedFigur.setEffect(null);
+                    possibleMoves = null;
+                    quellPane = null;
+                    selectedFigur = null;
+                    quellPosition = null;
                 }
                 break;
             default:
