@@ -117,7 +117,7 @@ public class StartseiteFXMLController implements Initializable {
     private void goToPartieLaden(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("PartieLaden.fxml"));
+            loader.setLocation(getClass().getResource("View/PartieLaden.fxml"));
             Parent partieLadenScene = loader.load();
             
             PartieLadenFXMLController controller = loader.getController();
