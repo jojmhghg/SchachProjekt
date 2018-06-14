@@ -5,11 +5,11 @@
  */
 package Test;
 
-import Server.Enums.Farbe;
-import Server.Enums.Position;
-import Server.Optionen;
-import Server.Partie;
-import Server.SpielException;
+import Backend.Enums.Farbe;
+import Backend.Enums.Position;
+import Backend.Optionen;
+import Backend.Partie;
+import Backend.SpielException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -1,9 +1,9 @@
 package Test;
 
 
-import Server.Einstellungen;
-import Server.Enums.Position;
-import Server.SpielException;
+import Backend.Einstellungen;
+import Backend.Enums.Position;
+import Backend.SpielException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
