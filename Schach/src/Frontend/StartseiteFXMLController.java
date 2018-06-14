@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,9 +47,11 @@ public class StartseiteFXMLController implements Initializable {
 
     Spiel spiel;
     Spielbrett spielbrett;
+    Timeline timeline;
 
     public void loadData() throws SpielException {
         spiel = new Spiel();
+        timeline = new Timeline();
     }
 
     @FXML
@@ -66,7 +69,7 @@ public class StartseiteFXMLController implements Initializable {
             Parent optionenScene = loader.load();
 
             OptionenFXMLController controller = loader.getController();
-            controller.loadData(spiel);
+            controller.loadData(spiel, timeline);
 
             //optionenScene = FXMLLoader.load(getClass().getResource("Optionen.fxml"));
             Stage optionenStage = new Stage();
@@ -91,7 +94,7 @@ public class StartseiteFXMLController implements Initializable {
                 Parent spielbrettScene = loader.load();
 
                 SpielbrettFXMLController controller = loader.getController();
-                controller.loadData(spiel, spielbrett);
+                controller.loadData(spiel, spielbrett, timeline);
                 controller.setSpielernameOnScreen();
 
                 Stage spielbrettStage = new Stage();
@@ -119,7 +122,7 @@ public class StartseiteFXMLController implements Initializable {
             Parent partieLadenScene = loader.load();
             
             PartieLadenFXMLController controller = loader.getController();
-            controller.loadData(spiel, spielbrett, ((Node) (event.getSource())).getScene().getWindow());
+            controller.loadData(spiel, spielbrett, ((Node) (event.getSource())).getScene().getWindow(), timeline);
             
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));

@@ -39,6 +39,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -269,6 +270,7 @@ public class SpielbrettFXMLController implements Initializable {
     Spielbrett spielbrett;
     Einstellungen einstellung;
     OptionenFXMLController optionenFXMLController;
+    Timeline timeline;
 
     // Attribute zum Ziehen von Figuren
     private ImageView selectedFigur;
@@ -278,10 +280,11 @@ public class SpielbrettFXMLController implements Initializable {
 
     private Position posKingImSchach;
 
-    public void loadData(Spiel spiel, Spielbrett spielbrett) {
+    public void loadData(Spiel spiel, Spielbrett spielbrett, Timeline timeline) {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
-        
+        this.timeline = timeline;
+                
         initSpielbrett();
         timerPlay();
         
@@ -689,7 +692,7 @@ public class SpielbrettFXMLController implements Initializable {
             Parent optionenScene = loader.load();
 
             OptionenFXMLController controller = loader.getController();
-            controller.loadData(spiel);
+            controller.loadData(spiel, timeline);
 
             Stage optionenStage = new Stage();
             optionenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
@@ -710,6 +713,8 @@ public class SpielbrettFXMLController implements Initializable {
     private void goToEinstellungen(ActionEvent event) {
 
         try {
+            timeline.pause();
+            
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("Einstellungen.fxml"));
             Parent einstellungenScene = loader.load();
@@ -739,7 +744,7 @@ public class SpielbrettFXMLController implements Initializable {
             Parent remisAngebotScene = loader.load();
 
             RemisAngebotFXMLController controller = loader.getController();
-            controller.loadData(spiel, this);
+            controller.loadData(spiel, this, ((Node) myMenuBar).getScene().getWindow());
 
             Stage remisAngebotStage = new Stage();
             remisAngebotStage.initModality(Modality.APPLICATION_MODAL);
@@ -760,14 +765,20 @@ public class SpielbrettFXMLController implements Initializable {
     }
     
     @FXML
+    private void minimizeWindow(ActionEvent event) {
+        Stage spielBrettStage = (Stage) ( (Button) event.getSource() ).getScene().getWindow();
+        spielBrettStage.toBack();
+    }
+    
+    @FXML
     private void close(ActionEvent event) {
         Platform.exit();
         System.exit(0);
     }
 
     public void timerPlay() {
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+        this.timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1.0), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 if(spiel.getSpielerAmZug() == Farbe.SCHWARZ){
@@ -779,7 +790,6 @@ public class SpielbrettFXMLController implements Initializable {
             }
         })
         );
-
         // If you want to repeat indefinitely:
         timeline.setCycleCount(Animation.INDEFINITE);
 
@@ -787,24 +797,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
     
     private void timerStop() {
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                if(spiel.getSpielerAmZug() == Farbe.SCHWARZ){
-                    SpielbrettFXMLController.this.storedTimeSchwarz();
-                }
-                else if(spiel.getSpielerAmZug() == Farbe.WEISS){
-                    SpielbrettFXMLController.this.storedTimeWeiss();
-                }
-            }
-        })
-        );
-
-        // If you want to repeat indefinitely:
-        timeline.setCycleCount(Animation.INDEFINITE);
-        
-        timeline.stop(); 
+        timeline.stop();
     }
     
     public void getTime(String partieZeit) {
@@ -824,14 +817,14 @@ public class SpielbrettFXMLController implements Initializable {
 
     }
     
-        private void storedTimeWeiss() {
+    private void storedTimeWeiss() {
 
         if (spiel.getPartiezeit() == -1) {
             this.restZeitWeiss.setVisible(false);
             timerLogoWeiss.setVisible(false);
         } else {
-           if(spiel.getFarbeSpieler1() == Farbe.SCHWARZ){
-                  this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
+            if (spiel.getFarbeSpieler1() == Farbe.SCHWARZ) {
+                this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
 
                 if (spieler2sec == 0) {
                     spieler2sec = 59;
@@ -839,14 +832,13 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 spieler2sec--;
 
-                if (spieler2min == 0 && spieler2sec == 0){
+                if (spieler2min <= 0 && spieler2sec <= 0) {
                     timerStop();
                     goToWinnerPopup();
 
                 }
-            }
-            else{
-                  this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
+            } else {
+                this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
 
                 if (spieler1sec == 0) {
                     spieler1sec = 59;
@@ -854,12 +846,12 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 spieler1sec--;
 
-                if (spieler1min == 0 && spieler1sec == 0){
+                if (spieler1min <= 0 && spieler1sec <= 0) {
                     timerStop();
                     goToWinnerPopup();
 
                 }
-           }
+            }
 
         }
     }
@@ -901,8 +893,6 @@ public class SpielbrettFXMLController implements Initializable {
 
                 }
             }
-             
-           
 
         }
 
@@ -941,7 +931,7 @@ public class SpielbrettFXMLController implements Initializable {
 
         if (this.spiel.getGewinner() != null) {
             goToWinnerPopup();
-            System.out.println("Winner");
+            timeline.stop();
         }
     }
 
@@ -1032,7 +1022,8 @@ public class SpielbrettFXMLController implements Initializable {
 
     @FXML
     public void partieSpeichern(ActionEvent event) throws SpielException {
-
+        timeline.pause();
+        
         //Create Alert box
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Partie speichern - Schach Spiel");
@@ -1074,6 +1065,7 @@ public class SpielbrettFXMLController implements Initializable {
         if (result.get() == speichern) {
             spiel.speichereSpiel(newfilename.getText());
         } else {
+            timeline.play();
             // ... user chose CANCEL or closed the dialog
         }
     }
@@ -1091,12 +1083,13 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private void partieLaden(ActionEvent event) {
         try {
+            timeline.pause();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("PartieLaden.fxml"));
             Parent partieLadenScene = loader.load();
 
             PartieLadenFXMLController controller = loader.getController();
-            controller.loadData(spiel, spielbrett, ((Node) myMenuBar).getScene().getWindow());
+            controller.loadData(spiel, spielbrett, ((Node) myMenuBar).getScene().getWindow(), timeline);
 
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
@@ -1112,13 +1105,11 @@ public class SpielbrettFXMLController implements Initializable {
     private void partieAufgeben(ActionEvent event){
         try {
             spiel.aufgeben();
+            timeline.stop();
         } catch (SpielException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             //TODO: Popup, dass aufgeben nicht möglich ist -> siehe fehlermeldung
         }
-                
-        //Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
-        //spielBrettStage.close();
         
         goToWinnerPopup();
     }

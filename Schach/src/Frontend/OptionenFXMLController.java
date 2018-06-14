@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -75,6 +76,7 @@ public class OptionenFXMLController implements Initializable {
     Spielbrett spielbrett;
     Spiel spiel;
     SpielbrettFXMLController spielbrettFXMLController;
+    Timeline timeline;
     
     private double xOffset = 0; 
     private double yOffset = 0;
@@ -98,8 +100,9 @@ public class OptionenFXMLController implements Initializable {
             this.spielbrett = new Spielbrett();
     }
     
-    public void loadData(Spiel spiel) {
+    public void loadData(Spiel spiel, Timeline timeline) {
         this.spiel = spiel;
+        this.timeline = timeline;
     }
 
     @FXML
@@ -117,7 +120,7 @@ public class OptionenFXMLController implements Initializable {
                 Parent chessBoardScene = loader.load();
 
                 SpielbrettFXMLController controller = loader.getController();
-                controller.loadData(spiel, spielbrett);
+                controller.loadData(spiel, spielbrett,timeline);
                 //controller.getTime(partieZeitLokal.getValue());
 
                 //chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));

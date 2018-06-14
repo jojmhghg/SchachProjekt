@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,6 +54,7 @@ public class EinstellungenFXMLController implements Initializable {
     
     @FXML
     private void backToSpielbrett(ActionEvent event) {
+        spielbrettFXMLController.timeline.play();
         ((Node) (event.getSource())).getScene().getWindow().hide();
     }
 
@@ -63,6 +65,7 @@ public class EinstellungenFXMLController implements Initializable {
         
         if(!newSpielername.isEmpty()) {
             try {
+                spielbrettFXMLController.timeline.play();
                 spiel.setUsername(newSpielername);
                 spiel.setHighlightingAus(highlightingButton.isSelected());
                 spielbrettFXMLController.setSpielernameOnScreen();

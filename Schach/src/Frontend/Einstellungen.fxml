@@ -18,7 +18,7 @@
             <Image url="@Ressources/backgroundStartSeite.PNG" />
          </image>
       </ImageView>
-      <Text fontSmoothingType="LCD" layoutX="28.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Einstellungen">
+      <Text fontSmoothingType="LCD" layoutX="14.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Einstellungen">
          <font>
             <Font name="System Bold" size="35.0" />
          </font>
