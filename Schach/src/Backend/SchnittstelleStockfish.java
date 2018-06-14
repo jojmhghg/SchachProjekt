@@ -10,9 +10,9 @@ package Backend;
  * @author Müller_Admin
  */
 public class SchnittstelleStockfish {
+    Stockfish client = new Stockfish();
     
-    public String stockfishEngine(String FEN) {
-        Stockfish client = new Stockfish();        
+    public String stockfishEngine(String FEN) {     
         // initialize and connect to engine
         if (client.startEngine()) { 
         } 
@@ -24,8 +24,12 @@ public class SchnittstelleStockfish {
 
         // receive output dump 
         client.getOutput(0); 
-
+        
         // get the best move for a position with a given think time 
-        return client.getBestMove(FEN, 500);
+        String bestMove = client.getBestMove(FEN, 500);
+        
+        client.stopEngine();
+        
+        return bestMove;
     } 
 }

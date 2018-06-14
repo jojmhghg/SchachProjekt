@@ -93,7 +93,7 @@ public class Stockfish {
   *            in milliseconds 
   * @return Best Move in PGN format 
   */ 
- public String getBestMove(String fen, int waitTime) { 
+ public String getBestMove(String fen, int waitTime) {
   sendCommand("position fen " + fen); 
   sendCommand("go movetime " + waitTime); 
   return getOutput(waitTime + 20).split("bestmove ")[1].split(" ")[0]; 

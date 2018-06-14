@@ -99,6 +99,8 @@ public final class Partie {
     
     private int bestMoveInt;
     
+    private String bestMoveStart = "";
+    private String bestMoveZiel = "";
     
     /* --- Konstruktoren --- */
     
@@ -552,10 +554,12 @@ public final class Partie {
      * @throws Backend.SpielException
      */
     public void kiZieht(boolean startOderZiel) throws SpielException{
-        String FEN = spielbrett.gibStringStockfish();
-        String bestMove = schnittstelleStockfish.stockfishEngine(FEN);
-        String bestMoveStart = bestMove.substring(0, bestMove.length()-2);
-        String bestMoveZiel = bestMove.substring(2);
+        if(startOderZiel){
+            String FEN = spielbrett.gibStringStockfish();
+            String bestMove = schnittstelleStockfish.stockfishEngine(FEN);
+            bestMoveStart = bestMove.substring(0, bestMove.length()-2);
+            bestMoveZiel = bestMove.substring(2);
+        }
         if(startOderZiel){
             bestMoveInt = convertBestMove(bestMoveStart);
         }
