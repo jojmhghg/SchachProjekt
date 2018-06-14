@@ -10,37 +10,37 @@
    <children>
       <ImageView fitHeight="407.0" fitWidth="672.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Ressources/background2.jpg" />
+            <Image url="@../Ressources/background2.jpg" />
          </image>
       </ImageView>
       <ImageView fx:id="LaueferB" fitHeight="70.0" fitWidth="100.0" layoutX="81.0" layoutY="68.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Ressources/Pieces/Wood/BishopB.png" />
+            <Image url="@../Ressources/Pieces/Wood/BishopB.png" />
          </image>
       </ImageView>
       <ImageView fx:id="KoenigB" fitHeight="70.0" fitWidth="100.0" layoutX="81.0" layoutY="179.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Ressources/Pieces/Wood/KingB.png" />
+            <Image url="@../Ressources/Pieces/Wood/KingB.png" />
          </image>
       </ImageView>
       <ImageView fx:id="BauerB" fitHeight="70.0" fitWidth="100.0" layoutX="81.0" layoutY="276.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Ressources/Pieces/Wood/PawnB.png" />
+            <Image url="@../Ressources/Pieces/Wood/PawnB.png" />
          </image>
       </ImageView>
       <ImageView fx:id="SpringerB" fitHeight="70.0" fitWidth="100.0" layoutX="322.0" layoutY="68.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Ressources/Pieces/Wood/KnightB.png" />
+            <Image url="@../Ressources/Pieces/Wood/KnightB.png" />
          </image>
       </ImageView>
       <ImageView fx:id="DameB" fitHeight="70.0" fitWidth="100.0" layoutX="322.0" layoutY="179.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Ressources/Pieces/Wood/QueenB.png" />
+            <Image url="@../Ressources/Pieces/Wood/QueenB.png" />
          </image>
       </ImageView>
       <ImageView fx:id="TurmB" fitHeight="70.0" fitWidth="100.0" layoutX="322.0" layoutY="276.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Ressources/Pieces/Wood/RookB.png" />
+            <Image url="@../Ressources/Pieces/Wood/RookB.png" />
          </image>
       </ImageView>
       <Text layoutX="162.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Läufer">

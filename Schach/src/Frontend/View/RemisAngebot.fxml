@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="458.0" fitWidth="641.0" layoutX="-20.0" layoutY="-85.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Ressources/backgroundStartSeite.PNG" />
+            <Image url="@../Ressources/backgroundStartSeite.PNG" />
          </image>
       </ImageView>
       <Text fx:id="textRemisAngebot" fontSmoothingType="LCD" layoutX="224.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bietet eine Remis an. ">

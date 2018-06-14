@@ -74,7 +74,7 @@ public class PartieLadenFXMLController implements Initializable {
                 spielbrett = spiel.partieLaden(newfilename);
                 
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("Spielbrett.fxml"));
+                loader.setLocation(getClass().getResource("View/Spielbrett.fxml"));
                 Parent spielbrettScene = loader.load();
 
                 SpielbrettFXMLController controller = loader.getController();

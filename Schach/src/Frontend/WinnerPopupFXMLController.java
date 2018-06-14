@@ -47,7 +47,7 @@ public class WinnerPopupFXMLController implements Initializable {
     private void goToStartseite(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("Startseite.fxml"));
+            loader.setLocation(getClass().getResource("View/Startseite.fxml"));
             Parent startseiteScene = loader.load();
             
             StartseiteFXMLController controller = loader.getController();

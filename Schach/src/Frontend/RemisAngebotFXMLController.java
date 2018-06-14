@@ -64,7 +64,7 @@ public class RemisAngebotFXMLController implements Initializable {
             remisAnbieter.setText("Spiel");
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("Startseite.fxml"));
+            loader.setLocation(getClass().getResource("View/Startseite.fxml"));
             Parent startseiteScene = loader.load();
 
             StartseiteFXMLController controller = loader.getController();

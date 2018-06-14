@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="500.0" fitWidth="700.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
-            <Image url="@Ressources/backgroundStartSeite1.jpg" />
+            <Image url="@../Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
       <JFXButton fx:id="spielStarten" buttonType="RAISED" layoutX="498.0" layoutY="239.0" onAction="#goToOptionen" prefHeight="48.0" prefWidth="170.0" style="-fx-background-color: #FFF8DC;" text="Neue Partie" textAlignment="CENTER" textFill="#864921">

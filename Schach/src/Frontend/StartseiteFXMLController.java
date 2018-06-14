@@ -28,7 +28,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 /**
  *
@@ -65,7 +64,7 @@ public class StartseiteFXMLController implements Initializable {
         //Parent optionenScene;
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("Optionen.fxml"));
+            loader.setLocation(getClass().getResource("View/Optionen.fxml"));
             Parent optionenScene = loader.load();
 
             OptionenFXMLController controller = loader.getController();

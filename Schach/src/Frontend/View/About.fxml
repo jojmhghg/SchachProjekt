@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="397.0" fitWidth="554.0" layoutX="23.0" layoutY="-294.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.0">
          <image>
-            <Image url="@Ressources/backgroundStartSeite.PNG" />
+            <Image url="@../Ressources/backgroundStartSeite.PNG" />
          </image>
       </ImageView>
       <TextArea editable="false" layoutX="23.0" layoutY="119.0" prefHeight="555.0" prefWidth="560.0" text="Veranstaltung                                           Praktikum KI600&#10;&#10;Gruppe                                                      Deep Blue (Tim, Steven, Edwrard, Niroshan)&#10;Betreuer(in)                                               Frau Bohr                                                                   &#10;&#10;Produkt Version                                        1.0&#10;&#10;Programmiersprache                                Java, JavaFX&#10;&#10;IDE                                                            Netbeans, Scene Builder&#10;&#10;Link back für verwendete Materialen:&#10;&#10;- Power Off &#10;&#10;&#10;- Board Art Asset&#10;&#10;&#10;- App icon&#10;&#10;&#10;Verwendete JAR Libraries                           JFoenix 8.0.1, FontAwesomeFX 8.15 &#10;&#10;- Github Link&#10;" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.0" />
