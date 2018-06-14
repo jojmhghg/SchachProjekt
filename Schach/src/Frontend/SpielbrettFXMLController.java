@@ -969,6 +969,7 @@ public class SpielbrettFXMLController implements Initializable {
             //aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
             Stage winnerPopupStage = new Stage();
             winnerPopupStage.initModality(Modality.APPLICATION_MODAL);
+            winnerPopupStage.initStyle(StageStyle.UNDECORATED);
             winnerPopupStage.setScene(new Scene(winnerPopupScene));
             winnerPopupStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             winnerPopupStage.show();
