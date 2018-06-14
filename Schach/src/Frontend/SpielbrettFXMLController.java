@@ -51,6 +51,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -257,9 +258,16 @@ public class SpielbrettFXMLController implements Initializable {
     private JFXListView<String> listZuegeWeiss;
     @FXML
     private JFXListView<String> listZuegeSchwarz;
+    @FXML
+    private Pane topPane;
+    @FXML
+    private AnchorPane anchorPaneSpielbrett;
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     private Pane[] paneArray;
-    
+       
     int spieler1min = 0;
     int spieler2min = 0;
 
@@ -1135,7 +1143,32 @@ public class SpielbrettFXMLController implements Initializable {
         } catch (IOException e) {
         }
     }
-
+    
+    @FXML
+    private void moveWindow() {
+            
+            //grab your root here
+            topPane.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            
+            //move around here
+            topPane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Stage stage = (Stage) anchorPaneSpielbrett.getScene().getWindow();
+                    //anchorPaneSpielbrett.setX(event.getScreenX() - xOffset);
+                    //anchorPaneSpielbrett.setY(event.getScreenY() - yOffset);
+                    stage.setX(event.getScreenX() - xOffset);
+                    stage.setY(event.getScreenY() - yOffset);
+                }
+            });
+    }
+    
     /**
      * Initializes the controller class.
      *

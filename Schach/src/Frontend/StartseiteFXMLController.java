@@ -87,25 +87,25 @@ public class StartseiteFXMLController implements Initializable {
     private void partieFortsetzen(ActionEvent event) {
         try {
             spielbrett = spiel.partieLaden("tmp");
-            
-                            FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("Spielbrett.fxml"));
-                Parent spielbrettScene = loader.load();
 
-                SpielbrettFXMLController controller = loader.getController();
-                controller.loadData(spiel, spielbrett, timeline);
-                controller.setSpielernameOnScreen();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("View/Spielbrett.fxml"));
+            Parent spielbrettScene = loader.load();
 
-                Stage spielbrettStage = new Stage();
-                spielbrettStage.initModality(Modality.APPLICATION_MODAL);
-                spielbrettStage.initStyle(StageStyle.UNDECORATED);
-                spielbrettStage.setScene(new Scene(spielbrettScene));
-                spielbrettStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
-                spielbrettStage.show();
-                
-                ((Node) (event.getSource())).getScene().getWindow().hide();
-                controller.cleanBoard();
-                controller.initSpielbrett();
+            SpielbrettFXMLController controller = loader.getController();
+            controller.loadData(spiel, spielbrett, timeline);
+            controller.setSpielernameOnScreen();
+
+            Stage spielbrettStage = new Stage();
+            spielbrettStage.initModality(Modality.APPLICATION_MODAL);
+            spielbrettStage.initStyle(StageStyle.UNDECORATED);
+            spielbrettStage.setScene(new Scene(spielbrettScene));
+            spielbrettStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            spielbrettStage.show();
+
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+            controller.cleanBoard();
+            controller.initSpielbrett();
         } catch (SpielException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

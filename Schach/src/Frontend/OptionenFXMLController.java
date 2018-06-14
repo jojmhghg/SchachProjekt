@@ -36,6 +36,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -78,9 +79,7 @@ public class OptionenFXMLController implements Initializable {
     SpielbrettFXMLController spielbrettFXMLController;
     Timeline timeline;
     
-    private double xOffset = 0; 
-    private double yOffset = 0;
-
+    
     public OptionenFXMLController() {
     }
 
@@ -128,26 +127,7 @@ public class OptionenFXMLController implements Initializable {
                 chessBoardStage.setScene(new Scene(chessBoardScene));
                 chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
                 chessBoardStage.initStyle(StageStyle.TRANSPARENT);
-                
-                                
-                //grab your root here
-                chessBoardScene.setOnMousePressed(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        xOffset = event.getSceneX();
-                        yOffset = event.getSceneY();
-                    }
-                });
 
-                //move around here
-                chessBoardScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        chessBoardStage.setX(event.getScreenX() - xOffset);
-                        chessBoardStage.setY(event.getScreenY() - yOffset);
-                    }
-                });
-                
                 //Zeit aktualisieren
                 //controller.refreshTime();
                                 
