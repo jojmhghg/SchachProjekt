@@ -5,9 +5,10 @@
  */
 package Frontend.Controller;
 
-import Backend.Spiel;
+import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
+import Backend.SpielStub;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
@@ -48,7 +49,7 @@ import javafx.stage.Window;
  */
 public class PartieLadenFXMLController implements Initializable {
     
-    Spiel spiel;
+    SpielStub spiel;
     Spielbrett spielbrett;
     Window startseiteWindow;
     Timeline timeline;
@@ -58,7 +59,7 @@ public class PartieLadenFXMLController implements Initializable {
     @FXML
     private JFXTextField filename;
     
-    public void loadData(Spiel spiel, Spielbrett spielbrett, Window window, Timeline timeline) {
+    public void loadData(SpielStub spiel, Spielbrett spielbrett, Window window, Timeline timeline) {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
         this.startseiteWindow = window;
@@ -160,7 +161,7 @@ public class PartieLadenFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             this.spielbrett = new Spielbrett();
-            this.spiel = new Spiel();
+            this.spiel = new SpielStubImpl();
             // Request focus on the newfilename field by default.
             Platform.runLater(() -> filename.requestFocus());
         } catch (SpielException ex) {

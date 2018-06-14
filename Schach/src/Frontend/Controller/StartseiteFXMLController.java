@@ -5,12 +5,18 @@
  */
 package Frontend.Controller;
 
-import Backend.Spiel;
+import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
+import Backend.SpielStub;
+import Frontend.Schach;
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,13 +50,20 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private JFXButton partieLaden;
 
-    Spiel spiel;
+    SpielStub spiel;
     Spielbrett spielbrett;
     Timeline timeline;
 
     public void loadData() throws SpielException {
-        spiel = new Spiel();
+        spiel = new SpielStubImpl();
         timeline = new Timeline();
+    }
+    
+    private void verbindeMitServer() throws RemoteException, NotBoundException{
+        Registry registry;
+            
+        registry = LocateRegistry.getRegistry("localhost", 1099);
+        spiel = (SpielStub) registry.lookup("ClientStub");
     }
 
     @FXML

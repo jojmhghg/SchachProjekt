@@ -5,11 +5,13 @@
  */
 package Backend.Enums;
 
+import java.io.Serializable;
+
 /**
  *
  * @author timtim
  */
-public enum Farbe {
+public enum Farbe implements Serializable{
     SCHWARZ, WEISS; 
 
     public static Farbe parseFarbe(String line) {

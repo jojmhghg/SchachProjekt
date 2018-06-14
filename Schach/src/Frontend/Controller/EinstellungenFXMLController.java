@@ -5,13 +5,15 @@
  */
 package Frontend.Controller;
 
-import Backend.Spiel;
+import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
+import Backend.SpielStub;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,10 +42,10 @@ public class EinstellungenFXMLController implements Initializable {
     @FXML
     private JFXButton speichern;
     
-    Spiel spiel;
+    SpielStub spiel;
     SpielbrettFXMLController spielbrettFXMLController;
 
-    public void loadData(Spiel spiel, SpielbrettFXMLController spielbrettFXMLController) {
+    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController) {
         this.spiel = spiel;
         this.spielbrettFXMLController = spielbrettFXMLController;
     }
@@ -87,10 +89,10 @@ public class EinstellungenFXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            this.spiel = new Spiel();
+            this.spiel = new SpielStubImpl();
             spielername.setText(spiel.getUsername());
             highlightingButton.setSelected(spiel.isHighlightingAus());
-        } catch (SpielException ex) {
+        } catch (SpielException | RemoteException ex) {
             Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    

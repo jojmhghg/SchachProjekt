@@ -6,12 +6,13 @@
 package Backend.Funktionalität;
 
 import Backend.Enums.Position;
+import java.io.Serializable;
 
 /**
  *
  * @author timtim
  */
-public class Zug {
+public class Zug implements Serializable{
     
     /**
      * Ursprungsposition 

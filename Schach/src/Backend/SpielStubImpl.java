@@ -13,7 +13,6 @@ import Backend.Funktionalität.Partie;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.Funktionalität.Zug;
-import Frontend.Controller.SpielbrettFXMLController;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,12 +21,12 @@ import java.util.logging.Logger;
  *
  * @author timtim
  */
-public class Spiel implements SpielInteraktionen {
+public class SpielStubImpl implements SpielStub {
     
     private Partie partie;
     private final Einstellungen einstellungen;
-    private SpielbrettFXMLController spielbrettFXMLController;
-    public Spiel() throws SpielException{
+    
+    public SpielStubImpl() throws SpielException{
         try{
             partie = new Partie("tmp");
         }
@@ -323,7 +322,7 @@ public class Spiel implements SpielInteraktionen {
         try {
             this.partie.speichereSpiel(dateiname);
         } catch (SpielException ex) {
-            Logger.getLogger(Spiel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SpielStubImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

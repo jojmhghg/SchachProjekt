@@ -5,10 +5,12 @@
  */
 package Frontend.Controller;
 
-import Backend.Spiel;
+import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
+import Backend.SpielStub;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,12 +35,12 @@ import javafx.stage.StageStyle;
  */
 public class WinnerPopupFXMLController implements Initializable {
     
-    Spiel spiel;
+    SpielStub spiel;
     
     @FXML
     private Label gewinnerFarbe;
     
-    public void loadData(Spiel spiel) {
+    public void loadData(SpielStub spiel) throws RemoteException {
         this.spiel = spiel;
         gewinnerFarbe.setText(spiel.getGewinner().toString());
     }
@@ -73,11 +75,13 @@ public class WinnerPopupFXMLController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            this.spiel = new Spiel();
+            this.spiel = new SpielStubImpl();
             //loadData(spiel);
         } catch (SpielException ex) {
             Logger.getLogger(WinnerPopupFXMLController.class.getName()).log(Level.SEVERE, null, ex);

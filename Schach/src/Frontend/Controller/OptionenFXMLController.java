@@ -7,9 +7,10 @@ package Frontend.Controller;
 
 import Backend.Enums.Farbe;
 import Backend.Funktionalität.Optionen;
-import Backend.Spiel;
+import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
+import Backend.SpielStub;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
@@ -74,15 +75,12 @@ public class OptionenFXMLController implements Initializable {
     ObservableList<String> partieZeitList = FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt");
 
     Spielbrett spielbrett;
-    Spiel spiel;
+    SpielStub spiel;
     SpielbrettFXMLController spielbrettFXMLController;
     Timeline timeline;
     
     private double xOffset = 0; 
     private double yOffset = 0;
-
-    public OptionenFXMLController() {
-    }
 
     /**
      * Initializes the controller class.
@@ -100,7 +98,7 @@ public class OptionenFXMLController implements Initializable {
             this.spielbrett = new Spielbrett();
     }
     
-    public void loadData(Spiel spiel, Timeline timeline) {
+    public void loadData(SpielStub spiel, Timeline timeline) {
         this.spiel = spiel;
         this.timeline = timeline;
     }

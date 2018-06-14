@@ -5,10 +5,11 @@
  */
 package Frontend.Controller;
 
-import Backend.Spiel;
 import Backend.Funktionalität.SpielException;
+import Backend.SpielStub;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,11 +44,11 @@ public class RemisAngebotFXMLController implements Initializable {
     @FXML
     private Label remisAnbieter;
     
-    Spiel spiel;
+    SpielStub spiel;
     SpielbrettFXMLController spielbrettFXMLController;
     Window startseiteWindow;
     
-    public void loadData(Spiel spiel, SpielbrettFXMLController spielbrettFXMLController, Window window) {
+    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, Window window) {
         this.spiel = spiel;
         this.startseiteWindow = window;
         this.spielbrettFXMLController = spielbrettFXMLController;
@@ -90,7 +91,7 @@ public class RemisAngebotFXMLController implements Initializable {
     }
     
     @FXML
-    private void remisAblehnen(ActionEvent event) {
+    private void remisAblehnen(ActionEvent event) throws RemoteException {
         try {
             spiel.remisAblehnen();
             ((Node) (event.getSource())).getScene().getWindow().hide();
@@ -101,6 +102,8 @@ public class RemisAngebotFXMLController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
