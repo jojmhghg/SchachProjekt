@@ -1,4 +1,4 @@
-package Backend;
+package Backend.Funktionalität;
 
 
 public class StockfishTest { 

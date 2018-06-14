@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Backend;
+package Backend.Funktionalität;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
@@ -306,7 +306,7 @@ public class Spielbrett {
      * 
      * @param startposition Position der zu ziehenden Figur auf Spielbrett
      * @param zielposition Ziel der zu ziehenden Figur auf Spielbrett
-     * @throws Backend.SpielException falls keine Figur auf startposition oder ungültiger Zug
+     * @throws Backend.Funktionalität.SpielException falls keine Figur auf startposition oder ungültiger Zug
      */
     public void setFigurAufFeld(Position startposition, Position zielposition) throws SpielException{  
         // Reseten der temporären Informationen
@@ -383,7 +383,7 @@ public class Spielbrett {
      * Testet ob Spieler am Zug ziehen kann
      * 
      * @return true, falls ja; sonst false
-     * @throws Backend.SpielException
+     * @throws Backend.Funktionalität.SpielException
      */
     public boolean checkZugMoeglich() throws SpielException{
         Farbe spieler = this.amZug;

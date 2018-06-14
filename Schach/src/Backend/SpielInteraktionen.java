@@ -7,6 +7,10 @@ package Backend;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
+import Backend.Funktionalität.Optionen;
+import Backend.Funktionalität.SpielException;
+import Backend.Funktionalität.Spielbrett;
+import Backend.Funktionalität.Zug;
 import java.util.LinkedList;
 
 /**

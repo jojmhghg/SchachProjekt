@@ -6,10 +6,10 @@
 package Frontend;
 
 import Backend.Enums.Farbe;
-import Backend.Optionen;
+import Backend.Funktionalität.Optionen;
 import Backend.Spiel;
-import Backend.SpielException;
-import Backend.Spielbrett;
+import Backend.Funktionalität.SpielException;
+import Backend.Funktionalität.Spielbrett;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;

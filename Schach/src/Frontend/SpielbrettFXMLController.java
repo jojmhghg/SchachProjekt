@@ -5,14 +5,14 @@
  */
 package Frontend;
 
-import Backend.Einstellungen;
+import Backend.Funktionalität.Einstellungen;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Figuren.Figur;
 import Backend.Spiel;
-import Backend.SpielException;
-import Backend.Spielbrett;
-import Backend.Zug;
+import Backend.Funktionalität.SpielException;
+import Backend.Funktionalität.Spielbrett;
+import Backend.Funktionalität.Zug;
 import com.jfoenix.controls.JFXListView;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
@@ -501,7 +501,7 @@ public class SpielbrettFXMLController implements Initializable {
      * Methode onCliked erkennt wenn das Maus links oder Rechts angeklickt
      * wurde, und handelt dementsprechend
      * @param event
-     * @throws Backend.SpielException
+     * @throws Backend.Funktionalität.SpielException
      */
     public void onClicked(MouseEvent event) throws SpielException {
         if(spiel.getKiGegner() && spiel.getFarbeSpieler1() != spiel.getSpielerAmZug()){

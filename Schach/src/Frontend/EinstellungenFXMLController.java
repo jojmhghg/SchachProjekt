@@ -6,7 +6,7 @@
 package Frontend;
 
 import Backend.Spiel;
-import Backend.SpielException;
+import Backend.Funktionalität.SpielException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;

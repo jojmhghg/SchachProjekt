@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Backend;
+package Backend.Funktionalität;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
@@ -108,7 +108,7 @@ public final class Partie {
      * Konstruktor (beim Erstellen einer neuen Partie)
      * 
      * @param optionen Zu übernehmende Partieeinstellungen
-     * @throws Backend.SpielException bei Fehler beim Speichern im TMP-File
+     * @throws Backend.Funktionalität.SpielException bei Fehler beim Speichern im TMP-File
      */ 
     public Partie(Optionen optionen) throws SpielException{
         this.kiGegner = optionen.getKiGegner();
@@ -433,7 +433,7 @@ public final class Partie {
      * Überprüft den Namen des Speichernamens und wenn dieser gültig ist, wird das Spiel gespeichert
      * 
      * @param dateiname Name der Datei 
-     * @throws Backend.SpielException falls übergebener Name unültigt ist
+     * @throws Backend.Funktionalität.SpielException falls übergebener Name unültigt ist
      */
     public void speichereSpiel(String dateiname) throws SpielException {       
         if(dateiname.equals("tmp")){
@@ -447,7 +447,7 @@ public final class Partie {
      * Spieler der gerade am Zug gibt auf. 
      * Die Partie wird als beendet gesetzt und der andere Spieler als Gewinner.
      * 
-     * @throws Backend.SpielException falls man nicht aufgeben kann (z.B. da bereits beendet)
+     * @throws Backend.Funktionalität.SpielException falls man nicht aufgeben kann (z.B. da bereits beendet)
      */
     public void aufgeben() throws SpielException{       
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
@@ -551,7 +551,7 @@ public final class Partie {
     /**
      * Hilfsmethode, die die Schnittstelle zur KI ist
      * @param startOderZiel Bei True gibt es die Startposition aus
-     * @throws Backend.SpielException
+     * @throws Backend.Funktionalität.SpielException
      */
     public void kiZieht(boolean startOderZiel) throws SpielException{
         if(startOderZiel){
@@ -738,7 +738,7 @@ public final class Partie {
      * Speichert das Spiel in einer Datei mit dem angegebenen Namen
      * 
      * @param dateiname Name der Datei 
-     * @throws Backend.SpielException falls Fehler beim Speichern
+     * @throws Backend.Funktionalität.SpielException falls Fehler beim Speichern
      */
     private void speichereSpielImpl(String dateiname) throws SpielException {
         

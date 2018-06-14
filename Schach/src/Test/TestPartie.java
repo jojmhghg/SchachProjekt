@@ -7,9 +7,9 @@ package Test;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
-import Backend.Optionen;
-import Backend.Partie;
-import Backend.SpielException;
+import Backend.Funktionalität.Optionen;
+import Backend.Funktionalität.Partie;
+import Backend.Funktionalität.SpielException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

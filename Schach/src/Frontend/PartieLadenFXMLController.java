@@ -6,8 +6,8 @@
 package Frontend;
 
 import Backend.Spiel;
-import Backend.SpielException;
-import Backend.Spielbrett;
+import Backend.Funktionalität.SpielException;
+import Backend.Funktionalität.Spielbrett;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;

@@ -6,7 +6,7 @@
 package Frontend;
 
 import Backend.Spiel;
-import Backend.SpielException;
+import Backend.Funktionalität.SpielException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

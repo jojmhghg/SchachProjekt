@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Backend;
+package Backend.Funktionalität;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -94,7 +94,7 @@ public class Einstellungen {
      * Setter für Attribut highlightingAus
      * 
      * @param highlightingAus setzt Attribut highlighting zu diesem Wert
-     * @throws Backend.SpielException falls Änderungen nicht in File übernommen werden konnten
+     * @throws Backend.Funktionalität.SpielException falls Änderungen nicht in File übernommen werden konnten
      */
     public void setHighlightingAus(boolean highlightingAus) throws SpielException {
         this.highlightingAus = highlightingAus;
@@ -115,7 +115,7 @@ public class Einstellungen {
      * Setter für Attribut username
      * 
      * @param username setzt Attribut username zu diesem Wert
-     * @throws Backend.SpielException falls Änderungen nicht in File übernommen werden konnten
+     * @throws Backend.Funktionalität.SpielException falls Änderungen nicht in File übernommen werden konnten
      */
     public void setUsername(String username) throws SpielException {
         this.username = username;

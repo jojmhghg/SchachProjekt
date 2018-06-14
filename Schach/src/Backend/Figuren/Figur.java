@@ -7,7 +7,7 @@ package Backend.Figuren;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
-import Backend.Spielbrett;
+import Backend.Funktionalität.Spielbrett;
 import java.util.LinkedList;
 
 /**

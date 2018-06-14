@@ -7,6 +7,12 @@ package Backend;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
+import Backend.Funktionalität.Einstellungen;
+import Backend.Funktionalität.Optionen;
+import Backend.Funktionalität.Partie;
+import Backend.Funktionalität.SpielException;
+import Backend.Funktionalität.Spielbrett;
+import Backend.Funktionalität.Zug;
 import Frontend.SpielbrettFXMLController;
 import java.util.LinkedList;
 import java.util.logging.Level;
