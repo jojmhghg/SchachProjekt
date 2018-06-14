@@ -17,7 +17,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,6 +32,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
@@ -46,16 +51,18 @@ public class PartieLadenFXMLController implements Initializable {
     Spiel spiel;
     Spielbrett spielbrett;
     Window startseiteWindow;
+    Timeline timeline;
     
     @FXML
     private JFXButton laden;
     @FXML
     private JFXTextField filename;
     
-    public void loadData(Spiel spiel, Spielbrett spielbrett, Window window) {
+    public void loadData(Spiel spiel, Spielbrett spielbrett, Window window, Timeline timeline) {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
         this.startseiteWindow = window;
+        this.timeline = timeline;
     }
     
     @FXML
@@ -63,7 +70,7 @@ public class PartieLadenFXMLController implements Initializable {
         String newfilename = filename.getText();
         
         if(!newfilename.isEmpty()) {
-            try {
+            try {                
                 spielbrett = spiel.partieLaden(newfilename);
                 
                 FXMLLoader loader = new FXMLLoader();
@@ -72,7 +79,7 @@ public class PartieLadenFXMLController implements Initializable {
 
                 SpielbrettFXMLController controller = loader.getController();
                 controller.cleanBoard();
-                controller.loadData(spiel, spielbrett);
+                controller.loadData(spiel, spielbrett, timeline);
                 controller.setSpielernameOnScreen();
 
                 Stage spielbrettStage = new Stage();
@@ -128,6 +135,21 @@ public class PartieLadenFXMLController implements Initializable {
         }
     }
     
+    @FXML
+    private void onKeyPressed(ActionEvent ae) {
+        filename.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    try {
+                        loadAndOpen(ae);
+                    } catch (IOException ex) {
+                        Logger.getLogger(PartieLadenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+    }
 
     /**
      * Initializes the controller class.
@@ -139,9 +161,11 @@ public class PartieLadenFXMLController implements Initializable {
         try {
             this.spielbrett = new Spielbrett();
             this.spiel = new Spiel();
+            // Request focus on the newfilename field by default.
+            Platform.runLater(() -> filename.requestFocus());
         } catch (SpielException ex) {
             Logger.getLogger(PartieLadenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }
     
 }
