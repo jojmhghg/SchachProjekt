@@ -16,7 +16,7 @@
             <Image url="@../Ressources/backgroundStartSeite.PNG" />
          </image>
       </ImageView>
-      <TextArea editable="false" layoutX="23.0" layoutY="119.0" prefHeight="555.0" prefWidth="560.0" text="Veranstaltung                                           Praktikum KI600&#10;&#10;Gruppe                                                      Deep Blue (Tim, Steven, Edwrard, Niroshan)&#10;Betreuer(in)                                               Frau Bohr                                                                   &#10;&#10;Produkt Version                                        1.0&#10;&#10;Programmiersprache                                Java, JavaFX&#10;&#10;IDE                                                            Netbeans, Scene Builder&#10;&#10;Link back für verwendete Materialen:&#10;&#10;- Power Off &#10;&#10;&#10;- Board Art Asset&#10;&#10;&#10;- App icon&#10;&#10;&#10;Verwendete JAR Libraries                           JFoenix 8.0.1, FontAwesomeFX 8.15 &#10;&#10;- Github Link&#10;" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.0" />
+      <TextArea editable="false" layoutX="23.0" layoutY="119.0" prefHeight="555.0" prefWidth="560.0" text="Veranstaltung                                           Praktikum KI600&#10;&#10;Gruppe                                                      Deep Blue (Tim, Steven, Edwrard, Niroshan)&#10;Betreuer(in)                                               Frau Bohr                                                                   &#10;&#10;Produkt Version                                        1.0&#10;&#10;Programmiersprache                                Java, JavaFX&#10;&#10;IDE                                                            Netbeans, Scene Builder&#10;&#10;Link back für verwendete Materialen:&#10;&#10;- Power Off &#10;&#10;&#10;- Board Art Asset&#10;&#10;&#10;- App icon&#10;&#10;&#10;- Gif&#10;&#10;&#10;&#10;Verwendete JAR Libraries                           JFoenix 8.0.1, FontAwesomeFX 8.15 &#10;&#10;- Link zu Github&#10;&#10;&#10;" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.0" />
       <Text layoutX="241.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="KI600" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="40.0" />
@@ -25,6 +25,7 @@
       <Hyperlink layoutX="40.0" layoutY="362.0" text="https://www.iconfinder.com/icons/1055002/power_icon#size=128" />
       <Hyperlink layoutX="40.0" layoutY="414.0" text="https://www.behance.net/gallery/10018309/Chess-Artwork-Pieces-and-Board-Art-AssetsCC 4.0" />
       <Hyperlink layoutX="40.0" layoutY="462.0" text="https://www.flaticon.com/free-icon/horse_864637" />
-      <Hyperlink layoutX="40.0" layoutY="547.0" text="https://github.com/jojmhghg/SchachProjekt" />
+      <Hyperlink layoutX="40.0" layoutY="617.0" text="https://github.com/jojmhghg/SchachProjekt" />
+      <Hyperlink layoutX="40.0" layoutY="514.0" text="https://giphy.com/gifs/magazine-anniversary-mahogany-fXLHAkIvVuggw" />
    </children>
 </AnchorPane>
