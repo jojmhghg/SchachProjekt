@@ -9,7 +9,6 @@ import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.SpielStub;
-import Frontend.Schach;
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.net.URL;

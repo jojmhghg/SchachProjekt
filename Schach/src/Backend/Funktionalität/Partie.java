@@ -17,8 +17,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 
 /**
  *

@@ -6,16 +6,8 @@
 package Frontend;
 
 import Backend.Funktionalität.SpielException;
-import Backend.SpielStub;
 import Frontend.Controller.StartseiteFXMLController;
 import java.io.IOException;
-import java.rmi.AccessException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -7,7 +7,6 @@ package Frontend.Controller;
 
 import Backend.Enums.Farbe;
 import Backend.Funktionalität.Optionen;
-import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.SpielStub;
