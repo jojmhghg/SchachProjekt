@@ -6,12 +6,13 @@
 package Backend.Funktionalität;
 
 import Backend.Enums.Farbe;
+import java.io.Serializable;
 
 /**
  *
  * @author timtim
  */
-public class Optionen {
+public class Optionen implements Serializable{
     
     private final Farbe farbe;
     private final int partiezeit;

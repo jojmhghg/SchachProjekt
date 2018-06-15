@@ -14,13 +14,14 @@ import Backend.Figuren.Koenig;
 import Backend.Figuren.Laeufer;
 import Backend.Figuren.Springer;
 import Backend.Figuren.Turm;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author timtim
  */
-public class Spielbrett {
+public class Spielbrett implements Serializable{
 
     /**
      * Array mit den 64 Feldern

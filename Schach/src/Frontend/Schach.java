@@ -5,7 +5,9 @@
  */
 package Frontend;
 
-import Backend.Spiel;
+import Backend.Funktionalität.SpielException;
+import Frontend.Controller.StartseiteFXMLController;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,15 +16,17 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+
+
 /**
  *
  * @author Edwrard Nana
  */
 public class Schach extends Application {
-    Spiel spielBackend;
     
     @Override
-    public void start(Stage mainStage) throws Exception {
+    public void start(Stage mainStage) throws IOException, SpielException {
+                     
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("View/Startseite.fxml"));
         Parent root = loader.load();

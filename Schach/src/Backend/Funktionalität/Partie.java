@@ -8,7 +8,7 @@ package Backend.Funktionalität;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Figuren.Bauer;
-import Frontend.SpielbrettFXMLController;
+import Frontend.Controller.SpielbrettFXMLController;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,8 +17,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 
 /**
  *
