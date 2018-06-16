@@ -25,33 +25,63 @@
             <Image url="@Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
-      <Pane layoutX="13.0" layoutY="62.0" opacity="0.9" prefHeight="668.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
+      <Pane fx:id="linkePane" layoutX="13.0" layoutY="62.0" opacity="0.9" prefHeight="668.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
          <children>
-            <Label fx:id="spielernameWeiss" layoutX="10.0" layoutY="28.0" prefHeight="35.0" prefWidth="177.0" textAlignment="CENTER">
+            <Label fx:id="spielernameWeiss" alignment="BASELINE_CENTER" layoutX="9.0" layoutY="50.0" prefHeight="35.0" prefWidth="177.0" text="Spieler 1" textAlignment="CENTER" textFill="#50280e">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <FontAwesomeIconView fx:id="timerLogoWeiss" fontSmoothingType="LCD" glyphName="CLOCK_ALT" layoutX="81.0" layoutY="640.0" size="40" textAlignment="CENTER" />
+            <FontAwesomeIconView fx:id="timerLogoWeiss" fontSmoothingType="LCD" glyphName="CLOCK_ALT" layoutX="14.0" layoutY="638.0" size="40" textAlignment="CENTER" />
             <Label fx:id="restZeitWeiss" alignment="CENTER" contentDisplay="RIGHT" layoutX="12.0" layoutY="529.0" prefHeight="60.0" prefWidth="170.0" style="-fx-background-color: #FFFFFF;" text="00:00">
                <font>
                   <Font size="40.0" />
                </font>
             </Label>
-         </children></Pane>
-      <Pane layoutX="931.0" layoutY="62.0" opacity="0.9" prefHeight="668.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
-         <children>
-            <Label fx:id="spielernameSchwarz" layoutX="64.0" layoutY="28.0" prefHeight="20.0" prefWidth="177.0" textAlignment="CENTER">
+            <Pane fx:id="paneBildLinks" layoutX="35.0" layoutY="-2.0" prefHeight="55.0" prefWidth="111.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="118.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Ressources/KingW.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+      
+            <Label layoutX="71.0" layoutY="609.0" text="Weiß" textAlignment="CENTER">
+      
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <FontAwesomeIconView fx:id="timerLogoSchwarz" glyphName="CLOCK_ALT" layoutX="139.0" layoutY="636.0" size="40" text="" />
+         </children></Pane>
+      <Pane fx:id="rechtePane" layoutX="931.0" layoutY="62.0" opacity="0.9" prefHeight="668.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
+         <children>
+            <Label fx:id="spielernameSchwarz" alignment="BASELINE_CENTER" layoutX="70.0" layoutY="46.0" prefHeight="20.0" prefWidth="177.0" text="Spieler 2" textAlignment="CENTER" textFill="#50280e">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <FontAwesomeIconView fx:id="timerLogoSchwarz" glyphName="CLOCK_ALT" layoutX="206.0" layoutY="634.0" size="40" text="" />
             <Label fx:id="restZeitSchwarz" alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="526.0" prefHeight="60.0" prefWidth="170.0" style="-fx-background-color: #000000;" text="00:00" textFill="WHITE">
                <font>
                   <Font size="40.0" />
                </font>
             </Label>
+            <Label layoutX="117.0" layoutY="605.0" text="Schwarz" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Pane fx:id="paneBildRechts" layoutX="101.0" prefHeight="55.0" prefWidth="111.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="118.0" layoutX="-3.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Ressources/KingB.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
          </children>
       </Pane>
       <Pane layoutX="280.0" layoutY="73.0" opacity="0.9" prefHeight="640.0" prefWidth="638.0" style="-fx-background-color: #DEB887; -fx-opacity: 85%;">
@@ -192,18 +222,6 @@
             <Menu mnemonicParsing="false" text="Donate" />
         </menus>
       </MenuBar>
-
-      <Label layoutX="84.0" layoutY="113.0" text="Weiß" textAlignment="CENTER">
-
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="1054.0" layoutY="108.0" text="Schwarz" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
       <JFXListView fx:id="listZuegeWeiss" layoutX="24.0" layoutY="166.0" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #FFDEAD;">
          <effect>
             <InnerShadow />

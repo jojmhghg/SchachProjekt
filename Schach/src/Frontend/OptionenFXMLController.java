@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXToggleButton;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,6 +25,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,9 +34,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -70,13 +75,37 @@ public class OptionenFXMLController implements Initializable {
     @FXML
     private ToggleGroup KIEinAusLokal;
 
+    @FXML
+    private Pane lokalFarbePane;
+
+    @FXML
+    private Pane onlineFarbePane;
+
+    @FXML
+    private Image weissFigur;
+
+    @FXML
+    private Image schwarzFigur;
+
+    @FXML
+    private ImageView figurImageOn1;
+    
+    @FXML
+    private ImageView figurImageOn2;
+    
+    @FXML
+    private ImageView figurImageOff1;
+    
+    @FXML
+    private ImageView figurImageOff2;
+
     ObservableList<String> partieZeitList = FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt");
 
     Spielbrett spielbrett;
     Spiel spiel;
     SpielbrettFXMLController spielbrettFXMLController;
-    
-    private double xOffset = 0; 
+
+    private double xOffset = 0;
     private double yOffset = 0;
 
     public OptionenFXMLController() {
@@ -90,14 +119,15 @@ public class OptionenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-            partieZeitLokal.setItems(partieZeitList);
-            partieZeitLokal.getSelectionModel().selectLast();
-            partieZeitOnline.setItems(partieZeitList);
-            partieZeitOnline.getSelectionModel().selectLast();
-            
-            this.spielbrett = new Spielbrett();
+        partieZeitLokal.setItems(partieZeitList);
+        partieZeitLokal.getSelectionModel().selectLast();
+        partieZeitOnline.setItems(partieZeitList);
+        partieZeitOnline.getSelectionModel().selectLast();
+        
+        this.spielbrett = new Spielbrett();
+        //initializeImage();
     }
-    
+
     public void loadData(Spiel spiel) {
         this.spiel = spiel;
     }
@@ -110,8 +140,8 @@ public class OptionenFXMLController implements Initializable {
                 int time = getChoosedTime();
                 Farbe farbe = choosedColorLokal();
                 partieoptionen = new Optionen(farbe, time, getChoosedGegner());
-                spielbrett = spiel.neuePartie(partieoptionen);        
-                      
+                spielbrett = spiel.neuePartie(partieoptionen);
+
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("Spielbrett.fxml"));
                 Parent chessBoardScene = loader.load();
@@ -125,8 +155,7 @@ public class OptionenFXMLController implements Initializable {
                 chessBoardStage.setScene(new Scene(chessBoardScene));
                 chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
                 chessBoardStage.initStyle(StageStyle.TRANSPARENT);
-                
-                                
+
                 //grab your root here
                 chessBoardScene.setOnMousePressed(new EventHandler<MouseEvent>() {
                     @Override
@@ -144,19 +173,18 @@ public class OptionenFXMLController implements Initializable {
                         chessBoardStage.setY(event.getScreenY() - yOffset);
                     }
                 });
-                
+
                 //Zeit aktualisieren
                 //controller.refreshTime();
-                                
                 //Set Username 
                 controller.setSpielernameOnScreen();
-                
+
                 //Show the page
                 chessBoardStage.show();
 
                 // Hide this current window (if this is what you want)
                 ((Node) (event.getSource())).getScene().getWindow().hide();
-             } catch (SpielException ex) {
+            } catch (SpielException ex) {
                 Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (IOException ex) {
@@ -167,7 +195,7 @@ public class OptionenFXMLController implements Initializable {
     @FXML
     private void backToStartPage(ActionEvent event) {
         try {
-            
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("Startseite.fxml"));
             Parent startSeiteScene = loader.load();
@@ -178,7 +206,7 @@ public class OptionenFXMLController implements Initializable {
             } catch (SpielException ex) {
                 Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             //startSeiteScene = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
             Stage startSeiteStage;
             startSeiteStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -206,8 +234,48 @@ public class OptionenFXMLController implements Initializable {
         });
 
     }
+
+    private void initializeImage() {
+        weissFigur = new Image("Frontend/Ressources/KingW.png");
+        schwarzFigur = new Image("Frontend/Ressources/KingB.png");
+
+        figurImageOn1 = new ImageView(weissFigur);
+        figurImageOn2 = new ImageView(schwarzFigur);
+        lokalFarbePane.getChildren().add(figurImageOn1);
+        figurImageOff1 = new ImageView(weissFigur);
+        figurImageOff2 = new ImageView(schwarzFigur);
+        onlineFarbePane.getChildren().add(figurImageOff1);
+    }
+
+    @FXML
+    private void weissOnlineSelect (ActionEvent event) {
+        if (weissOnline.isSelected()) {
+            onlineFarbePane.setStyle("-fx-background-image: url(Frontend/Ressources/KingW.png);");
+        }
+    }
     
-    private boolean getChoosedGegner(){
+    @FXML
+    private void schwarzOnlineSelect (ActionEvent event) {
+        if(schwarzOnline.isSelected()) {
+            onlineFarbePane.setStyle("-fx-background-image: url(Frontend/Ressources/KingB.png);");
+        }
+    }
+    
+    @FXML
+    private void weissOfflineSelect (ActionEvent event) {
+        if (weissLokal.isSelected()) {
+            lokalFarbePane.setStyle("-fx-background-image: url(Frontend/Ressources/KingW.png);");
+        }
+    }
+    
+    @FXML
+    private void schwarzOfflineSelect (ActionEvent event) {
+        if (schwarzLokal.isSelected()) {
+            lokalFarbePane.setStyle("-fx-background-image: url(Frontend/Ressources/KingB.png);");
+        }
+    }
+
+    private boolean getChoosedGegner() {
         return kiGegnerToggler.isSelected();
     }
 
@@ -215,8 +283,8 @@ public class OptionenFXMLController implements Initializable {
         SpielbrettFXMLController option = new SpielbrettFXMLController();
         String selected;
         selected = partieZeitLokal.getValue();
-        
-        switch(selected){
+
+        switch (selected) {
             case "5":
                 return 5;
             case "10":
@@ -231,16 +299,15 @@ public class OptionenFXMLController implements Initializable {
                 return -1;
         }
     }
-    
-    public Farbe choosedColorLokal(){
-         if (weissLokal.isSelected()){
+
+    public Farbe choosedColorLokal() {
+        if (weissLokal.isSelected()) {
             return Farbe.WEISS;
-        }
-        else{
-             return Farbe.SCHWARZ;
+        } else {
+            return Farbe.SCHWARZ;
         }
     }
-    
+
     public Farbe choosedColorOnline() {
         if (weissOnline.isSelected()) {
             return Farbe.WEISS;
@@ -248,5 +315,5 @@ public class OptionenFXMLController implements Initializable {
             return Farbe.SCHWARZ;
         }
     }
-    
+
 }
