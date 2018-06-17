@@ -99,10 +99,9 @@ public class StartseiteFXMLController implements Initializable {
     private void partieFortsetzen(ActionEvent event) {
         try {
             spielbrett = spiel.partieLaden("tmp");
-<<<<<<< HEAD:Schach/src/Frontend/StartseiteFXMLController.java
-
+            
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("View/Spielbrett.fxml"));
+            loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
             Parent spielbrettScene = loader.load();
 
             SpielbrettFXMLController controller = loader.getController();
@@ -119,27 +118,7 @@ public class StartseiteFXMLController implements Initializable {
             ((Node) (event.getSource())).getScene().getWindow().hide();
             controller.cleanBoard();
             controller.initSpielbrett();
-=======
             
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
-                Parent spielbrettScene = loader.load();
-
-                SpielbrettFXMLController controller = loader.getController();
-                controller.loadData(spiel, spielbrett, timeline);
-                controller.setSpielernameOnScreen();
-
-                Stage spielbrettStage = new Stage();
-                spielbrettStage.initModality(Modality.APPLICATION_MODAL);
-                spielbrettStage.initStyle(StageStyle.UNDECORATED);
-                spielbrettStage.setScene(new Scene(spielbrettScene));
-                spielbrettStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
-                spielbrettStage.show();
-                
-                ((Node) (event.getSource())).getScene().getWindow().hide();
-                controller.cleanBoard();
-                controller.initSpielbrett();
->>>>>>> Tim:Schach/src/Frontend/Controller/StartseiteFXMLController.java
         } catch (SpielException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -151,11 +130,7 @@ public class StartseiteFXMLController implements Initializable {
     private void goToPartieLaden(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader();
-<<<<<<< HEAD:Schach/src/Frontend/StartseiteFXMLController.java
-            loader.setLocation(getClass().getResource("View/PartieLaden.fxml"));
-=======
             loader.setLocation(getClass().getResource("../View/PartieLaden.fxml"));
->>>>>>> Tim:Schach/src/Frontend/Controller/StartseiteFXMLController.java
             Parent partieLadenScene = loader.load();
             
             PartieLadenFXMLController controller = loader.getController();
