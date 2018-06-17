@@ -266,8 +266,15 @@ and open the template in the editor.
    -fx-background-image: url(../Ressources/Board/Wood/h8.png) ;
 }
 
+.weisseFiguren {
+   -fx-background-image: url(../Ressources/KingW.png) ;
+}
 
+.schwarzeFiguren {
+   -fx-background-image: url(../Ressources/KingB.png) ;
+}
 
+/*
 .linkeaussenFeld{
     -fx-background-image: url(../Ressources/Board/Wood/a2.png)
 }
@@ -275,3 +282,4 @@ and open the template in the editor.
 .rechteaussenFeld{
     -fx-background-image: url(../Ressources/Board/Wood/a1.png)
 }
+*/

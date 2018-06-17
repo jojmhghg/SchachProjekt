@@ -34,6 +34,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -43,6 +45,24 @@ import javafx.stage.StageStyle;
  * @author Edwrard Nana
  */
 public class OptionenFXMLController implements Initializable {
+
+    @FXML
+    private Pane lokalFarbePane;
+    @FXML
+    private Pane onlineFarbePane;
+    @FXML
+    private Image weissFigur;
+    @FXML
+    private Image schwarzFigur;
+    @FXML
+    private ImageView figurImageOn1;  
+    @FXML
+    private ImageView figurImageOn2; 
+    @FXML
+    private ImageView figurImageOff1; 
+    @FXML
+    private ImageView figurImageOff2;
+    
 
     @FXML
     private JFXRadioButton weissOnline;
@@ -87,12 +107,12 @@ public class OptionenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-            partieZeitLokal.setItems(partieZeitList);
-            partieZeitLokal.getSelectionModel().selectLast();
-            partieZeitOnline.setItems(partieZeitList);
-            partieZeitOnline.getSelectionModel().selectLast();
-            
-            this.spielbrett = new Spielbrett();
+        partieZeitLokal.setItems(partieZeitList);
+        partieZeitLokal.getSelectionModel().selectLast();
+        partieZeitOnline.setItems(partieZeitList);
+        partieZeitOnline.getSelectionModel().selectLast();
+
+        this.spielbrett = new Spielbrett();
     }
     
     public void loadData(SpielStub spiel, Timeline timeline) {
@@ -165,6 +185,46 @@ public class OptionenFXMLController implements Initializable {
             startSeiteStage.show();
         } catch (IOException ex) {
             Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void initializeImage() {
+        weissFigur = new Image("Frontend/Ressources/KingW.png");
+        schwarzFigur = new Image("Frontend/Ressources/KingB.png");
+
+        figurImageOn1 = new ImageView(weissFigur);
+        figurImageOn2 = new ImageView(schwarzFigur);
+        lokalFarbePane.getChildren().add(figurImageOn1);
+        figurImageOff1 = new ImageView(weissFigur);
+        figurImageOff2 = new ImageView(schwarzFigur);
+        onlineFarbePane.getChildren().add(figurImageOff1);
+    }
+    
+    @FXML
+    private void schwarzOnlineSelect (ActionEvent event) {
+        if(schwarzOnline.isSelected()) {
+           onlineFarbePane.setStyle("-fx-background-image: url(Frontend/Ressources/KingB.png);");
+        }
+    }
+    
+    @FXML
+    private void weissOfflineSelect (ActionEvent event) {
+        if (weissLokal.isSelected()) {
+            lokalFarbePane.setStyle("-fx-background-image: url(Frontend/Ressources/KingW.png);");
+        }
+    }
+    
+    @FXML
+    private void schwarzOfflineSelect (ActionEvent event) {
+        if (schwarzLokal.isSelected()) {
+            lokalFarbePane.setStyle("-fx-background-image: url(Frontend/Ressources/KingB.png);");
+        }
+    }
+
+    @FXML
+    private void weissOnlineSelect (ActionEvent event) {
+        if (weissOnline.isSelected()) {
+            onlineFarbePane.setStyle("-fx-background-image: url(Frontend/Ressources/KingW.png);");
         }
     }
 
