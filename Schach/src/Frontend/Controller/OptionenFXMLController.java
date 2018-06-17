@@ -91,6 +91,7 @@ public class OptionenFXMLController implements Initializable {
 
     ObservableList<String> partieZeitList = FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt");
 
+    int sitzungsID;
     Spielbrett spielbrett;
     SpielStub spiel;
     SpielbrettFXMLController spielbrettFXMLController;
@@ -115,8 +116,9 @@ public class OptionenFXMLController implements Initializable {
         this.spielbrett = new Spielbrett();
     }
     
-    public void loadData(SpielStub spiel, Timeline timeline) {
+    public void loadData(SpielStub spiel, Timeline timeline, int sitzungsID) {
         this.spiel = spiel;
+        this.sitzungsID = sitzungsID;
         this.timeline = timeline;
     }
 
@@ -128,14 +130,14 @@ public class OptionenFXMLController implements Initializable {
                 int time = getChoosedTime();
                 Farbe farbe = choosedColorLokal();
                 partieoptionen = new Optionen(farbe, time, getChoosedGegner());
-                spielbrett = spiel.neuePartie(partieoptionen);        
+                spielbrett = spiel.neuePartie(partieoptionen, sitzungsID);        
                       
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
                 Parent chessBoardScene = loader.load();
 
                 SpielbrettFXMLController controller = loader.getController();
-                controller.loadData(spiel, spielbrett,timeline);
+                controller.loadData(spiel, spielbrett,timeline, sitzungsID);
                 //controller.getTime(partieZeitLokal.getValue());
 
                 //chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));

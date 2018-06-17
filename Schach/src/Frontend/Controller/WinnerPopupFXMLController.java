@@ -36,13 +36,15 @@ import javafx.stage.StageStyle;
 public class WinnerPopupFXMLController implements Initializable {
     
     SpielStub spiel;
+    int sitzungsID;
     
     @FXML
     private Label gewinnerFarbe;
     
-    public void loadData(SpielStub spiel) throws RemoteException {
+    public void loadData(SpielStub spiel, int sitzungsID) throws RemoteException {
         this.spiel = spiel;
-        gewinnerFarbe.setText(spiel.getGewinner().toString());
+        this.sitzungsID = sitzungsID;
+        gewinnerFarbe.setText(spiel.getGewinner(sitzungsID).toString());
     }
     
     @FXML
@@ -80,12 +82,12 @@ public class WinnerPopupFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
+        /*try {
             this.spiel = new SpielStubImpl();
             //loadData(spiel);
         } catch (SpielException ex) {
             Logger.getLogger(WinnerPopupFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     } 
     
 }

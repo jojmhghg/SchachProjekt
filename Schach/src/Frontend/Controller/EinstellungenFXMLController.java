@@ -42,12 +42,14 @@ public class EinstellungenFXMLController implements Initializable {
     @FXML
     private JFXButton speichern;
     
+    int sitzungsID;
     SpielStub spiel;
     SpielbrettFXMLController spielbrettFXMLController;
 
-    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController) {
+    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, int sitzungsID) {
         this.spiel = spiel;
         this.spielbrettFXMLController = spielbrettFXMLController;
+        this.sitzungsID = sitzungsID;
     }
     
     @FXML
@@ -64,8 +66,8 @@ public class EinstellungenFXMLController implements Initializable {
         if(!newSpielername.isEmpty()) {
             try {
                 spielbrettFXMLController.timeline.play();
-                spiel.setUsername(newSpielername);
-                spiel.setHighlightingAus(highlightingButton.isSelected());
+                spiel.setUsername(newSpielername, sitzungsID);
+                spiel.setHighlightingAus(highlightingButton.isSelected(), sitzungsID);
                 spielbrettFXMLController.setSpielernameOnScreen();
                 backToSpielbrett(event);
             } catch (SpielException ex) {
@@ -88,13 +90,13 @@ public class EinstellungenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
+        /*try {
             this.spiel = new SpielStubImpl();
-            spielername.setText(spiel.getUsername());
-            highlightingButton.setSelected(spiel.isHighlightingAus());
+            spielername.setText(spiel.getUsername(), sitzungsID);
+            highlightingButton.setSelected(spiel.isHighlightingAus(), sitzungsID);
         } catch (SpielException | RemoteException ex) {
             Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }    
     
 }

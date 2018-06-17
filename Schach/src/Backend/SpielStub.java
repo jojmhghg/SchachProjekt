@@ -21,42 +21,44 @@ import java.util.LinkedList;
  */
 public interface SpielStub extends Remote{
     
+    public int einloggen() throws RemoteException;
+    
     /* --- Methoden die das Spiel betreffen --- */
-    public void setUsername(String username) throws SpielException, RemoteException;
-    public String getUsername() throws RemoteException;
-    public void setHighlightingAus(Boolean highlightingAus) throws SpielException, RemoteException;
-    public boolean isHighlightingAus() throws RemoteException;
+    public void setUsername(String username, int sitzungsID) throws SpielException, RemoteException;
+    public String getUsername(int sitzungsID) throws RemoteException;
+    public void setHighlightingAus(Boolean highlightingAus, int sitzungsID) throws SpielException, RemoteException;
+    public boolean isHighlightingAus(int sitzungsID) throws RemoteException;
     
     /* --- Methoden die eine Partie betreffen --- */
-    public Spielbrett neuePartie(Optionen partieoptionen) throws SpielException, RemoteException;
-    public Spielbrett partieLaden(String speicherstand) throws SpielException, RemoteException;
-    public void zieheFigur(Position ausgangsposition, Position zielposition) throws SpielException, RemoteException;
+    public Spielbrett neuePartie(Optionen partieoptionen, int sitzungsID) throws SpielException, RemoteException;
+    public Spielbrett partieLaden(String speicherstand, int sitzungsID) throws SpielException, RemoteException;
+    public void zieheFigur(Position ausgangsposition, Position zielposition, int sitzungsID) throws SpielException, RemoteException;
     
-    public void aufgeben() throws SpielException, RemoteException;
-    public void remisAnbieten() throws SpielException, RemoteException;
-    public void remisAnnehmen() throws SpielException, RemoteException;
-    public void remisAblehnen() throws SpielException, RemoteException;
+    public void aufgeben(int sitzungsID) throws SpielException, RemoteException;
+    public void remisAnbieten(int sitzungsID) throws SpielException, RemoteException;
+    public void remisAnnehmen(int sitzungsID) throws SpielException, RemoteException;
+    public void remisAblehnen(int sitzungsID) throws SpielException, RemoteException;
     
-    public boolean getBeendet() throws RemoteException;
-    public Position getPositionBlackKing() throws RemoteException;
-    public Position getPositionWhiteKing() throws RemoteException;
-    public Farbe getFarbeSpieler1() throws RemoteException;
-    public boolean getKiGegner() throws RemoteException;  
-    public boolean getEnPassant() throws RemoteException;
-    public boolean getRochade() throws RemoteException;
-    public Farbe getSpielerAmZug() throws RemoteException;
-    public Farbe getGewinner() throws RemoteException;  
-    public Farbe imSchach() throws RemoteException; 
-    public long getZeitSpieler1() throws RemoteException;
-    public long getZeitSpieler2() throws RemoteException;
-    public long getPartiezeit() throws RemoteException;
-    public LinkedList<Zug> getMitschrift() throws RemoteException;   
-    public LinkedList<Position> getMoeglicheZuege(Position position) throws SpielException, RemoteException;
+    public boolean getBeendet(int sitzungsID) throws RemoteException;
+    public Position getPositionBlackKing(int sitzungsID) throws RemoteException;
+    public Position getPositionWhiteKing(int sitzungsID) throws RemoteException;
+    public Farbe getFarbeSpieler1(int sitzungsID) throws RemoteException;
+    public boolean getKiGegner(int sitzungsID) throws RemoteException;  
+    public boolean getEnPassant(int sitzungsID) throws RemoteException;
+    public boolean getRochade(int sitzungsID) throws RemoteException;
+    public Farbe getSpielerAmZug(int sitzungsID) throws RemoteException;
+    public Farbe getGewinner(int sitzungsID) throws RemoteException;  
+    public Farbe imSchach(int sitzungsID) throws RemoteException; 
+    public long getZeitSpieler1(int sitzungsID) throws RemoteException;
+    public long getZeitSpieler2(int sitzungsID) throws RemoteException;
+    public long getPartiezeit(int sitzungsID) throws RemoteException;
+    public LinkedList<Zug> getMitschrift(int sitzungsID) throws RemoteException;   
+    public LinkedList<Position> getMoeglicheZuege(Position position, int sitzungsID) throws SpielException, RemoteException;
     
-    public void speichereSpiel(String dateiname)throws SpielException, RemoteException; 
+    public void speichereSpiel(String dateiname, int sitzungsID)throws SpielException, RemoteException; 
     
-    public int getBestMoveInt() throws RemoteException;  
-    public void kiZieht(boolean startOderZiel) throws SpielException, RemoteException;
+    public int getBestMoveInt(int sitzungsID) throws RemoteException;  
+    public void kiZieht(boolean startOderZiel, int sitzungsID) throws SpielException, RemoteException;
     
     
 }

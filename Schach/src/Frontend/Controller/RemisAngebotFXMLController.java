@@ -45,11 +45,13 @@ public class RemisAngebotFXMLController implements Initializable {
     private Label remisAnbieter;
     
     SpielStub spiel;
+    int sitzungsID;
     SpielbrettFXMLController spielbrettFXMLController;
     Window startseiteWindow;
     
-    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, Window window) {
+    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, Window window, int sitzungsID) {
         this.spiel = spiel;
+        this.sitzungsID = sitzungsID;
         this.startseiteWindow = window;
         this.spielbrettFXMLController = spielbrettFXMLController;
     }
@@ -57,7 +59,7 @@ public class RemisAngebotFXMLController implements Initializable {
     @FXML
     private void remisAnnehmen(ActionEvent event) {
         try {
-            spiel.remisAnnehmen();
+            spiel.remisAnnehmen(sitzungsID);
 
             textRemisAngebot.setText("unentschieden");
             hinweisRemisAngebot.isDisabled();
@@ -93,7 +95,7 @@ public class RemisAngebotFXMLController implements Initializable {
     @FXML
     private void remisAblehnen(ActionEvent event) throws RemoteException {
         try {
-            spiel.remisAblehnen();
+            spiel.remisAblehnen(sitzungsID);
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (SpielException ex) {
             Logger.getLogger(RemisAngebotFXMLController.class.getName()).log(Level.SEVERE, null, ex);

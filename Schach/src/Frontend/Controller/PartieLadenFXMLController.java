@@ -49,6 +49,7 @@ import javafx.stage.Window;
  */
 public class PartieLadenFXMLController implements Initializable {
     
+    int sitzungsID;
     SpielStub spiel;
     Spielbrett spielbrett;
     Window startseiteWindow;
@@ -59,7 +60,7 @@ public class PartieLadenFXMLController implements Initializable {
     @FXML
     private JFXTextField filename;
     
-    public void loadData(SpielStub spiel, Spielbrett spielbrett, Window window, Timeline timeline) {
+    public void loadData(SpielStub spiel, Spielbrett spielbrett, Window window, Timeline timeline, int sitzungsID) {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
         this.startseiteWindow = window;
@@ -72,7 +73,7 @@ public class PartieLadenFXMLController implements Initializable {
         
         if(!newfilename.isEmpty()) {
             try {                
-                spielbrett = spiel.partieLaden(newfilename);
+                spielbrett = spiel.partieLaden(newfilename, sitzungsID);
                 
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
@@ -80,7 +81,7 @@ public class PartieLadenFXMLController implements Initializable {
 
                 SpielbrettFXMLController controller = loader.getController();
                 controller.cleanBoard();
-                controller.loadData(spiel, spielbrett, timeline);
+                controller.loadData(spiel, spielbrett, timeline, sitzungsID);
                 controller.setSpielernameOnScreen();
 
                 Stage spielbrettStage = new Stage();

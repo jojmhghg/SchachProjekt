@@ -49,6 +49,7 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private JFXButton partieLaden;
 
+    int sitzungsID;
     SpielStub spiel;
     Spielbrett spielbrett;
     Timeline timeline;
@@ -63,6 +64,7 @@ public class StartseiteFXMLController implements Initializable {
             
         registry = LocateRegistry.getRegistry("localhost", 1099);
         spiel = (SpielStub) registry.lookup("ClientStub");
+        sitzungsID = spiel.einloggen();
     }
 
     @FXML
@@ -80,7 +82,7 @@ public class StartseiteFXMLController implements Initializable {
             Parent optionenScene = loader.load();
 
             OptionenFXMLController controller = loader.getController();
-            controller.loadData(spiel, timeline);
+            controller.loadData(spiel, timeline, sitzungsID);
 
             //optionenScene = FXMLLoader.load(getClass().getResource("Optionen.fxml"));
             Stage optionenStage = new Stage();
@@ -98,14 +100,14 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private void partieFortsetzen(ActionEvent event) {
         try {
-            spielbrett = spiel.partieLaden("tmp");
+            spielbrett = spiel.partieLaden("tmp", sitzungsID);
             
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
             Parent spielbrettScene = loader.load();
 
             SpielbrettFXMLController controller = loader.getController();
-            controller.loadData(spiel, spielbrett, timeline);
+            controller.loadData(spiel, spielbrett, timeline, sitzungsID);
             controller.setSpielernameOnScreen();
 
             Stage spielbrettStage = new Stage();
@@ -134,7 +136,7 @@ public class StartseiteFXMLController implements Initializable {
             Parent partieLadenScene = loader.load();
             
             PartieLadenFXMLController controller = loader.getController();
-            controller.loadData(spiel, spielbrett, ((Node) (event.getSource())).getScene().getWindow(), timeline);
+            controller.loadData(spiel, spielbrett, ((Node) (event.getSource())).getScene().getWindow(), timeline, sitzungsID);
             
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
