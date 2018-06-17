@@ -8,13 +8,14 @@ package Backend.Figuren;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Funktionalität.Spielbrett;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author timtim
  */
-public abstract class Figur {
+public abstract class Figur implements Serializable{
     
     protected Farbe farbe;
     

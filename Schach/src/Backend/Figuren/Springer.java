@@ -8,13 +8,14 @@ package Backend.Figuren;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Funktionalität.Spielbrett;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author timtim
  */
-public class Springer extends Figur{
+public class Springer extends Figur implements Serializable{
 
     public Springer(Farbe farbe) {
         super(farbe);

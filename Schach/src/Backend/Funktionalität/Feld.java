@@ -7,13 +7,14 @@ package Backend.Funktionalität;
 
 import Backend.Enums.Position;
 import Backend.Figuren.Figur;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author timtim
  */
-public class Feld {
+public class Feld implements Serializable{
     
     /**
      * Die Figur, die auf dem Feld steht

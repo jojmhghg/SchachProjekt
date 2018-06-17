@@ -55,16 +55,15 @@ public class StartseiteFXMLController implements Initializable {
     Timeline timeline;
 
     public void loadData() throws SpielException {
-        spiel = new SpielStubImpl();
-        timeline = new Timeline();
+        timeline = new Timeline();    
     }
     
-    private void verbindeMitServer() throws RemoteException, NotBoundException{
+    public void verbindeMitServer() throws RemoteException, NotBoundException{
         Registry registry;
             
         registry = LocateRegistry.getRegistry("localhost", 1099);
         spiel = (SpielStub) registry.lookup("ClientStub");
-        sitzungsID = spiel.einloggen();
+        sitzungsID = spiel.einloggen();  
     }
 
     @FXML

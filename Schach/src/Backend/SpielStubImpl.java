@@ -26,10 +26,12 @@ public class SpielStubImpl implements SpielStub {
     
     private final HashMap<Number, Partie> partieListe;
     private final HashMap<Number, Einstellungen> einstellungenListe;
+    private final LinkedList<Integer> sitzungen;
     
     public SpielStubImpl() throws SpielException{
         this.partieListe = new HashMap<>();
         this.einstellungenListe = new HashMap<>();
+        this.sitzungen = new LinkedList<>();
     }
     
     /**
@@ -39,7 +41,9 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public int einloggen(){
-        int sitzungsID = (int)(Math.random() * 1000000 + 1);  
+        int sitzungsID = getNewID();  
+        sitzungen.add(sitzungsID);
+        
         try {        
             this.partieListe.put(sitzungsID, new Partie("tmp"));
             this.einstellungenListe.put(sitzungsID, new Einstellungen());
@@ -47,6 +51,31 @@ public class SpielStubImpl implements SpielStub {
             Logger.getLogger(SpielStubImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sitzungsID;        
+    }
+    
+    /**
+     * Methode generiert eine neue zufällige SitzungsID
+     * Stellt sicher, dass diese neu ist!
+     * 
+     * @return SitzungsID
+     */
+    private int getNewID(){
+        int sitzungsID = 0; 
+        boolean neu = false;
+        
+        while(!neu){
+            sitzungsID = (int)(Math.random() * 1000000 + 1); 
+            neu = true;
+            
+            for(int sitzung : sitzungen){
+                if(sitzung == sitzungsID){
+                    neu = false;
+                    break;
+                }
+            }
+        }
+        
+        return sitzungsID;
     }
 
     /**

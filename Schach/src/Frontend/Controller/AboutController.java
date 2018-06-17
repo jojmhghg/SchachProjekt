@@ -16,6 +16,10 @@ import javafx.fxml.Initializable;
  */
 public class AboutController implements Initializable {
 
+    public void loadData() {
+        //TODO
+    }
+    
     /**
      * Initializes the controller class.
      * @param url
@@ -23,11 +27,5 @@ public class AboutController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }  
-    
-    public void loadData() {
-        //TODO
-    }
-    
+    }    
 }

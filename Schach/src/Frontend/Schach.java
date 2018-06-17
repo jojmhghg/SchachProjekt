@@ -8,6 +8,8 @@ package Frontend;
 import Backend.Funktionalität.SpielException;
 import Frontend.Controller.StartseiteFXMLController;
 import java.io.IOException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,7 +27,7 @@ import javafx.stage.StageStyle;
 public class Schach extends Application {
     
     @Override
-    public void start(Stage mainStage) throws IOException, SpielException {
+    public void start(Stage mainStage) throws IOException, SpielException, RemoteException, NotBoundException {
                      
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("View/Startseite.fxml"));
@@ -35,6 +37,7 @@ public class Schach extends Application {
         
         StartseiteFXMLController controller = loader.getController();
         controller.loadData();
+        controller.verbindeMitServer();
         
         mainStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
         mainStage.initStyle(StageStyle.UNDECORATED);
