@@ -35,6 +35,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -235,7 +236,68 @@ public class SpielbrettFXMLController implements Initializable {
     
     @FXML
     private Pane L1;
-    
+    @FXML
+    private Pane L2;
+    @FXML
+    private Pane L3;
+    @FXML
+    private Pane L4;
+    @FXML
+    private Pane L5;
+    @FXML
+    private Pane L6;
+    @FXML
+    private Pane L7;
+    @FXML
+    private Pane L8;
+    @FXML
+    private Pane L9;
+    @FXML
+    private Pane L10;
+    @FXML
+    private Pane L11;
+    @FXML
+    private Pane L12;
+    @FXML
+    private Pane L13;
+    @FXML
+    private Pane L14;
+    @FXML
+    private Pane L15;
+    @FXML
+    private Pane L16;
+    @FXML
+    private Pane R1;
+    @FXML
+    private Pane R2;
+    @FXML
+    private Pane R3;
+    @FXML
+    private Pane R4;
+    @FXML
+    private Pane R5;
+    @FXML
+    private Pane R6;
+    @FXML
+    private Pane R7;
+    @FXML
+    private Pane R8;
+    @FXML
+    private Pane R9;
+    @FXML
+    private Pane R10;
+    @FXML
+    private Pane R11;
+    @FXML
+    private Pane R12;
+    @FXML
+    private Pane R13;
+    @FXML
+    private Pane R14;
+    @FXML
+    private Pane R15;
+    @FXML
+    private Pane R16;   
     
     @FXML
     private Label restZeitWeiss;
@@ -267,11 +329,27 @@ public class SpielbrettFXMLController implements Initializable {
     private double xOffset = 0;
     private double yOffset = 0;
 
+    @FXML
+    private Pane linkePane;
+
+    @FXML
+    private Pane rechtePane;
+    
+    @FXML
+    private Pane paneBildRechts;
+    
+    @FXML
+    private Pane paneBildLinks;
+
     private Pane[] paneArray;
-       
+    private Pane[] paneArrayLinks;
+    private Pane[] paneArrayRechts;
+
+    int stelleRechts = 0;
+    int stelleLinks = 0;
+      
     int spieler1min = 0;
     int spieler2min = 0;
-
     int spieler1sec = 0;
     int spieler2sec = 0;
     
@@ -307,6 +385,9 @@ public class SpielbrettFXMLController implements Initializable {
         DateFormat formatter = new SimpleDateFormat("mm:ss");
         String sp1 = Long.toString(spiel.getZeitSpieler1());
         String sp2 = Long.toString(spiel.getZeitSpieler2());
+        
+        paneBildLinks.setVisible(false);
+        paneBildRechts.setVisible(false);
         
         if (spiel.getPartiezeit() == -1) {
             this.restZeitSchwarz.setVisible(false);
@@ -399,6 +480,42 @@ public class SpielbrettFXMLController implements Initializable {
         paneArray[61] = F8;
         paneArray[62] = G8;
         paneArray[63] = H8;
+        
+        paneArrayLinks = new Pane[16];
+        paneArrayRechts = new Pane[16];
+        paneArrayLinks[0] = L1;
+        paneArrayLinks[1] = L2;
+        paneArrayLinks[2] = L3;
+        paneArrayLinks[3] = L4;
+        paneArrayLinks[4] = L5;
+        paneArrayLinks[5] = L6;
+        paneArrayLinks[6] = L7;
+        paneArrayLinks[7] = L8;
+        paneArrayLinks[8] = L9;
+        paneArrayLinks[9] = L10;
+        paneArrayLinks[10] = L11;
+        paneArrayLinks[11] = L12;
+        paneArrayLinks[12] = L13;
+        paneArrayLinks[13] = L14;
+        paneArrayLinks[14] = L15;
+        paneArrayLinks[15] = L16;
+
+        paneArrayRechts[0] = R1;
+        paneArrayRechts[1] = R2;
+        paneArrayRechts[2] = R3;
+        paneArrayRechts[3] = R4;
+        paneArrayRechts[4] = R5;
+        paneArrayRechts[5] = R6;
+        paneArrayRechts[6] = R7;
+        paneArrayRechts[7] = R8;
+        paneArrayRechts[8] = R9;
+        paneArrayRechts[9] = R10;
+        paneArrayRechts[10] = R11;
+        paneArrayRechts[11] = R12;
+        paneArrayRechts[12] = R13;
+        paneArrayRechts[13] = R14;
+        paneArrayRechts[14] = R15;
+        paneArrayRechts[15] = R16;
 
         selectedFigur = new ImageView();
         Image value = null;
@@ -482,11 +599,16 @@ public class SpielbrettFXMLController implements Initializable {
         possibleMoves = null;
         quellPane = null;
         updateScreen();
+        
         int size = spiel.getMitschrift().size();
         if (size % 2 == 0 && size > 0) {
             rotateBoard();
         }
-        if(spiel.getKiGegner() && spiel.getFarbeSpieler1() == Farbe.SCHWARZ){
+        
+        spielerErkennung();
+         
+        // War bei Niro nicht mehr im Code vorhanden!
+        /*if(spiel.getKiGegner() && spiel.getFarbeSpieler1() == Farbe.SCHWARZ){
             MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt()], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
             rotateBoard();
             new Thread(() -> {
@@ -503,6 +625,44 @@ public class SpielbrettFXMLController implements Initializable {
                     }
                 });
             }).start();
+        }*/
+    }
+    
+    private void spielerErkennung() throws RemoteException {
+        if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
+            paneBildRechts.setVisible(true);
+            paneBildLinks.setVisible(false);
+            this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity:85%");
+            this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 40%");
+
+        } else if (spiel.getSpielerAmZug() == Farbe.WEISS) {
+            paneBildRechts.setVisible(false);
+            paneBildLinks.setVisible(true);
+            this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 40%");
+            this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 85%");
+
+        }
+    }
+
+    private void addgeschlageneFiguren(ImageView addImage) throws RemoteException {
+
+        //Double degree = gridBoard.rotateProperty().getValue();
+        addImage.setFitHeight(50);
+        addImage.setFitWidth(50);
+        if (spiel.getSpielerAmZug() != Farbe.SCHWARZ) {
+            addImage.setLayoutX(-5);
+            addImage.setLayoutY(-20);
+            paneArrayRechts[stelleRechts].getChildren().add(addImage);
+            paneArrayRechts[stelleRechts].rotateProperty().setValue(180);
+            stelleRechts++;
+
+        } else if (spiel.getSpielerAmZug() != Farbe.WEISS) {
+            addImage.setLayoutX(-5);
+            addImage.setLayoutY(0);
+            paneArrayLinks[stelleLinks].getChildren().add(addImage);
+            //paneArrayRechts[stelleRechts].rotateProperty().setValue(360);
+            stelleLinks++;
+
         }
     }
     
@@ -553,6 +713,7 @@ public class SpielbrettFXMLController implements Initializable {
                     spiel.zieheFigur(quellPosition, pos);
                     if (tmpPane.getChildren().size() > 0) {
                         tmpPane.getChildren().remove(0);
+                        addgeschlageneFiguren(tmpView);
                     }
                     tmpPane.getChildren().add(selectedFigur);
 
@@ -677,7 +838,7 @@ public class SpielbrettFXMLController implements Initializable {
         if (!spiel.isHighlightingAus()) {
             if (possibleMoves != null) {
                 for (Position pos : possibleMoves) {
-                    this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 5;");
+                    this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 10; -fx-opacity: 50%");
                 }
             }
         }
@@ -788,22 +949,22 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     public void timerPlay() {
-        this.timeline = new Timeline(
+        this.timeline = new Timeline(        
                 new KeyFrame(Duration.seconds(1.0), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                try {
-                    if(spiel.getSpielerAmZug() == Farbe.SCHWARZ){
-                        SpielbrettFXMLController.this.storedTimeSchwarz();
+                    @Override
+                    public void handle(ActionEvent e) {
+                        try {
+                            if(spiel.getSpielerAmZug() == Farbe.SCHWARZ){
+                                SpielbrettFXMLController.this.storedTimeSchwarz();
+                            }
+                            else if(spiel.getSpielerAmZug() == Farbe.WEISS){
+                                SpielbrettFXMLController.this.storedTimeWeiss();
+                            }
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                    else if(spiel.getSpielerAmZug() == Farbe.WEISS){
-                        SpielbrettFXMLController.this.storedTimeWeiss();
-                    }
-                } catch (RemoteException ex) {
-                    Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        })
+                })
         );
         // If you want to repeat indefinitely:
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -847,6 +1008,15 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 spieler2sec--;
 
+                if (spieler2min == 4 && spieler2sec < 10) {
+                    if (spieler2sec % 2 == 0) {
+                        this.rechtePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
+                    }
+                    else {
+                        this.rechtePane.setStyle("-fx-background-color:DEB887; -fx-opacity: 85%");
+                    }
+                }
+                
                 if (spieler2min <= 0 && spieler2sec <= 0) {
                     timerStop();
                     goToWinnerPopup();
@@ -861,6 +1031,15 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 spieler1sec--;
 
+                if (spieler1min == 4 && spieler1sec < 10) {
+                    if (spieler1sec % 2 == 0) {
+                        this.linkePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
+                    }
+                    else {
+                        this.linkePane.setStyle("-fx-background-color:DEB887; -fx-opacity: 85%");
+                    }
+                }
+                
                 if (spieler1min <= 0 && spieler1sec <= 0) {
                     timerStop();
                     goToWinnerPopup();
@@ -928,6 +1107,7 @@ public class SpielbrettFXMLController implements Initializable {
             }
             if(!spiel.getKiGegner()){
                 rotateBoard();
+                spielerErkennung();
             }
         }
 
@@ -938,10 +1118,12 @@ public class SpielbrettFXMLController implements Initializable {
         if (spiel.imSchach() == spiel.getSpielerAmZug()) {
             if (spiel.getSpielerAmZug() == Farbe.SCHWARZ) {
                 posKingImSchach = spiel.getPositionBlackKing();
+                this.rechtePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
             } else {
                 posKingImSchach = spiel.getPositionWhiteKing();
+                this.linkePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
             }
-            this.paneArray[posKingImSchach.ordinal()].setStyle("-fx-border-color:  #cc0000; -fx-border-width: 5;");
+            this.paneArray[posKingImSchach.ordinal()].setStyle("-fx-border-color: #cc0000; -fx-border-width: 10; -fx-opacity: 50%");
         }
 
         if (this.spiel.getGewinner() != null) {
