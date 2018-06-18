@@ -643,25 +643,46 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     private void addgeschlageneFiguren(ImageView addImage) throws RemoteException {
+        if (spiel.getKiGegner(sitzungsID) == true) {
+            //Double degree = gridBoard.rotateProperty().getValue();
+            addImage.setFitHeight(50);
+            addImage.setFitWidth(50);
+            if (spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ) {
+                addImage.setLayoutX(-5);
+                addImage.setLayoutY(20);
+                paneArrayRechts[stelleRechts].getChildren().add(addImage);
+                //paneArrayRechts[stelleRechts].rotateProperty().setValue(180);
+                stelleRechts++;
 
-        //Double degree = gridBoard.rotateProperty().getValue();
-        addImage.setFitHeight(50);
-        addImage.setFitWidth(50);
-        if (spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ) {
-            addImage.setLayoutX(-5);
-            addImage.setLayoutY(-20);
-            paneArrayRechts[stelleRechts].getChildren().add(addImage);
-            paneArrayRechts[stelleRechts].rotateProperty().setValue(180);
-            stelleRechts++;
+            } else if (spiel.getSpielerAmZug(sitzungsID) != Farbe.WEISS) {
+                addImage.setLayoutX(-5);
+                addImage.setLayoutY(20);
+                paneArrayLinks[stelleLinks].getChildren().add(addImage);
+                //paneArrayRechts[stelleRechts].rotateProperty().setValue(360);
+                stelleLinks++;
 
-        } else if (spiel.getSpielerAmZug(sitzungsID) != Farbe.WEISS) {
-            addImage.setLayoutX(-5);
-            addImage.setLayoutY(10);
-            paneArrayLinks[stelleLinks].getChildren().add(addImage);
-            //paneArrayRechts[stelleRechts].rotateProperty().setValue(360);
-            stelleLinks++;
+            }
+        }else {
+            //Double degree = gridBoard.rotateProperty().getValue();
+            addImage.setFitHeight(50);
+            addImage.setFitWidth(50);
+            if (spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ) {
+                addImage.setLayoutX(-5);
+                addImage.setLayoutY(-20);
+                paneArrayRechts[stelleRechts].getChildren().add(addImage);
+                paneArrayRechts[stelleRechts].rotateProperty().setValue(180);
+                stelleRechts++;
 
+            } else if (spiel.getSpielerAmZug(sitzungsID) != Farbe.WEISS) {
+                addImage.setLayoutX(-5);
+                addImage.setLayoutY(10);
+                paneArrayLinks[stelleLinks].getChildren().add(addImage);
+                //paneArrayRechts[stelleRechts].rotateProperty().setValue(360);
+                stelleLinks++;
+
+            }
         }
+
     }
 
     /**
@@ -672,9 +693,9 @@ public class SpielbrettFXMLController implements Initializable {
      * @throws Backend.Funktionalität.SpielException
      */
     public void onClicked(MouseEvent event) throws SpielException, RemoteException {
-        
+
         ImageView tmpView2;
-        
+
         if (spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) != spiel.getSpielerAmZug(sitzungsID)) {
             spiel.kiZieht(startOderZiel, sitzungsID);
             event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
@@ -722,12 +743,12 @@ public class SpielbrettFXMLController implements Initializable {
                     if (spiel.getEnPassant(sitzungsID)) {
                         if (quellPosition.ordinal() > pos.ordinal()) {
                             if (quellPosition.ordinal() - 8 > pos.ordinal()) {
-                                //Lösche quellPosi - 1
                                 tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() - 1].getChildren().get(0);
+                                //Lösche quellPosi - 1
                                 this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
-                                
+
                                 addgeschlageneFiguren(tmpView2);
-                                
+
                             } else {
                                 tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() + 1].getChildren().get(0);
                                 //Lösche quellPosi + 1
@@ -747,7 +768,7 @@ public class SpielbrettFXMLController implements Initializable {
                                 addgeschlageneFiguren(tmpView2);
                             }
                         }
-                        
+
                     }
 
                     if (spiel.getRochade(sitzungsID)) {
