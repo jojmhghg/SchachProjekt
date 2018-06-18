@@ -1066,6 +1066,15 @@ public class SpielbrettFXMLController implements Initializable {
                     spieler2min--;
                 }
                 spieler2sec--;
+                
+                if (spieler2min == 4 && spieler2sec < 10) {
+                    if (spieler2sec % 2 == 0) {
+                        this.linkePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
+                    }
+                    else {
+                        this.linkePane.setStyle("-fx-background-color:DEB887; -fx-opacity: 85%");
+                    }
+                }
 
                 if (spieler2min == 0 && spieler2sec == 0){
                     timerStop();
