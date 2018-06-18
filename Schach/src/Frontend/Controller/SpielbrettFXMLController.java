@@ -70,8 +70,7 @@ import javafx.util.Duration;
 public class SpielbrettFXMLController implements Initializable {
 
     boolean startOderZiel = true;
-    
-    
+
     @FXML
     private Text acht;
     @FXML
@@ -233,7 +232,7 @@ public class SpielbrettFXMLController implements Initializable {
     private Pane G1;
     @FXML
     private Pane H1;
-    
+
     @FXML
     private Pane L1;
     @FXML
@@ -297,8 +296,8 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private Pane R15;
     @FXML
-    private Pane R16;   
-    
+    private Pane R16;
+
     @FXML
     private Label restZeitWeiss;
     @FXML
@@ -325,7 +324,7 @@ public class SpielbrettFXMLController implements Initializable {
     private Pane topPane;
     @FXML
     private AnchorPane anchorPaneSpielbrett;
-    
+
     private double xOffset = 0;
     private double yOffset = 0;
 
@@ -334,10 +333,10 @@ public class SpielbrettFXMLController implements Initializable {
 
     @FXML
     private Pane rechtePane;
-    
+
     @FXML
     private Pane paneBildRechts;
-    
+
     @FXML
     private Pane paneBildLinks;
 
@@ -347,12 +346,12 @@ public class SpielbrettFXMLController implements Initializable {
 
     int stelleRechts = 0;
     int stelleLinks = 0;
-      
+
     int spieler1min = 0;
     int spieler2min = 0;
     int spieler1sec = 0;
     int spieler2sec = 0;
-    
+
     int sitzungsID;
     SpielStub spiel;
     Spielbrett spielbrett;
@@ -375,7 +374,7 @@ public class SpielbrettFXMLController implements Initializable {
         this.sitzungsID = sitzungsID;
         initSpielbrett();
         timerPlay();
-        
+
     }
 
     /**
@@ -386,35 +385,33 @@ public class SpielbrettFXMLController implements Initializable {
         DateFormat formatter = new SimpleDateFormat("mm:ss");
         String sp1 = Long.toString(spiel.getZeitSpieler1(sitzungsID));
         String sp2 = Long.toString(spiel.getZeitSpieler2(sitzungsID));
-        
+
         paneBildLinks.setVisible(false);
         paneBildRechts.setVisible(false);
-        
+
         if (spiel.getPartiezeit(sitzungsID) == -1) {
             this.restZeitSchwarz.setVisible(false);
             timerLogoSchwarz.setVisible(false);
             this.restZeitWeiss.setVisible(false);
             timerLogoWeiss.setVisible(false);
         } else {
-            int rest = (int) (spiel.getZeitSpieler1(sitzungsID) -  (spiel.getZeitSpieler1(sitzungsID) / 60000) * 60000);
+            int rest = (int) (spiel.getZeitSpieler1(sitzungsID) - (spiel.getZeitSpieler1(sitzungsID) / 60000) * 60000);
             spieler1min = (int) spiel.getZeitSpieler1(sitzungsID) / 60000;
             spieler1sec = (int) rest / 1000;
 
-            rest = (int) (spiel.getZeitSpieler2(sitzungsID) -  (spiel.getZeitSpieler2(sitzungsID) / 60000) * 60000);
+            rest = (int) (spiel.getZeitSpieler2(sitzungsID) - (spiel.getZeitSpieler2(sitzungsID) / 60000) * 60000);
             spieler2min = (int) spiel.getZeitSpieler2(sitzungsID) / 60000;
             spieler2sec = (int) rest / 1000;
         }
-        
-        if(spiel.getFarbeSpieler1(sitzungsID) == Farbe.WEISS){
+
+        if (spiel.getFarbeSpieler1(sitzungsID) == Farbe.WEISS) {
             restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1(sitzungsID))));
             restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2(sitzungsID))));
-        }
-        else{
+        } else {
             restZeitWeiss.setText(String.valueOf(formatter.format(spiel.getZeitSpieler2(sitzungsID))));
             restZeitSchwarz.setText(String.valueOf(formatter.format(spiel.getZeitSpieler1(sitzungsID))));
         }
-        
-        
+
         //Alle Panes (Schachfelder) in ein Array speichern, um besseren Zugriff darauf zu haben
         paneArray = new Pane[64];
         paneArray[0] = A1;
@@ -481,7 +478,7 @@ public class SpielbrettFXMLController implements Initializable {
         paneArray[61] = F8;
         paneArray[62] = G8;
         paneArray[63] = H8;
-        
+
         paneArrayLinks = new Pane[16];
         paneArrayRechts = new Pane[16];
         paneArrayLinks[0] = L1;
@@ -600,14 +597,14 @@ public class SpielbrettFXMLController implements Initializable {
         possibleMoves = null;
         quellPane = null;
         updateScreen();
-        
+
         int size = spiel.getMitschrift(sitzungsID).size();
         if (size % 2 == 0 && size > 0) {
             rotateBoard();
         }
-        
+
         spielerErkennung();
-         
+
         // War bei Niro nicht mehr im Code vorhanden!
         /*if(spiel.getKiGegner() && spiel.getFarbeSpieler1() == Farbe.SCHWARZ){
             MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt()], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
@@ -628,7 +625,7 @@ public class SpielbrettFXMLController implements Initializable {
             }).start();
         }*/
     }
-    
+
     private void spielerErkennung() throws RemoteException {
         if (spiel.getSpielerAmZug(sitzungsID) == Farbe.SCHWARZ) {
             paneBildRechts.setVisible(true);
@@ -659,22 +656,26 @@ public class SpielbrettFXMLController implements Initializable {
 
         } else if (spiel.getSpielerAmZug(sitzungsID) != Farbe.WEISS) {
             addImage.setLayoutX(-5);
-            addImage.setLayoutY(0);
+            addImage.setLayoutY(10);
             paneArrayLinks[stelleLinks].getChildren().add(addImage);
             //paneArrayRechts[stelleRechts].rotateProperty().setValue(360);
             stelleLinks++;
 
         }
     }
-    
+
     /**
      * Methode onCliked erkennt wenn das Maus links oder Rechts angeklickt
      * wurde, und handelt dementsprechend
+     *
      * @param event
      * @throws Backend.Funktionalität.SpielException
      */
     public void onClicked(MouseEvent event) throws SpielException, RemoteException {
-        if(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) != spiel.getSpielerAmZug(sitzungsID)){
+        
+        ImageView tmpView2;
+        
+        if (spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) != spiel.getSpielerAmZug(sitzungsID)) {
             spiel.kiZieht(startOderZiel, sitzungsID);
             event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
             startOderZiel = !startOderZiel;
@@ -685,7 +686,7 @@ public class SpielbrettFXMLController implements Initializable {
             //Linksklick:
             case PRIMARY: //Starte den Zug  
                 // angeklickte Pane
-                
+
                 Pane tmpPane = (Pane) event.getSource();
                 //Null oder Bild der Figur des ausgewählten Panes
                 ImageView tmpView = null;
@@ -701,7 +702,7 @@ public class SpielbrettFXMLController implements Initializable {
                     }
                 }
                 Position pos = Position.values()[tmp];
-                
+
                 // highlighting ausmachen
                 if (selectedFigur != null) {
                     selectedFigur.setEffect(null);
@@ -722,20 +723,31 @@ public class SpielbrettFXMLController implements Initializable {
                         if (quellPosition.ordinal() > pos.ordinal()) {
                             if (quellPosition.ordinal() - 8 > pos.ordinal()) {
                                 //Lösche quellPosi - 1
+                                tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() - 1].getChildren().get(0);
                                 this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
+                                
+                                addgeschlageneFiguren(tmpView2);
+                                
                             } else {
+                                tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() + 1].getChildren().get(0);
                                 //Lösche quellPosi + 1
                                 this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
+                                addgeschlageneFiguren(tmpView2);
                             }
                         } else {
                             if (quellPosition.ordinal() + 8 > pos.ordinal()) {
+                                tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() - 1].getChildren().get(0);
                                 //Lösche quellPosi + 1
                                 this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
+                                addgeschlageneFiguren(tmpView2);
                             } else {
+                                tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() + 1].getChildren().get(0);
                                 //Lösche quellPosi - 1
                                 this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
+                                addgeschlageneFiguren(tmpView2);
                             }
                         }
+                        
                     }
 
                     if (spiel.getRochade(sitzungsID)) {
@@ -773,7 +785,7 @@ public class SpielbrettFXMLController implements Initializable {
                     selectedFigur = null;
                     quellPosition = null;
                     updateScreen();
-                    
+
                 } // Falls nein:
                 else {
                     try {
@@ -786,14 +798,13 @@ public class SpielbrettFXMLController implements Initializable {
                         this.quellPosition = pos;
                         selectedFigur = tmpView;    // Festhalten welche Figur bewegt werden soll.
                         quellPane = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
-                        if((spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == spiel.getSpielerAmZug(sitzungsID)) || !spiel.getKiGegner(sitzungsID)){
-                            highlight(); 
+                        if ((spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == spiel.getSpielerAmZug(sitzungsID)) || !spiel.getKiGegner(sitzungsID)) {
+                            highlight();
                             if (selectedFigur != null) {
-                            selectedFigur.setEffect(new DropShadow());
+                                selectedFigur.setEffect(new DropShadow());
                             }
                         }
-                        
-                        
+
                     }
                 }
                 break;
@@ -812,7 +823,7 @@ public class SpielbrettFXMLController implements Initializable {
             default:
                 break;
         }
-        if(spiel.getKiGegner(sitzungsID) && spiel.getSpielerAmZug(sitzungsID) != spiel.getFarbeSpieler1(sitzungsID)){
+        if (spiel.getKiGegner(sitzungsID) && spiel.getSpielerAmZug(sitzungsID) != spiel.getFarbeSpieler1(sitzungsID)) {
             MouseEvent event1 = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
             new Thread(() -> {
                 try {
@@ -887,7 +898,7 @@ public class SpielbrettFXMLController implements Initializable {
 
         try {
             timeline.pause();
-            
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/Einstellungen.fxml"));
             Parent einstellungenScene = loader.load();
@@ -905,13 +916,13 @@ public class SpielbrettFXMLController implements Initializable {
         } catch (IOException e) {
         }
     }
-    
+
     @FXML
     private void remisAnbieten(ActionEvent event) {
 
         try {
             spiel.remisAnbieten(sitzungsID);
-            
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/RemisAngebot.fxml"));
             Parent remisAngebotScene = loader.load();
@@ -936,13 +947,13 @@ public class SpielbrettFXMLController implements Initializable {
         Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
         spielBrettStage.close();
     }
-    
+
     @FXML
     private void minimizeWindow(ActionEvent event) {
-        Stage spielBrettStage = (Stage) ( (Button) event.getSource() ).getScene().getWindow();
+        Stage spielBrettStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         spielBrettStage.toBack();
     }
-    
+
     @FXML
     private void close(ActionEvent event) {
         Platform.exit();
@@ -950,15 +961,14 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     public void timerPlay() {
-        this.timeline = new Timeline(        
+        this.timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1.0), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
                         try {
-                            if(spiel.getSpielerAmZug(sitzungsID) == Farbe.SCHWARZ){
+                            if (spiel.getSpielerAmZug(sitzungsID) == Farbe.SCHWARZ) {
                                 SpielbrettFXMLController.this.storedTimeSchwarz();
-                            }
-                            else if(spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS){
+                            } else if (spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS) {
                                 SpielbrettFXMLController.this.storedTimeWeiss();
                             }
                         } catch (RemoteException ex) {
@@ -972,11 +982,11 @@ public class SpielbrettFXMLController implements Initializable {
 
         timeline.play();
     }
-    
+
     private void timerStop() {
         timeline.stop();
     }
-    
+
     public void getTime(String partieZeit) throws RemoteException {
 
         if (spiel.getPartiezeit(sitzungsID) == -1) {
@@ -993,7 +1003,7 @@ public class SpielbrettFXMLController implements Initializable {
         }
 
     }
-    
+
     private void storedTimeWeiss() throws RemoteException {
 
         if (spiel.getPartiezeit(sitzungsID) == -1) {
@@ -1012,12 +1022,11 @@ public class SpielbrettFXMLController implements Initializable {
                 if (spieler2min == 4 && spieler2sec < 10) {
                     if (spieler2sec % 2 == 0) {
                         this.rechtePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
-                    }
-                    else {
+                    } else {
                         this.rechtePane.setStyle("-fx-background-color:DEB887; -fx-opacity: 85%");
                     }
                 }
-                
+
                 if (spieler2min <= 0 && spieler2sec <= 0) {
                     timerStop();
                     goToWinnerPopup();
@@ -1035,12 +1044,11 @@ public class SpielbrettFXMLController implements Initializable {
                 if (spieler1min == 4 && spieler1sec < 10) {
                     if (spieler1sec % 2 == 0) {
                         this.linkePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
-                    }
-                    else {
+                    } else {
                         this.linkePane.setStyle("-fx-background-color:DEB887; -fx-opacity: 85%");
                     }
                 }
-                
+
                 if (spieler1min <= 0 && spieler1sec <= 0) {
                     timerStop();
                     goToWinnerPopup();
@@ -1056,34 +1064,32 @@ public class SpielbrettFXMLController implements Initializable {
         if (spiel.getPartiezeit(sitzungsID) == -1) {
             this.restZeitSchwarz.setVisible(false);
             timerLogoSchwarz.setVisible(false);
-            
+
         } else {
-             if(spiel.getFarbeSpieler1(sitzungsID) == Farbe.WEISS){
-                  this.restZeitSchwarz.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
+            if (spiel.getFarbeSpieler1(sitzungsID) == Farbe.WEISS) {
+                this.restZeitSchwarz.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
 
                 if (spieler2sec == 0) {
                     spieler2sec = 59;
                     spieler2min--;
                 }
                 spieler2sec--;
-                
+
                 if (spieler2min == 4 && spieler2sec < 10) {
                     if (spieler2sec % 2 == 0) {
                         this.linkePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
-                    }
-                    else {
+                    } else {
                         this.linkePane.setStyle("-fx-background-color:DEB887; -fx-opacity: 85%");
                     }
                 }
 
-                if (spieler2min == 0 && spieler2sec == 0){
+                if (spieler2min == 0 && spieler2sec == 0) {
                     timerStop();
                     goToWinnerPopup();
 
                 }
-            }
-            else{
-                  this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
+            } else {
+                this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
 
                 if (spieler1sec == 0) {
                     spieler1sec = 59;
@@ -1091,7 +1097,7 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 spieler1sec--;
 
-                if (spieler1min == 0 && spieler1sec == 0){
+                if (spieler1min == 0 && spieler1sec == 0) {
                     timerStop();
                     goToWinnerPopup();
 
@@ -1115,7 +1121,7 @@ public class SpielbrettFXMLController implements Initializable {
             for (int i = 1; i < zuege.size(); i = i + 2) {
                 listZuegeSchwarz.getItems().add(zuege.get(i).getMitschrift());
             }
-            if(!spiel.getKiGegner(sitzungsID)){
+            if (!spiel.getKiGegner(sitzungsID)) {
                 rotateBoard();
                 spielerErkennung();
             }
@@ -1231,7 +1237,7 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     public void partieSpeichern(ActionEvent event) throws SpielException, RemoteException {
         timeline.pause();
-        
+
         //Create Alert box
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Partie speichern - Schach Spiel");
@@ -1279,7 +1285,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     public void cleanBoard() {
-        if(paneArray != null){
+        if (paneArray != null) {
             for (int i = 0; i < 64; i++) {
                 if (paneArray[i].getChildren().size() > 0) {
                     paneArray[i].getChildren().remove(0);
@@ -1310,7 +1316,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     @FXML
-    private void partieAufgeben(ActionEvent event) throws RemoteException{
+    private void partieAufgeben(ActionEvent event) throws RemoteException {
         try {
             spiel.aufgeben(sitzungsID);
             timeline.stop();
@@ -1318,7 +1324,7 @@ public class SpielbrettFXMLController implements Initializable {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             //TODO: Popup, dass aufgeben nicht möglich ist -> siehe fehlermeldung
         }
-        
+
         goToWinnerPopup();
     }
 
@@ -1341,32 +1347,32 @@ public class SpielbrettFXMLController implements Initializable {
         } catch (IOException e) {
         }
     }
-    
+
     @FXML
     private void moveWindow() {
-            
-            //grab your root here
-            topPane.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    xOffset = event.getSceneX();
-                    yOffset = event.getSceneY();
-                }
-            });
-            
-            //move around here
-            topPane.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Stage stage = (Stage) anchorPaneSpielbrett.getScene().getWindow();
-                    //anchorPaneSpielbrett.setX(event.getScreenX() - xOffset);
-                    //anchorPaneSpielbrett.setY(event.getScreenY() - yOffset);
-                    stage.setX(event.getScreenX() - xOffset);
-                    stage.setY(event.getScreenY() - yOffset);
-                }
-            });
+
+        //grab your root here
+        topPane.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+
+        //move around here
+        topPane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Stage stage = (Stage) anchorPaneSpielbrett.getScene().getWindow();
+                //anchorPaneSpielbrett.setX(event.getScreenX() - xOffset);
+                //anchorPaneSpielbrett.setY(event.getScreenY() - yOffset);
+                stage.setX(event.getScreenX() - xOffset);
+                stage.setY(event.getScreenY() - yOffset);
+            }
+        });
     }
-    
+
     /**
      * Initializes the controller class.
      *
@@ -1375,6 +1381,6 @@ public class SpielbrettFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }
 }
