@@ -1144,8 +1144,9 @@ public class SpielbrettFXMLController implements Initializable {
             }
             if (!spiel.getKiGegner(sitzungsID)) {
                 rotateBoard();
-                spielerErkennung();
+                //spielerErkennung();
             }
+            spielerErkennung();
         }
 
         if (posKingImSchach != null) {
