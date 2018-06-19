@@ -32,11 +32,11 @@ public final class Partie {
     /**
      * SitzungsID des ersten Spielers (nicht gesetzt, falls offline)
      */
-    private int idSpieler1;
+    private int sitzungsIDspieler1;
     /**
     * SitzungsID des zweiten Spielers (nicht gesetzt, falls offline)
     */   
-    private int idSpieler2;
+    private int sitzungsIDspieler2;
     
     /**
      * gibt an, ob man gegen einen KI-Gegner spielt (true = ja)
@@ -124,6 +124,37 @@ public final class Partie {
         this.farbeSpieler1 = optionen.getFarbe();
         this.partiezeit = optionen.getPartiezeit();
         this.onlinePartie = false;
+        
+        this.verbleibendeZeitSpieler1 = optionen.getPartiezeit() * 60 * 1000;
+        this.verbleibendeZeitSpieler2 = optionen.getPartiezeit() * 60 * 1000;
+        this.endeLetzterZug = new Date().getTime();
+        
+        this.gewinner = null;
+        this.beendet = false;
+        this.remisangebot = false;
+        this.umwandeln = false;
+        this.ablauf = new LinkedList<>();
+        
+        this.spielbrett = new Spielbrett();
+        
+        this.speichereSpielImpl("tmp");
+    }
+    
+    /**
+     * Konstruktor (beim Erstellen einer neuen Partie)
+     * 
+     * @param optionen Zu übernehmende Partieeinstellungen
+     * @param sitzungsIDspieler1
+     * @param sitzungsIDspieler2
+     * @throws Backend.Funktionalität.SpielException bei Fehler beim Speichern im TMP-File
+     */ 
+    public Partie(Optionen optionen, int sitzungsIDspieler1, int sitzungsIDspieler2) throws SpielException{
+        this.kiGegner = optionen.getKiGegner();
+        this.farbeSpieler1 = optionen.getFarbe();
+        this.partiezeit = optionen.getPartiezeit();
+        this.onlinePartie = true;
+        this.sitzungsIDspieler1 = sitzungsIDspieler1;
+        this.sitzungsIDspieler2 =  sitzungsIDspieler2;
         
         this.verbleibendeZeitSpieler1 = optionen.getPartiezeit() * 60 * 1000;
         this.verbleibendeZeitSpieler2 = optionen.getPartiezeit() * 60 * 1000;
@@ -849,12 +880,12 @@ public final class Partie {
         //ob der Spieler der ziehen möchte auch am Zug ist
         if(this.onlinePartie){
             if(this.getSpielerAmZug() == this.farbeSpieler1){
-                if(sitzungsID != this.idSpieler1){
+                if(sitzungsID != this.sitzungsIDspieler1){
                     throw new SpielException("Fehler bei zieheFigur() in Klasse Partie: Ungültige ID. Evtl. noch nicht am Zug");
                 }
             }
             else{
-                if(sitzungsID != this.idSpieler2){
+                if(sitzungsID != this.sitzungsIDspieler2){
                     throw new SpielException("Fehler bei zieheFigur() in Klasse Partie: Ungültige ID. Evtl. noch nicht am Zug");
                 }
             }

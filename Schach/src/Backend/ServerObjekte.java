@@ -50,15 +50,15 @@ public class ServerObjekte {
         this.queue30Min = new QueueTeilnehmer();
         this.queue60Min = new QueueTeilnehmer();
         
-        this.queue5minThread = new QueueThread(queue5Min);
+        this.queue5minThread = new QueueThread(queue5Min, partieListe);
         queue5minThread.start();
-        this.queue10minThread = new QueueThread(queue10Min);
+        this.queue10minThread = new QueueThread(queue10Min, partieListe);
         queue10minThread.start();
-        this.queue15minThread = new QueueThread(queue15Min);
+        this.queue15minThread = new QueueThread(queue15Min, partieListe);
         queue15minThread.start();
-        this.queue30minThread = new QueueThread(queue30Min);  
+        this.queue30minThread = new QueueThread(queue30Min, partieListe);  
         queue30minThread.start();
-        this.queue60minThread = new QueueThread(queue60Min);
+        this.queue60minThread = new QueueThread(queue60Min, partieListe);
         queue60minThread.start();
         
         this.infoThread = new InfoThread(this);

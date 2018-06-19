@@ -90,7 +90,8 @@ public class OptionenFXMLController implements Initializable {
     private ToggleGroup KIEinAusLokal;
 
     ObservableList<String> partieZeitList = FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt");
-
+    ObservableList<String> partieZeitListOnline = FXCollections.observableArrayList("5", "10", "15", "30", "60");
+    
     int sitzungsID;
     Spielbrett spielbrett;
     SpielStub spiel;
@@ -107,8 +108,8 @@ public class OptionenFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         partieZeitLokal.setItems(partieZeitList);
         partieZeitLokal.getSelectionModel().selectLast();
-        partieZeitOnline.setItems(partieZeitList);
-        partieZeitOnline.getSelectionModel().selectLast();
+        partieZeitOnline.setItems(partieZeitListOnline);
+        partieZeitOnline.getSelectionModel().selectFirst();
 
         this.spielbrett = new Spielbrett();
     }

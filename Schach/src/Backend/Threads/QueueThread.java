@@ -5,20 +5,27 @@
  */
 package Backend.Threads;
 
+import Backend.Enums.Farbe;
 import Backend.Funktionalität.Optionen;
+import Backend.Funktionalität.Partie;
+import Backend.Funktionalität.SpielException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class QueueThread extends Thread{
     
     private final QueueTeilnehmer queue;
+    private final HashMap<Number, Partie> partieListe;
     
     /**
      * Konstruktur
      * @param queue
+     * @param partieListe
      */
-    public QueueThread(QueueTeilnehmer queue){
+    public QueueThread(QueueTeilnehmer queue, HashMap<Number, Partie> partieListe){
         this.queue = queue;
+        this.partieListe = partieListe;
     }    
     
     /**
@@ -29,6 +36,7 @@ public class QueueThread extends Thread{
         try {
             Optionen optionen;
             int spieler2ID;
+            Partie partie;
             
             while(true){          
                 Thread.sleep(50);                
@@ -48,8 +56,20 @@ public class QueueThread extends Thread{
                         spieler2ID = 1;
                     }
                     
-                    // TODO: Partie mit beiden Spielern starten
-                    
+                    // Partie mit beiden Spielern starten
+                    try {  
+                        if(optionen.getFarbe() == Farbe.WEISS){
+                            partie = new Partie(optionen, this.queue.getSitzungsID(0), this.queue.getSitzungsID(spieler2ID));
+                        }
+                        else{
+                            partie = new Partie(optionen, this.queue.getSitzungsID(spieler2ID), this.queue.getSitzungsID(0));
+                        }
+
+                        this.partieListe.put(this.queue.getSitzungsID(0), partie);
+                        this.partieListe.put(this.queue.getSitzungsID(spieler2ID), partie);
+                    } catch (SpielException ex) {
+                        Logger.getLogger(QueueThread.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     
                     // Beide Spieler aus der Warteschlange entfernen
                     this.queue.remove(spieler2ID);
