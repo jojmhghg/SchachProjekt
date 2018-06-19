@@ -606,8 +606,8 @@ public class SpielbrettFXMLController implements Initializable {
         spielerErkennung();
 
         // War bei Niro nicht mehr im Code vorhanden!
-        /*if(spiel.getKiGegner() && spiel.getFarbeSpieler1() == Farbe.SCHWARZ){
-            MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt()], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
+        if(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ){
+            MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
             rotateBoard();
             new Thread(() -> {
                 try {
@@ -623,7 +623,7 @@ public class SpielbrettFXMLController implements Initializable {
                     }
                 });
             }).start();
-        }*/
+        }
     }
 
     private void spielerErkennung() throws RemoteException {
@@ -918,7 +918,6 @@ public class SpielbrettFXMLController implements Initializable {
     private void goToEinstellungen(ActionEvent event) {
 
         try {
-            timeline.pause();
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/Einstellungen.fxml"));

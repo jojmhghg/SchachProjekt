@@ -58,6 +58,12 @@ public class StartseiteFXMLController implements Initializable {
         timeline = new Timeline();    
     }
     
+    public void loadData(SpielStub spiel, Timeline timeline, int sitzungsID) {
+        this.spiel = spiel;
+        this.sitzungsID = sitzungsID;
+        this.timeline = timeline;
+    }
+    
     public void verbindeMitServer() throws RemoteException, NotBoundException{
         Registry registry;
             

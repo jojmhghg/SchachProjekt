@@ -96,9 +96,6 @@ public class OptionenFXMLController implements Initializable {
     SpielStub spiel;
     SpielbrettFXMLController spielbrettFXMLController;
     Timeline timeline;
-    
-    private double xOffset = 0; 
-    private double yOffset = 0;
 
     /**
      * Initializes the controller class.
@@ -174,11 +171,7 @@ public class OptionenFXMLController implements Initializable {
             Parent startSeiteScene = loader.load();
 
             StartseiteFXMLController controller = loader.getController();
-            try {
-                controller.loadData();
-            } catch (SpielException ex) {
-                Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            controller.loadData(spiel,timeline,sitzungsID);
             
             //startSeiteScene = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
             Stage startSeiteStage;
