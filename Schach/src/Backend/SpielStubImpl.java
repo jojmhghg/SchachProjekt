@@ -25,8 +25,7 @@ import java.util.logging.Logger;
 public class SpielStubImpl implements SpielStub {
     
     private final ServerObjekte serverObjekte;
-    
-    
+       
     public SpielStubImpl() throws SpielException{
         this.serverObjekte = new ServerObjekte();
     }
@@ -446,6 +445,13 @@ public class SpielStubImpl implements SpielStub {
             default:
                 throw new SpielException("ungültige Partiezeit übergeben");
         }
+        
+        this.serverObjekte.partieListe.remove(sitzungsID);
+    }
+
+    @Override
+    public boolean testObSpielGefunden(int sitzungsID) throws RemoteException, SpielException {
+        return this.serverObjekte.partieListe.containsKey(sitzungsID);
     }
     
 }

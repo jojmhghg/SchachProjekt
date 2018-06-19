@@ -61,5 +61,5 @@ public interface SpielStub extends Remote{
     public void kiZieht(boolean startOderZiel, int sitzungsID) throws SpielException, RemoteException;
     
     public void warteschlangeBetreten(Optionen partieoptionen, int sitzungsID) throws RemoteException, SpielException;
-    
+    public boolean testObSpielGefunden(int sitzungsID) throws RemoteException, SpielException;
 }

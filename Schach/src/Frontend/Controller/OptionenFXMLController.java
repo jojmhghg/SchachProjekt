@@ -121,7 +121,7 @@ public class OptionenFXMLController implements Initializable {
     }
 
     @FXML
-    private void onlinePartieStarten(ActionEvent event) {
+    private void onlinePartieStarten(ActionEvent event){
         try {
             Optionen partieoptionen;
 
@@ -131,8 +131,16 @@ public class OptionenFXMLController implements Initializable {
             
             spiel.warteschlangeBetreten(partieoptionen, sitzungsID); 
             spielbrett = new Spielbrett();
+            
+            boolean wait = true;
+            while(wait){
+                if(spiel.testObSpielGefunden(sitzungsID)){
+                    wait = false;
+                }
+                Thread.sleep(50);
+            }
 
-            /*FXMLLoader loader = new FXMLLoader();
+            FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
             Parent chessBoardScene = loader.load();
 
@@ -156,9 +164,11 @@ public class OptionenFXMLController implements Initializable {
             chessBoardStage.show();
 
             // Hide this current window (if this is what you want)
-            ((Node) (event.getSource())).getScene().getWindow().hide();*/
+            ((Node) (event.getSource())).getScene().getWindow().hide();
 
         } catch (IOException | SpielException ex) {
+            Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
             Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
