@@ -1373,7 +1373,7 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private void moveWindow() {
 
-        //grab your root here
+        //grab the root 
         topPane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -1382,7 +1382,7 @@ public class SpielbrettFXMLController implements Initializable {
             }
         });
 
-        //move around here
+        //move around 
         topPane.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

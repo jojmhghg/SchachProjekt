@@ -307,6 +307,6 @@
             <FontAwesomeIconView fill="#fffefe" glyphName="MINUS" size="20" />
          </graphic>
       </JFXButton>
-      <Pane fx:id="topPane" layoutY="2.0" prefHeight="25.0" prefWidth="1103.0" />
+      <Pane fx:id="topPane" layoutY="2.0" onMouseDragged="#moveWindow" onMousePressed="#moveWindow" prefHeight="25.0" prefWidth="1103.0" />
    </children>
 </AnchorPane>
