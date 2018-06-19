@@ -13,6 +13,7 @@ import Backend.Funktionalität.Partie;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.Funktionalität.Zug;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -28,10 +29,23 @@ public class SpielStubImpl implements SpielStub {
     private final HashMap<Number, Einstellungen> einstellungenListe;
     private final LinkedList<Integer> sitzungen;
     
+    private final LinkedList<Integer> queue5Min;
+    private final LinkedList<Integer> queue10Min;
+    private final LinkedList<Integer> queue15Min;
+    private final LinkedList<Integer> queue30Min;
+    private final LinkedList<Integer> queue60Min;
+    
+    
     public SpielStubImpl() throws SpielException{
         this.partieListe = new HashMap<>();
         this.einstellungenListe = new HashMap<>();
         this.sitzungen = new LinkedList<>();
+        
+        this.queue5Min = new LinkedList<>();
+        this.queue10Min = new LinkedList<>();
+        this.queue15Min = new LinkedList<>();
+        this.queue30Min = new LinkedList<>();
+        this.queue60Min = new LinkedList<>();
     }
     
     /**
@@ -406,4 +420,33 @@ public class SpielStubImpl implements SpielStub {
     public void kiZieht(boolean startOderZiel, int sitzungsID) throws SpielException{
         this.partieListe.get(sitzungsID).kiZieht(startOderZiel);
     }
+
+    @Override
+    public void warteschlangeBetreten(Optionen partieoptionen, int sitzungsID) throws RemoteException, SpielException{
+        switch(partieoptionen.getPartiezeit()){
+            case 5:
+                this.queue5Min.add(sitzungsID);
+                break;
+                
+            case 10:
+                this.queue10Min.add(sitzungsID);
+                break;
+                
+            case 15:
+                this.queue15Min.add(sitzungsID);
+                break;
+                
+            case 30:
+                this.queue30Min.add(sitzungsID);
+                break;
+                
+            case 60:
+                this.queue60Min.add(sitzungsID);
+                break;
+                
+            default:
+                    throw new SpielException("ungültige Partiezeit übergeben");
+        }
+    }
+    
 }
