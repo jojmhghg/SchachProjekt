@@ -8,7 +8,6 @@ package Backend.Funktionalität;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Figuren.Bauer;
-import Frontend.Controller.SpielbrettFXMLController;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,6 +24,19 @@ import java.util.LinkedList;
 public final class Partie {
     
     /* --- Attribute --- */    
+    
+    /**
+     * Gibt an, ob es sich um eine Online-Partie handelt
+     */
+    private boolean onlinePartie;   
+    /**
+     * SitzungsID des ersten Spielers (nicht gesetzt, falls offline)
+     */
+    private int idSpieler1;
+    /**
+    * SitzungsID des zweiten Spielers (nicht gesetzt, falls offline)
+    */   
+    private int idSpieler2;
     
     /**
      * gibt an, ob man gegen einen KI-Gegner spielt (true = ja)
@@ -93,12 +105,11 @@ public final class Partie {
     
     private SchnittstelleStockfish schnittstelleStockfish = new SchnittstelleStockfish();
     
-    private SpielbrettFXMLController spielbrettFXMLController = new SpielbrettFXMLController();
-    
     private int bestMoveInt;
     
     private String bestMoveStart = "";
     private String bestMoveZiel = "";
+
     
     /* --- Konstruktoren --- */
     
@@ -112,6 +123,7 @@ public final class Partie {
         this.kiGegner = optionen.getKiGegner();
         this.farbeSpieler1 = optionen.getFarbe();
         this.partiezeit = optionen.getPartiezeit();
+        this.onlinePartie = false;
         
         this.verbleibendeZeitSpieler1 = optionen.getPartiezeit() * 60 * 1000;
         this.verbleibendeZeitSpieler2 = optionen.getPartiezeit() * 60 * 1000;
@@ -139,6 +151,7 @@ public final class Partie {
         //initialisiere Spielbrett mit Grundaufstellung
         this.spielbrett = new Spielbrett();     
         this.umwandeln = false;
+        this.onlinePartie = false;
         String errorMessage = "Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.";
         
         //Pfad zum Speicherziel für Windows
@@ -319,6 +332,15 @@ public final class Partie {
     }
     
     /**
+     * Gibt den Zug für die KI zurück
+     * 
+     * @return Zug für die KI
+     */
+    public int getBestMoveInt() {
+        return bestMoveInt;
+    }
+    
+    /**
      * Gibt an, ob Bauer umgewandelt werden muss
      * 
      * @return true = bauer umgewandelt werden muss
@@ -361,9 +383,13 @@ public final class Partie {
      * 
      * @param ursprung Position der zu ziehenden Figur
      * @param ziel Zielposition
+     * @param sitzungsID
      * @throws SpielException Wirft Fehler, falls Zug nicht möglich (aus verschiedensten Gründen)
      */
-    public void zieheFigur(Position ursprung, Position ziel) throws SpielException{
+    public void zieheFigur(Position ursprung, Position ziel, int sitzungsID) throws SpielException{
+        // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
+        this.testeIDamZug(sitzungsID);
+        
         if(this.umwandeln){
             throw new SpielException("Bereits gezogen! Nun muss Figur ausgewählt werden, zu der Bauer umgewandelt wird");
         }
@@ -386,10 +412,6 @@ public final class Partie {
         else{
             zugBearbeiten(ursprung, ziel, null);
         }
-        if(this.kiGegner && farbeSpieler1 != getSpielerAmZug()){
-            //this.kiZieht();
-            //TODO
-        }
     }
     
     /**
@@ -399,7 +421,10 @@ public final class Partie {
      * @param figur Dame, Turm, Springer oder Laeufer
      * @throws SpielException falls man Bauer nicht umwandeln kann oder Übergabeparameter ungültig ist
      */
-    public void bauerUmwandeln(String figur) throws SpielException{
+    public void bauerUmwandeln(String figur, int sitzungsID) throws SpielException{
+        // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
+        this.testeIDamZug(sitzungsID);
+        
         if(!this.umwandeln){
             throw new SpielException("Umwandeln nicht notwendig!");
         }
@@ -445,9 +470,13 @@ public final class Partie {
      * Spieler der gerade am Zug gibt auf. 
      * Die Partie wird als beendet gesetzt und der andere Spieler als Gewinner.
      * 
+     * @param sitzungsID
      * @throws Backend.Funktionalität.SpielException falls man nicht aufgeben kann (z.B. da bereits beendet)
      */
-    public void aufgeben() throws SpielException{       
+    public void aufgeben(int sitzungsID) throws SpielException{ 
+        // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
+        this.testeIDamZug(sitzungsID);
+        
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
@@ -464,9 +493,13 @@ public final class Partie {
     /**
      * Bietet dem Gegner ein Remis an
      * 
+     * @param sitzungsID
      * @throws SpielException falls man kein Remis anbieten kann (z.B. da bereits beendet) 
      */
-    public void remisAnbieten() throws SpielException{        
+    public void remisAnbieten(int sitzungsID) throws SpielException{     
+        // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
+        this.testeIDamZug(sitzungsID);
+        
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
@@ -486,9 +519,13 @@ public final class Partie {
     /**
      * Nimmt das Angebot zum Remis an
      * 
+     * @param sitzungsID
      * @throws SpielException Falls kein Angebot vorliegt oder die Partie schon beendet ist 
      */
-    public void remisAnnehmen() throws SpielException{
+    public void remisAnnehmen(int sitzungsID) throws SpielException{
+        // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
+        this.testeIDamZug(sitzungsID);
+        
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
@@ -505,9 +542,13 @@ public final class Partie {
     /**
      * Lehnt das Angebot zum Remis ab
      * 
+     * @param sitzungsID
      * @throws SpielException Falls kein Angebot vorliegt oder die Partie schon beendet ist 
      */
-    public void remisAblehnen() throws SpielException{
+    public void remisAblehnen(int sitzungsID) throws SpielException{
+        // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
+        this.testeIDamZug(sitzungsID);
+        
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
@@ -520,6 +561,26 @@ public final class Partie {
         this.remisangebot = false;
     }
     
+    /**
+     * lässt die KI ihren Zug berechnen
+     * 
+     * @param startOderZiel Bei True gibt es die Startposition aus
+     * @throws Backend.Funktionalität.SpielException
+     */
+    public void kiZieht(boolean startOderZiel) throws SpielException{
+        if(startOderZiel){
+            String FEN = spielbrett.gibStringStockfish();
+            String bestMove = schnittstelleStockfish.stockfishEngine(FEN);
+            bestMoveStart = bestMove.substring(0, bestMove.length()-2);
+            bestMoveZiel = bestMove.substring(2);
+        }
+        if(startOderZiel){
+            bestMoveInt = convertBestMove(bestMoveStart);
+        }
+        else{
+            bestMoveInt = convertBestMove(bestMoveZiel);
+        }
+    }
     
     /* --- Private Methoden --- */
     
@@ -546,27 +607,7 @@ public final class Partie {
         }   
     }
     
-    /**
-     * Hilfsmethode, die die Schnittstelle zur KI ist
-     * @param startOderZiel Bei True gibt es die Startposition aus
-     * @throws Backend.Funktionalität.SpielException
-     */
-    public void kiZieht(boolean startOderZiel) throws SpielException{
-        if(startOderZiel){
-            String FEN = spielbrett.gibStringStockfish();
-            String bestMove = schnittstelleStockfish.stockfishEngine(FEN);
-            bestMoveStart = bestMove.substring(0, bestMove.length()-2);
-            bestMoveZiel = bestMove.substring(2);
-        }
-        if(startOderZiel){
-            bestMoveInt = convertBestMove(bestMoveStart);
-        }
-        else{
-            bestMoveInt = convertBestMove(bestMoveZiel);
-        }
-    }
-    
-    public int convertBestMove(String rawPostion){
+    private int convertBestMove(String rawPostion){
         int convertedPosition = 0;
         switch(rawPostion.charAt(0)){
             case 97:
@@ -795,10 +836,29 @@ public final class Partie {
             throw new SpielException("Speicherdatei konnte nicht erstellt werden!");
         }
     }
-
-    public int getBestMoveInt() {
-        return bestMoveInt;
+    
+    /**
+     * Hilfsmethode, die testet, ob übergebene ID am Zug ist. Wirft einen Fehler falls nicht
+     * 
+     * @param sitzungsID
+     * @return
+     * @throws SpielException 
+     */
+    private void testeIDamZug(int sitzungsID) throws SpielException{
+        // Falls es sich um eine Online-Partie handelt, muss getestet werden, 
+        //ob der Spieler der ziehen möchte auch am Zug ist
+        if(this.onlinePartie){
+            if(this.getSpielerAmZug() == this.farbeSpieler1){
+                if(sitzungsID != this.idSpieler1){
+                    throw new SpielException("Fehler bei zieheFigur() in Klasse Partie: Ungültige ID. Evtl. noch nicht am Zug");
+                }
+            }
+            else{
+                if(sitzungsID != this.idSpieler2){
+                    throw new SpielException("Fehler bei zieheFigur() in Klasse Partie: Ungültige ID. Evtl. noch nicht am Zug");
+                }
+            }
+        }
     }
-
-   
+  
 }

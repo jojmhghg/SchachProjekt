@@ -164,7 +164,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void zieheFigur(Position ausgangsposition, Position zielposition, int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).zieheFigur(ausgangsposition, zielposition);
+        this.partieListe.get(sitzungsID).zieheFigur(ausgangsposition, zielposition, sitzungsID);
     }
 
     /**
@@ -175,7 +175,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void aufgeben(int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).aufgeben();
+        this.partieListe.get(sitzungsID).aufgeben(sitzungsID);
     }
     
     /**
@@ -187,7 +187,7 @@ public class SpielStubImpl implements SpielStub {
     
     @Override
     public void remisAnbieten(int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).remisAnbieten();
+        this.partieListe.get(sitzungsID).remisAnbieten(sitzungsID);
     }
     
     /**
@@ -198,7 +198,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void remisAnnehmen(int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).remisAnnehmen();
+        this.partieListe.get(sitzungsID).remisAnnehmen(sitzungsID);
     }
     
     /**
@@ -209,7 +209,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void remisAblehnen(int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).remisAblehnen();
+        this.partieListe.get(sitzungsID).remisAblehnen(sitzungsID);
     }
     
     /**
