@@ -120,12 +120,55 @@ public class OptionenFXMLController implements Initializable {
     }
 
     @FXML
+    private void onlinePartieStarten(ActionEvent event) {
+        try {
+            Optionen partieoptionen;
+
+            int time = getChosenTimeOnline();
+            Farbe farbe = choosedColorOnline();
+            partieoptionen = new Optionen(farbe, time, false);
+            
+            spiel.warteschlangeBetreten(partieoptionen, sitzungsID); 
+            spielbrett = new Spielbrett();
+
+            /*FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
+            Parent chessBoardScene = loader.load();
+
+            SpielbrettFXMLController controller = loader.getController();
+            controller.loadData(spiel, spielbrett,timeline, sitzungsID);
+            //controller.getTime(partieZeitLokal.getValue());
+
+            //chessBoardScene = FXMLLoader.load(getClass().getResource("Spielbrett.fxml"));
+            Stage chessBoardStage = new Stage();
+            chessBoardStage.setScene(new Scene(chessBoardScene));
+            chessBoardStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            chessBoardStage.initStyle(StageStyle.TRANSPARENT);
+
+            //Zeit aktualisieren
+            //controller.refreshTime();
+
+            //Set Username 
+            controller.setSpielernameOnScreen();
+
+            //Show the page
+            chessBoardStage.show();
+
+            // Hide this current window (if this is what you want)
+            ((Node) (event.getSource())).getScene().getWindow().hide();*/
+
+        } catch (IOException | SpielException ex) {
+            Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @FXML
     private void goToChessBoard(ActionEvent event) {
         try {
             Optionen partieoptionen;
             try {
-                int time = getChoosedTime();
-                Farbe farbe = choosedColorLokal();
+                int time = getChosenTimeOffline();
+                Farbe farbe = choosedColorOffline();
                 partieoptionen = new Optionen(farbe, time, getChoosedGegner());
                 spielbrett = spiel.neuePartie(partieoptionen, sitzungsID);        
                       
@@ -245,8 +288,7 @@ public class OptionenFXMLController implements Initializable {
         return kiGegnerToggler.isSelected();
     }
 
-    private int getChoosedTime() {
-        SpielbrettFXMLController option = new SpielbrettFXMLController();
+    private int getChosenTimeOffline() {
         String selected;
         selected = partieZeitLokal.getValue();
         
@@ -266,7 +308,25 @@ public class OptionenFXMLController implements Initializable {
         }
     }
     
-    public Farbe choosedColorLokal(){
+    private int getChosenTimeOnline() {
+        String selected;
+        selected = partieZeitOnline.getValue();
+        
+        switch(selected){
+            case "10":
+                return 10;
+            case "15":
+                return 15;
+            case "30":
+                return 30;
+            case "60":
+                return 60;
+            default:
+                return 5;
+        }
+    }
+    
+    public Farbe choosedColorOffline(){
          if (weissLokal.isSelected()){
             return Farbe.WEISS;
         }

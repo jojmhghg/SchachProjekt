@@ -97,7 +97,7 @@
                               <Pane fx:id="onlineFarbePane" layoutX="316.0" layoutY="27.0" prefHeight="108.0" prefWidth="286.0" styleClass="weisseFiguren" stylesheets="@Spielbrett.css" />
                            </children>
                         </Pane>
-                        <JFXButton buttonType="RAISED" layoutX="323.0" layoutY="339.0" onAction="#goToChessBoard" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Los geht !">
+                        <JFXButton buttonType="RAISED" layoutX="323.0" layoutY="339.0" onAction="#onlinePartieStarten" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Los geht !">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -126,7 +126,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXButton fx:id="backToStartPage" buttonType="RAISED" layoutX="482.0" layoutY="339.0" onAction="#backToStartPage" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="zurück">
+                        <JFXButton fx:id="backToStartPage2" buttonType="RAISED" layoutX="482.0" layoutY="339.0" onAction="#backToStartPage" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="zurück">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>

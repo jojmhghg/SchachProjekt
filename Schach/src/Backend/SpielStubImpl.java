@@ -14,7 +14,6 @@ import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.Funktionalität.Zug;
 import java.rmi.RemoteException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,27 +24,11 @@ import java.util.logging.Logger;
  */
 public class SpielStubImpl implements SpielStub {
     
-    private final HashMap<Number, Partie> partieListe;
-    private final HashMap<Number, Einstellungen> einstellungenListe;
-    private final LinkedList<Integer> sitzungen;
-    
-    private final LinkedList<Integer> queue5Min;
-    private final LinkedList<Integer> queue10Min;
-    private final LinkedList<Integer> queue15Min;
-    private final LinkedList<Integer> queue30Min;
-    private final LinkedList<Integer> queue60Min;
+    private final ServerObjekte serverObjekte;
     
     
     public SpielStubImpl() throws SpielException{
-        this.partieListe = new HashMap<>();
-        this.einstellungenListe = new HashMap<>();
-        this.sitzungen = new LinkedList<>();
-        
-        this.queue5Min = new LinkedList<>();
-        this.queue10Min = new LinkedList<>();
-        this.queue15Min = new LinkedList<>();
-        this.queue30Min = new LinkedList<>();
-        this.queue60Min = new LinkedList<>();
+        this.serverObjekte = new ServerObjekte();
     }
     
     /**
@@ -56,11 +39,11 @@ public class SpielStubImpl implements SpielStub {
     @Override
     public int einloggen(){
         int sitzungsID = getNewID();  
-        sitzungen.add(sitzungsID);
+        serverObjekte.sitzungen.add(sitzungsID);
         
         try {        
-            this.partieListe.put(sitzungsID, new Partie("tmp"));
-            this.einstellungenListe.put(sitzungsID, new Einstellungen());
+            this.serverObjekte.partieListe.put(sitzungsID, new Partie("tmp"));
+            this.serverObjekte.einstellungenListe.put(sitzungsID, new Einstellungen());
         } catch (SpielException ex) {
             Logger.getLogger(SpielStubImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,7 +64,7 @@ public class SpielStubImpl implements SpielStub {
             sitzungsID = (int)(Math.random() * 1000000 + 1); 
             neu = true;
             
-            for(int sitzung : sitzungen){
+            for(int sitzung : serverObjekte.sitzungen){
                 if(sitzung == sitzungsID){
                     neu = false;
                     break;
@@ -101,7 +84,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void setUsername(String username, int sitzungsID) throws SpielException {
-        this.einstellungenListe.get(sitzungsID).setUsername(username);
+        this.serverObjekte.einstellungenListe.get(sitzungsID).setUsername(username);
     }
 
     /**
@@ -112,7 +95,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public String getUsername(int sitzungsID) {
-        return this.einstellungenListe.get(sitzungsID).getUsername();
+        return this.serverObjekte.einstellungenListe.get(sitzungsID).getUsername();
     }
 
     /**
@@ -124,7 +107,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void setHighlightingAus(Boolean highlightingAus, int sitzungsID) throws SpielException{
-        this.einstellungenListe.get(sitzungsID).setHighlightingAus(highlightingAus);
+        this.serverObjekte.einstellungenListe.get(sitzungsID).setHighlightingAus(highlightingAus);
     }
 
     /**
@@ -135,7 +118,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public boolean isHighlightingAus(int sitzungsID) {
-        return this.einstellungenListe.get(sitzungsID).isHighlightingAus();
+        return this.serverObjekte.einstellungenListe.get(sitzungsID).isHighlightingAus();
     }
 
     /**
@@ -149,7 +132,7 @@ public class SpielStubImpl implements SpielStub {
     @Override
     public Spielbrett neuePartie(Optionen partieoptionen, int sitzungsID) throws SpielException{
         Partie partie = new Partie(partieoptionen);
-        this.partieListe.put(sitzungsID, partie);
+        this.serverObjekte.partieListe.put(sitzungsID, partie);
         return partie.getSpielbrett();
     }
 
@@ -164,7 +147,7 @@ public class SpielStubImpl implements SpielStub {
     @Override
     public Spielbrett partieLaden(String speicherstand, int sitzungsID) throws SpielException{
         Partie partie = new Partie(speicherstand);
-        this.partieListe.put(sitzungsID, partie);
+        this.serverObjekte.partieListe.put(sitzungsID, partie);
         return partie.getSpielbrett();
     }
 
@@ -178,7 +161,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void zieheFigur(Position ausgangsposition, Position zielposition, int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).zieheFigur(ausgangsposition, zielposition, sitzungsID);
+        this.serverObjekte.partieListe.get(sitzungsID).zieheFigur(ausgangsposition, zielposition, sitzungsID);
     }
 
     /**
@@ -189,7 +172,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void aufgeben(int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).aufgeben(sitzungsID);
+        this.serverObjekte.partieListe.get(sitzungsID).aufgeben(sitzungsID);
     }
     
     /**
@@ -201,7 +184,7 @@ public class SpielStubImpl implements SpielStub {
     
     @Override
     public void remisAnbieten(int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).remisAnbieten(sitzungsID);
+        this.serverObjekte.partieListe.get(sitzungsID).remisAnbieten(sitzungsID);
     }
     
     /**
@@ -212,7 +195,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void remisAnnehmen(int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).remisAnnehmen(sitzungsID);
+        this.serverObjekte.partieListe.get(sitzungsID).remisAnnehmen(sitzungsID);
     }
     
     /**
@@ -223,7 +206,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void remisAblehnen(int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).remisAblehnen(sitzungsID);
+        this.serverObjekte.partieListe.get(sitzungsID).remisAblehnen(sitzungsID);
     }
     
     /**
@@ -234,7 +217,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public boolean getBeendet(int sitzungsID){
-        return this.partieListe.get(sitzungsID).getBeendet();
+        return this.serverObjekte.partieListe.get(sitzungsID).getBeendet();
     }
         
     /**
@@ -245,7 +228,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public Position getPositionBlackKing(int sitzungsID){
-        return this.partieListe.get(sitzungsID).getSpielbrett().getPosBlackKing();
+        return this.serverObjekte.partieListe.get(sitzungsID).getSpielbrett().getPosBlackKing();
     }
     
     /**
@@ -256,7 +239,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public Position getPositionWhiteKing(int sitzungsID){
-        return this.partieListe.get(sitzungsID).getSpielbrett().getPosWhiteKing();
+        return this.serverObjekte.partieListe.get(sitzungsID).getSpielbrett().getPosWhiteKing();
     }
     
     /**
@@ -266,7 +249,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public Farbe getFarbeSpieler1(int sitzungsID){
-        return this.partieListe.get(sitzungsID).getFarbeSpieler1();
+        return this.serverObjekte.partieListe.get(sitzungsID).getFarbeSpieler1();
     }
     
     /**
@@ -277,7 +260,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public boolean getKiGegner(int sitzungsID){
-        return this.partieListe.get(sitzungsID).istGegnerEineKI();
+        return this.serverObjekte.partieListe.get(sitzungsID).istGegnerEineKI();
     }
        
     /**
@@ -289,7 +272,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public boolean getEnPassant(int sitzungsID){
-        return this.partieListe.get(sitzungsID).getSpielbrett().getEnPassant();
+        return this.serverObjekte.partieListe.get(sitzungsID).getSpielbrett().getEnPassant();
     }
     
     /**
@@ -301,7 +284,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public boolean getRochade(int sitzungsID){
-        return this.partieListe.get(sitzungsID).getSpielbrett().getRochade();
+        return this.serverObjekte.partieListe.get(sitzungsID).getSpielbrett().getRochade();
     }
      
     /**
@@ -312,7 +295,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public Farbe getSpielerAmZug(int sitzungsID) {
-        return this.partieListe.get(sitzungsID).getSpielerAmZug();
+        return this.serverObjekte.partieListe.get(sitzungsID).getSpielerAmZug();
     }
 
     /**
@@ -325,7 +308,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public Farbe getGewinner(int sitzungsID) {
-        return this.partieListe.get(sitzungsID).getGewinner();
+        return this.serverObjekte.partieListe.get(sitzungsID).getGewinner();
     }
     
     /**
@@ -336,7 +319,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public Farbe imSchach(int sitzungsID) {
-        return this.partieListe.get(sitzungsID).getSpielbrett().getSchach();
+        return this.serverObjekte.partieListe.get(sitzungsID).getSpielbrett().getSchach();
     }
 
     /**
@@ -347,7 +330,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public long getZeitSpieler1(int sitzungsID) {
-        return this.partieListe.get(sitzungsID).getVerbleibendeZeitSpieler1();
+        return this.serverObjekte.partieListe.get(sitzungsID).getVerbleibendeZeitSpieler1();
     }
 
     /**
@@ -358,7 +341,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public long getZeitSpieler2(int sitzungsID) {
-        return this.partieListe.get(sitzungsID).getVerbleibendeZeitSpieler2();
+        return this.serverObjekte.partieListe.get(sitzungsID).getVerbleibendeZeitSpieler2();
     }
 
     /**
@@ -369,7 +352,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public long getPartiezeit(int sitzungsID) {
-        return this.partieListe.get(sitzungsID).getPartiezeit();
+        return this.serverObjekte.partieListe.get(sitzungsID).getPartiezeit();
     }
 
     /**
@@ -382,7 +365,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public LinkedList<Position> getMoeglicheZuege(Position position, int sitzungsID) throws SpielException{
-        return this.partieListe.get(sitzungsID).getMovesFuerFeld(position);
+        return this.serverObjekte.partieListe.get(sitzungsID).getMovesFuerFeld(position);
     }
 
     /**
@@ -393,7 +376,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public LinkedList<Zug> getMitschrift(int sitzungsID) {
-        return this.partieListe.get(sitzungsID).getMitschrift();
+        return this.serverObjekte.partieListe.get(sitzungsID).getMitschrift();
     }
 
     /**
@@ -405,7 +388,7 @@ public class SpielStubImpl implements SpielStub {
     @Override
     public void speichereSpiel(String dateiname, int sitzungsID) {
         try {
-            this.partieListe.get(sitzungsID).speichereSpiel(dateiname);
+            this.serverObjekte.partieListe.get(sitzungsID).speichereSpiel(dateiname);
         } catch (SpielException ex) {
             Logger.getLogger(SpielStubImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -413,39 +396,55 @@ public class SpielStubImpl implements SpielStub {
 
     @Override
     public int getBestMoveInt(int sitzungsID){
-        return this.partieListe.get(sitzungsID).getBestMoveInt();
+        return this.serverObjekte.partieListe.get(sitzungsID).getBestMoveInt();
     }
     
     @Override
     public void kiZieht(boolean startOderZiel, int sitzungsID) throws SpielException{
-        this.partieListe.get(sitzungsID).kiZieht(startOderZiel);
+        this.serverObjekte.partieListe.get(sitzungsID).kiZieht(startOderZiel);
     }
 
     @Override
     public void warteschlangeBetreten(Optionen partieoptionen, int sitzungsID) throws RemoteException, SpielException{
+        if(this.serverObjekte.queue5Min.contains(sitzungsID)){
+            throw new SpielException("SitzungsID bereits in Warteschlange vorhanden!");
+        }
+        if(this.serverObjekte.queue10Min.contains(sitzungsID)){
+            throw new SpielException("SitzungsID bereits in Warteschlange vorhanden!");
+        }
+        if(this.serverObjekte.queue15Min.contains(sitzungsID)){
+            throw new SpielException("SitzungsID bereits in Warteschlange vorhanden!");
+        }
+        if(this.serverObjekte.queue30Min.contains(sitzungsID)){
+            throw new SpielException("SitzungsID bereits in Warteschlange vorhanden!");
+        }
+        if(this.serverObjekte.queue60Min.contains(sitzungsID)){
+            throw new SpielException("SitzungsID bereits in Warteschlange vorhanden!");
+        }
+        
         switch(partieoptionen.getPartiezeit()){
             case 5:
-                this.queue5Min.add(sitzungsID);
+                this.serverObjekte.queue5Min.add(sitzungsID, partieoptionen);
                 break;
                 
             case 10:
-                this.queue10Min.add(sitzungsID);
+                this.serverObjekte.queue10Min.add(sitzungsID, partieoptionen);
                 break;
                 
             case 15:
-                this.queue15Min.add(sitzungsID);
+                this.serverObjekte.queue15Min.add(sitzungsID, partieoptionen);
                 break;
                 
             case 30:
-                this.queue30Min.add(sitzungsID);
+                this.serverObjekte.queue30Min.add(sitzungsID, partieoptionen);
                 break;
                 
             case 60:
-                this.queue60Min.add(sitzungsID);
+                this.serverObjekte.queue60Min.add(sitzungsID, partieoptionen);
                 break;
                 
             default:
-                    throw new SpielException("ungültige Partiezeit übergeben");
+                throw new SpielException("ungültige Partiezeit übergeben");
         }
     }
     
