@@ -17,6 +17,7 @@ import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -45,36 +46,51 @@ public class EinstellungenFXMLController implements Initializable {
     int sitzungsID;
     SpielStub spiel;
     SpielbrettFXMLController spielbrettFXMLController;
+    OptionenFXMLController optionenFXMLContoller;
+    Timeline timeline;
 
-    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, int sitzungsID) {
+    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, int sitzungsID, OptionenFXMLController optionenFXMLContoller) {
         this.spiel = spiel;
         this.spielbrettFXMLController = spielbrettFXMLController;
         this.sitzungsID = sitzungsID;
+        this.optionenFXMLContoller = optionenFXMLContoller;
+        
     }
     
     @FXML
     private void backToSpielbrett(ActionEvent event) {
-        spielbrettFXMLController.timeline.play();
-        ((Node) (event.getSource())).getScene().getWindow().hide();
+        //Überprüfe zuerst ob die Einstellungen bei der Option Seite geöndert wird
+        if (spielbrettFXMLController != null) {
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+
+        } else {
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+        }
     }
 
     @FXML
     private void speichern(ActionEvent event) throws IOException {
-        
+
         String newSpielername = spielername.getText();
-        
-        if(!newSpielername.isEmpty()) {
+
+        if (!newSpielername.isEmpty()) {
             try {
-                spielbrettFXMLController.timeline.play();
-                spiel.setUsername(newSpielername, sitzungsID);
-                spiel.setHighlightingAus(highlightingButton.isSelected(), sitzungsID);
-                spielbrettFXMLController.setSpielernameOnScreen();
-                backToSpielbrett(event);
+                //Überprüfe zuerst ob die Einstellungen bei der Option Seite geändert wird
+                if (spielbrettFXMLController != null) {
+                    spiel.setUsername(newSpielername, sitzungsID);
+                    spiel.setHighlightingAus(highlightingButton.isSelected(), sitzungsID);
+                    spielbrettFXMLController.setSpielernameOnScreen();
+                    backToSpielbrett(event);
+                    //((Node) (event.getSource())).getScene().getWindow().hide();
+                } else {
+                    spiel.setUsername(newSpielername, sitzungsID);
+                    spiel.setHighlightingAus(highlightingButton.isSelected(), sitzungsID);
+                    backToSpielbrett(event);
+                }
             } catch (SpielException ex) {
                 Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog - Partie speichern");
             alert.setHeaderText("Partie speichern abgebrochen !");

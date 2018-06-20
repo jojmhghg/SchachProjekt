@@ -62,6 +62,7 @@ public class WinnerPopupFXMLController implements Initializable {
             startseiteStage.setScene(new Scene(startseiteScene));
             startseiteStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             startseiteStage.initStyle(StageStyle.UNDECORATED);
+            startseiteStage.hide();
             startseiteStage.show();
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException | SpielException ex) {

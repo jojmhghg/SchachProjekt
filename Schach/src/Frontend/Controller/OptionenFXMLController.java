@@ -36,6 +36,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -234,6 +235,29 @@ public class OptionenFXMLController implements Initializable {
             startSeiteStage.show();
         } catch (IOException ex) {
             Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @FXML
+    private void goToEinstellungen(ActionEvent event) {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../View/Einstellungen.fxml"));
+            Parent einstellungenScene = loader.load();
+
+            EinstellungenFXMLController controller = loader.getController();
+            controller.loadData(spiel, spielbrettFXMLController, sitzungsID,this);
+
+            Stage einstellungenStage = new Stage();
+            einstellungenStage.initModality(Modality.APPLICATION_MODAL);
+            einstellungenStage.initStyle(StageStyle.UNDECORATED);
+            einstellungenStage.setScene(new Scene(einstellungenScene));
+            einstellungenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            //einstellungenStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
+            einstellungenStage.show();
+        } catch (IOException e) {
         }
     }
 

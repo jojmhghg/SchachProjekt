@@ -84,6 +84,11 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </JFXButton>
+                        <JFXButton buttonType="RAISED" layoutX="17.0" layoutY="347.0" onAction="#goToEinstellungen" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Einstellungen">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
               </content>
@@ -127,6 +132,11 @@
                            </font>
                         </JFXRadioButton>
                         <JFXButton fx:id="backToStartPage2" buttonType="RAISED" layoutX="482.0" layoutY="339.0" onAction="#backToStartPage" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="zurück">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton buttonType="RAISED" layoutX="15.0" layoutY="339.0" onAction="#goToEinstellungen" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Einstellungen">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
