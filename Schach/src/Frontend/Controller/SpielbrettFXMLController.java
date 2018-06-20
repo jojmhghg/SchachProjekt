@@ -385,8 +385,6 @@ public class SpielbrettFXMLController implements Initializable {
         String sp1 = Long.toString(spiel.getZeitSpieler1(sitzungsID));
         String sp2 = Long.toString(spiel.getZeitSpieler2(sitzungsID));
 
-        paneBildLinks.setVisible(false);
-        paneBildRechts.setVisible(false);
 
         if (spiel.getPartiezeit(sitzungsID) == -1) {
             this.restZeitSchwarz.setVisible(false);
@@ -625,17 +623,26 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
+    // Hier wird der spieler Erkannt und gezeigt, wer dran ist
     private void spielerErkennung() throws RemoteException {
         if (spiel.getSpielerAmZug(sitzungsID) == Farbe.SCHWARZ) {
-            paneBildRechts.setVisible(true);
-            paneBildLinks.setVisible(false);
+            //paneBildRechts.setVisible(true);
+            //paneBildLinks.setVisible(false); #FFFFFF  #50280e
+            //spielernameWeiss.setStyle("");
+            //spielernameSchwarz.setStyle("-fx-background-color:#50280e;");
+            this.listZuegeSchwarz.setStyle("-fx-background-color:#D2691E; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+            this.listZuegeWeiss.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold;  -fx-font-size: 20px;");
             this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity:85%");
-            this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 40%");
+            this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
 
         } else if (spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS) {
-            paneBildRechts.setVisible(false);
-            paneBildLinks.setVisible(true);
-            this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 40%");
+            //paneBildRechts.setVisible(false);
+            //paneBildLinks.setVisible(true);
+            //spielernameWeiss.setStyle("-fx-background-color:#FFFFFF;");
+            //spielernameSchwarz.setStyle("");
+            this.listZuegeSchwarz.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold; -fx-font-size: 20px;");
+            this.listZuegeWeiss.setStyle("-fx-background-color:#FFDEAD; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+            this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
             this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 85%");
 
         }
