@@ -90,9 +90,11 @@ public class PartieLadenFXMLController implements Initializable {
                 spielbrettStage.setScene(new Scene(spielbrettScene));
                 spielbrettStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
                 spielbrettStage.show();
-                
+
                 startseiteWindow.hide();
                 ((Node) (event.getSource())).getScene().getWindow().hide();
+                
+                timeline.play();
                 
             } catch (SpielException ex) {
                 Alert alert = new Alert(AlertType.ERROR);
@@ -139,7 +141,7 @@ public class PartieLadenFXMLController implements Initializable {
     
     @FXML
     private void onKeyPressed(ActionEvent ae) {
-        filename.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        filename.setOnKeyTyped(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent ke) {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
