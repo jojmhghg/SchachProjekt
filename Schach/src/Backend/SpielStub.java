@@ -38,6 +38,7 @@ public interface SpielStub extends Remote{
     public void remisAnbieten(int sitzungsID) throws SpielException, RemoteException;
     public void remisAnnehmen(int sitzungsID) throws SpielException, RemoteException;
     public void remisAblehnen(int sitzungsID) throws SpielException, RemoteException;
+    public boolean liegtRemisangebotVor(int sitzungsID) throws SpielException, RemoteException;
     
     public boolean getBeendet(int sitzungsID) throws RemoteException;
     public Position getPositionBlackKing(int sitzungsID) throws RemoteException;

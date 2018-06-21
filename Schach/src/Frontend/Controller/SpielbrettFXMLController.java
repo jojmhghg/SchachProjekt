@@ -14,6 +14,7 @@ import Backend.Funktionalität.Spielbrett;
 import Backend.Funktionalität.Zug;
 import Backend.SpielStub;
 import Frontend.Threads.CheckBeendetThread;
+import Frontend.Threads.CheckRemisangebotThread;
 import com.jfoenix.controls.JFXListView;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
@@ -359,6 +360,7 @@ public class SpielbrettFXMLController implements Initializable {
     OptionenFXMLController optionenFXMLController;
     Timeline timeline;
     CheckBeendetThread checkBeendetThread;
+    CheckRemisangebotThread checkRemisangebotThread;
 
     // Attribute zum Ziehen von Figuren
     private ImageView selectedFigur;
@@ -375,9 +377,19 @@ public class SpielbrettFXMLController implements Initializable {
         this.sitzungsID = sitzungsID;
         initSpielbrett();
         timerPlay();
-        
+
+        this.startCheckBeendetThread();
+        this.startCheckRemisangebotThread();
+    }
+    
+    private void startCheckBeendetThread(){
         checkBeendetThread = new CheckBeendetThread(sitzungsID, spiel, this);
         checkBeendetThread.start();
+    }
+    
+    public void startCheckRemisangebotThread(){
+        checkRemisangebotThread = new CheckRemisangebotThread(sitzungsID, spiel, this);
+        checkRemisangebotThread.start();
     }
 
     /**
@@ -962,11 +974,16 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     @FXML
-    private void remisAnbieten(ActionEvent event) {
-
+    private void remisAnbieten(ActionEvent event) throws RemoteException {
         try {
             spiel.remisAnbieten(sitzungsID);
-
+        } catch (SpielException ex) {
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void goToRemisangebot(){
+        try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/RemisAngebot.fxml"));
             Parent remisAngebotScene = loader.load();
@@ -981,8 +998,6 @@ public class SpielbrettFXMLController implements Initializable {
             remisAngebotStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             remisAngebotStage.show();
         } catch (IOException e) {
-        } catch (SpielException ex) {
-            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

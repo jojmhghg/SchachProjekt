@@ -289,6 +289,41 @@ public final class Partie {
     /* --- Getter --- */
     
     /**
+     * Gib bei Online-Partie zurück, ob der Gegner dir Remis anbietet.
+     * Bei Offline: Gibt zurück ob ein Remis angeboten wurde
+     * 
+     * @param sitzungsID
+     * @return
+     * @throws SpielException 
+     */
+    public boolean liegtRemisangebotVor(int sitzungsID) throws SpielException{
+        if(this.onlinePartie){           
+            if(this.sitzungsIDspieler1 == sitzungsID){
+                if(this.getSpielerAmZug() == this.farbeSpieler1.andereFarbe()){
+                    return this.remisangebot;
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(this.sitzungsIDspieler2 == sitzungsID){
+                if(this.getSpielerAmZug() == this.farbeSpieler1){
+                    return this.remisangebot;
+                }
+                else{
+                    return false;
+                }               
+            }
+            else{
+                throw new SpielException("ungültige SitzungsID");
+            }
+        }
+        else{
+            return this.remisangebot;
+        }      
+    }
+            
+    /**
      * Gibt die Farbe für den Spieler mit der übergebenen ID zurück
      * 
      * @param sitzungsID
@@ -398,15 +433,6 @@ public final class Partie {
     }
     
     /**
-     * Gibt an, ob ein Remisangebot vorliegt
-     * 
-     * @return true = remisangebot von Spieler der davor am Zug war, sonst false
-     */
-    public boolean getRemisangebot(){
-        return this.remisangebot;
-    }
-    
-    /**
      * Gibt den Zug für die KI zurück
      * 
      * @return Zug für die KI
@@ -463,7 +489,7 @@ public final class Partie {
      */
     public void zieheFigur(Position ursprung, Position ziel, int sitzungsID) throws SpielException{
         // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
-        this.testeIDamZug(sitzungsID);
+        this.testeIdAmZug(sitzungsID);
         
         if(this.umwandeln){
             throw new SpielException("Bereits gezogen! Nun muss Figur ausgewählt werden, zu der Bauer umgewandelt wird");
@@ -504,7 +530,7 @@ public final class Partie {
      */
     public void bauerUmwandeln(String figur, int sitzungsID) throws SpielException{
         // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
-        this.testeIDamZug(sitzungsID);
+        this.testeIdAmZug(sitzungsID);
         
         if(!this.umwandeln){
             throw new SpielException("Umwandeln nicht notwendig!");
@@ -590,7 +616,7 @@ public final class Partie {
      */
     public void remisAnbieten(int sitzungsID) throws SpielException{     
         // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
-        this.testeIDamZug(sitzungsID);
+        this.testeIdAmZug(sitzungsID);
         
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
@@ -617,7 +643,7 @@ public final class Partie {
      */
     public void remisAnnehmen(int sitzungsID) throws SpielException{
         // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
-        this.testeIDamZug(sitzungsID);
+        this.testeIdNichtAmZug(sitzungsID);
         
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
@@ -641,7 +667,7 @@ public final class Partie {
      */
     public void remisAblehnen(int sitzungsID) throws SpielException{
         // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
-        this.testeIDamZug(sitzungsID);
+        this.testeIdNichtAmZug(sitzungsID);
         
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
@@ -940,7 +966,7 @@ public final class Partie {
      * @return
      * @throws SpielException 
      */
-    private void testeIDamZug(int sitzungsID) throws SpielException{
+    private void testeIdAmZug(int sitzungsID) throws SpielException{
         // Falls es sich um eine Online-Partie handelt, muss getestet werden, 
         //ob der Spieler der ziehen möchte auch am Zug ist
         if(this.onlinePartie){
@@ -951,6 +977,30 @@ public final class Partie {
             }
             else{
                 if(sitzungsID != this.sitzungsIDspieler2){
+                    throw new SpielException("Fehler bei zieheFigur() in Klasse Partie: Ungültige ID. Evtl. noch nicht am Zug");
+                }
+            }
+        }
+    }
+    
+    /**
+     * Hilfsmethode, die testet, ob übergebene ID am Zug ist. Wirft einen Fehler falls nicht
+     * 
+     * @param sitzungsID
+     * @return
+     * @throws SpielException 
+     */
+    private void testeIdNichtAmZug(int sitzungsID) throws SpielException{
+        // Falls es sich um eine Online-Partie handelt, muss getestet werden, 
+        //ob der Spieler der ziehen möchte auch am Zug ist
+        if(this.onlinePartie){
+            if(this.getSpielerAmZug() == this.farbeSpieler1){
+                if(sitzungsID != this.sitzungsIDspieler2){
+                    throw new SpielException("Fehler bei zieheFigur() in Klasse Partie: Ungültige ID. Evtl. noch nicht am Zug");
+                }
+            }
+            else{
+                if(sitzungsID != this.sitzungsIDspieler1){
                     throw new SpielException("Fehler bei zieheFigur() in Klasse Partie: Ungültige ID. Evtl. noch nicht am Zug");
                 }
             }

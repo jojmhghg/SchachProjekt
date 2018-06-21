@@ -463,5 +463,10 @@ public class SpielStubImpl implements SpielStub {
     public Farbe getEigeneFarbeByID(int sitzungsID) throws RemoteException, SpielException {
         return this.serverObjekte.partieListe.get(sitzungsID).getFarbeByID(sitzungsID);
     }
+
+    @Override
+    public boolean liegtRemisangebotVor(int sitzungsID) throws SpielException, RemoteException {
+        return this.serverObjekte.partieListe.get(sitzungsID).liegtRemisangebotVor(sitzungsID);        
+    }
     
 }

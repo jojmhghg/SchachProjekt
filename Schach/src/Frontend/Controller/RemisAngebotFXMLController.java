@@ -7,6 +7,7 @@ package Frontend.Controller;
 
 import Backend.Funktionalität.SpielException;
 import Backend.SpielStub;
+import Frontend.Threads.CheckRemisangebotThread;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -43,7 +44,7 @@ public class RemisAngebotFXMLController implements Initializable {
     private Text hinweisRemisAngebot;
     @FXML
     private Label remisAnbieter;
-    
+   
     SpielStub spiel;
     int sitzungsID;
     SpielbrettFXMLController spielbrettFXMLController;
@@ -96,6 +97,7 @@ public class RemisAngebotFXMLController implements Initializable {
     private void remisAblehnen(ActionEvent event) throws RemoteException {
         try {
             spiel.remisAblehnen(sitzungsID);
+            spielbrettFXMLController.startCheckRemisangebotThread();
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (SpielException ex) {
             Logger.getLogger(RemisAngebotFXMLController.class.getName()).log(Level.SEVERE, null, ex);
