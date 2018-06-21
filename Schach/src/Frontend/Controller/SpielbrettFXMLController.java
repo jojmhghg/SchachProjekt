@@ -13,6 +13,7 @@ import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.Funktionalität.Zug;
 import Backend.SpielStub;
+import Frontend.Threads.CheckBeendetThread;
 import com.jfoenix.controls.JFXListView;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
@@ -357,6 +358,7 @@ public class SpielbrettFXMLController implements Initializable {
     Einstellungen einstellung;
     OptionenFXMLController optionenFXMLController;
     Timeline timeline;
+    CheckBeendetThread checkBeendetThread;
 
     // Attribute zum Ziehen von Figuren
     private ImageView selectedFigur;
@@ -374,10 +376,14 @@ public class SpielbrettFXMLController implements Initializable {
         initSpielbrett();
         timerPlay();
 
+        checkBeendetThread = new CheckBeendetThread(sitzungsID, spiel, this);
+        checkBeendetThread.start();
     }
 
     /**
      * initialisiert die GUI-Objekte & plaziert dort die Figuren
+     * @throws java.rmi.RemoteException
+     * @throws Backend.Funktionalität.SpielException
      */
     public void initSpielbrett() throws RemoteException, SpielException {
         //Aktuelle Zeit auf dem Spielbrett setzen
@@ -1067,8 +1073,7 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler2min <= 0 && spieler2sec <= 0) {
                     timerStop();
-                    goToWinnerPopup();
-
+                    //goToWinnerPopup();
                 }
             } else {
                 this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
@@ -1089,8 +1094,7 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler1min <= 0 && spieler1sec <= 0) {
                     timerStop();
-                    goToWinnerPopup();
-
+                    //();
                 }
             }
 
@@ -1123,8 +1127,7 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler2min == 0 && spieler2sec == 0) {
                     timerStop();
-                    goToWinnerPopup();
-
+                    //goToWinnerPopup();
                 }
             } else {
                 this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
@@ -1137,8 +1140,7 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler1min == 0 && spieler1sec == 0) {
                     timerStop();
-                    goToWinnerPopup();
-
+                    //goToWinnerPopup();
                 }
             }
 
@@ -1182,7 +1184,7 @@ public class SpielbrettFXMLController implements Initializable {
         }
 
         if (this.spiel.getGewinner(sitzungsID) != null) {
-            goToWinnerPopup();
+            //goToWinnerPopup();
             timeline.stop();
         }
     }
@@ -1209,8 +1211,8 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     @FXML
-    private void goToWinnerPopup() {
-        try {
+    public void goToWinnerPopup() {
+        try {                    
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/WinnerPopup.fxml"));
             Parent winnerPopupScene = loader.load();
@@ -1380,7 +1382,7 @@ public class SpielbrettFXMLController implements Initializable {
             //TODO: Popup, dass aufgeben nicht möglich ist -> siehe fehlermeldung
         }
 
-        goToWinnerPopup();
+        //goToWinnerPopup();
     }
 
     @FXML
