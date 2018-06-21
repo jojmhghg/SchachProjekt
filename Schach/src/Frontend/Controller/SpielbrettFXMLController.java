@@ -375,7 +375,7 @@ public class SpielbrettFXMLController implements Initializable {
         this.sitzungsID = sitzungsID;
         initSpielbrett();
         timerPlay();
-
+        
         checkBeendetThread = new CheckBeendetThread(sitzungsID, spiel, this);
         checkBeendetThread.start();
     }
@@ -625,7 +625,7 @@ public class SpielbrettFXMLController implements Initializable {
                     }
                 });
             }).start();
-        }
+        }     
     }
 
     /**
@@ -1073,7 +1073,6 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler2min <= 0 && spieler2sec <= 0) {
                     timerStop();
-                    //goToWinnerPopup();
                 }
             } else {
                 this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
@@ -1094,7 +1093,6 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler1min <= 0 && spieler1sec <= 0) {
                     timerStop();
-                    //();
                 }
             }
 
@@ -1127,7 +1125,6 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler2min == 0 && spieler2sec == 0) {
                     timerStop();
-                    //goToWinnerPopup();
                 }
             } else {
                 this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
@@ -1140,7 +1137,6 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler1min == 0 && spieler1sec == 0) {
                     timerStop();
-                    //goToWinnerPopup();
                 }
             }
 
@@ -1184,7 +1180,6 @@ public class SpielbrettFXMLController implements Initializable {
         }
 
         if (this.spiel.getGewinner(sitzungsID) != null) {
-            //goToWinnerPopup();
             timeline.stop();
         }
     }
@@ -1212,7 +1207,7 @@ public class SpielbrettFXMLController implements Initializable {
 
     @FXML
     public void goToWinnerPopup() {
-        try {                    
+        try {                 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/WinnerPopup.fxml"));
             Parent winnerPopupScene = loader.load();
@@ -1381,8 +1376,6 @@ public class SpielbrettFXMLController implements Initializable {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             //TODO: Popup, dass aufgeben nicht möglich ist -> siehe fehlermeldung
         }
-
-        //goToWinnerPopup();
     }
 
     @FXML

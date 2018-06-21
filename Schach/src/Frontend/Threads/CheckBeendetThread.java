@@ -12,6 +12,7 @@ import Frontend.Controller.SpielbrettFXMLController;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 
 /**
  *
@@ -35,13 +36,15 @@ public class CheckBeendetThread extends Thread{
     @Override 
     public void run(){
         try{            
-            while(true){          
+            boolean beendet = false;
+            while(!beendet){          
                 Thread.sleep(50);    
                 
                 if(spiel.getBeendet(sitzungsID)){
-                    System.out.println(spiel.getGewinner(sitzungsID).toString());
-                    spielbrettFXMLController.goToWinnerPopup();
-                    this.interrupt();
+                    beendet = true;
+                    Platform.runLater(() -> {
+                        spielbrettFXMLController.goToWinnerPopup();
+                    });
                 }
             }                             
         } catch (InterruptedException ex) {                
