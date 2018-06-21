@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -174,7 +176,7 @@ public class PartieLadenFXMLController implements Initializable {
             this.spiel = new SpielStubImpl();
             // Request focus on the newfilename field by default.
             Platform.runLater(() -> filename.requestFocus());
-        } catch (SpielException ex) {
+        } catch (SpielException | ClassNotFoundException | SQLException | NoSuchAlgorithmException ex) {
             Logger.getLogger(PartieLadenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -7,13 +7,14 @@ package Backend;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
-import Backend.Funktionalität.Einstellungen;
 import Backend.Funktionalität.Optionen;
 import Backend.Funktionalität.Partie;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.Funktionalität.Zug;
 import java.rmi.RemoteException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,27 +27,56 @@ public class SpielStubImpl implements SpielStub {
     
     private final ServerObjekte serverObjekte;
        
-    public SpielStubImpl() throws SpielException{
-        this.serverObjekte = new ServerObjekte();
+    public SpielStubImpl() throws SpielException, ClassNotFoundException, SQLException, NoSuchAlgorithmException{
+        this.serverObjekte = new ServerObjekte();  
     }
     
     /**
      * Methode um Client am Server einzuloggen
      * 
+     * @param email
+     * @param password
      * @return SitzungID
+     * @throws Backend.Funktionalität.SpielException
      */
     @Override
-    public int einloggen(){
-        int sitzungsID = getNewID();  
-        serverObjekte.sitzungen.add(sitzungsID);
-        
-        try {        
-            this.serverObjekte.partieListe.put(sitzungsID, new Partie("tmp"));
-            this.serverObjekte.einstellungenListe.put(sitzungsID, new Einstellungen());
-        } catch (SpielException ex) {
-            Logger.getLogger(SpielStubImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return sitzungsID;        
+    public int einloggen(String email, String password) throws SpielException{
+        try {
+            if(this.serverObjekte.datenbank.login(email, password)){
+                int sitzungsID = getNewID();
+                serverObjekte.sitzungen.put(sitzungsID, email);
+                
+                try {
+                    this.serverObjekte.partieListe.put(sitzungsID, new Partie("tmp"));
+                } catch (SpielException ex) {
+                    Logger.getLogger(SpielStubImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return sitzungsID;
+            }
+            else{
+                throw new SpielException("E-Mail-Adresse oder Passwort falsch");
+            }
+        } catch (SQLException ex) {
+            throw new SpielException("Fehler beim Login");
+        } catch (DatenbankException ex) {
+            throw new SpielException("E-Mail-Adresse oder Passwort falsch");
+        }                    
+    }
+    
+    /**
+     * Neuen User registrieren
+     * 
+     * @param email von neuem User
+     * @param password von neuem User
+     * @throws SpielException falls E-Mail bereits vorhanden
+     */
+    @Override
+    public void registrieren(String email, String password) throws SpielException{
+        try {
+            this.serverObjekte.datenbank.registiereNeuenUser(email, password);              
+        } catch (SQLException ex) {
+            throw new SpielException("E-Mail bereits vorhanden!");
+        }             
     }
     
     /**
@@ -63,8 +93,8 @@ public class SpielStubImpl implements SpielStub {
             sitzungsID = (int)(Math.random() * 1000000 + 1); 
             neu = true;
             
-            for(int sitzung : serverObjekte.sitzungen){
-                if(sitzung == sitzungsID){
+            for(String sitzung : serverObjekte.sitzungen.values()){
+                if(Integer.parseInt(sitzung) == sitzungsID){
                     neu = false;
                     break;
                 }
@@ -83,7 +113,12 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void setUsername(String username, int sitzungsID) throws SpielException {
-        this.serverObjekte.einstellungenListe.get(sitzungsID).setUsername(username);
+        String email = this.serverObjekte.sitzungen.get(sitzungsID);
+        try {
+            this.serverObjekte.datenbank.changeUsername(email, username);
+        } catch (SQLException ex) {
+            throw new SpielException("Fehler bei der Datenbankabfrage!");
+        }
     }
 
     /**
@@ -91,10 +126,18 @@ public class SpielStubImpl implements SpielStub {
      * 
      * @param sitzungsID
      * @return username
+     * @throws Backend.Funktionalität.SpielException
      */
     @Override
-    public String getUsername(int sitzungsID) {
-        return this.serverObjekte.einstellungenListe.get(sitzungsID).getUsername();
+    public String getUsername(int sitzungsID) throws SpielException{
+        String email = this.serverObjekte.sitzungen.get(sitzungsID);
+        try {
+            return this.serverObjekte.datenbank.getUsername(email);
+        } catch (SQLException ex) {
+            throw new SpielException("Fehler bei der Datenbankabfrage!");
+        } catch (DatenbankException ex) {
+            throw new SpielException("E-Mail nicht vorhanden!");
+        }
     }
 
     /**
@@ -106,7 +149,17 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void setHighlightingAus(Boolean highlightingAus, int sitzungsID) throws SpielException{
-        this.serverObjekte.einstellungenListe.get(sitzungsID).setHighlightingAus(highlightingAus);
+        String email = this.serverObjekte.sitzungen.get(sitzungsID);
+        try {
+            if(highlightingAus){
+                this.serverObjekte.datenbank.turnHighlightingOff(email);
+            }
+            else{
+                this.serverObjekte.datenbank.turnHighlightingOn(email);
+            }
+        } catch (SQLException ex) {
+            throw new SpielException("Fehler bei der Datenbankabfrage!");
+        }
     }
 
     /**
@@ -114,10 +167,18 @@ public class SpielStubImpl implements SpielStub {
      * 
      * @param sitzungsID
      * @return true = aus; false = an
+     * @throws Backend.Funktionalität.SpielException
      */
     @Override
-    public boolean isHighlightingAus(int sitzungsID) {
-        return this.serverObjekte.einstellungenListe.get(sitzungsID).isHighlightingAus();
+    public boolean isHighlightingAus(int sitzungsID) throws SpielException{
+        String email = this.serverObjekte.sitzungen.get(sitzungsID);
+        try {
+            return this.serverObjekte.datenbank.isHighlightingOff(email);
+        } catch (SQLException ex) {
+            throw new SpielException("Fehler bei der Datenbankabfrage!");
+        } catch (DatenbankException ex) {
+            throw new SpielException("E-Mail nicht vorhanden!");
+        }
     }
 
     /**

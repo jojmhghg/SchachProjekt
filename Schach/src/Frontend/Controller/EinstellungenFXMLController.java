@@ -49,7 +49,7 @@ public class EinstellungenFXMLController implements Initializable {
     OptionenFXMLController optionenFXMLContoller;
     Timeline timeline;
 
-    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, int sitzungsID, OptionenFXMLController optionenFXMLContoller) throws RemoteException {
+    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, int sitzungsID, OptionenFXMLController optionenFXMLContoller) throws RemoteException, SpielException {
         this.spiel = spiel;
         this.spielbrettFXMLController = spielbrettFXMLController;
         this.sitzungsID = sitzungsID;

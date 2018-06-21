@@ -5,7 +5,6 @@
  */
 package Frontend.Controller;
 
-import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.SpielStub;
@@ -69,7 +68,11 @@ public class StartseiteFXMLController implements Initializable {
             
         registry = LocateRegistry.getRegistry("localhost", 1099);
         spiel = (SpielStub) registry.lookup("ClientStub");
-        sitzungsID = spiel.einloggen();  
+        try {  
+            sitzungsID = spiel.einloggen("timyer93@googlemail.com", "test123");
+        } catch (SpielException ex) {
+            Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML

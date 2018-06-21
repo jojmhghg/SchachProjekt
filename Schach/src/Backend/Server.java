@@ -11,6 +11,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 /**
  *
@@ -24,20 +26,16 @@ public class Server {
      * @throws java.rmi.RemoteException
      * @throws java.rmi.AlreadyBoundException
      */
-    public static void main(String[] args) throws SpielException, RemoteException, AlreadyBoundException  {
-        
+    public static void main(String[] args) throws SpielException, RemoteException, AlreadyBoundException, ClassNotFoundException, SQLException, NoSuchAlgorithmException  {
+            
+        System.setProperty("java.rmi.server.hostname", "localhost");
 
-             
-            System.setProperty("java.rmi.server.hostname", "localhost");
-            
-            SpielStubImpl clientLauncher = new SpielStubImpl();
-            SpielStub clientStub = (SpielStub) UnicastRemoteObject.exportObject(clientLauncher, 0);
-            Registry clientRegistry = LocateRegistry.createRegistry(1099);
-            clientRegistry.bind("ClientStub", clientStub);
-            
-            System.out.println("Server läuft!");
+        SpielStubImpl clientLauncher = new SpielStubImpl();
+        SpielStub clientStub = (SpielStub) UnicastRemoteObject.exportObject(clientLauncher, 0);
+        Registry clientRegistry = LocateRegistry.createRegistry(1099);
+        clientRegistry.bind("ClientStub", clientStub);
+
+        System.out.println("Server läuft!");
            
-       
-
     }
 }
