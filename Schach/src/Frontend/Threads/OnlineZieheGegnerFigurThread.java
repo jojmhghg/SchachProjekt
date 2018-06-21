@@ -45,7 +45,7 @@ public class OnlineZieheGegnerFigurThread extends Thread{
                     Platform.runLater(() -> {
                         try {
                             spielbrettFXMLController.zieheFuerOnlineGegner();
-                        } catch (RemoteException ex) {
+                        } catch (RemoteException | SpielException ex) {
                             Logger.getLogger(OnlineZieheGegnerFigurThread.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     });

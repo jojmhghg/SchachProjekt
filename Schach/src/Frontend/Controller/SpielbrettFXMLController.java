@@ -858,7 +858,7 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
     
-    public void zieheFuerOnlineGegner() throws RemoteException{
+    public void zieheFuerOnlineGegner() throws RemoteException, SpielException{
         Position startPosition = spiel.getMitschrift(sitzungsID).getLast().getUrsprung();
         Position zielPosition = spiel.getMitschrift(sitzungsID).getLast().getZiel();
           
@@ -875,6 +875,7 @@ public class SpielbrettFXMLController implements Initializable {
         zielFeld.getChildren().add(startFigur);
                     
         rochadeOderEnPassantAnzeigen(zielPosition, startPosition);
+        updateScreen();
     }
     
     public void rochadeOderEnPassantAnzeigen(Position zielPosition, Position quellPosition) throws RemoteException{
