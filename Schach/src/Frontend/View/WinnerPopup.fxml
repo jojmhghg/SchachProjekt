@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="405.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.Controller.WinnerPopupFXMLController">
+<AnchorPane id="AnchorPane" fx:id="anchorPaneWinnerPopup" prefHeight="405.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.Controller.WinnerPopupFXMLController">
    <children>
       <ImageView fitHeight="418.0" fitWidth="575.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -34,8 +34,14 @@
                </stops>
             </LinearGradient>
          </textFill></Label>
-      <JFXButton disable="true" layoutX="158.0" layoutY="328.0" onAction="#goToStartseite" prefHeight="51.0" prefWidth="92.0" text="Startseite" />
-      <JFXButton layoutX="335.0" layoutY="328.0" onAction="#beenden" prefHeight="51.0" prefWidth="92.0" text="Beenden" />
+      <JFXButton layoutX="158.0" layoutY="344.0" onAction="#goToStartseite" prefHeight="35.0" prefWidth="92.0" text="Startseite">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></JFXButton>
+      <JFXButton layoutX="335.0" layoutY="344.0" onAction="#beenden" prefHeight="35.0" prefWidth="92.0" text="Beenden">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></JFXButton>
       <ImageView fitHeight="110.0" fitWidth="267.0" layoutX="158.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Ressources/winnerGif.gif" />

@@ -27,6 +27,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 /**
  * FXML Controller class
@@ -37,14 +38,16 @@ public class WinnerPopupFXMLController implements Initializable {
     
     SpielStub spiel;
     int sitzungsID;
+    Window startseiteWindow;
     
     @FXML
     private Label gewinnerFarbe;
     
-    public void loadData(SpielStub spiel, int sitzungsID) throws RemoteException {
+    public void loadData(SpielStub spiel, int sitzungsID, Window window) throws RemoteException {
         this.spiel = spiel;
         this.sitzungsID = sitzungsID;
         gewinnerFarbe.setText(spiel.getGewinner(sitzungsID).toString());
+        this.startseiteWindow = window;
     }
     
     @FXML
@@ -62,9 +65,10 @@ public class WinnerPopupFXMLController implements Initializable {
             startseiteStage.setScene(new Scene(startseiteScene));
             startseiteStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             startseiteStage.initStyle(StageStyle.UNDECORATED);
-            startseiteStage.hide();
+            //startseiteStage.hide();
             startseiteStage.show();
             ((Node) (event.getSource())).getScene().getWindow().hide();
+            startseiteWindow.hide();
         } catch (IOException | SpielException ex) {
             Logger.getLogger(WinnerPopupFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }

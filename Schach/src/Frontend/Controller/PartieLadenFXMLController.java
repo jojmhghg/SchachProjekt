@@ -52,7 +52,7 @@ public class PartieLadenFXMLController implements Initializable {
     int sitzungsID;
     SpielStub spiel;
     Spielbrett spielbrett;
-    Window startseiteWindow;
+    Window spielbrettWindow;
     Timeline timeline;
     
     @FXML
@@ -63,7 +63,7 @@ public class PartieLadenFXMLController implements Initializable {
     public void loadData(SpielStub spiel, Spielbrett spielbrett, Window window, Timeline timeline, int sitzungsID) {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
-        this.startseiteWindow = window;
+        this.spielbrettWindow = window;
         this.sitzungsID = sitzungsID;
         this.timeline = timeline;
     }
@@ -92,7 +92,7 @@ public class PartieLadenFXMLController implements Initializable {
                 spielbrettStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
                 spielbrettStage.show();
 
-                startseiteWindow.hide();
+                spielbrettWindow.hide();
                 ((Node) (event.getSource())).getScene().getWindow().hide();
                 
                 timeline.play();
@@ -154,6 +154,12 @@ public class PartieLadenFXMLController implements Initializable {
                 }
             }
         });
+    }
+    
+    @FXML
+    private void abbrechen(ActionEvent event){
+        ((Node) (event.getSource())).getScene().getWindow().hide();
+        timeline.play();
     }
 
     /**

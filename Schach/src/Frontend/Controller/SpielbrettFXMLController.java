@@ -1269,7 +1269,7 @@ public class SpielbrettFXMLController implements Initializable {
             Parent winnerPopupScene = loader.load();
 
             WinnerPopupFXMLController controller = loader.getController();
-            controller.loadData(spiel, sitzungsID);
+            controller.loadData(spiel, sitzungsID, ((Node) anchorPaneSpielbrett).getScene().getWindow());
 
             //aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
             Stage winnerPopupStage = new Stage();
@@ -1416,6 +1416,7 @@ public class SpielbrettFXMLController implements Initializable {
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             partieLadenStage.initModality(Modality.APPLICATION_MODAL);
+            partieLadenStage.initStyle(StageStyle.UNDECORATED);
             partieLadenStage.setScene(new Scene(partieLadenScene));
             partieLadenStage.show();
         } catch (IOException ex) {
