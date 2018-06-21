@@ -314,6 +314,15 @@ public final class Partie {
     public boolean istGegnerEineKI() {
         return kiGegner;
     }
+    
+    /**
+     * Gibt an, ob es sich um eine Online-Partie handelt
+     * 
+     * @return true, wenn ja; sonst false
+     */
+    public boolean istOnlinePartie(){
+        return this.onlinePartie;
+    }
 
     /**
      * Gibt an welche Farbe Spieler1 ist

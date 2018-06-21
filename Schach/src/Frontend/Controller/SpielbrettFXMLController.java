@@ -648,47 +648,28 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
+    /**
+     * Zeigt eine geschlagene Figur am Spielrand an
+     * 
+     * @param addImage geschlagene Figur
+     * @throws RemoteException 
+     */
     private void addgeschlageneFiguren(ImageView addImage) throws RemoteException {
-        if (spiel.getKiGegner(sitzungsID) == true) {
-            //Double degree = gridBoard.rotateProperty().getValue();
-            addImage.setFitHeight(50);
-            addImage.setFitWidth(50);
-            if (spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ) {
-                addImage.setLayoutX(-5);
-                addImage.setLayoutY(20);
-                paneArrayRechts[stelleRechts].getChildren().add(addImage);
-                //paneArrayRechts[stelleRechts].rotateProperty().setValue(180);
-                stelleRechts++;
-
-            } else if (spiel.getSpielerAmZug(sitzungsID) != Farbe.WEISS) {
-                addImage.setLayoutX(-5);
-                addImage.setLayoutY(20);
-                paneArrayLinks[stelleLinks].getChildren().add(addImage);
-                //paneArrayRechts[stelleRechts].rotateProperty().setValue(360);
-                stelleLinks++;
-
-            }
-        }else {
-            //Double degree = gridBoard.rotateProperty().getValue();
-            addImage.setFitHeight(50);
-            addImage.setFitWidth(50);
-            if (spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ) {
-                addImage.setLayoutX(-5);
-                addImage.setLayoutY(-20);
-                paneArrayRechts[stelleRechts].getChildren().add(addImage);
-                paneArrayRechts[stelleRechts].rotateProperty().setValue(180);
-                stelleRechts++;
-
-            } else if (spiel.getSpielerAmZug(sitzungsID) != Farbe.WEISS) {
-                addImage.setLayoutX(-5);
-                addImage.setLayoutY(10);
-                paneArrayLinks[stelleLinks].getChildren().add(addImage);
-                //paneArrayRechts[stelleRechts].rotateProperty().setValue(360);
-                stelleLinks++;
-
-            }
+        
+        addImage.rotateProperty().setValue(0);           
+        addImage.setFitHeight(50);
+        addImage.setFitWidth(50);
+        addImage.setLayoutX(-5);
+        addImage.setLayoutY(20);
+        
+        if(spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ){        
+            paneArrayRechts[stelleRechts].getChildren().add(addImage);
+            stelleRechts++;
+        } 
+        else{
+            paneArrayLinks[stelleLinks].getChildren().add(addImage);
+            stelleLinks++;
         }
-
     }
 
     /**

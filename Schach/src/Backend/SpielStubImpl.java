@@ -453,5 +453,10 @@ public class SpielStubImpl implements SpielStub {
     public boolean testObSpielGefunden(int sitzungsID) throws RemoteException, SpielException {
         return this.serverObjekte.partieListe.containsKey(sitzungsID);
     }
+
+    @Override
+    public boolean istOnlinePartie(int sitzungsID) throws RemoteException {
+        return this.serverObjekte.partieListe.get(sitzungsID).istOnlinePartie();
+    }
     
 }
