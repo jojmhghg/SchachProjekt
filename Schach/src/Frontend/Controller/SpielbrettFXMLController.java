@@ -623,28 +623,44 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
-    // Hier wird der spieler Erkannt und gezeigt, wer dran ist
+    /**
+     * Zeigt die Seite des Gegners transparent an, 
+     * bzw. bei Offline-PvP Seite des Spielers der nicht am Zug ist
+     * 
+     * @throws RemoteException 
+     */
     private void spielerErkennung() throws RemoteException {
-        if (spiel.getSpielerAmZug(sitzungsID) == Farbe.SCHWARZ) {
-            //paneBildRechts.setVisible(true);
-            //paneBildLinks.setVisible(false); #FFFFFF  #50280e
-            //spielernameWeiss.setStyle("");
-            //spielernameSchwarz.setStyle("-fx-background-color:#50280e;");
-            this.listZuegeSchwarz.setStyle("-fx-background-color:#D2691E; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
-            this.listZuegeWeiss.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold;  -fx-font-size: 20px;");
-            this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity:85%");
-            this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
+        // Gegen KI oder Online wird immer nur beim Spieler alles normal angezeigt
+        // Der Andere ist immer transparent
+        if(spiel.istOnlinePartie(sitzungsID) || spiel.getKiGegner(sitzungsID)){
+            if(spiel.getFarbeSpieler1(sitzungsID) == Farbe.WEISS){
+                this.listZuegeSchwarz.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold; -fx-font-size: 20px;");
+                this.listZuegeWeiss.setStyle("-fx-background-color:#FFDEAD; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+                this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
+                this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 85%");
+            }
+            else{
+                this.listZuegeSchwarz.setStyle("-fx-background-color:#D2691E; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+                this.listZuegeWeiss.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+                this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity:85%");
+                this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
+            }
+        }
+        // Bei Offline-PvP wird abwechselnt transparent angezeigt
+        else{
+            if (spiel.getSpielerAmZug(sitzungsID) == Farbe.SCHWARZ) {
+                this.listZuegeSchwarz.setStyle("-fx-background-color:#D2691E; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+                this.listZuegeWeiss.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+                this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity:85%");
+                this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
 
-        } else if (spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS) {
-            //paneBildRechts.setVisible(false);
-            //paneBildLinks.setVisible(true);
-            //spielernameWeiss.setStyle("-fx-background-color:#FFFFFF;");
-            //spielernameSchwarz.setStyle("");
-            this.listZuegeSchwarz.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold; -fx-font-size: 20px;");
-            this.listZuegeWeiss.setStyle("-fx-background-color:#FFDEAD; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
-            this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
-            this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 85%");
+            } else if (spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS) {
+                this.listZuegeSchwarz.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold; -fx-font-size: 20px;");
+                this.listZuegeWeiss.setStyle("-fx-background-color:#FFDEAD; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+                this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
+                this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 85%");
 
+            }
         }
     }
 
