@@ -167,9 +167,7 @@ public class OptionenFXMLController implements Initializable {
             // Hide this current window (if this is what you want)
             ((Node) (event.getSource())).getScene().getWindow().hide();
 
-        } catch (IOException | SpielException ex) {
-            Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
+        } catch (IOException | SpielException | InterruptedException ex) {
             Logger.getLogger(OptionenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

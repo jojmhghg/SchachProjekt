@@ -289,6 +289,24 @@ public final class Partie {
     /* --- Getter --- */
     
     /**
+     * Gibt die Farbe für den Spieler mit der übergebenen ID zurück
+     * 
+     * @param sitzungsID
+     * @return
+     * @throws SpielException 
+     */
+    public Farbe getFarbeByID(int sitzungsID) throws SpielException{
+        if(this.sitzungsIDspieler1 == sitzungsID){
+            return this.farbeSpieler1;
+        }
+        else if(this.sitzungsIDspieler2 == sitzungsID){
+            return this.farbeSpieler1.andereFarbe();
+        }
+        
+        throw new SpielException("ungültige SitzungsID");
+    }
+    
+    /**
      * Gibt Liste mit allen Zügen zurück
      * 
      * @return LinkedList mit vergangenen Zügen

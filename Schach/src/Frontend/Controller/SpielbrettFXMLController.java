@@ -366,7 +366,7 @@ public class SpielbrettFXMLController implements Initializable {
 
     private Position posKingImSchach;
 
-    public void loadData(SpielStub spiel, Spielbrett spielbrett, Timeline timeline, int sitzungsID) throws RemoteException {
+    public void loadData(SpielStub spiel, Spielbrett spielbrett, Timeline timeline, int sitzungsID) throws RemoteException, SpielException {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
         this.timeline = timeline;
@@ -379,7 +379,7 @@ public class SpielbrettFXMLController implements Initializable {
     /**
      * initialisiert die GUI-Objekte & plaziert dort die Figuren
      */
-    public void initSpielbrett() throws RemoteException {
+    public void initSpielbrett() throws RemoteException, SpielException {
         //Aktuelle Zeit auf dem Spielbrett setzen
         DateFormat formatter = new SimpleDateFormat("mm:ss");
         String sp1 = Long.toString(spiel.getZeitSpieler1(sitzungsID));
@@ -602,8 +602,7 @@ public class SpielbrettFXMLController implements Initializable {
 
         spielerErkennung();
 
-        // War bei Niro nicht mehr im Code vorhanden!
-        if(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ){
+        if((spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ) || (spiel.istOnlinePartie(sitzungsID) && spiel.getEigeneFarbeByID(sitzungsID) == Farbe.SCHWARZ) ){
             MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
             rotateBoard();
             new Thread(() -> {
@@ -1144,7 +1143,7 @@ public class SpielbrettFXMLController implements Initializable {
             for (int i = 1; i < zuege.size(); i = i + 2) {
                 listZuegeSchwarz.getItems().add(zuege.get(i).getMitschrift());
             }
-            if (!spiel.getKiGegner(sitzungsID)) {
+            if (!spiel.getKiGegner(sitzungsID) && !spiel.istOnlinePartie(sitzungsID)) {
                 rotateBoard();
                 //spielerErkennung();
             }
@@ -1204,8 +1203,11 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
+    /**
+     * Methode dreht das Spielbrett um 180 Grad
+     */
     @FXML
-    public void rotateBoard() {
+    private void rotateBoard() {
         Double degree = gridBoard.rotateProperty().getValue();
         gridBoard.rotateProperty().setValue(degree + 180);
 
@@ -1308,6 +1310,9 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
+    /**
+     * Methode entfernt alle Figuren vom Spielbrett
+     */
     public void cleanBoard() {
         if (paneArray != null) {
             for (int i = 0; i < 64; i++) {
@@ -1372,9 +1377,11 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
+    /**
+     * Methode, die das Bewegen des Fensters ermöglicht
+     */
     @FXML
     private void moveWindow() {
-
         //grab the root 
         topPane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -1405,6 +1412,5 @@ public class SpielbrettFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
     }
 }
