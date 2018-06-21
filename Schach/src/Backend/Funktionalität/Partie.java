@@ -554,7 +554,7 @@ public final class Partie {
      * @param sitzungsID
      * @throws Backend.Funktionalität.SpielException falls man nicht aufgeben kann (z.B. da bereits beendet)
      */
-    public void aufgeben(int sitzungsID) throws SpielException{         
+    public void aufgeben(int sitzungsID) throws SpielException{ 
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
@@ -563,9 +563,23 @@ public final class Partie {
         if(this.remisangebot){
             throw new SpielException("Es liegt ein Remisangebot vor!");
         }
-        
-        this.beendet = true;
-        this.gewinner = this.getSpielerAmZug().andereFarbe();  
+            
+        if(this.onlinePartie){
+            if(this.sitzungsIDspieler1 == sitzungsID){
+                this.gewinner = this.farbeSpieler1.andereFarbe();
+            }
+            else if(this.sitzungsIDspieler2 == sitzungsID){
+                this.gewinner = this.farbeSpieler1;
+            }
+            else{
+                throw new SpielException("Ungültige SitzungsID!"); 
+            }
+            this.beendet = true;
+        }
+        else{
+            this.beendet = true;       
+            this.gewinner = this.getSpielerAmZug().andereFarbe();  
+        }
     }
     
     /**

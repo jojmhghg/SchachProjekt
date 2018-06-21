@@ -1190,6 +1190,7 @@ public class SpielbrettFXMLController implements Initializable {
     /**
      * Hilfmethode fuer partie Laden und goToChessboard
      * @throws java.rmi.RemoteException
+     * @throws Backend.Funktionalität.SpielException
      */
     public void setSpielernameOnScreen() throws RemoteException, SpielException{
         if(spiel.istOnlinePartie(sitzungsID)){
