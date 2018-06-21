@@ -628,11 +628,27 @@ public class SpielbrettFXMLController implements Initializable {
      * 
      * @throws RemoteException 
      */
-    private void spielerErkennung() throws RemoteException {
-        // Gegen KI oder Online wird immer nur beim Spieler alles normal angezeigt
+    private void spielerErkennung() throws RemoteException, SpielException {
+        // Gegen KI wird immer nur beim Spieler alles normal angezeigt
         // Der Andere ist immer transparent
-        if(spiel.istOnlinePartie(sitzungsID) || spiel.getKiGegner(sitzungsID)){
+        if(spiel.getKiGegner(sitzungsID)){
             if(spiel.getFarbeSpieler1(sitzungsID) == Farbe.WEISS){
+                this.listZuegeSchwarz.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold; -fx-font-size: 20px;");
+                this.listZuegeWeiss.setStyle("-fx-background-color:#FFDEAD; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+                this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
+                this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 85%");
+            }
+            else{
+                this.listZuegeSchwarz.setStyle("-fx-background-color:#D2691E; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+                this.listZuegeWeiss.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+                this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity:85%");
+                this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
+            }
+        }
+        // Online wird immer nur beim Spieler alles normal angezeigt
+        // Der Andere ist immer transparent
+        else if(spiel.istOnlinePartie(sitzungsID)){
+            if(spiel.getEigeneFarbeByID(sitzungsID) == Farbe.WEISS){
                 this.listZuegeSchwarz.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold; -fx-font-size: 20px;");
                 this.listZuegeWeiss.setStyle("-fx-background-color:#FFDEAD; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
                 this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
@@ -1131,7 +1147,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     @FXML
-    public void updateScreen() throws RemoteException {
+    public void updateScreen() throws RemoteException, SpielException {
         //Populate listView and apply rotation
         if (spiel.getMitschrift(sitzungsID) != null && spiel.getMitschrift(sitzungsID).size() > 0) {
             LinkedList<Zug> zuege = spiel.getMitschrift(sitzungsID);
