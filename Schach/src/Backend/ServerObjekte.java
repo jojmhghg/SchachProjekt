@@ -5,14 +5,14 @@
  */
 package Backend;
 
-import Backend.Funktionalität.Einstellungen;
 import Backend.Funktionalität.Partie;
 import Backend.Funktionalität.SpielException;
 import Backend.Threads.InfoThread;
 import Backend.Threads.QueueTeilnehmer;
 import Backend.Threads.QueueThread;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  *
@@ -20,9 +20,9 @@ import java.util.LinkedList;
  */
 public class ServerObjekte {
     
+    public final DatenbankHandler datenbank;
     public final HashMap<Number, Partie> partieListe;
-    public final HashMap<Number, Einstellungen> einstellungenListe;
-    public final LinkedList<Integer> sitzungen;
+    public final HashMap<Number, String> sitzungen;
     
     public final QueueTeilnehmer queue5Min;
     public final QueueTeilnehmer queue10Min;
@@ -39,10 +39,10 @@ public class ServerObjekte {
     public InfoThread infoThread; 
     
     
-    public ServerObjekte() throws SpielException{
+    public ServerObjekte() throws SpielException, ClassNotFoundException, SQLException, NoSuchAlgorithmException{
+        this.datenbank = new DatenbankHandler();
         this.partieListe = new HashMap<>();
-        this.einstellungenListe = new HashMap<>();
-        this.sitzungen = new LinkedList<>();
+        this.sitzungen = new HashMap<>();
         
         this.queue5Min = new QueueTeilnehmer();
         this.queue10Min = new QueueTeilnehmer();

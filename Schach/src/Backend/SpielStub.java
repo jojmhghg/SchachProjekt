@@ -21,13 +21,14 @@ import java.util.LinkedList;
  */
 public interface SpielStub extends Remote{
     
-    public int einloggen() throws RemoteException;
+    public int einloggen(String email, String password) throws RemoteException, SpielException;
+    public void registrieren(String email, String password) throws RemoteException, SpielException;
     
     /* --- Methoden die das Spiel betreffen --- */
     public void setUsername(String username, int sitzungsID) throws SpielException, RemoteException;
-    public String getUsername(int sitzungsID) throws RemoteException;
+    public String getUsername(int sitzungsID) throws RemoteException, SpielException;
     public void setHighlightingAus(Boolean highlightingAus, int sitzungsID) throws SpielException, RemoteException;
-    public boolean isHighlightingAus(int sitzungsID) throws RemoteException;
+    public boolean isHighlightingAus(int sitzungsID) throws RemoteException, SpielException;
     
     /* --- Methoden die eine Partie betreffen --- */
     public Spielbrett neuePartie(Optionen partieoptionen, int sitzungsID) throws SpielException, RemoteException;

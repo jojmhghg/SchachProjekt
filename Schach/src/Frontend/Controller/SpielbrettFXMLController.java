@@ -5,7 +5,6 @@
  */
 package Frontend.Controller;
 
-import Backend.Funktionalität.Einstellungen;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Figuren.Figur;
@@ -357,7 +356,6 @@ public class SpielbrettFXMLController implements Initializable {
     int sitzungsID;
     SpielStub spiel;
     Spielbrett spielbrett;
-    Einstellungen einstellung;
     OptionenFXMLController optionenFXMLController;
     Timeline timeline;
     CheckBeendetThread checkBeendetThread;
@@ -944,7 +942,7 @@ public class SpielbrettFXMLController implements Initializable {
     /**
      * Hilfsmethode um Felder zu highlighten
      */
-    private void highlight() throws RemoteException {
+    private void highlight() throws RemoteException, SpielException {
         if (!spiel.isHighlightingAus(sitzungsID)) {
             if (possibleMoves != null) {
                 for (Position pos : possibleMoves) {
@@ -992,7 +990,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     @FXML
-    private void goToEinstellungen(ActionEvent event) {
+    private void goToEinstellungen(ActionEvent event) throws RemoteException, SpielException {
 
         try {
 

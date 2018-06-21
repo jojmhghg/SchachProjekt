@@ -16,6 +16,7 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXToggleButton;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -237,7 +238,7 @@ public class OptionenFXMLController implements Initializable {
     }
     
     @FXML
-    private void goToEinstellungen(ActionEvent event) {
+    private void goToEinstellungen(ActionEvent event) throws RemoteException, SpielException {
 
         try {
 
