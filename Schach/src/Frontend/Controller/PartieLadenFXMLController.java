@@ -64,6 +64,7 @@ public class PartieLadenFXMLController implements Initializable {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
         this.startseiteWindow = window;
+        this.sitzungsID = sitzungsID;
         this.timeline = timeline;
     }
     

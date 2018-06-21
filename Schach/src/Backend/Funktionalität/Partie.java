@@ -248,7 +248,7 @@ public final class Partie {
                 this.gewinner = Farbe.parseFarbe(line);
             }
             else{
-                throw new SpielException(errorMessage);
+                System.out.println("fehler");             
             }  
                        
             this.ablauf = new LinkedList<>();
@@ -257,12 +257,29 @@ public final class Partie {
             // Hier werden die Züge der Partie simuliert. Dadurch wird das Spielbrett & der Ablauf geladen
             int pos1, pos2;
             while((line = bufferedReader.readLine()) != null){
-                final String[] positionen = line.split(" ");
-                pos1 = Integer.parseInt(positionen[0]);
-                pos2 = Integer.parseInt(positionen[1]);
-                //this.zieheFigur(Position.values()[pos1], Position.values()[pos2]);
+                switch(line){
+                    case "(=)":
+                        try{
+                            this.remisAnbieten(0);
+                        }
+                        catch(SpielException e){
+                            this.remisAblehnen(0);
+                        }
+                        break;
+                        
+                    case "1/2 1/2":
+                        this.remisAnnehmen(0);
+                        break;
+                        
+                    default:
+                        final String[] positionen = line.split(" ");
+                        pos1 = Integer.parseInt(positionen[0]);
+                        pos2 = Integer.parseInt(positionen[1]);
+                        this.zieheFigur(Position.values()[pos1], Position.values()[pos2], 0);
+                }
+                
             }
-       
+
         } catch (IOException e) { 
             throw new SpielException("Spielstand '" + speichername + "' konnte nicht gefunden werden!");
         }      
@@ -432,6 +449,11 @@ public final class Partie {
         if(this.remisangebot){
             throw new SpielException("Es liegt ein Remisangebot vor!");
         }
+        // Notation für Schlagen bzw. ziehen muss bereits ermittelt werden
+        String connector = "x";
+        if(this.spielbrett.getFigurAufFeld(ziel) == null){
+            connector = "-";
+        } 
         // ziehe figur
         this.spielbrett.setFigurAufFeld(ursprung, ziel); 
         if(this.spielbrett.getFigurAufFeld(ziel) instanceof Bauer && ziel.istGundreiheAndereSeite(this.spielbrett.getSpielerAmZug())){
@@ -441,7 +463,7 @@ public final class Partie {
             System.out.println("Jetzt wird umgewandelt");
         }
         else{
-            zugBearbeiten(ursprung, ziel, null);
+            zugBearbeiten(ursprung, ziel, null, connector);
         }
     }
     
@@ -450,6 +472,7 @@ public final class Partie {
      * Ruft danach die Methode auf, die den Rest des Zuges abwickelt. 
      * 
      * @param figur Dame, Turm, Springer oder Laeufer
+     * @param sitzungsID
      * @throws SpielException falls man Bauer nicht umwandeln kann oder Übergabeparameter ungültig ist
      */
     public void bauerUmwandeln(String figur, int sitzungsID) throws SpielException{
@@ -480,7 +503,7 @@ public final class Partie {
         }
         
         umwandeln = false;
-        zugBearbeiten(tmpUrsprung, tmpZiel, figur);
+        zugBearbeiten(tmpUrsprung, tmpZiel, figur, "TODO");
     }
      
     /**
@@ -544,6 +567,7 @@ public final class Partie {
             throw new SpielException("Man kann dem Computer kein Remis anbieten!");
         } 
         
+        this.ablauf.add(new Zug(null, null, "(=)"));
         this.remisangebot = true;
     }
     
@@ -566,6 +590,7 @@ public final class Partie {
             throw new SpielException("Es liegt kein Remis-Angebot vor!");
         }
         
+        this.ablauf.add(new Zug(null, null, "1/2 1/2"));
         this.beendet = true;
         this.gewinner = null;
     }
@@ -589,6 +614,7 @@ public final class Partie {
             throw new SpielException("Es liegt kein Remis-Angebot vor!");
         }   
         
+        this.ablauf.add(new Zug(null, null, "(=)"));
         this.remisangebot = false;
     }
     
@@ -717,14 +743,9 @@ public final class Partie {
      * @param ziel der Figur
      * @return Notation in Langschreibweise
      */
-    private String getNotation(Position ursprung, Position ziel){        
+    private String getNotation(Position ursprung, Position ziel, String connector){        
         String notation;
-        
-        // Notation für Schlagen bzw. ziehen
-        String connector = "x";
-        if(this.spielbrett.getFigurAufFeld(ziel) == null){
-            connector = "-";
-        }         
+                
         String figurABK = this.spielbrett.getFigurAufFeld(ziel).getFigurABK();       
         // Normale Notation zusammengesetzt
         notation = figurABK + ursprung.toString() + connector + ziel.toString();
@@ -765,7 +786,7 @@ public final class Partie {
      * @param bauerUmwandelnIn falls Bauer umgewandelt werden muss
      * @throws SpielException 
      */
-    private void zugBearbeiten(Position ursprung, Position ziel, String bauerUmwandelnIn) throws SpielException{    
+    private void zugBearbeiten(Position ursprung, Position ziel, String bauerUmwandelnIn, String connector) throws SpielException{    
         this.spielbrett.zugBearbeiten(ziel, bauerUmwandelnIn);
         
         // Teste Gegner keinen Zug mehr machen kann (Schachmatt oder Patt)     
@@ -792,7 +813,7 @@ public final class Partie {
         }      
         
         // Mitschrift aktualisieren
-        this.ablauf.add(new Zug(ursprung, ziel, this.getNotation(ursprung, ziel)));
+        this.ablauf.add(new Zug(ursprung, ziel, this.getNotation(ursprung, ziel, connector)));
         
         //jetzt zieht KI, falls es ein PvE-Spiel ist
         if(this.kiGegner && farbeSpieler1 != getSpielerAmZug()){
@@ -855,10 +876,16 @@ public final class Partie {
             
             //Züge
             for(Zug zug : this.ablauf){
-                bw.write(String.valueOf(zug.getUrsprung().ordinal()));
-                bw.write(" ");
-                bw.write(String.valueOf(zug.getZiel().ordinal()));
-                bw.newLine();
+                if(zug.getUrsprung() == null){
+                    bw.write(zug.getMitschrift());
+                    bw.newLine();
+                }
+                else{
+                    bw.write(String.valueOf(zug.getUrsprung().ordinal()));
+                    bw.write(" ");
+                    bw.write(String.valueOf(zug.getZiel().ordinal()));
+                    bw.newLine();
+                }
             }
 
             bw.close();

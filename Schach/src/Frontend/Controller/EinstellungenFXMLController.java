@@ -49,12 +49,14 @@ public class EinstellungenFXMLController implements Initializable {
     OptionenFXMLController optionenFXMLContoller;
     Timeline timeline;
 
-    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, int sitzungsID, OptionenFXMLController optionenFXMLContoller) {
+    public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, int sitzungsID, OptionenFXMLController optionenFXMLContoller) throws RemoteException {
         this.spiel = spiel;
         this.spielbrettFXMLController = spielbrettFXMLController;
         this.sitzungsID = sitzungsID;
         this.optionenFXMLContoller = optionenFXMLContoller;
         
+        spielername.setText(spiel.getUsername(sitzungsID));
+        highlightingButton.setSelected(spiel.isHighlightingAus(sitzungsID));
     }
     
     @FXML
@@ -106,13 +108,7 @@ public class EinstellungenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*try {
-            this.spiel = new SpielStubImpl();
-            spielername.setText(spiel.getUsername(), sitzungsID);
-            highlightingButton.setSelected(spiel.isHighlightingAus(), sitzungsID);
-        } catch (SpielException | RemoteException ex) {
-            Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+
     }    
     
 }
