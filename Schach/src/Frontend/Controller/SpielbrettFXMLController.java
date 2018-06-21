@@ -15,6 +15,7 @@ import Backend.Funktionalität.Zug;
 import Backend.SpielStub;
 import Frontend.Threads.CheckBeendetThread;
 import Frontend.Threads.CheckRemisangebotThread;
+import Frontend.Threads.OnlineZieheGegnerFigurThread;
 import com.jfoenix.controls.JFXListView;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
@@ -361,6 +362,7 @@ public class SpielbrettFXMLController implements Initializable {
     Timeline timeline;
     CheckBeendetThread checkBeendetThread;
     CheckRemisangebotThread checkRemisangebotThread;
+    OnlineZieheGegnerFigurThread onlineZieheGegnerFigurThread;
 
     // Attribute zum Ziehen von Figuren
     private ImageView selectedFigur;
@@ -379,7 +381,7 @@ public class SpielbrettFXMLController implements Initializable {
         timerPlay();
 
         this.startCheckBeendetThread();
-        this.startCheckRemisangebotThread();
+        this.startCheckRemisangebotThread();       
     }
     
     private void startCheckBeendetThread(){
@@ -390,6 +392,11 @@ public class SpielbrettFXMLController implements Initializable {
     public void startCheckRemisangebotThread(){
         checkRemisangebotThread = new CheckRemisangebotThread(sitzungsID, spiel, this);
         checkRemisangebotThread.start();
+    }
+    
+    private void startOnlineZieheGegnerFigurThread(){
+        onlineZieheGegnerFigurThread = new OnlineZieheGegnerFigurThread(sitzungsID, spiel, this);
+        onlineZieheGegnerFigurThread.start();
     }
 
     /**
@@ -620,9 +627,12 @@ public class SpielbrettFXMLController implements Initializable {
 
         spielerErkennung();
 
-        if((spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ) || (spiel.istOnlinePartie(sitzungsID) && spiel.getEigeneFarbeByID(sitzungsID) == Farbe.SCHWARZ) ){
-            MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
+        if((spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ) || (spiel.istOnlinePartie(sitzungsID) && spiel.getEigeneFarbeByID(sitzungsID) == Farbe.SCHWARZ)){
             rotateBoard();
+        }
+        
+        if(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ){
+            MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);          
             new Thread(() -> {
                 try {
                     Thread.sleep(1000);
@@ -637,7 +647,11 @@ public class SpielbrettFXMLController implements Initializable {
                     }
                 });
             }).start();
-        }     
+        }    
+       
+        if(spiel.istOnlinePartie(sitzungsID) && spiel.getEigeneFarbeByID(sitzungsID) == Farbe.SCHWARZ){
+            this.startOnlineZieheGegnerFigurThread();
+        }
     }
 
     /**
@@ -730,8 +744,6 @@ public class SpielbrettFXMLController implements Initializable {
      */
     public void onClicked(MouseEvent event) throws SpielException, RemoteException {
 
-        ImageView tmpView2;
-
         if (spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) != spiel.getSpielerAmZug(sitzungsID)) {
             spiel.kiZieht(startOderZiel, sitzungsID);
             event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
@@ -743,7 +755,6 @@ public class SpielbrettFXMLController implements Initializable {
             //Linksklick:
             case PRIMARY: //Starte den Zug  
                 // angeklickte Pane
-
                 Pane tmpPane = (Pane) event.getSource();
                 //Null oder Bild der Figur des ausgewählten Panes
                 ImageView tmpView = null;
@@ -760,7 +771,7 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 Position pos = Position.values()[tmp];
 
-                // highlighting ausmachen
+                // highlighting für alte figur ausmachen
                 if (selectedFigur != null) {
                     selectedFigur.setEffect(null);
                     highlightAus();
@@ -770,70 +781,17 @@ public class SpielbrettFXMLController implements Initializable {
                 // Falls ja:
                 if (possibleMoves != null && possibleMoves.contains(pos)) {
                     spiel.zieheFigur(quellPosition, pos, sitzungsID);
+                    if(spiel.istOnlinePartie(sitzungsID)){
+                        this.startOnlineZieheGegnerFigurThread();
+                    }
                     if (tmpPane.getChildren().size() > 0) {
                         tmpPane.getChildren().remove(0);
                         addgeschlageneFiguren(tmpView);
                     }
                     tmpPane.getChildren().add(selectedFigur);
 
-                    if (spiel.getEnPassant(sitzungsID)) {
-                        if (quellPosition.ordinal() > pos.ordinal()) {
-                            if (quellPosition.ordinal() - 8 > pos.ordinal()) {
-                                tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() - 1].getChildren().get(0);
-                                //Lösche quellPosi - 1
-                                this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
-
-                                addgeschlageneFiguren(tmpView2);
-
-                            } else {
-                                tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() + 1].getChildren().get(0);
-                                //Lösche quellPosi + 1
-                                this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
-                                addgeschlageneFiguren(tmpView2);
-                            }
-                        } else {
-                            if (quellPosition.ordinal() + 8 > pos.ordinal()) {
-                                tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() - 1].getChildren().get(0);
-                                //Lösche quellPosi + 1
-                                this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
-                                addgeschlageneFiguren(tmpView2);
-                            } else {
-                                tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() + 1].getChildren().get(0);
-                                //Lösche quellPosi - 1
-                                this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
-                                addgeschlageneFiguren(tmpView2);
-                            }
-                        }
-
-                    }
-
-                    if (spiel.getRochade(sitzungsID)) {
-                        ImageView turm;
-                        switch (pos) {
-                            case C1:
-                                turm = (ImageView) this.paneArray[0].getChildren().get(0);
-                                this.paneArray[3].getChildren().add(turm);
-                                break;
-
-                            case C8:
-                                turm = (ImageView) this.paneArray[56].getChildren().get(0);
-                                this.paneArray[59].getChildren().add(turm);
-                                break;
-
-                            case G1:
-                                turm = (ImageView) this.paneArray[7].getChildren().get(0);
-                                this.paneArray[5].getChildren().add(turm);
-                                break;
-
-                            case G8:
-                                turm = (ImageView) this.paneArray[63].getChildren().get(0);
-                                this.paneArray[61].getChildren().add(turm);
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
+                    // Rochade oder En Passant in GUI darstellen
+                    rochadeOderEnPassantAnzeigen(pos, this.quellPosition);
 
                     //Reset all and Update screen
                     possibleMoves = null;
@@ -899,7 +857,89 @@ public class SpielbrettFXMLController implements Initializable {
 
         }
     }
+    
+    public void zieheFuerOnlineGegner() throws RemoteException{
+        Position startPosition = spiel.getMitschrift(sitzungsID).getLast().getUrsprung();
+        Position zielPosition = spiel.getMitschrift(sitzungsID).getLast().getZiel();
+          
+        Pane startFeld = this.paneArray[startPosition.ordinal()];
+        ImageView startFigur = (ImageView) startFeld.getChildren().get(0);
+        
+        Pane zielFeld = this.paneArray[zielPosition.ordinal()];
+                  
+        if (zielFeld.getChildren().size() > 0) {
+            ImageView zielFigur = (ImageView) zielFeld.getChildren().get(0);
+            zielFeld.getChildren().remove(0);
+            addgeschlageneFiguren(zielFigur);
+        }
+        zielFeld.getChildren().add(startFigur);
+                    
+        rochadeOderEnPassantAnzeigen(zielPosition, startPosition);
+    }
+    
+    public void rochadeOderEnPassantAnzeigen(Position zielPosition, Position quellPosition) throws RemoteException{
+        ImageView tmpView2;
+        
+        if (spiel.getEnPassant(sitzungsID)) {
+            if (quellPosition.ordinal() > zielPosition.ordinal()) {
+                if (quellPosition.ordinal() - 8 > zielPosition.ordinal()) {
+                    tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() - 1].getChildren().get(0);
+                    //Lösche quellPosi - 1
+                    this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
 
+                    addgeschlageneFiguren(tmpView2);
+
+                } else {
+                    tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() + 1].getChildren().get(0);
+                    //Lösche quellPosi + 1
+                    this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
+                    addgeschlageneFiguren(tmpView2);
+                }
+            } 
+            else {
+                if (quellPosition.ordinal() + 8 > zielPosition.ordinal()) {
+                    tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() - 1].getChildren().get(0);
+                    //Lösche quellPosi + 1
+                    this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
+                    addgeschlageneFiguren(tmpView2);
+                } else {
+                    tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() + 1].getChildren().get(0);
+                    //Lösche quellPosi - 1
+                    this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
+                    addgeschlageneFiguren(tmpView2);
+                }
+            }
+        }
+
+        if (spiel.getRochade(sitzungsID)) {
+            ImageView turm;
+            switch (zielPosition) {
+                case C1:
+                    turm = (ImageView) this.paneArray[0].getChildren().get(0);
+                    this.paneArray[3].getChildren().add(turm);
+                    break;
+
+                case C8:
+                    turm = (ImageView) this.paneArray[56].getChildren().get(0);
+                    this.paneArray[59].getChildren().add(turm);
+                    break;
+
+                case G1:
+                    turm = (ImageView) this.paneArray[7].getChildren().get(0);
+                    this.paneArray[5].getChildren().add(turm);
+                    break;
+
+                case G8:
+                    turm = (ImageView) this.paneArray[63].getChildren().get(0);
+                    this.paneArray[61].getChildren().add(turm);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+    
     /**
      * Hilfsmethode um Felder zu highlighten
      */
