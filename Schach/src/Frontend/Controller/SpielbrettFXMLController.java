@@ -1189,11 +1189,20 @@ public class SpielbrettFXMLController implements Initializable {
 
     /**
      * Hilfmethode fuer partie Laden und goToChessboard
+     * @throws java.rmi.RemoteException
      */
-    public void setSpielernameOnScreen() throws RemoteException {
-        if (spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ) {
+    public void setSpielernameOnScreen() throws RemoteException, SpielException{
+        if(spiel.istOnlinePartie(sitzungsID)){
+            if(spiel.getEigeneFarbeByID(sitzungsID) == Farbe.WEISS){
+                spielernameWeiss.setText(spiel.getUsername(sitzungsID));
+            }
+            else{
+                spielernameSchwarz.setText(spiel.getUsername(sitzungsID));
+            }
+        }
+        else if(spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ){
             spielernameSchwarz.setText(spiel.getUsername(sitzungsID));
-        } else {
+        } else{
             spielernameWeiss.setText(spiel.getUsername(sitzungsID));
         }
     }

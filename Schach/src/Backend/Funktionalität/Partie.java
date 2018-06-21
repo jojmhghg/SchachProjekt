@@ -554,10 +554,7 @@ public final class Partie {
      * @param sitzungsID
      * @throws Backend.Funktionalität.SpielException falls man nicht aufgeben kann (z.B. da bereits beendet)
      */
-    public void aufgeben(int sitzungsID) throws SpielException{ 
-        // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
-        this.testeIDamZug(sitzungsID);
-        
+    public void aufgeben(int sitzungsID) throws SpielException{         
         // Teste ob Partie schon beendet ist -> wenn ja werfe Fehler
         if(this.beendet){
             throw new SpielException("Partie bereits beendet!");
