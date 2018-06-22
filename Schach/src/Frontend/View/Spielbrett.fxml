@@ -199,11 +199,14 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Hilfe">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Spielregeln" />
+                  <MenuItem mnemonicParsing="false" onAction="#openSpielregelnOnBrowser" text="Spielregeln" />
               <MenuItem mnemonicParsing="false" onAction="#goToAbout" text="About" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Donate" />
+            <Menu mnemonicParsing="false" text="Donate">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#openDonateOnBrowser" text="Öffnen" />
+               </items></Menu>
         </menus>
       </MenuBar>
       <JFXListView fx:id="listZuegeWeiss" layoutX="24.0" layoutY="187.0" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #FFDEAD; -fx-opacity: 80%;">

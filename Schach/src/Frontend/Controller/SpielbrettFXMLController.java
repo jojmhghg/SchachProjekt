@@ -17,7 +17,9 @@ import Frontend.Threads.CheckRemisangebotThread;
 import Frontend.Threads.OnlineZieheGegnerFigurThread;
 import com.jfoenix.controls.JFXListView;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
@@ -1478,6 +1480,24 @@ public class SpielbrettFXMLController implements Initializable {
                 stage.setY(event.getScreenY() - yOffset);
             }
         });
+    }
+    
+    @FXML
+    private void openSpielregelnOnBrowser(ActionEvent event) {
+        try {
+            Desktop.getDesktop().browse(new URL("https://www.brettspielnetz.de/spielregeln/schach.php").toURI());
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void openDonateOnBrowser(ActionEvent event) {
+        try {
+            Desktop.getDesktop().browse(new URL("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B6WZRK5U5TLDJ").toURI());
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
