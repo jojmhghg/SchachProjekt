@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="Frontend.Controller.AboutController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.Controller.AboutController">
    <children>
       <ImageView fitHeight="397.0" fitWidth="554.0" layoutX="23.0" layoutY="-294.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.0">
          <image>
@@ -21,10 +21,10 @@
             <Font name="System Bold" size="40.0" />
          </font>
       </Text>
-      <Hyperlink layoutX="40.0" layoutY="362.0" text="https://www.iconfinder.com/icons/1055002/power_icon#size=128" />
-      <Hyperlink layoutX="40.0" layoutY="414.0" text="https://www.behance.net/gallery/10018309/Chess-Artwork-Pieces-and-Board-Art-AssetsCC 4.0" />
-      <Hyperlink layoutX="40.0" layoutY="462.0" text="https://www.flaticon.com/free-icon/horse_864637" />
-      <Hyperlink layoutX="40.0" layoutY="617.0" text="https://github.com/jojmhghg/SchachProjekt" />
-      <Hyperlink layoutX="40.0" layoutY="514.0" text="https://giphy.com/gifs/magazine-anniversary-mahogany-fXLHAkIvVuggw" />
+      <Hyperlink fx:id="powerOff" layoutX="40.0" layoutY="362.0" onAction="#openPoweroffOnBrowser" text="https://www.iconfinder.com/icons/1055002/power_icon#size=128" />
+      <Hyperlink fx:id="boardArtAsset" layoutX="40.0" layoutY="414.0" onAction="#openBoardArtAssetOnBrowser" text="https://www.behance.net/gallery/10018309/Chess-Artwork-Pieces-and-Board-Art-AssetsCC%204.0" />
+      <Hyperlink fx:id="appIcon" layoutX="40.0" layoutY="462.0" onAction="#openBoardAppIconOnBrowser" text="https://www.flaticon.com/free-icon/horse_864637" />
+      <Hyperlink fx:id="github" layoutX="40.0" layoutY="617.0" onAction="#openGithubOnBrowser" text="https://github.com/jojmhghg/SchachProjekt" />
+      <Hyperlink fx:id="gif" layoutX="40.0" layoutY="514.0" onAction="#openGifOnBrowser" text="https://giphy.com/gifs/magazine-anniversary-mahogany-fXLHAkIvVuggw" />
    </children>
 </AnchorPane>
