@@ -385,7 +385,6 @@ public class SpielbrettFXMLController implements Initializable {
         String sp1 = Long.toString(spiel.getZeitSpieler1(sitzungsID));
         String sp2 = Long.toString(spiel.getZeitSpieler2(sitzungsID));
 
-
         if (spiel.getPartiezeit(sitzungsID) == -1) {
             this.restZeitSchwarz.setVisible(false);
             timerLogoSchwarz.setVisible(false);
@@ -603,7 +602,7 @@ public class SpielbrettFXMLController implements Initializable {
         spielerErkennung();
 
         // War bei Niro nicht mehr im Code vorhanden!
-        if(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ){
+        if (spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ) {
             MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
             rotateBoard();
             new Thread(() -> {
@@ -630,8 +629,8 @@ public class SpielbrettFXMLController implements Initializable {
             //paneBildLinks.setVisible(false); #FFFFFF  #50280e
             //spielernameWeiss.setStyle("");
             //spielernameSchwarz.setStyle("-fx-background-color:#50280e;");
-            this.listZuegeSchwarz.setStyle("-fx-background-color:#D2691E; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
-            this.listZuegeWeiss.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+            this.listZuegeSchwarz.setStyle("-fx-background-color:#D2691E; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 18px;");
+            this.listZuegeWeiss.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold;  -fx-font-size: 18px;");
             this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity:85%");
             this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
 
@@ -640,8 +639,8 @@ public class SpielbrettFXMLController implements Initializable {
             //paneBildLinks.setVisible(true);
             //spielernameWeiss.setStyle("-fx-background-color:#FFFFFF;");
             //spielernameSchwarz.setStyle("");
-            this.listZuegeSchwarz.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold; -fx-font-size: 20px;");
-            this.listZuegeWeiss.setStyle("-fx-background-color:#FFDEAD; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
+            this.listZuegeSchwarz.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold; -fx-font-size: 18px;");
+            this.listZuegeWeiss.setStyle("-fx-background-color:#FFDEAD; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 18px;");
             this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
             this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 85%");
 
@@ -653,22 +652,41 @@ public class SpielbrettFXMLController implements Initializable {
             //Double degree = gridBoard.rotateProperty().getValue();
             addImage.setFitHeight(50);
             addImage.setFitWidth(50);
-            if (spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ) {
-                addImage.setLayoutX(-5);
-                addImage.setLayoutY(20);
-                paneArrayRechts[stelleRechts].getChildren().add(addImage);
-                //paneArrayRechts[stelleRechts].rotateProperty().setValue(180);
-                stelleRechts++;
+            if (spiel.getFarbeSpieler1(sitzungsID) == Farbe.WEISS) {
+                if (spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ) {
+                    addImage.setLayoutX(-5);
+                    addImage.setLayoutY(20);
+                    paneArrayRechts[stelleRechts].getChildren().add(addImage);
+                    //paneArrayRechts[stelleRechts].rotateProperty().setValue(180);
+                    stelleRechts++;
 
-            } else if (spiel.getSpielerAmZug(sitzungsID) != Farbe.WEISS) {
-                addImage.setLayoutX(-5);
-                addImage.setLayoutY(20);
-                paneArrayLinks[stelleLinks].getChildren().add(addImage);
-                //paneArrayRechts[stelleRechts].rotateProperty().setValue(360);
-                stelleLinks++;
+                } else if (spiel.getSpielerAmZug(sitzungsID) != Farbe.WEISS) {
+                    addImage.setLayoutX(-5);
+                    addImage.setLayoutY(20);
+                    paneArrayLinks[stelleLinks].getChildren().add(addImage);
+                    //paneArrayRechts[stelleRechts].rotateProperty().setValue(360);
+                    stelleLinks++;
 
+                }
+            } else {
+                if (spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ) {
+                    addImage.setLayoutX(-5);
+                    addImage.setLayoutY(10);
+                    paneArrayRechts[stelleRechts].getChildren().add(addImage);
+                    paneArrayRechts[stelleRechts].rotateProperty().setValue(180);
+                    stelleRechts++;
+
+                } else if (spiel.getSpielerAmZug(sitzungsID) != Farbe.WEISS) {
+                    addImage.setLayoutX(-5);
+                    addImage.setLayoutY(-20);
+                    paneArrayLinks[stelleLinks].getChildren().add(addImage);
+                    paneArrayRechts[stelleRechts].rotateProperty().setValue(180);
+                    stelleLinks++;
+
+                }
             }
-        }else {
+
+        } else {
             //Double degree = gridBoard.rotateProperty().getValue();
             addImage.setFitHeight(50);
             addImage.setFitWidth(50);

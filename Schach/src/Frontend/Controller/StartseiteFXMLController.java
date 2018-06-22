@@ -10,6 +10,8 @@ import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.SpielStub;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.NotBoundException;
@@ -49,27 +51,54 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private JFXButton partieLaden;
 
+    @FXML
+    private JFXTextField anmeldenBenutzername;
+
+    @FXML
+    private JFXPasswordField anmeldenPasswort;
+
+    @FXML
+    private JFXButton passwortVergessenBtn;
+
+    @FXML
+    private JFXTextField benuntzernameReg;
+
+    @FXML
+    private JFXTextField emailReg;
+
+    @FXML
+    private JFXPasswordField passwortReg;
+
+    @FXML
+    private JFXPasswordField passwortWdhReg;
+
+    @FXML
+    private JFXButton registrierenBtn;
+
+    @FXML
+    private JFXButton anmeldenButton;
+
     int sitzungsID;
     SpielStub spiel;
     Spielbrett spielbrett;
     Timeline timeline;
 
     public void loadData() throws SpielException {
-        timeline = new Timeline();    
+        timeline = new Timeline();
     }
-    
+
     public void loadData(SpielStub spiel, Timeline timeline, int sitzungsID) {
         this.spiel = spiel;
         this.sitzungsID = sitzungsID;
         this.timeline = timeline;
     }
-    
-    public void verbindeMitServer() throws RemoteException, NotBoundException{
+
+    public void verbindeMitServer() throws RemoteException, NotBoundException {
         Registry registry;
-            
+
         registry = LocateRegistry.getRegistry("localhost", 1099);
         spiel = (SpielStub) registry.lookup("ClientStub");
-        sitzungsID = spiel.einloggen();  
+        sitzungsID = spiel.einloggen();
     }
 
     @FXML
@@ -101,12 +130,12 @@ public class StartseiteFXMLController implements Initializable {
         } catch (IOException e) {
         }
     }
-    
+
     @FXML
     private void partieFortsetzen(ActionEvent event) {
         try {
             spielbrett = spiel.partieLaden("tmp", sitzungsID);
-            
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
             Parent spielbrettScene = loader.load();
@@ -125,7 +154,7 @@ public class StartseiteFXMLController implements Initializable {
             ((Node) (event.getSource())).getScene().getWindow().hide();
             controller.cleanBoard();
             controller.initSpielbrett();
-            
+
         } catch (SpielException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -139,10 +168,10 @@ public class StartseiteFXMLController implements Initializable {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/PartieLaden.fxml"));
             Parent partieLadenScene = loader.load();
-            
+
             PartieLadenFXMLController controller = loader.getController();
             controller.loadData(spiel, spielbrett, ((Node) (event.getSource())).getScene().getWindow(), timeline, sitzungsID);
-            
+
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             partieLadenStage.initModality(Modality.APPLICATION_MODAL);

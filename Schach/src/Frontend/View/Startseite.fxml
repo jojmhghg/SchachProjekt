@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -14,35 +19,103 @@
             <Image url="@../Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
-      <JFXButton fx:id="spielStarten" buttonType="RAISED" layoutX="498.0" layoutY="239.0" onAction="#goToOptionen" prefHeight="48.0" prefWidth="170.0" style="-fx-background-color: #FFF8DC;" text="Neue Partie" textAlignment="CENTER" textFill="#864921">
+      <JFXButton fx:id="spielStarten" buttonType="RAISED" layoutX="498.0" layoutY="239.0" onAction="#goToOptionen" prefHeight="48.0" prefWidth="170.0" style="-fx-background-color: #FFF8DC;" text="Neue Partie" textAlignment="CENTER" textFill="#864921" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="partieFortsetzen" buttonType="RAISED" layoutX="498.0" layoutY="308.0" onAction="#partieFortsetzen" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Partie forsetzen" textAlignment="CENTER">
+      <JFXButton fx:id="partieFortsetzen" buttonType="RAISED" layoutX="498.0" layoutY="308.0" onAction="#partieFortsetzen" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Partie forsetzen" textAlignment="CENTER" visible="false">
          <font>
-            <Font name="System Bold Italic" size="14.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="partieLaden" buttonType="RAISED" layoutX="498.0" layoutY="367.0" onAction="#goToPartieLaden" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Partie laden" textAlignment="CENTER">
+      <JFXButton fx:id="partieLaden" buttonType="RAISED" layoutX="498.0" layoutY="367.0" onAction="#goToPartieLaden" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Partie laden" textAlignment="CENTER" visible="false">
          <font>
-            <Font name="System Bold Italic" size="14.0" />
+            <Font name="System Bold Italic" size="18.0" />
          </font>
       </JFXButton>
       <JFXButton fx:id="powerOffBtn" buttonType="RAISED" layoutX="498.0" layoutY="426.0" onAction="#powerOff" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Beenden" textAlignment="CENTER">
          <font>
-            <Font name="System Bold Italic" size="14.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
-      <Text layoutX="14.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #DEB887;" text="Schach" wrappingWidth="240.13671875">
+      <Text layoutX="24.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #DEB887;" text="Schach" wrappingWidth="240.13671875">
          <font>
             <Font name="System Bold" size="63.0" />
          </font>
       </Text>
-      <Text fill="#434a9a" layoutX="14.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DeepBlue" wrappingWidth="240.13671278953552">
+      <Text fill="#434a9a" layoutX="24.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DeepBlue" wrappingWidth="240.13671278953552">
          <font>
             <Font name="System Bold Italic" size="33.0" />
          </font>
       </Text>
+      <Pane layoutX="316.0" layoutY="31.0" opacity="0.9" prefHeight="378.0" prefWidth="353.0" style="-fx-background-color: #DEB887;">
+         <children>
+            <JFXTabPane prefHeight="378.0" prefWidth="353.0" stylesheets="@StartSeite.css">
+               <tabs>
+                  <Tab text="Anmelden">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <JFXTextField fx:id="anmeldenBenutzername" focusColor="#864921" layoutX="38.0" layoutY="80.0" prefHeight="48.0" prefWidth="277.0" promptText="Benutzername">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXPasswordField fx:id="anmeldenPasswort" focusColor="#864921" layoutX="38.0" layoutY="172.0" prefHeight="42.0" prefWidth="277.0" promptText="Passwort">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXPasswordField>
+                              <JFXButton fx:id="passwortVergessenBtn" buttonType="RAISED" layoutX="92.0" layoutY="282.0" prefHeight="31.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #50280e; -fx-opacity: 70%;" text="Passwort vergessen" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold Italic" size="14.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Registrieren">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <JFXTextField fx:id="benuntzernameReg" layoutX="52.0" layoutY="22.0" prefHeight="39.0" prefWidth="251.0" promptText="Benutzername">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="emailReg" layoutX="52.0" layoutY="91.0" prefHeight="39.0" prefWidth="251.0" promptText="email">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXPasswordField fx:id="passwortReg" layoutX="52.0" layoutY="165.0" prefHeight="39.0" prefWidth="251.0" promptText="passwort">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXPasswordField>
+                              <JFXPasswordField fx:id="passwortWdhReg" layoutX="52.0" layoutY="236.0" prefHeight="39.0" prefWidth="251.0" promptText="passwort wiederholen">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </JFXPasswordField>
+                              <JFXButton fx:id="registrierenBtn" buttonType="RAISED" layoutX="92.0" layoutY="291.0" prefHeight="31.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #50280e; -fx-opacity: 100%;" text="Registrieren" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold Italic" size="14.0" />
+                                 </font>
+                              </JFXButton>
+                           </children></AnchorPane>
+                    </content>
+                  </Tab>
+               </tabs>
+            </JFXTabPane>
+         </children>
+      </Pane>
+      <JFXButton fx:id="anmeldenButton" buttonType="RAISED" layoutX="316.0" layoutY="426.0" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Anmelden" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

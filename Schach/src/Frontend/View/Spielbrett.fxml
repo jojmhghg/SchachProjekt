@@ -25,7 +25,7 @@
             <Image url="@../Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
-      <Pane fx:id="linkePane" layoutX="13.0" layoutY="62.0" opacity="0.9" prefHeight="668.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
+      <Pane fx:id="linkePane" layoutX="13.0" layoutY="68.0" opacity="0.9" prefHeight="668.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
          <children>
             <Label fx:id="spielernameWeiss" alignment="BASELINE_CENTER" layoutX="11.0" layoutY="68.0" prefHeight="29.0" prefWidth="170.0" style="-fx-background-color: #FFFFFF;" text="Spieler 1" textAlignment="CENTER" textFill="#50280e">
                <font>
@@ -47,7 +47,7 @@
             </Label>
             <Pane fx:id="paneBildLinks" layoutX="5.0" prefHeight="68.0" prefWidth="183.0" style="-fx-background-size: 100%;" styleClass="weisseFiguren" stylesheets="@Spielbrett.css" />
          </children></Pane>
-      <Pane fx:id="rechtePane" layoutX="931.0" layoutY="62.0" opacity="0.9" prefHeight="668.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
+      <Pane fx:id="rechtePane" layoutX="931.0" layoutY="68.0" opacity="0.9" prefHeight="668.0" prefWidth="255.0" style="-fx-background-color: #DEB887; -fx-opacity: 70%;">
          <children>
             <Label fx:id="spielernameSchwarz" alignment="BASELINE_CENTER" layoutX="73.0" layoutY="68.0" prefHeight="30.0" prefWidth="170.0" style="-fx-background-color: #50280e;" text="Spieler 2" textAlignment="CENTER" textFill="WHITE">
                <font>
@@ -180,7 +180,7 @@
             <Pane fx:id="H1" prefHeight="200.0" prefWidth="200.0" styleClass="H1" stylesheets="@Spielbrett.css" GridPane.columnIndex="7" GridPane.rowIndex="7" />
          </children>
       </GridPane>
-      <MenuBar fx:id="myMenuBar" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="1200.0" style="-fx-background-color: #DEB887; -fx-font-weight: bold; -fx-font-size: 12px; -fx-opacity: 85%;">
+      <MenuBar fx:id="myMenuBar" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="1200.0" style="-fx-background-color: #DEB887; -fx-font-weight: bold; -fx-font-size: 14px; -fx-opacity: 85%;">
         <menus>
           <Menu mnemonicParsing="false" text="Partie">
             <items>
@@ -206,12 +206,12 @@
             <Menu mnemonicParsing="false" text="Donate" />
         </menus>
       </MenuBar>
-      <JFXListView fx:id="listZuegeWeiss" layoutX="24.0" layoutY="187.0" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #FFDEAD; -fx-opacity: 80%;">
+      <JFXListView fx:id="listZuegeWeiss" layoutX="24.0" layoutY="193.0" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #FFDEAD; -fx-opacity: 80%;">
          <effect>
             <InnerShadow />
          </effect>
       </JFXListView>
-      <JFXListView fx:id="listZuegeSchwarz" layoutX="1004.0" layoutY="187.0" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #D2691E; -fx-opacity: 80%;">
+      <JFXListView fx:id="listZuegeSchwarz" layoutX="1004.0" layoutY="193.0" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #D2691E; -fx-opacity: 80%;">
          <effect>
             <InnerShadow />
          </effect>

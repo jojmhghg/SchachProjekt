@@ -22,7 +22,7 @@
             <Image url="@../Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
-      <JFXTabPane layoutX="27.0" layoutY="29.0" prefHeight="443.0" prefWidth="646.0">
+      <JFXTabPane layoutX="27.0" layoutY="29.0" prefHeight="443.0" prefWidth="646.0" stylesheets="@Spielbrett.css">
          <tabs>
             <Tab text="Lokal">
               <content>
@@ -84,6 +84,11 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </JFXButton>
+                        <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="347.0" onAction="#goToEinstellungen" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Einstellungen">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </JFXButton>
                      </children>
                   </AnchorPane>
               </content>
@@ -127,6 +132,11 @@
                            </font>
                         </JFXRadioButton>
                         <JFXButton fx:id="backToStartPage2" buttonType="RAISED" layoutX="482.0" layoutY="339.0" onAction="#backToStartPage" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="zurück">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton buttonType="RAISED" layoutX="17.0" layoutY="339.0" onAction="#goToEinstellungen" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Einstellungen">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
