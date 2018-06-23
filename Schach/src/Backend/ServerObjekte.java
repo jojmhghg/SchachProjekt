@@ -5,6 +5,7 @@
  */
 package Backend;
 
+import Backend.Funktionalität.DatenbankHandler;
 import Backend.Funktionalität.Partie;
 import Backend.Funktionalität.SpielException;
 import Backend.Threads.InfoThread;
