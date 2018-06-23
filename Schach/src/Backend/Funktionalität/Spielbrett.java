@@ -363,7 +363,7 @@ public class Spielbrett implements Serializable{
         
         if(figur instanceof Bauer){
             if(zielposition.istGundreiheAndereSeite(this.amZug)){
-                this.bauerUmwandeln(zielposition, amZug, bauerUmwandelnIn);
+                //this.bauerUmwandeln(zielposition, amZug, bauerUmwandelnIn);
             }
         }
              
@@ -411,23 +411,39 @@ public class Spielbrett implements Serializable{
      * @param farbe 
      * @param figurTyp 
      */
-    private void bauerUmwandeln(Position position, Farbe farbe, String figurTyp){
+    public void bauerUmwandeln(Position position, String figurTyp){
         this.spielbrett[position.ordinal()].setFigur(null);
         switch(figurTyp){
-            case "Dame":
-                this.spielbrett[position.ordinal()].setFigur(new Dame(farbe));
+            case "DameW":
+                this.spielbrett[position.ordinal()].setFigur(new Dame(Farbe.WEISS));
                 break;
                 
-            case "Turm":
-                this.spielbrett[position.ordinal()].setFigur(new Turm(farbe));
+            case "TurmW":
+                this.spielbrett[position.ordinal()].setFigur(new Turm(Farbe.WEISS));
                 break;
                 
-            case "Springer":
-                this.spielbrett[position.ordinal()].setFigur(new Springer(farbe));
+            case "SpringerW":
+                this.spielbrett[position.ordinal()].setFigur(new Springer(Farbe.WEISS));
                 break;
                 
-            case "Laeufer":
-                this.spielbrett[position.ordinal()].setFigur(new Laeufer(farbe));
+            case "LaeuferW":
+                this.spielbrett[position.ordinal()].setFigur(new Laeufer(Farbe.WEISS));
+                break;
+                
+            case "DameB":
+                this.spielbrett[position.ordinal()].setFigur(new Dame(Farbe.SCHWARZ));
+                break;
+                
+            case "TurmB":
+                this.spielbrett[position.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
+                break;
+                
+            case "SpringerB":
+                this.spielbrett[position.ordinal()].setFigur(new Springer(Farbe.SCHWARZ));
+                break;
+                
+            case "LaeuferB":
+                this.spielbrett[position.ordinal()].setFigur(new Laeufer(Farbe.SCHWARZ));
                 break;
         }
     }

@@ -7,6 +7,7 @@ package Frontend.Controller;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
+import Backend.Figuren.Bauer;
 import Backend.Figuren.Figur;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
@@ -350,6 +351,7 @@ public class SpielbrettFXMLController implements Initializable {
     int stelleRechts = 0;
     int stelleLinks = 0;
 
+    
     int spieler1min = 0;
     int spieler2min = 0;
     int spieler1sec = 0;
@@ -363,7 +365,7 @@ public class SpielbrettFXMLController implements Initializable {
     CheckBeendetThread checkBeendetThread;
     CheckRemisangebotThread checkRemisangebotThread;
     OnlineZieheGegnerFigurThread onlineZieheGegnerFigurThread;
-
+    
     // Attribute zum Ziehen von Figuren
     private ImageView selectedFigur;
     private Pane quellPane;
@@ -371,7 +373,9 @@ public class SpielbrettFXMLController implements Initializable {
     private LinkedList<Position> possibleMoves;
 
     private Position posKingImSchach;
-
+    public String bauerUmwandelnName;
+    public int feldDesUmzuwandelndenBauern;        
+            
     public void loadData(SpielStub spiel, Spielbrett spielbrett, Timeline timeline, int sitzungsID) throws RemoteException, SpielException {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
@@ -612,6 +616,8 @@ public class SpielbrettFXMLController implements Initializable {
                     onClicked(event);
                 } catch (SpielException | RemoteException ex) {
                     Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         }
@@ -643,6 +649,8 @@ public class SpielbrettFXMLController implements Initializable {
                     try {
                         onClicked(event);
                     } catch (SpielException | RemoteException ex) {
+                        Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
                         Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
@@ -742,7 +750,7 @@ public class SpielbrettFXMLController implements Initializable {
      * @param event
      * @throws Backend.Funktionalität.SpielException
      */
-    public void onClicked(MouseEvent event) throws SpielException, RemoteException {
+    public void onClicked(MouseEvent event) throws SpielException, RemoteException, IOException {
 
         if (spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) != spiel.getSpielerAmZug(sitzungsID)) {
             spiel.kiZieht(startOderZiel, sitzungsID);
@@ -776,7 +784,8 @@ public class SpielbrettFXMLController implements Initializable {
                     selectedFigur.setEffect(null);
                     highlightAus();
                 }
-
+                
+                
                 //... teste ob neues Feld ein möglicher zug ist
                 // Falls ja:
                 if (possibleMoves != null && possibleMoves.contains(pos)) {
@@ -792,7 +801,22 @@ public class SpielbrettFXMLController implements Initializable {
 
                     // Rochade oder En Passant in GUI darstellen
                     rochadeOderEnPassantAnzeigen(pos, this.quellPosition);
-
+                    
+                    if(this.spielbrett.getFigurAufFeld(pos) instanceof Bauer || this.spielbrett.getFigurAufFeld(quellPosition) instanceof Bauer){
+                        if(this.spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS){
+                            if(pos.ordinal() >= 56 && pos.ordinal() <= 63){
+                                starteBauerUmwandelnFenster(pos, Farbe.WEISS);
+                                this.feldDesUmzuwandelndenBauern = pos.ordinal();
+                            }
+                        }
+                        else{
+                            if(pos.ordinal() >= 0 && pos.ordinal() <= 7){
+                                starteBauerUmwandelnFenster(pos, Farbe.SCHWARZ);
+                                this.feldDesUmzuwandelndenBauern = pos.ordinal();
+                            }
+                        }
+                    }
+                        
                     //Reset all and Update screen
                     possibleMoves = null;
                     quellPane = null;
@@ -850,6 +874,8 @@ public class SpielbrettFXMLController implements Initializable {
                     try {
                         onClicked(event1);
                     } catch (SpielException | RemoteException ex) {
+                        Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
                         Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
@@ -1498,6 +1524,34 @@ public class SpielbrettFXMLController implements Initializable {
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    public void starteBauerUmwandelnFenster(Position ziel, Farbe farbe) throws IOException{
+        
+        FXMLLoader loader = new FXMLLoader();
+        if(farbe == Farbe.WEISS){
+            loader.setLocation(getClass().getResource("../View/PopupWeiss.fxml"));
+        }
+        else{
+            loader.setLocation(getClass().getResource("../View/PopupSchwarz.fxml"));
+        }
+        
+        Parent popupScene = loader.load();
+        PopupFXMLController controller = loader.getController();
+
+        //aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initStyle(StageStyle.UNDECORATED);
+        popupStage.setScene(new Scene(popupScene));
+        popupStage.show();
+    }
+    
+    public void bauerUmwandeln() throws SpielException, RemoteException{
+        System.out.println(feldDesUmzuwandelndenBauern);
+        System.out.println(bauerUmwandelnName);
+        System.out.println(sitzungsID);
+        spiel.bauerUmwandeln(Position.B8, bauerUmwandelnName, sitzungsID);
     }
 
     /**

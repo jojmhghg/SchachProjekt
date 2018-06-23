@@ -514,6 +514,7 @@ public final class Partie {
             this.tmpZiel = ziel;
             this.umwandeln = true;
             System.out.println("Jetzt wird umgewandelt");
+            //this.spielbrett.bauerUmwandeln(ziel, connector);//todo
         }
         else{
             zugBearbeiten(ursprung, ziel, null, connector);
@@ -525,13 +526,14 @@ public final class Partie {
      * Ruft danach die Methode auf, die den Rest des Zuges abwickelt. 
      * 
      * @param figur Dame, Turm, Springer oder Laeufer
+     * @param position
      * @param sitzungsID
      * @throws SpielException falls man Bauer nicht umwandeln kann oder Übergabeparameter ungültig ist
      */
-    public void bauerUmwandeln(String figur, int sitzungsID) throws SpielException{
+    public void bauerUmwandeln(String figur, Position position, int sitzungsID) throws SpielException{
         // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
         this.testeIdAmZug(sitzungsID);
-        
+        spielbrett.bauerUmwandeln(position, figur);
         if(!this.umwandeln){
             throw new SpielException("Umwandeln nicht notwendig!");
         }

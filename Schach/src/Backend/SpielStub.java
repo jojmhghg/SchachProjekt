@@ -34,6 +34,7 @@ public interface SpielStub extends Remote{
     public Spielbrett neuePartie(Optionen partieoptionen, int sitzungsID) throws SpielException, RemoteException;
     public Spielbrett partieLaden(String speicherstand, int sitzungsID) throws SpielException, RemoteException;
     public void zieheFigur(Position ausgangsposition, Position zielposition, int sitzungsID) throws SpielException, RemoteException;
+    public void bauerUmwandeln(Position position, String nameDerGewuenschtenFigur, int sitzungsID) throws SpielException, RemoteException;
     
     public void aufgeben(int sitzungsID) throws SpielException, RemoteException;
     public void remisAnbieten(int sitzungsID) throws SpielException, RemoteException;

@@ -225,6 +225,17 @@ public class SpielStubImpl implements SpielStub {
     }
 
     /**
+     *
+     * @param position
+     * @param nameDerGewuenschtenFigur
+     * @param sitzungsID
+     * @throws SpielException
+     */
+    @Override
+    public void bauerUmwandeln(Position position, String nameDerGewuenschtenFigur, int sitzungsID) throws SpielException{
+        this.serverObjekte.partieListe.get(sitzungsID).bauerUmwandeln(nameDerGewuenschtenFigur, position, sitzungsID);
+    }
+    /**
      * Man gibt auf
      * 
      * @param sitzungsID
@@ -530,4 +541,5 @@ public class SpielStubImpl implements SpielStub {
         return this.serverObjekte.partieListe.get(sitzungsID).liegtRemisangebotVor(sitzungsID);        
     }
     
+   
 }
