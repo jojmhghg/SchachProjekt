@@ -1,0 +1,22 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 21.04.2018, 20:28:16
+    Author     : Edwrard Nana
+*/
+
+
+.tab {
+    -fx-background-color: #50280e;
+    -fx-pref-width: 170;
+    -fx-pref-height: 42;
+    -fx-font-color: #000000;
+}
+
+.tab-header-background {
+    -fx-background-color: #50280e;
+}
+

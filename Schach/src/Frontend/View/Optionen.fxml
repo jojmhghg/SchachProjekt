@@ -22,7 +22,7 @@
             <Image url="@../Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
-      <JFXTabPane layoutX="27.0" layoutY="29.0" prefHeight="443.0" prefWidth="646.0">
+      <JFXTabPane layoutX="27.0" layoutY="29.0" prefHeight="443.0" prefWidth="646.0" stylesheets="@Spielbrett.css">
          <tabs>
             <Tab text="Lokal">
               <content>

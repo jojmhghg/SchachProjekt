@@ -283,3 +283,14 @@ and open the template in the editor.
     -fx-background-image: url(../Ressources/Board/Wood/a1.png)
 }
 */
+
+.tab {
+    -fx-background-color: #50280e;
+    -fx-pref-width: 315;
+    -fx-font-color: #000000;
+}
+
+.tab-header-background {
+    -fx-background-color: #50280e;
+}
+
