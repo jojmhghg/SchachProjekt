@@ -21,32 +21,35 @@ import java.util.LinkedList;
  */
 public interface SpielStub extends Remote{
     
+    /* --- Methoden um Sitzung zu starten --- */
     public int einloggen(String email, String password) throws RemoteException, SpielException;
-    public void registrieren(String email, String password) throws RemoteException, SpielException;
+    public void registrieren(String email, String password, String username) throws RemoteException, SpielException;
+    public void resetPassword(String email) throws SpielException, RemoteException;
     
-    /* --- Methoden die das Spiel betreffen --- */
+    /* --- Methoden zu den Einstellungen --- */
     public void setUsername(String username, int sitzungsID) throws SpielException, RemoteException;
     public String getUsername(int sitzungsID) throws RemoteException, SpielException;
     public void setHighlightingAus(Boolean highlightingAus, int sitzungsID) throws SpielException, RemoteException;
     public boolean isHighlightingAus(int sitzungsID) throws RemoteException, SpielException;
+    public void changePassword(String altesPW, String neuesPW, int sitzungsID) throws SpielException, RemoteException;
     
     /* --- Methoden die eine Partie betreffen --- */
     public Spielbrett neuePartie(Optionen partieoptionen, int sitzungsID) throws SpielException, RemoteException;
     public Spielbrett partieLaden(String speicherstand, int sitzungsID) throws SpielException, RemoteException;
-    public void zieheFigur(Position ausgangsposition, Position zielposition, int sitzungsID) throws SpielException, RemoteException;
-    public void bauerUmwandeln(Position position, String nameDerGewuenschtenFigur, int sitzungsID) throws SpielException, RemoteException;
+    public void speichereSpiel(String dateiname, int sitzungsID)throws SpielException, RemoteException; 
     
+    /* --- Methoden die zur Partie gehören --- */
+    public void zieheFigur(Position ausgangsposition, Position zielposition, int sitzungsID) throws SpielException, RemoteException;
+    public void bauerUmwandeln(Position position, String nameDerGewuenschtenFigur, int sitzungsID) throws SpielException, RemoteException;    
     public void aufgeben(int sitzungsID) throws SpielException, RemoteException;
     public void remisAnbieten(int sitzungsID) throws SpielException, RemoteException;
     public void remisAnnehmen(int sitzungsID) throws SpielException, RemoteException;
     public void remisAblehnen(int sitzungsID) throws SpielException, RemoteException;
-    public boolean liegtRemisangebotVor(int sitzungsID) throws SpielException, RemoteException;
-    
+    public boolean liegtRemisangebotVor(int sitzungsID) throws SpielException, RemoteException;   
     public boolean getBeendet(int sitzungsID) throws RemoteException;
     public Position getPositionBlackKing(int sitzungsID) throws RemoteException;
     public Position getPositionWhiteKing(int sitzungsID) throws RemoteException;
-    public Farbe getFarbeSpieler1(int sitzungsID) throws RemoteException;
-    public boolean getKiGegner(int sitzungsID) throws RemoteException;  
+    public Farbe getFarbeSpieler1(int sitzungsID) throws RemoteException;    
     public boolean getEnPassant(int sitzungsID) throws RemoteException;
     public boolean getRochade(int sitzungsID) throws RemoteException;
     public Farbe getSpielerAmZug(int sitzungsID) throws RemoteException;
@@ -57,12 +60,13 @@ public interface SpielStub extends Remote{
     public long getPartiezeit(int sitzungsID) throws RemoteException;
     public LinkedList<Zug> getMitschrift(int sitzungsID) throws RemoteException;   
     public LinkedList<Position> getMoeglicheZuege(Position position, int sitzungsID) throws SpielException, RemoteException;
-    
-    public void speichereSpiel(String dateiname, int sitzungsID)throws SpielException, RemoteException; 
-    
+       
+    /* --- Methoden zur KI --- */
+    public boolean getKiGegner(int sitzungsID) throws RemoteException; 
     public int getBestMoveInt(int sitzungsID) throws RemoteException;  
     public void kiZieht(boolean startOderZiel, int sitzungsID) throws SpielException, RemoteException;
     
+    /* --- Methoden für OnlinePartie --- */
     public void warteschlangeBetreten(Optionen partieoptionen, int sitzungsID) throws RemoteException, SpielException;
     public boolean testObSpielGefunden(int sitzungsID) throws RemoteException, SpielException;
     public boolean istOnlinePartie(int sitzungsID) throws RemoteException;

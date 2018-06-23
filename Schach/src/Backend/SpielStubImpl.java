@@ -5,6 +5,7 @@
  */
 package Backend;
 
+import Backend.Funktionalität.DatenbankException;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Funktionalität.Optionen;
@@ -68,42 +69,36 @@ public class SpielStubImpl implements SpielStub {
      * 
      * @param email von neuem User
      * @param password von neuem User
+     * @param username
      * @throws SpielException falls E-Mail bereits vorhanden
      */
     @Override
-    public void registrieren(String email, String password) throws SpielException{
+    public void registrieren(String email, String password, String username) throws SpielException{
         try {
-            this.serverObjekte.datenbank.registiereNeuenUser(email, password);              
+            this.serverObjekte.datenbank.registiereNeuenUser(email, password, username);              
         } catch (SQLException ex) {
             throw new SpielException("E-Mail bereits vorhanden!");
         }             
     }
     
     /**
-     * Methode generiert eine neue zufällige SitzungsID
-     * Stellt sicher, dass diese neu ist!
+     * Erstellt eine neues Passwort für den User mit der übergebenen E-Mail-Adresse,
+     * speichert er in der Datenbank
+     * und sendet dieses via E-Mail an den User.
      * 
-     * @return SitzungsID
+     * @param email des Users
+     * @throws SpielException
+     * @throws RemoteException 
      */
-    private int getNewID(){
-        int sitzungsID = 0; 
-        boolean neu = false;
-        
-        while(!neu){
-            sitzungsID = (int)(Math.random() * 1000000 + 1); 
-            neu = true;
-            
-            for(String sitzung : serverObjekte.sitzungen.values()){
-                if(Integer.parseInt(sitzung) == sitzungsID){
-                    neu = false;
-                    break;
-                }
-            }
+    @Override
+    public void resetPassword(String email) throws SpielException, RemoteException{
+        try {
+            this.serverObjekte.datenbank.resetPassword(email);
+        } catch (SQLException ex) {
+            throw new SpielException("E-Mail-Adresse existiert nicht!");
         }
-        
-        return sitzungsID;
     }
-
+    
     /**
      * Setzt einen neuen Username
      * 
@@ -181,6 +176,27 @@ public class SpielStubImpl implements SpielStub {
         }
     }
 
+    /**
+     * 
+     * 
+     * @param altesPW
+     * @param neuesPW
+     * @param sitzungsID
+     * @throws SpielException
+     * @throws RemoteException 
+     */
+    @Override
+    public void changePassword(String altesPW, String neuesPW, int sitzungsID) throws SpielException, RemoteException{
+        String email = this.serverObjekte.sitzungen.get(sitzungsID);
+        try {
+            this.serverObjekte.datenbank.changePassword(email, altesPW, neuesPW);
+        } catch (SQLException ex) {
+            throw new SpielException("Fehler bei der Datenbankabfrage!");
+        } catch (DatenbankException ex) {
+            throw new SpielException("E-Mail nicht vorhanden!");
+        }
+    }
+    
     /**
      * Erstellt eine neue Partie
      * 
@@ -541,5 +557,28 @@ public class SpielStubImpl implements SpielStub {
         return this.serverObjekte.partieListe.get(sitzungsID).liegtRemisangebotVor(sitzungsID);        
     }
     
-   
+   /**
+     * Methode generiert eine neue zufällige SitzungsID
+     * Stellt sicher, dass diese neu ist!
+     * 
+     * @return SitzungsID
+     */
+    private int getNewID(){
+        int sitzungsID = 0; 
+        boolean neu = false;
+        
+        while(!neu){
+            sitzungsID = (int)(Math.random() * 1000000 + 1); 
+            neu = true;
+            
+            for(String sitzung : serverObjekte.sitzungen.values()){
+                if(Integer.parseInt(sitzung) == sitzungsID){
+                    neu = false;
+                    break;
+                }
+            }
+        }
+        
+        return sitzungsID;
+    }
 }

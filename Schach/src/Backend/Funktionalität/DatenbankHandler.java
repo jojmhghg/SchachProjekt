@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Backend;
+package Backend.Funktionalität;
 
+import Backend.Funktionalität.EMailService;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -69,14 +71,15 @@ public class DatenbankHandler {
      * 
      * @param email für neuen User
      * @param password für neuen User
+     * @param username
      * @throws SQLException 
      */
-    public void registiereNeuenUser(String email, String password) throws SQLException{
+    public void registiereNeuenUser(String email, String password, String username) throws SQLException{
         String sql = "INSERT INTO user values(?,?,?,?);";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, email);
         preparedStatement.setString(2, password);
-        preparedStatement.setString(3, "Unknown");
+        preparedStatement.setString(3, username);
         preparedStatement.setInt(4, 0);
         preparedStatement.execute(); 
     }
@@ -227,6 +230,36 @@ public class DatenbankHandler {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, email);
         preparedStatement.execute();       
+    }
+
+    /**
+     * Generiert ein neues zufällliges Passwort zu einer übergebenen E-Mail 
+     * und sendet es via E-Mail an den User.
+     * 
+     * @param email des Users
+     */
+    public void resetPassword(String email) throws SQLException {
+        String message;
+        EMailService emailService = new EMailService();
+              
+        //zufälliges Passwort generieren (10 Zeichen)
+        String allowedChars = "0123456789abcdefghijklmnopqrstuvwABCDEFGHIJKLMNOP!?";
+        SecureRandom random = new SecureRandom();
+        StringBuilder pass = new StringBuilder(10);
+        for (int i = 0; i < 10; i++) {
+            pass.append(allowedChars.charAt(random.nextInt(allowedChars.length())));
+        }
+        String passwort = pass.toString();
+
+        String sql = "UPDATE user SET password = ? WHERE email = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, passwort);
+        preparedStatement.setString(2, email);
+        preparedStatement.execute();       
+        
+        //Sende email
+        message = "Ihr neues Passwort lautet: " + passwort ;
+        emailService.sendMail(email, "Terminkalender: Passwort zurückgesetzt", message);
     }
    
 }
