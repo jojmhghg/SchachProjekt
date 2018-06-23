@@ -226,6 +226,7 @@ public class OptionenFXMLController implements Initializable {
 
             StartseiteFXMLController controller = loader.getController();
             controller.loadData(spiel,timeline,sitzungsID);
+            controller.showContent(sitzungsID);
             
             //startSeiteScene = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
             Stage startSeiteStage;
