@@ -6,47 +6,56 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.Controller.RemisAngebotFXMLController">
    <children>
-      <ImageView fitHeight="458.0" fitWidth="641.0" layoutX="-20.0" layoutY="-85.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="444.0" fitWidth="606.0" layoutY="-100.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Ressources/backgroundStartSeite.PNG" />
          </image>
       </ImageView>
-      <Text fx:id="textRemisAngebot" fontSmoothingType="LCD" layoutX="224.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bietet eine Remis an. ">
+      <Pane layoutX="35.0" layoutY="20.0" prefHeight="47.0" prefWidth="239.0" styleClass="first" stylesheets="@StandardDesign.css">
+         <children>
+            <Text fill="WHITE" fontSmoothingType="LCD" layoutX="11.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remis Angebot" wrappingWidth="217.2084930986166">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="35.0" layoutY="75.0" prefHeight="140.0" prefWidth="534.0" styleClass="second" stylesheets="@StandardDesign.css">
+         <children>
+            <Label fx:id="remisAnbieter" layoutX="108.0" layoutY="40.0" text="Spieler">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Text fx:id="textRemisAngebot" fontSmoothingType="LCD" layoutX="235.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bietet eine Remis an. ">
          <font>
             <Font size="23.0" />
          </font>
       </Text>
-      <Text fx:id="hinweisRemisAngebot" layoutX="224.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sie können die Remis annehmen oder ablehnen">
+      <Text fx:id="hinweisRemisAngebot" layoutX="141.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sie können die Remis annehmen oder ablehnen">
          <font>
-            <Font name="System Italic" size="12.0" />
+            <Font name="System Italic" size="15.0" />
          </font>
       </Text>
-      <Label fx:id="remisAnbieter" layoutX="84.0" layoutY="102.0" text="Spieler" AnchorPane.rightAnchor="399.0">
-         <font>
-            <Font name="System Bold" size="36.0" />
-         </font>
-      </Label>
-      <JFXButton buttonType="RAISED" layoutX="114.0" layoutY="212.0" onAction="#remisAnnehmen" prefHeight="53.0" prefWidth="110.0" ripplerFill="#0eab23" text="Annhemen" textAlignment="CENTER">
+      <JFXButton buttonType="RAISED" layoutX="84.0" layoutY="223.0" onAction="#remisAnnehmen" prefHeight="53.0" prefWidth="154.0" ripplerFill="#0eab23" styleClass="second" stylesheets="@StandardDesign.css" text="Annhemen" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="325.0" layoutY="212.0" onAction="#remisAblehnen" prefHeight="53.0" prefWidth="110.0" ripplerFill="#ee0707" text="Ablehnen" textAlignment="CENTER">
+      <JFXButton buttonType="RAISED" layoutX="359.0" layoutY="223.0" onAction="#remisAblehnen" prefHeight="53.0" prefWidth="154.0" ripplerFill="#ee0707" styleClass="second" stylesheets="@StandardDesign.css" text="Ablehnen" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </JFXButton>
-      <Text fontSmoothingType="LCD" layoutX="43.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remis Angebot">
-         <font>
-            <Font name="System Bold" size="44.0" />
-         </font>
-      </Text>
-      <FontAwesomeIconView glyphName="CHECK" layoutX="224.0" layoutY="249.0" size="30" />
-      <FontAwesomeIconView glyphName="CLOSE" layoutX="435.0" layoutY="249.0" size="30" />
+      <FontAwesomeIconView glyphName="CHECK" layoutX="201.0" layoutY="260.0" size="30" />
+      <FontAwesomeIconView glyphName="CLOSE" layoutX="476.0" layoutY="260.0" size="30" />
    </children>
 </AnchorPane>
