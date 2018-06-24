@@ -209,7 +209,7 @@
                </items></Menu>
         </menus>
       </MenuBar>
-      <JFXListView fx:id="listZuegeWeiss" layoutX="24.0" layoutY="187.0" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #FFDEAD; -fx-opacity: 80%;">
+      <JFXListView fx:id="listZuegeWeiss" layoutX="24.0" layoutY="187.0" onMousePressed="#listZuegeWeissSelected" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #FFDEAD; -fx-opacity: 80%;">
          <effect>
             <InnerShadow />
          </effect>
