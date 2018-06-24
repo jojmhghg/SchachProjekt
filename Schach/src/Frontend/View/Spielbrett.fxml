@@ -214,7 +214,7 @@
             <InnerShadow />
          </effect>
       </JFXListView>
-      <JFXListView fx:id="listZuegeSchwarz" layoutX="1004.0" layoutY="187.0" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #D2691E; -fx-opacity: 80%;">
+      <JFXListView fx:id="listZuegeSchwarz" layoutX="1004.0" layoutY="187.0" onMouseClicked="#listZuegeSchwarzSelected" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #D2691E; -fx-opacity: 80%;">
          <effect>
             <InnerShadow />
          </effect>
