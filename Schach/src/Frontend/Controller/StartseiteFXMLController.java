@@ -101,9 +101,9 @@ public class StartseiteFXMLController implements Initializable {
     Spielbrett spielbrett;
     Timeline timeline;
 
-    String email;
-    String tmpEmail;
-    String password;
+    private String email;
+    private String username;
+    private String password;
 
     public void loadData() throws SpielException {
         timeline = new Timeline();
@@ -131,15 +131,15 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private void registrieren(ActionEvent event) throws RemoteException, SpielException {
         email = emailReg.getText();
+        username = benuntzernameReg.getText();
 
         //Pruefe ob die Passwort falsch ist
         if (passwortReg.getText().equals(passwortWdhReg.getText())) {
             password = passwortReg.getText();
 
             try {
-                spiel.registrieren(email, password);
-                tmpEmail = email;
-                
+                spiel.registrieren(email, password, username);
+
                 // Reg daten werden in anmdelde Bildschirm angezeigt
                 anmeldenBenutzername.setText(email);
                 anmeldenPasswort.setText(password);
@@ -215,29 +215,22 @@ public class StartseiteFXMLController implements Initializable {
         fadeOut.play();
     }
 
-    private void animationFadeIn() {
+    public void animationFadeIn() {
         FadeTransition fadeIn = new FadeTransition(Duration.seconds(2), anmeldePane);
         fadeIn.setFromValue(0);
-        fadeIn.setToValue(1);
+        fadeIn.setToValue(0.9);
         fadeIn.setCycleCount(1);
 
         fadeIn.play();
     }
 
     private void animationFadeOut() {
-        FadeTransition fadeOut = new FadeTransition(Duration.seconds(5), anmeldePane);
-        fadeOut.setFromValue(0);
-        fadeOut.setToValue(1);
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), anmeldePane);
+        fadeOut.setFromValue(0.9);
+        fadeOut.setToValue(0);
         fadeOut.setCycleCount(1);
 
-        FadeTransition fadeOut2 = new FadeTransition(Duration.seconds(5), anmeldenButton);
-        fadeOut2.setFromValue(0);
-        fadeOut2.setToValue(1);
-        fadeOut2.setCycleCount(1);
         fadeOut.play();
-        fadeOut2.play();
-        anmeldePane.setVisible(false);
-        anmeldenButton.setVisible(false);
     }
 
     // Hier kann man anmelden
@@ -248,16 +241,11 @@ public class StartseiteFXMLController implements Initializable {
 
         try {
             sitzungsID = spiel.einloggen(email, password);
-            if (tmpEmail.equals(email)) {
-                //Nachtragen der Benutzername
-                spiel.setUsername(benuntzernameReg.getText(), sitzungsID);
-            }
+
             // Wenn anmeldung Erfolgreich ist
             messageBox(2);
             animationFadeOut();
-            spielStarten.setVisible(true);
-            partieFortsetzen.setVisible(true);
-            partieLaden.setVisible(true);
+            showContent();
 
         } catch (Exception e) {
             // Benutzer existert nicht 
@@ -266,14 +254,22 @@ public class StartseiteFXMLController implements Initializable {
 
     }
 
-    public void showContent(int tmpSitzungsID) {
-        if(sitzungsID == tmpSitzungsID) {
-            anmeldePane.setVisible(false);
-            anmeldenButton.setVisible(false);
-            spielStarten.setVisible(true);
-            partieFortsetzen.setVisible(true);
-            partieLaden.setVisible(true);
-        }
+    public void showAnmeldePaneContent() {
+
+        anmeldePane.setVisible(true);
+        anmeldenButton.setVisible(true);
+        spielStarten.setVisible(false);
+        partieFortsetzen.setVisible(false);
+        partieLaden.setVisible(false);
+
+    }
+    
+    private void showContent() {
+        anmeldePane.setVisible(false);
+        anmeldenButton.setVisible(false);
+        spielStarten.setVisible(true);
+        partieFortsetzen.setVisible(true);
+        partieLaden.setVisible(true);
     }
 
     @FXML
@@ -360,7 +356,8 @@ public class StartseiteFXMLController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        animationFadeIn();
+        //animationFadeIn();
+        showContent();
         messageBox(4);
     }
 
