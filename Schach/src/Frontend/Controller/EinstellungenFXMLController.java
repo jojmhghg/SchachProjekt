@@ -56,12 +56,21 @@ public class EinstellungenFXMLController implements Initializable {
         this.optionenFXMLContoller = optionenFXMLContoller;
         
         spielername.setText(spiel.getUsername(sitzungsID));
+        
+        //Ueberpruefe ob die Einstellungen Seite aus Optionen oder Spielbrett aufgerufen wird
+        if(spielbrettFXMLController != null){
+            spielername.setDisable(Boolean.TRUE);
+        }
+        else{
+            spielername.setDisable(Boolean.FALSE);
+        }
+        
         highlightingButton.setSelected(spiel.isHighlightingAus(sitzungsID));
     }
     
     @FXML
     private void backToSpielbrett(ActionEvent event) {
-        //Überprüfe zuerst ob die Einstellungen bei der Option Seite geöndert wird
+        //Ueberpruefe zuerst ob die Einstellungen bei der Option Seite geaendert wird
         if (spielbrettFXMLController != null) {
             ((Node) (event.getSource())).getScene().getWindow().hide();
 
@@ -77,7 +86,7 @@ public class EinstellungenFXMLController implements Initializable {
 
         if (!newSpielername.isEmpty()) {
             try {
-                //Überprüfe zuerst ob die Einstellungen bei der Option Seite geändert wird
+                //Ueberpruefe zuerst ob die Einstellungen bei der Option Seite geaendert wird
                 if (spielbrettFXMLController != null) {
                     spiel.setUsername(newSpielername, sitzungsID);
                     spiel.setHighlightingAus(highlightingButton.isSelected(), sitzungsID);
@@ -108,7 +117,7 @@ public class EinstellungenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
     }    
     
 }
