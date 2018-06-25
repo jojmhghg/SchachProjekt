@@ -95,7 +95,7 @@ public class EinstellungenFXMLController implements Initializable {
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog - Partie speichern");
-            alert.setHeaderText("Partie speichern abgebrochen !");
+            alert.setHeaderText("Einstellungen speichern abgebrochen !");
             alert.setContentText("Der Spielername ist leer !!");
             alert.showAndWait();
         }
