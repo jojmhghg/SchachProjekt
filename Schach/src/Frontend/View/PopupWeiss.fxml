@@ -13,7 +13,7 @@
             <Image url="@../Ressources/background2.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="laeuferW" fitHeight="70.0" fitWidth="100.0" layoutX="319.0" layoutY="144.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="LaeuferW" fitHeight="70.0" fitWidth="100.0" layoutX="319.0" layoutY="144.0" onMouseClicked="#onClicked" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Ressources/Pieces/Wood/BishopW.png" />
          </image>

@@ -372,9 +372,7 @@ public class SpielbrettFXMLController implements Initializable {
     private Position quellPosition;
     private LinkedList<Position> possibleMoves;
 
-    private Position posKingImSchach;
-    public String bauerUmwandelnName;
-    public int feldDesUmzuwandelndenBauern;        
+    private Position posKingImSchach;       
             
     public void loadData(SpielStub spiel, Spielbrett spielbrett, Timeline timeline, int sitzungsID) throws RemoteException, SpielException {
         this.spiel = spiel;
@@ -801,14 +799,12 @@ public class SpielbrettFXMLController implements Initializable {
                     if(this.spielbrett.getFigurAufFeld(quellPosition) instanceof Bauer){
                         if(this.spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS){
                             if(pos.ordinal() >= 56 && pos.ordinal() <= 63){
-                                starteBauerUmwandelnFenster(pos, Farbe.WEISS);
-                                this.feldDesUmzuwandelndenBauern = pos.ordinal();
+                                starteBauerUmwandelnFenster(pos, Farbe.WEISS, pos.ordinal());
                             }
                         }
                         else{
                             if(pos.ordinal() >= 0 && pos.ordinal() <= 7){
-                                starteBauerUmwandelnFenster(pos, Farbe.SCHWARZ);
-                                this.feldDesUmzuwandelndenBauern = pos.ordinal();
+                                starteBauerUmwandelnFenster(pos, Farbe.SCHWARZ, pos.ordinal());
                             }
                         }
                     }
@@ -1530,7 +1526,7 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
-    public void starteBauerUmwandelnFenster(Position ziel, Farbe farbe) throws IOException{
+    public void starteBauerUmwandelnFenster(Position ziel, Farbe farbe, int zielfeld) throws IOException{
         
         FXMLLoader loader = new FXMLLoader();
         if(farbe == Farbe.WEISS){
@@ -1541,7 +1537,7 @@ public class SpielbrettFXMLController implements Initializable {
         }
         Parent popupScene = loader.load();
         PopupFXMLController controller = loader.getController();
-        controller.spielbrettFXMLController = this;
+        controller.loadData(this, zielfeld);
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.initStyle(StageStyle.UNDECORATED);
@@ -1549,8 +1545,65 @@ public class SpielbrettFXMLController implements Initializable {
         popupStage.show();
     }
     
-    public void bauerUmwandeln() throws SpielException, RemoteException{
-        spielbrett.bauerUmwandeln(Position.values()[feldDesUmzuwandelndenBauern], bauerUmwandelnName);        
+    /**
+     * Wandelt den Bauer auf dem Zielfeld zur übergebenen Figur um (Nur in GUI)
+     * 
+     * @param neueFigur
+     * @param zielfeld
+     * @throws SpielException
+     * @throws RemoteException 
+     */
+    public void bauerUmwandeln(String neueFigur, int zielfeld) throws SpielException, RemoteException{
+        Image value = null;
+        
+        // Bauer entfernen
+        if (paneArray[zielfeld].getChildren().size() > 0) {
+            paneArray[zielfeld].getChildren().remove(0);
+        }
+               
+        switch (neueFigur) {
+            case "SpringerW":
+                value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");               
+                break;
+                
+            case "SpringerB":
+                value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");               
+                break;
+
+            case "LaeuferW":
+                value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");                
+                break;
+                
+            case "LaeuferB":
+                value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");               
+                break;
+
+            case "DameW":
+                value = new Image("Frontend/Ressources/Pieces/Wood/QueenW.png");
+                break;
+                
+            case "DameB":
+                value = new Image("Frontend/Ressources/Pieces/Wood/QueenB.png");
+                break;
+
+            case "TurmW":
+                value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");             
+                break;
+                
+            case "TurmB":
+                value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");
+                break;
+        }
+        
+        if (value != null) {
+            ImageView imgView = new ImageView(value);
+            imgView.setFitHeight(70);
+            imgView.setFitWidth(70);
+            imgView.setLayoutX(3);
+            imgView.setLayoutY(3);
+            paneArray[zielfeld].getChildren().add(imgView);
+        }
+      
     }
 
     /**

@@ -11,13 +11,11 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -30,21 +28,13 @@ public class PopupFXMLController implements Initializable {
     @FXML
     private ImageView LaueferB;
     @FXML
-    private ImageView KoenigB;
-    @FXML
-    private ImageView BauerB;
-    @FXML
     private ImageView SpringerB;
     @FXML
     private ImageView DameB;
     @FXML
     private ImageView TurmB;
     @FXML
-    private ImageView laeuferW;
-    @FXML
-    private ImageView koenigW;
-    @FXML
-    private ImageView BauerW;
+    private ImageView LaeuferW;
     @FXML
     private ImageView SpringerW;
     @FXML
@@ -52,9 +42,14 @@ public class PopupFXMLController implements Initializable {
     @FXML
     private ImageView TurmW;
     
-    private ImageView selectedFigur;
     InnerShadow innerShadow = new InnerShadow();
-    SpielbrettFXMLController spielbrettFXMLController;
+    private SpielbrettFXMLController spielbrettFXMLController;
+    private int zielfeld;
+    
+    void loadData(SpielbrettFXMLController spielbrettFXMLController, int zielfeld) {
+        this.spielbrettFXMLController = spielbrettFXMLController;
+        this.zielfeld = zielfeld;
+    }
     
     @FXML
     private void onClicked(MouseEvent event) throws SpielException, RemoteException, IOException{
@@ -63,11 +58,10 @@ public class PopupFXMLController implements Initializable {
         String name = event.getTarget().toString();
         name = name.substring(13, name.length()-24);
         
-        spielbrettFXMLController.bauerUmwandelnName = name;
-        spielbrettFXMLController.bauerUmwandeln();
+        spielbrettFXMLController.bauerUmwandeln(name, zielfeld);
         stage.close();
     }
-
+    
     /**
      * Initializes the controller class.
      * @param url
@@ -76,5 +70,5 @@ public class PopupFXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }    
-    
+  
 }
