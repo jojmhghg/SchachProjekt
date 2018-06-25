@@ -65,6 +65,17 @@ public class SpielStubImpl implements SpielStub {
     }
     
     /**
+     * Methode zum Ausloggen
+     * 
+     * @param sitzungsID
+     * @throws RemoteException 
+     */
+    @Override
+    public void ausloggen(int sitzungsID) throws RemoteException{
+        this.serverObjekte.sitzungen.remove(sitzungsID);        
+    }
+    
+    /**
      * Neuen User registrieren
      * 
      * @param email von neuem User
