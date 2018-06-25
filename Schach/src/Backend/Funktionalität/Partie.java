@@ -531,6 +531,7 @@ public final class Partie {
      * @throws SpielException falls man Bauer nicht umwandeln kann oder Übergabeparameter ungültig ist
      */
     public void bauerUmwandeln(String figur, Position position, int sitzungsID) throws SpielException{
+        System.out.println("PartieLine534");
         // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
         this.testeIdAmZug(sitzungsID);
         spielbrett.bauerUmwandeln(position, figur);
@@ -546,7 +547,7 @@ public final class Partie {
             throw new SpielException("Es liegt ein Remisangebot vor!");
         }
         
-        switch(figur){
+        /*switch(figur){
             case "Dame":
             case "Turm":
             case "Springer":
@@ -555,7 +556,7 @@ public final class Partie {
                 
             default:
                 throw new SpielException("Bauer kann nicht in" + figur + " umgewandelt werden! Nur Dame, Turm, Springer, Laeufer sind erlaubt");
-        }
+        }*/
         
         umwandeln = false;
         zugBearbeiten(tmpUrsprung, tmpZiel, figur, "TODO");

@@ -769,7 +769,7 @@ public class SpielbrettFXMLController implements Initializable {
                 if (tmpPane.getChildren().size() > 0) {
                     tmpView = (ImageView) tmpPane.getChildren().get(0);
                 }
-
+                
                 //Hier wird die Position auf dem Schachbrett des ausgewählten Panes bestimmt
                 int tmp = 0;
                 for (int i = 0; i < 64; i++) {
@@ -784,8 +784,6 @@ public class SpielbrettFXMLController implements Initializable {
                     selectedFigur.setEffect(null);
                     highlightAus();
                 }
-                
-                
                 //... teste ob neues Feld ein möglicher zug ist
                 // Falls ja:
                 if (possibleMoves != null && possibleMoves.contains(pos)) {
@@ -798,11 +796,9 @@ public class SpielbrettFXMLController implements Initializable {
                         addgeschlageneFiguren(tmpView);
                     }
                     tmpPane.getChildren().add(selectedFigur);
-
                     // Rochade oder En Passant in GUI darstellen
                     rochadeOderEnPassantAnzeigen(pos, this.quellPosition);
-                    
-                    if(this.spielbrett.getFigurAufFeld(pos) instanceof Bauer || this.spielbrett.getFigurAufFeld(quellPosition) instanceof Bauer){
+                    if(this.spielbrett.getFigurAufFeld(quellPosition) instanceof Bauer){
                         if(this.spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS){
                             if(pos.ordinal() >= 56 && pos.ordinal() <= 63){
                                 starteBauerUmwandelnFenster(pos, Farbe.WEISS);
@@ -816,7 +812,6 @@ public class SpielbrettFXMLController implements Initializable {
                             }
                         }
                     }
-                        
                     //Reset all and Update screen
                     possibleMoves = null;
                     quellPane = null;
@@ -1544,11 +1539,9 @@ public class SpielbrettFXMLController implements Initializable {
         else{
             loader.setLocation(getClass().getResource("../View/PopupSchwarz.fxml"));
         }
-        
         Parent popupScene = loader.load();
         PopupFXMLController controller = loader.getController();
-
-        //aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
+        controller.spielbrettFXMLController = this;
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.initStyle(StageStyle.UNDECORATED);
@@ -1557,10 +1550,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
     
     public void bauerUmwandeln() throws SpielException, RemoteException{
-        System.out.println(feldDesUmzuwandelndenBauern);
-        System.out.println(bauerUmwandelnName);
-        System.out.println(sitzungsID);
-        spiel.bauerUmwandeln(Position.B8, bauerUmwandelnName, sitzungsID);
+        spielbrett.bauerUmwandeln(Position.values()[feldDesUmzuwandelndenBauern], bauerUmwandelnName);        
     }
 
     /**

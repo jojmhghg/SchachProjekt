@@ -6,15 +6,18 @@
 package Frontend.Controller;
 
 import Backend.Funktionalität.SpielException;
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -51,14 +54,15 @@ public class PopupFXMLController implements Initializable {
     
     private ImageView selectedFigur;
     InnerShadow innerShadow = new InnerShadow();
+    SpielbrettFXMLController spielbrettFXMLController;
     
     @FXML
-    private void onClicked(MouseEvent event) throws SpielException, RemoteException{
+    private void onClicked(MouseEvent event) throws SpielException, RemoteException, IOException{
         final Node source = (Node) event.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
         String name = event.getTarget().toString();
         name = name.substring(13, name.length()-24);
-        SpielbrettFXMLController spielbrettFXMLController = new SpielbrettFXMLController();
+        
         spielbrettFXMLController.bauerUmwandelnName = name;
         spielbrettFXMLController.bauerUmwandeln();
         stage.close();
