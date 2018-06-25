@@ -262,6 +262,7 @@ public class StartseiteFXMLController implements Initializable {
         spielStarten.setVisible(false);
         partieFortsetzen.setVisible(false);
         partieLaden.setVisible(false);
+        powerOffBtn.setVisible(false);
 
     }
     
@@ -271,6 +272,7 @@ public class StartseiteFXMLController implements Initializable {
         spielStarten.setVisible(true);
         partieFortsetzen.setVisible(true);
         partieLaden.setVisible(true);
+        powerOffBtn.setVisible(true);
     }
 
     @FXML

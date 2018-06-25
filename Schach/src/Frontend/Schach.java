@@ -39,7 +39,6 @@ public class Schach extends Application {
         controller.loadData();
         controller.verbindeMitServer();
         controller.showAnmeldePaneContent();
-        controller.animationFadeIn();
         
         mainStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
         mainStage.initStyle(StageStyle.UNDECORATED);
