@@ -350,10 +350,9 @@ public class SpielbrettFXMLController implements Initializable {
     private Pane[] paneArrayLinks;
     private Pane[] paneArrayRechts;
 
-    private String notationVonSchwarz;
-    private String notationNachSchwarz;
-    private String notationVonWeiss;
-    private String notationNachWeiss;
+    private String notationVon;
+    private String notationNach;
+
 
     int stelleRechts = 0;
     int stelleLinks = 0;
@@ -1241,9 +1240,15 @@ public class SpielbrettFXMLController implements Initializable {
             listZuegeSchwarz.getItems().clear();
             for (int i = 0; i < zuege.size(); i = i + 2) {
                 listZuegeWeiss.getItems().add(zuege.get(i).getMitschrift());
+                
+                //zeig die aktuell geschlagene Zug
+                //showLastZuegeSchwarz(i);
             }
             for (int i = 1; i < zuege.size(); i = i + 2) {
                 listZuegeSchwarz.getItems().add(zuege.get(i).getMitschrift());
+                
+                //zeig die aktuell geschlagene Zug
+                showLastZuegeSchwarz(i);
             }
             if (!spiel.getKiGegner(sitzungsID) && !spiel.istOnlinePartie(sitzungsID)) {
                 rotateBoard();
@@ -1276,185 +1281,125 @@ public class SpielbrettFXMLController implements Initializable {
 
     }
 
-    private void loescheAlteListSelektion() {
-        String notationVonTmp;
-        String notationNachTmp;
-        String notationVonTmp2;
-        String notationNachTmp2;
-        
-        //Tmp gepseichert, um nächstes mal zu pruefen
-        notationVonTmp = notationVonSchwarz;
-        notationNachTmp = notationNachSchwarz;
-        notationVonTmp2 = notationVonWeiss;
-        notationNachTmp2 = notationNachWeiss;
-        
+    private void loescheAlteListSelektion(String notationVonTmp, String notationNachTmp) {
+
         // Loeasche die alte Anzeige
-        if (notationVonTmp != notationVonSchwarz) {
-            for (Position pos : Position.values()) {
+        for (Position pos : Position.values()) {
 
-                if (pos.toString().equals(notationVonTmp)) {
-                    this.paneArray[pos.ordinal()].setStyle("");
+            if (pos.toString().equals(notationVonTmp)) {
+                this.paneArray[pos.ordinal()].setStyle("");
 
-                }
+            }
 
-                if (pos.toString().equals(notationNachTmp)) {
-                    this.paneArray[pos.ordinal()].setStyle("");
+            if (pos.toString().equals(notationNachTmp)) {
+                this.paneArray[pos.ordinal()].setStyle("");
 
-                }
-                
-                if (pos.toString().equals(notationVonTmp2)) {
-                    this.paneArray[pos.ordinal()].setStyle("");
-
-                }
-
-                if (pos.toString().equals(notationNachTmp2)) {
-                    this.paneArray[pos.ordinal()].setStyle("");
-
-                }
             }
         }
+    }
+    
+    //Normale Zug anzeigen
+    private void figurZugAnzeigen(Position pos) {
+        this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 10; -fx-opacity: 60%");
+    }
 
+    //Geschalgene Figuren Zug anzeigen
+    private void geschlageneFigurZugAnzeigen(Position pos) {
+        this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #ff9232; -fx-border-width: 10; -fx-opacity: 60%");
+    }
+    
+    
+    private void getZuege(ObservableList<String> zuegen) {
+        String message = "";
+        String splitMessage[];
+        String notationVonTmp;
+        String notationNachTmp;
+        String notationMovement;
         
+        // Alles Sachen aus Liste geholt
+        for (String m : zuegen) {
+            message = message + m;
+        }
+
+        //Tmp gepseichert, um nächstes mal zu pruefen
+        notationVonTmp = notationVon;
+        notationNachTmp = notationNach;
+
+        //notation movement wird gelesen
+        notationMovement = message.substring(2, 3);
+
+        if (notationMovement.equals("-")) {
+            splitMessage = message.split("-");
+            notationVon = splitMessage[0];
+            notationNach = splitMessage[1];
+
+        }
+
+        if (notationMovement.equals("x")) {
+            splitMessage = message.split("x");
+            notationVon = splitMessage[0];
+            notationNach = splitMessage[1];
+
+        }
+
+        if (notationVonTmp != notationVon) {
+            loescheAlteListSelektion(notationVonTmp, notationNachTmp);
+        }
+
+        for (Position pos : Position.values()) {
+            if (pos.toString().equals(notationVon)) {
+
+                // Normale Zug
+                if (notationMovement.equals("-")) {
+                    figurZugAnzeigen(pos);
+
+                // Geschlagene Zug
+                } else {
+                    geschlageneFigurZugAnzeigen(pos);
+
+                }
+
+            }
+
+            if (pos.toString().equals(notationNach)) {
+                // Normale Zug
+                if (notationMovement.equals("-")) {
+                    figurZugAnzeigen(pos);
+
+                // Geschlagene Zug
+                } else {
+                    geschlageneFigurZugAnzeigen(pos);
+
+                }
+
+            }
+        }
+    }
+    
+    private void showLastZuegeSchwarz(int lastZugID) {
+        ObservableList<String> zuegen;
+        //listZuegeSchwarz.getSelectionModel().selectLast();
+        zuegen = listZuegeSchwarz.getSelectionModel().getSelectedItems();
+        //listZuegeSchwarz.getSelectionModel().clearSelection();
+        getZuege(zuegen);
     }
     
     @FXML
     public void listZuegeSchwarzSelected(MouseEvent event) {
-        String message = "";
+        
         ObservableList<String> zuegen;
-        String splitMessage[];
-        String notationVonTmp;
-        String notationNachTmp;
-        String notationVonTmp2;
-        String notationNachTmp2;
-        String notationMovement;
         zuegen = listZuegeSchwarz.getSelectionModel().getSelectedItems();
-
-        // Alles Sachen aus Liste geholt
-        for (String m : zuegen) {
-            message = message + m;
-        }
-
-        //Tmp gepseichert, um nächstes mal zu pruefen
-        notationVonTmp = notationVonSchwarz;
-        notationNachTmp = notationNachSchwarz;
-
-        //notation movement wird gelesen
-        notationMovement = message.substring(2, 3);
-
-        if (notationMovement.equals("-")) {
-            splitMessage = message.split("-");
-            notationVonSchwarz = splitMessage[0];
-            notationNachSchwarz = splitMessage[1];
-
-        }
-
-        if (notationMovement.equals("x")) {
-            splitMessage = message.split("x");
-            notationVonSchwarz = splitMessage[0];
-            notationNachSchwarz = splitMessage[1];
-
-        }
-
-        loescheAlteListSelektion();
-
-        for (Position pos : Position.values()) {
-            if (pos.toString().equals(notationVonSchwarz)) {
-                
-                // Normale Zug
-                if (notationMovement.equals("-")) {
-                    this.paneArray[pos.ordinal()].setStyle("-fx-border-style: dotted; -fx-border-color:  #fff333; -fx-border-width: 10; -fx-opacity: 60%");
-
-                // Geschlagene Zug
-                } else {
-                    this.paneArray[pos.ordinal()].setStyle("-fx-border-style: dotted; -fx-border-color:  #ff9232; -fx-border-width: 10; -fx-opacity: 60%");
-
-                }
-
-            }
-
-            if (pos.toString().equals(notationNachSchwarz)) {
-                // Normale Zug
-                if (notationMovement.equals("-")) {
-                    this.paneArray[pos.ordinal()].setStyle("-fx-border-style: dotted; -fx-border-color:  #fff333; -fx-border-width: 10; -fx-opacity: 60%");
-
-                // Geschlagene Zug
-                } else {
-                    this.paneArray[pos.ordinal()].setStyle("-fx-border-style: dotted; -fx-border-color:  #ff9232; -fx-border-width: 10; -fx-opacity: 60%");
-
-                }
-
-            }
-        }
+        listZuegeSchwarz.getSelectionModel().selectLast();
+        getZuege(zuegen);
 
     }
-    
+
     @FXML
     public void listZuegeWeissSelected(MouseEvent event) {
-        String message = "";
         ObservableList<String> zuegen;
-        String splitMessage[];
-        String notationVonTmp;
-        String notationNachTmp;
-        String notationMovement;
         zuegen = listZuegeWeiss.getSelectionModel().getSelectedItems();
-
-        // Alles Sachen aus Liste geholt
-        for (String m : zuegen) {
-            message = message + m;
-        }
-
-        //Tmp gepseichert, um nächstes mal zu pruefen
-        notationVonTmp = notationVonWeiss;
-        notationNachTmp = notationNachWeiss;
-
-        //notation movement wird gelesen
-        notationMovement = message.substring(2, 3);
-
-        if (notationMovement.equals("-")) {
-            splitMessage = message.split("-");
-            notationVonWeiss = splitMessage[0];
-            notationNachWeiss = splitMessage[1];
-
-        }
-
-        if (notationMovement.equals("x")) {
-            splitMessage = message.split("x");
-            notationVonWeiss = splitMessage[0];
-            notationNachWeiss = splitMessage[1];
-
-        }
-
-        loescheAlteListSelektion();
         
-        for (Position pos : Position.values()) {
-            if (pos.toString().equals(notationVonWeiss)) {
-                
-                // Normale Zug
-                if (notationMovement.equals("-")) {
-                    this.paneArray[pos.ordinal()].setStyle("-fx-border-style: dotted; -fx-border-color:  #fff333; -fx-border-width: 10; -fx-opacity: 60%");
-
-                // Geschlagene Zug
-                } else {
-                    this.paneArray[pos.ordinal()].setStyle("-fx-border-style: dotted; -fx-border-color:  #ff9232; -fx-border-width: 10; -fx-opacity: 60%");
-
-                }
-
-            }
-
-            if (pos.toString().equals(notationNachWeiss)) {
-                // Normale Zug
-                if (notationMovement.equals("-")) {
-                    this.paneArray[pos.ordinal()].setStyle("-fx-border-style: dotted; -fx-border-color:  #fff333; -fx-border-width: 10; -fx-opacity: 60%");
-
-                // Geschlagene Zug
-                } else {
-                    this.paneArray[pos.ordinal()].setStyle("-fx-border-style: dotted; -fx-border-color:  #ff9232; -fx-border-width: 10; -fx-opacity: 60%");
-
-                }
-
-            }
-        }
-
+        getZuege(zuegen);
     }
 
     /**
