@@ -58,7 +58,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <JFXTextField fx:id="anmeldenBenutzername" focusColor="#864921" layoutX="38.0" layoutY="80.0" prefHeight="48.0" prefWidth="277.0" promptText="Benutzername">
+                              <JFXTextField fx:id="anmeldenBenutzername" focusColor="#864921" layoutX="38.0" layoutY="80.0" prefHeight="48.0" prefWidth="277.0" promptText="E-Mail">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
@@ -81,22 +81,22 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <JFXTextField fx:id="benuntzernameReg" layoutX="52.0" layoutY="22.0" prefHeight="39.0" prefWidth="251.0" promptText="Benutzername">
+                               <JFXTextField fx:id="emailReg" layoutX="52.0" layoutY="22.0" prefHeight="39.0" prefWidth="251.0" promptText="E-Mail">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </JFXTextField>
-                              <JFXTextField fx:id="emailReg" layoutX="52.0" layoutY="91.0" prefHeight="39.0" prefWidth="251.0" promptText="email">
+                              <JFXTextField fx:id="benuntzernameReg" layoutX="52.0" layoutY="91.0" prefHeight="39.0" prefWidth="251.0" promptText="Benutzername">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
-                              </JFXTextField>
-                              <JFXPasswordField fx:id="passwortReg" layoutX="52.0" layoutY="165.0" prefHeight="39.0" prefWidth="251.0" promptText="passwort">
+                              </JFXTextField>                
+                              <JFXPasswordField fx:id="passwortReg" layoutX="52.0" layoutY="165.0" prefHeight="39.0" prefWidth="251.0" promptText="Passwort">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </JFXPasswordField>
-                              <JFXPasswordField fx:id="passwortWdhReg" layoutX="52.0" layoutY="236.0" prefHeight="39.0" prefWidth="251.0" promptText="passwort wiederholen">
+                              <JFXPasswordField fx:id="passwortWdhReg" layoutX="52.0" layoutY="236.0" prefHeight="39.0" prefWidth="251.0" promptText="Passwort wiederholen">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>

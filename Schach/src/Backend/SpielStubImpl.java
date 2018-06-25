@@ -74,6 +74,15 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void registrieren(String email, String password, String username) throws SpielException{
+        if(password.length() < 8){
+            throw new SpielException("Das Passwort muss mindestens 8 Zeichen enthalten!");
+        }
+        if(username.length() < 3){
+            throw new SpielException("Der Benutzername muss mindestens 3 Zeichen enthalten!");
+        }
+        if(!email.contains("@") || !email.contains(".")){
+            throw new SpielException("Bitte eine gültige E-Mail-Adresse eingeben!");
+        }
         try {
             this.serverObjekte.datenbank.registiereNeuenUser(email, password, username);              
         } catch (SQLException ex) {

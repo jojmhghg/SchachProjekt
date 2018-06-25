@@ -146,9 +146,10 @@ public class StartseiteFXMLController implements Initializable {
 
                 // Wenn Erfolgreich ist
                 messageBox(1);
-            } catch (Exception e) {
-                // Wenn benzutername Fasch ist
-                messageBox(5);
+            } catch (SpielException | RemoteException ex) {
+                informationPane.setStyle("-fx-background-color: #c65353; -fx-opacity: 80%;");
+                information.setText(ex.getMessage());
+                //messageBox(5);
             }
 
         } else {
@@ -162,38 +163,38 @@ public class StartseiteFXMLController implements Initializable {
         switch (stelle) {
             case 1:
                 informationPane.setStyle("-fx-background-color: #53c65d; -fx-opacity: 80%;");
-                information.setText("Erfolgreich registriert");
-                meldung.setText("Meldung:");
+                information.setText("Registierung erfolgreich");
+                //meldung.setText("Meldung:");
                 break;
 
             case 2:
                 informationPane.setStyle("-fx-background-color: #53c65d; -fx-opacity: 80%;");
                 information.setText("Anmeldung erfolgreich");
-                meldung.setText("Meldung:");
+                //meldung.setText("Meldung:");
                 break;
 
             case 3:
                 informationPane.setStyle("-fx-background-color: #c65353; -fx-opacity: 80%;");
-                information.setText("Passwort falsch eingegeben");
-                meldung.setText("Meldung:");
+                information.setText("Die Passwörter stimmen nicht überein");
+                //meldung.setText("Meldung:");
                 break;
 
             case 4:
                 informationPane.setStyle("-fx-background-color: #DEB887; -fx-opacity: 80%;");
-                information.setText("Willkommen");
-                meldung.setText("Meldung:");
+                //information.setText("Willkommen");
+                //meldung.setText("Meldung:");
                 break;
 
             case 5:
                 informationPane.setStyle("-fx-background-color: #c65353; -fx-opacity: 80%;");
                 information.setText("Benutzername Existiert");
-                meldung.setText("Meldung:");
+                //meldung.setText("Meldung:");
                 break;
 
             case 6:
                 informationPane.setStyle("-fx-background-color: #c65353; -fx-opacity: 80%;");
                 information.setText("Email oder Passwort ist Falsch");
-                meldung.setText("Meldung:");
+                //meldung.setText("Meldung:");
                 break;
 
             default:
