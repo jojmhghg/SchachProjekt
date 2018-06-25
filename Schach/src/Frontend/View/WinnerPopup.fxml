@@ -5,8 +5,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -17,23 +15,10 @@
             <Image url="@../Ressources/backgroundStartSeite.PNG" />
          </image>
       </ImageView>
-      <Text fontSmoothingType="LCD" layoutX="122.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Winner ! " textAlignment="CENTER">
+      <Label fx:id="gewinnerFarbe" alignment="CENTER" contentDisplay="CENTER" layoutX="167.0" layoutY="232.0" prefHeight="69.0" prefWidth="245.0" text="Spieler" textAlignment="CENTER" AnchorPane.leftAnchor="167.0" AnchorPane.rightAnchor="163.0">
          <font>
-            <Font size="83.0" />
-         </font>
-      </Text>
-      <Label fx:id="gewinnerFarbe" layoutX="219.0" layoutY="228.0" prefHeight="69.0" prefWidth="162.0" text="Label" textAlignment="CENTER" AnchorPane.leftAnchor="219.0" AnchorPane.rightAnchor="194.0">
-         <font>
-            <Font name="Serif Regular" size="30.0" />
-         </font>
-         <textFill>
-            <LinearGradient cycleMethod="REFLECT" endX="0.7904761904761904" endY="0.7142857142857143" startX="0.6952380952380952" startY="0.15238095238095245">
-               <stops>
-                  <Stop color="BLACK" />
-                  <Stop color="#bfbb49" offset="1.0" />
-               </stops>
-            </LinearGradient>
-         </textFill></Label>
+            <Font name="System Bold" size="40.0" />
+         </font></Label>
       <JFXButton layoutX="158.0" layoutY="344.0" onAction="#goToStartseite" prefHeight="35.0" prefWidth="92.0" text="Startseite">
          <font>
             <Font name="System Bold" size="15.0" />
@@ -42,10 +27,15 @@
          <font>
             <Font name="System Bold" size="15.0" />
          </font></JFXButton>
-      <ImageView fitHeight="110.0" fitWidth="267.0" layoutX="158.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="142.0" fitWidth="165.0" layoutX="219.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Ressources/winnerGif.gif" />
+            <Image url="@../Ressources/trophy.png" />
          </image>
       </ImageView>
+      <Text fontSmoothingType="LCD" layoutX="186.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Glückwunsch !" textAlignment="CENTER">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
