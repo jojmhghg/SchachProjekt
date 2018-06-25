@@ -1538,7 +1538,8 @@ public class SpielbrettFXMLController implements Initializable {
         Parent popupScene = loader.load();
         PopupFXMLController controller = loader.getController();
         controller.loadData(this, zielfeld);
-        Stage popupStage = new Stage();
+        
+        Stage popupStage = new Stage();        
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.initStyle(StageStyle.UNDECORATED);
         popupStage.setScene(new Scene(popupScene));
@@ -1604,6 +1605,8 @@ public class SpielbrettFXMLController implements Initializable {
             paneArray[zielfeld].getChildren().add(imgView);
         }
       
+        spiel.bauerUmwandeln(Position.values()[zielfeld], neueFigur, sitzungsID);
+        this.updateScreen();
     }
 
     /**
