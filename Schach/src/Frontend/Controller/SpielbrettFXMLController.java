@@ -353,7 +353,6 @@ public class SpielbrettFXMLController implements Initializable {
     private String notationVon;
     private String notationNach;
 
-
     int stelleRechts = 0;
     int stelleLinks = 0;
 
@@ -1240,19 +1239,23 @@ public class SpielbrettFXMLController implements Initializable {
             listZuegeSchwarz.getItems().clear();
             for (int i = 0; i < zuege.size(); i = i + 2) {
                 listZuegeWeiss.getItems().add(zuege.get(i).getMitschrift());
-                
-                //zeig die aktuell geschlagene Zug
-                //showLastZuegeSchwarz(i);
             }
             for (int i = 1; i < zuege.size(); i = i + 2) {
                 listZuegeSchwarz.getItems().add(zuege.get(i).getMitschrift());
-                
-                //zeig die aktuell geschlagene Zug
-                showLastZuegeSchwarz(i);
+
             }
             if (!spiel.getKiGegner(sitzungsID) && !spiel.istOnlinePartie(sitzungsID)) {
                 rotateBoard();
                 //spielerErkennung();
+            }
+            
+            if (spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS) {
+                //zeig die vorgaenger Zug
+                showLastZuegeSchwarz();
+            }
+            else {
+                //zeig die vorgaenger Zug
+                showLastZuegeWeiss();
             }
             spielerErkennung();
         }
@@ -1277,10 +1280,6 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
-    private void pare() {
-
-    }
-
     private void loescheAlteListSelektion(String notationVonTmp, String notationNachTmp) {
 
         // Loeasche die alte Anzeige
@@ -1297,28 +1296,32 @@ public class SpielbrettFXMLController implements Initializable {
             }
         }
     }
-    
+
     //Normale Zug anzeigen
     private void figurZugAnzeigen(Position pos) {
-        this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #fff333; -fx-border-width: 10; -fx-opacity: 60%");
+        this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #ff9232; -fx-border-width: 10; -fx-opacity: 50%");
     }
 
     //Geschalgene Figuren Zug anzeigen
     private void geschlageneFigurZugAnzeigen(Position pos) {
-        this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #ff9232; -fx-border-width: 10; -fx-opacity: 60%");
+        this.paneArray[pos.ordinal()].setStyle("-fx-border-color:  #ff4d31; -fx-border-width: 10; -fx-opacity: 60%");
     }
-    
-    
-    private void getZuege(ObservableList<String> zuegen) {
+
+    private void getZuege(ObservableList<String> zuegen, String message2) {
         String message = "";
         String splitMessage[];
         String notationVonTmp;
         String notationNachTmp;
         String notationMovement;
-        
-        // Alles Sachen aus Liste geholt
-        for (String m : zuegen) {
-            message = message + m;
+
+        if (message2.equals("leer")) {
+            // Alles Sachen aus Liste geholt
+            for (String m : zuegen) {
+                message = message + m;
+            }
+        }
+        else {
+            message = message2;
         }
 
         //Tmp gepseichert, um nächstes mal zu pruefen
@@ -1353,7 +1356,7 @@ public class SpielbrettFXMLController implements Initializable {
                 if (notationMovement.equals("-")) {
                     figurZugAnzeigen(pos);
 
-                // Geschlagene Zug
+                    // Geschlagene Zug
                 } else {
                     geschlageneFigurZugAnzeigen(pos);
 
@@ -1366,7 +1369,7 @@ public class SpielbrettFXMLController implements Initializable {
                 if (notationMovement.equals("-")) {
                     figurZugAnzeigen(pos);
 
-                // Geschlagene Zug
+                    // Geschlagene Zug
                 } else {
                     geschlageneFigurZugAnzeigen(pos);
 
@@ -1375,31 +1378,49 @@ public class SpielbrettFXMLController implements Initializable {
             }
         }
     }
-    
-    private void showLastZuegeSchwarz(int lastZugID) {
-        ObservableList<String> zuegen;
-        //listZuegeSchwarz.getSelectionModel().selectLast();
-        zuegen = listZuegeSchwarz.getSelectionModel().getSelectedItems();
-        //listZuegeSchwarz.getSelectionModel().clearSelection();
-        getZuege(zuegen);
+
+    private void showLastZuegeSchwarz() {
+        ObservableList<String> zuegen = null;
+        int stelle = listZuegeSchwarz.getItems().size() - 1;
+        String message;
+
+//        listZuegeSchwarz.getSelectionModel().clearSelection();
+//        listZuegeSchwarz.getSelectionModel().selectLast();
+        message = listZuegeSchwarz.getItems().get(stelle);
+
+        getZuege(zuegen, message);
     }
-    
+
+    private void showLastZuegeWeiss() {
+        ObservableList<String> zuegen = null;
+        int stelle = listZuegeWeiss.getItems().size() - 1;
+        String message;
+
+//        listZuegeSchwarz.getSelectionModel().clearSelection();
+//        listZuegeSchwarz.getSelectionModel().selectLast();
+        message = listZuegeWeiss.getItems().get(stelle);
+
+        getZuege(zuegen, message);
+    }
+
     @FXML
     public void listZuegeSchwarzSelected(MouseEvent event) {
-        
+
         ObservableList<String> zuegen;
+        String message = "leer";
         zuegen = listZuegeSchwarz.getSelectionModel().getSelectedItems();
-        listZuegeSchwarz.getSelectionModel().selectLast();
-        getZuege(zuegen);
+        //listZuegeSchwarz.getSelectionModel().selectLast();
+        getZuege(zuegen, message);
 
     }
 
     @FXML
     public void listZuegeWeissSelected(MouseEvent event) {
         ObservableList<String> zuegen;
+        String message = "leer";
         zuegen = listZuegeWeiss.getSelectionModel().getSelectedItems();
-        
-        getZuege(zuegen);
+
+        getZuege(zuegen, message);
     }
 
     /**
