@@ -1081,7 +1081,8 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     @FXML
-    private void close(ActionEvent event) {
+    private void close(ActionEvent event) throws RemoteException, SpielException  {
+        spiel.ausloggen(sitzungsID);
         Platform.exit();
         System.exit(0);
     }
