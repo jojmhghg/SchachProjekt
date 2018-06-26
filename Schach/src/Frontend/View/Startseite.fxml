@@ -52,7 +52,7 @@
       </Text>
       <Pane fx:id="anmeldePane" layoutX="316.0" layoutY="31.0" opacity="0.9" prefHeight="439.0" prefWidth="353.0" style="-fx-background-color: #DEB887;">
          <children>
-            <JFXTabPane prefHeight="439.0" prefWidth="353.0" stylesheets="@StartSeite.css">
+            <JFXTabPane fx:id="anmeldeTabPane" prefHeight="439.0" prefWidth="353.0" stylesheets="@StartSeite.css">
                <tabs>
                   <Tab text="Anmelden">
                     <content>
@@ -123,9 +123,9 @@
             </JFXButton>
          </children>
       </Pane>
-      <Pane fx:id="informationPane" layoutX="24.0" layoutY="308.0" prefHeight="63.0" prefWidth="268.0" style="-fx-background-color: #DEB887; -fx-opacity: 80%;">
+      <Pane fx:id="informationPane" layoutX="24.0" layoutY="308.0" prefHeight="113.0" prefWidth="268.0" style="-fx-background-color: #DEB887; -fx-opacity: 80%;" visible="false">
          <children>
-            <Label fx:id="information" layoutX="14.0" layoutY="18.0" text="Information">
+            <Label fx:id="information" layoutX="14.0" layoutY="18.0" prefHeight="75.0" prefWidth="240.0" text="Information" textAlignment="JUSTIFY" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>

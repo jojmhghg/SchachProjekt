@@ -55,12 +55,12 @@ public class SpielStubImpl implements SpielStub {
                 return sitzungsID;
             }
             else{
-                throw new SpielException("E-Mail-Adresse oder Passwort falsch");
+                throw new SpielException("E-Mail-Adresse \noder Passwort falsch");
             }
         } catch (SQLException ex) {
             throw new SpielException("Fehler beim Login");
         } catch (DatenbankException ex) {
-            throw new SpielException("E-Mail-Adresse oder Passwort falsch");
+            throw new SpielException("E-Mail-Adresse \noder Passwort falsch");
         }                    
     }
     
@@ -86,18 +86,18 @@ public class SpielStubImpl implements SpielStub {
     @Override
     public void registrieren(String email, String password, String username) throws SpielException{
         if(password.length() < 8){
-            throw new SpielException("Das Passwort muss mindestens 8 Zeichen enthalten!");
+            throw new SpielException("Das Passwort muss \nmindestens \n8 Zeichen enthalten!");
         }
         if(username.length() < 3){
-            throw new SpielException("Der Benutzername muss mindestens 3 Zeichen enthalten!");
+            throw new SpielException("Der Benutzername muss \nmindestens \n3 Zeichen enthalten!");
         }
         if(!email.contains("@") || !email.contains(".")){
-            throw new SpielException("Bitte eine gültige E-Mail-Adresse eingeben!");
+            throw new SpielException("Bitte eine gültige \nE-Mail-Adresse \neingeben!");
         }
         try {
             this.serverObjekte.datenbank.registiereNeuenUser(email, password, username);              
         } catch (SQLException ex) {
-            throw new SpielException("E-Mail bereits vorhanden!");
+            throw new SpielException("E-Mail bereits \nvorhanden!");
         }             
     }
     
@@ -115,7 +115,7 @@ public class SpielStubImpl implements SpielStub {
         try {
             this.serverObjekte.datenbank.resetPassword(email);
         } catch (SQLException ex) {
-            throw new SpielException("E-Mail-Adresse existiert nicht!");
+            throw new SpielException("E-Mail-Adresse \nexistiert nicht!");
         }
     }
     
@@ -132,7 +132,7 @@ public class SpielStubImpl implements SpielStub {
         try {
             this.serverObjekte.datenbank.changeUsername(email, username);
         } catch (SQLException ex) {
-            throw new SpielException("Fehler bei der Datenbankabfrage!");
+            throw new SpielException("Fehler bei \nder Datenbankabfrage!");
         }
     }
 
@@ -149,7 +149,7 @@ public class SpielStubImpl implements SpielStub {
         try {
             return this.serverObjekte.datenbank.getUsername(email);
         } catch (SQLException ex) {
-            throw new SpielException("Fehler bei der Datenbankabfrage!");
+            throw new SpielException("Fehler bei \nder Datenbankabfrage!");
         } catch (DatenbankException ex) {
             throw new SpielException("E-Mail nicht vorhanden!");
         }
@@ -173,7 +173,7 @@ public class SpielStubImpl implements SpielStub {
                 this.serverObjekte.datenbank.turnHighlightingOn(email);
             }
         } catch (SQLException ex) {
-            throw new SpielException("Fehler bei der Datenbankabfrage!");
+            throw new SpielException("Fehler bei \nder Datenbankabfrage!");
         }
     }
 
@@ -190,7 +190,7 @@ public class SpielStubImpl implements SpielStub {
         try {
             return this.serverObjekte.datenbank.isHighlightingOff(email);
         } catch (SQLException ex) {
-            throw new SpielException("Fehler bei der Datenbankabfrage!");
+            throw new SpielException("Fehler bei \nder Datenbankabfrage!");
         } catch (DatenbankException ex) {
             throw new SpielException("E-Mail nicht vorhanden!");
         }
@@ -211,7 +211,7 @@ public class SpielStubImpl implements SpielStub {
         try {
             this.serverObjekte.datenbank.changePassword(email, altesPW, neuesPW);
         } catch (SQLException ex) {
-            throw new SpielException("Fehler bei der Datenbankabfrage!");
+            throw new SpielException("Fehler bei \nder Datenbankabfrage!");
         } catch (DatenbankException ex) {
             throw new SpielException("E-Mail nicht vorhanden!");
         }

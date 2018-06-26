@@ -132,29 +132,44 @@ public class StartseiteFXMLController implements Initializable {
     private void registrieren(ActionEvent event) throws RemoteException, SpielException {
         email = emailReg.getText();
         username = benuntzernameReg.getText();
+        password = passwortReg.getText();
 
-        //Pruefe ob die Passwort falsch ist
-        if (passwortReg.getText().equals(passwortWdhReg.getText())) {
-            password = passwortReg.getText();
+        try {
+            //Wenn Felder nicht leer ist
+            if (!(benuntzernameReg.getText().isEmpty() || emailReg.getText().isEmpty() 
+                    || passwortReg.getText().isEmpty() || passwortWdhReg.getText().isEmpty())) {
 
-            try {
-                spiel.registrieren(email, password, username);
+                //Pruefe ob die Passwort falsch ist
+                if (passwortReg.getText().equals(passwortWdhReg.getText())) {
+                    password = passwortReg.getText();
 
-                // Reg daten werden in anmdelde Bildschirm angezeigt
-                anmeldenBenutzername.setText(email);
-                anmeldenPasswort.setText(password);
+                    try {
+                        spiel.registrieren(email, password, username);
 
-                // Wenn Erfolgreich ist
-                messageBox(1);
-            } catch (SpielException | RemoteException ex) {
-                informationPane.setStyle("-fx-background-color: #c65353; -fx-opacity: 80%;");
-                information.setText(ex.getMessage());
-                //messageBox(5);
+                        // Reg daten werden in anmdelde Bildschirm angezeigt
+                        anmeldenBenutzername.setText(email);
+                        anmeldenPasswort.setText(password);
+
+                        // Wenn Erfolgreich ist
+                        messageBox(1);
+                        
+                    } catch (SpielException | RemoteException ex) {
+                        setInformation(ex.getMessage(), 2);
+                        animationMessageBox();
+                        //messageBox(5);
+                    }
+
+                } else {
+                    //Wenn passwort Falsch ist
+                    messageBox(3);
+                }
+
+            } else {
+                throw new Exception("Felder dürfen \nnicht leer sein");
             }
-
-        } else {
-            //Wenn passwort Falsch ist
-            messageBox(3);
+        } catch (Exception ex) {
+            setInformation(ex.getMessage(), 2);
+            animationMessageBox();
         }
 
     }
@@ -162,45 +177,52 @@ public class StartseiteFXMLController implements Initializable {
     private void messageBox(int stelle) {
         switch (stelle) {
             case 1:
-                informationPane.setStyle("-fx-background-color: #53c65d; -fx-opacity: 80%;");
-                information.setText("Registierung erfolgreich");
-                //meldung.setText("Meldung:");
+                setInformation("Registierung erfolgreich", 1);
                 break;
 
             case 2:
-                informationPane.setStyle("-fx-background-color: #53c65d; -fx-opacity: 80%;");
-                information.setText("Anmeldung erfolgreich");
-                //meldung.setText("Meldung:");
+                setInformation("Anmeldung erfolgreich", 1);
                 break;
 
             case 3:
-                informationPane.setStyle("-fx-background-color: #c65353; -fx-opacity: 80%;");
-                information.setText("Die Passwörter stimmen nicht überein");
-                //meldung.setText("Meldung:");
+                setInformation("Die Passwörter stimmen \nnicht überein", 2);
                 break;
 
             case 4:
-                informationPane.setStyle("-fx-background-color: #DEB887; -fx-opacity: 80%;");
-                //information.setText("Willkommen");
-                //meldung.setText("Meldung:");
+
                 break;
 
             case 5:
-                informationPane.setStyle("-fx-background-color: #c65353; -fx-opacity: 80%;");
-                information.setText("Benutzername Existiert");
-                //meldung.setText("Meldung:");
+                setInformation("Benutzername Existiert", 2);
                 break;
 
             case 6:
-                informationPane.setStyle("-fx-background-color: #c65353; -fx-opacity: 80%;");
-                information.setText("Email oder Passwort ist Falsch");
-                //meldung.setText("Meldung:");
+                setInformation("Email oder Passwort \nist Falsch", 2);
                 break;
 
             default:
                 break;
         }
 
+        animationMessageBox();
+    }
+
+    private void setInformation(String inforamtionTxt, int messageTyp) {
+        
+        if (messageTyp == 1){
+            //Gruen
+            informationPane.setStyle("-fx-background-color: #53c65d; -fx-opacity: 80%;");
+        }
+        else {
+            //Rot
+            informationPane.setStyle("-fx-background-color: #c66253; -fx-opacity: 80%;");
+        }
+        
+        information.setText(inforamtionTxt);
+    }
+
+    private void animationMessageBox() {
+        informationPane.setVisible(true);
         //Animationen
         FadeTransition fadeIn = new FadeTransition(Duration.seconds(6), informationPane);
         fadeIn.setFromValue(0);
@@ -216,24 +238,6 @@ public class StartseiteFXMLController implements Initializable {
         fadeOut.play();
     }
 
-    public void animationFadeIn() {
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(2), anmeldePane);
-        fadeIn.setFromValue(0);
-        fadeIn.setToValue(0.9);
-        fadeIn.setCycleCount(1);
-
-        fadeIn.play();
-    }
-
-    private void animationFadeOut() {
-        FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), anmeldePane);
-        fadeOut.setFromValue(0.9);
-        fadeOut.setToValue(0);
-        fadeOut.setCycleCount(1);
-
-        fadeOut.play();
-    }
-
     // Hier kann man anmelden
     @FXML
     private void anmdeldenMitServer(ActionEvent event) throws RemoteException, NotBoundException, SpielException {
@@ -245,7 +249,6 @@ public class StartseiteFXMLController implements Initializable {
 
             // Wenn anmeldung Erfolgreich ist
             messageBox(2);
-            animationFadeOut();
             showContent();
 
         } catch (Exception e) {
@@ -265,7 +268,7 @@ public class StartseiteFXMLController implements Initializable {
         powerOffBtn.setVisible(false);
 
     }
-    
+
     private void showContent() {
         anmeldePane.setVisible(false);
         anmeldenButton.setVisible(false);
@@ -361,7 +364,7 @@ public class StartseiteFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //animationFadeIn();
         showContent();
-        messageBox(4);
+        //messageBox(4);
     }
 
 }
