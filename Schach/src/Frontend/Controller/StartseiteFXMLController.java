@@ -31,7 +31,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -269,12 +268,12 @@ public class StartseiteFXMLController implements Initializable {
         try {
 
             if(!anmeldenBenutzername.getText().isEmpty()) {
-                spiel.resetPassword(email);
+                spiel.resetPassword(anmeldenBenutzername.getText());
                 setInformation("Email an \n" + anmeldenBenutzername.getText() + "\ngesendet", 1);
                 animationMessageBox();
             }
             else{
-                throw new Exception("Feld darf \nnicht leer sein");
+                throw new Exception("Bitte oben E-Mail \neingeben");
             }
             
         } catch (Exception ex) {

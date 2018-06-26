@@ -1111,6 +1111,7 @@ public class SpielbrettFXMLController implements Initializable {
 
     private void timerStop() {
         timeline.stop();
+        //goToWinnerPopup();
     }
 
     public void getTime(String partieZeit) throws RemoteException {
@@ -1137,8 +1138,6 @@ public class SpielbrettFXMLController implements Initializable {
             timerLogoWeiss.setVisible(false);
         } else {
             if (spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ) {
-                this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
-
                 if (spieler2sec == 0) {
                     spieler2sec = 59;
                     spieler2min--;
@@ -1155,10 +1154,11 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler2min <= 0 && spieler2sec <= 0) {
                     timerStop();
+                    this.checkBeendetThread.interrupt();
+                    this.goToWinnerPopup();
                 }
+                this.restZeitWeiss.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
             } else {
-                this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
-
                 if (spieler1sec == 0) {
                     spieler1sec = 59;
                     spieler1min--;
@@ -1175,7 +1175,11 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler1min <= 0 && spieler1sec <= 0) {
                     timerStop();
+                    this.checkBeendetThread.interrupt();
+                    this.goToWinnerPopup();
                 }
+                
+                this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
             }
 
         }
@@ -1189,8 +1193,6 @@ public class SpielbrettFXMLController implements Initializable {
 
         } else {
             if (spiel.getFarbeSpieler1(sitzungsID) == Farbe.WEISS) {
-                this.restZeitSchwarz.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
-
                 if (spieler2sec == 0) {
                     spieler2sec = 59;
                     spieler2min--;
@@ -1207,10 +1209,12 @@ public class SpielbrettFXMLController implements Initializable {
 
                 if (spieler2min == 0 && spieler2sec == 0) {
                     timerStop();
+                    this.checkBeendetThread.interrupt();
+                    this.goToWinnerPopup();
                 }
+                
+                this.restZeitSchwarz.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
             } else {
-                this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
-
                 if (spieler1sec == 0) {
                     spieler1sec = 59;
                     spieler1min--;
@@ -1228,7 +1232,11 @@ public class SpielbrettFXMLController implements Initializable {
                 
                 if (spieler1min == 0 && spieler1sec == 0) {
                     timerStop();
+                    this.checkBeendetThread.interrupt();
+                    this.goToWinnerPopup();
                 }
+                
+                this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
             }
 
         }
@@ -1271,7 +1279,7 @@ public class SpielbrettFXMLController implements Initializable {
         }
 
         if (this.spiel.getGewinner(sitzungsID) != null) {
-            timeline.stop();
+            timeline.stop();          
         }
     }
 
@@ -1463,7 +1471,7 @@ public class SpielbrettFXMLController implements Initializable {
     private void partieAufgeben(ActionEvent event) throws RemoteException {
         try {
             spiel.aufgeben(sitzungsID);
-            timeline.stop();
+            timeline.stop();            
         } catch (SpielException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             //TODO: Popup, dass aufgeben nicht möglich ist -> siehe fehlermeldung

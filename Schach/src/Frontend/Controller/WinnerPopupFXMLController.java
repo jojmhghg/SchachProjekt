@@ -14,6 +14,7 @@ import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,7 +47,13 @@ public class WinnerPopupFXMLController implements Initializable {
     public void loadData(SpielStub spiel, int sitzungsID, Window window) throws RemoteException {
         this.spiel = spiel;
         this.sitzungsID = sitzungsID;
-        gewinnerFarbe.setText(spiel.getGewinner(sitzungsID).toString());
+        if(!spiel.getBeendet(sitzungsID)){
+            gewinnerFarbe.setText(spiel.getSpielerAmZug(sitzungsID).andereFarbe().toString());
+        }
+        else{
+            gewinnerFarbe.setText(spiel.getGewinner(sitzungsID).toString());
+        }
+        
         this.startseiteWindow = window;
     }
     
@@ -58,7 +65,7 @@ public class WinnerPopupFXMLController implements Initializable {
             Parent startseiteScene = loader.load();
             
             StartseiteFXMLController controller = loader.getController();
-            controller.loadData();
+            controller.loadData(spiel, new Timeline(), sitzungsID);
 
             Stage startseiteStage = new Stage();
             startseiteStage.initModality(Modality.APPLICATION_MODAL);
@@ -69,7 +76,7 @@ public class WinnerPopupFXMLController implements Initializable {
             startseiteStage.show();
             ((Node) (event.getSource())).getScene().getWindow().hide();
             startseiteWindow.hide();
-        } catch (IOException | SpielException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(WinnerPopupFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

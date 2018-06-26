@@ -5,7 +5,6 @@
  */
 package Backend.Funktionalität;
 
-import Backend.Funktionalität.EMailService;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Connection;

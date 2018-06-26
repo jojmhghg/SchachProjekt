@@ -95,9 +95,11 @@ public class SpielStubImpl implements SpielStub {
             throw new SpielException("Bitte eine gültige \nE-Mail-Adresse \neingeben!");
         }
         try {
+            //TODO neuen Ordner anlegen          
             this.serverObjekte.datenbank.registiereNeuenUser(email, password, username);              
         } catch (SQLException ex) {
-            throw new SpielException("E-Mail bereits \nvorhanden!");
+            throw new SpielException(ex.getMessage());
+            //throw new SpielException("E-Mail bereits \nvorhanden!");
         }             
     }
     

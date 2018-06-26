@@ -48,7 +48,7 @@ public class CheckBeendetThread extends Thread{
                 }
             }                             
         } catch (InterruptedException ex) {                
-            Logger.getLogger(QueueThread.class.getName()).log(Level.SEVERE, null, ex);
+            
         } catch (RemoteException ex) {
             Logger.getLogger(CheckBeendetThread.class.getName()).log(Level.SEVERE, null, ex);
         }   
