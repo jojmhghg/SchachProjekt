@@ -514,7 +514,6 @@ public final class Partie {
             this.tmpUrsprung = ursprung;
             this.tmpZiel = ziel;
             this.umwandeln = true;
-            //this.spielbrett.bauerUmwandeln(ziel, connector);//todo
         }
         else{
             zugBearbeiten(ursprung, ziel, null);
