@@ -110,6 +110,7 @@ public final class Partie {
     private String bestMoveStart = "";
     private String bestMoveZiel = "";
     private String connector;
+    private String ordner;
 
     
     /* --- Konstruktoren --- */
@@ -117,10 +118,12 @@ public final class Partie {
     /**
      * Konstruktor (beim Erstellen einer neuen Partie)
      * 
+     * @param email
      * @param optionen Zu übernehmende Partieeinstellungen
      * @throws Backend.Funktionalität.SpielException bei Fehler beim Speichern im TMP-File
      */ 
-    public Partie(Optionen optionen) throws SpielException{
+    public Partie(String email, Optionen optionen) throws SpielException{
+        this.ordner = email;
         this.kiGegner = optionen.getKiGegner();
         this.farbeSpieler1 = optionen.getFarbe();
         this.partiezeit = optionen.getPartiezeit();
@@ -176,11 +179,14 @@ public final class Partie {
     /**
      * Konstruktor (beim Laden einer gespeicherten Partie)
      * 
+     * @param ordner
      * @param speichername Name des Speicherstands
      * @throws SpielException 
      */
-    public Partie(String speichername) throws SpielException{
+    public Partie(String ordner, String speichername) throws SpielException{            
+        String seperator = System.getProperty("file.separator");        
         //initialisiere Spielbrett mit Grundaufstellung
+        this.ordner = ordner;
         this.spielbrett = new Spielbrett();     
         this.umwandeln = false;
         this.onlinePartie = false;
@@ -188,14 +194,14 @@ public final class Partie {
         String errorMessage = "Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.";
         
         //Pfad zum Speicherziel für Windows
-        File file = new File(".\\saves\\" + speichername + ".txt"); 
+        File file = new File("." + seperator + "saves" + seperator + ordner + seperator + speichername + ".txt"); 
         //Pfad zum Speicherziel für Macs
-        if (!file.canRead() || !file.isFile()){
+        /*if (!file.canRead() || !file.isFile()){
             file = new File("./saves/" + speichername + ".txt"); 
             if (!file.canRead() || !file.isFile()){
                 throw new SpielException(errorMessage);
             }
-        }
+        }*/
         
         try { 
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file)); 
@@ -250,7 +256,7 @@ public final class Partie {
                 this.gewinner = Farbe.parseFarbe(line);
             }
             else{
-                System.out.println("fehler");             
+                throw new SpielException(errorMessage);         
             }  
                        
             this.ablauf = new LinkedList<>();
@@ -566,9 +572,6 @@ public final class Partie {
         spielbrett.bauerUmwandeln(tmpZiel, figur);
         
         umwandeln = false;
-        System.out.println(tmpUrsprung);
-        System.out.println(tmpZiel);
-        System.out.println(figur);
         zugBearbeiten(tmpUrsprung, tmpZiel, figur);
     }
      
@@ -907,10 +910,9 @@ public final class Partie {
      * @throws Backend.Funktionalität.SpielException falls Fehler beim Speichern
      */
     private void speichereSpielImpl(String dateiname) throws SpielException {
-        
         String seperator = System.getProperty("file.separator");      
         // relativer Pfad zu den Einstellungen (angepasst für jedes OS)
-        File file = new File("." + seperator + "saves" + seperator + dateiname + ".txt");
+        File file = new File("." + seperator + "saves" + seperator + ordner + seperator + dateiname + ".txt");
                 
         try {
             

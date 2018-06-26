@@ -48,7 +48,7 @@ public class SpielStubImpl implements SpielStub {
                 serverObjekte.sitzungen.put(sitzungsID, email);
                 
                 try {
-                    this.serverObjekte.partieListe.put(sitzungsID, new Partie("tmp"));
+                    this.serverObjekte.partieListe.put(sitzungsID, new Partie(email, "tmp"));
                 } catch (SpielException ex) {
                     Logger.getLogger(SpielStubImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -227,7 +227,8 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public Spielbrett neuePartie(Optionen partieoptionen, int sitzungsID) throws SpielException{
-        Partie partie = new Partie(partieoptionen);
+        String email = this.serverObjekte.sitzungen.get(sitzungsID);  
+        Partie partie = new Partie(email, partieoptionen);
         this.serverObjekte.partieListe.put(sitzungsID, partie);
         return partie.getSpielbrett();
     }
@@ -242,7 +243,8 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public Spielbrett partieLaden(String speicherstand, int sitzungsID) throws SpielException{
-        Partie partie = new Partie(speicherstand);
+        String email = this.serverObjekte.sitzungen.get(sitzungsID);       
+        Partie partie = new Partie(email, speicherstand);
         this.serverObjekte.partieListe.put(sitzungsID, partie);
         return partie.getSpielbrett();
     }
