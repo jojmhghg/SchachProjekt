@@ -143,7 +143,7 @@ public class StartseiteFXMLController implements Initializable {
 
         try {
             //Wenn Felder nicht leer ist
-            if (!(benuntzernameReg.getText().isEmpty() || emailReg.getText().isEmpty() 
+            if (!(benuntzernameReg.getText().isEmpty() || emailReg.getText().isEmpty()
                     || passwortReg.getText().isEmpty() || passwortWdhReg.getText().isEmpty())) {
 
                 //Pruefe ob die Passwort falsch ist
@@ -159,7 +159,7 @@ public class StartseiteFXMLController implements Initializable {
 
                         // Wenn Erfolgreich ist
                         messageBox(1);
-                        
+
                     } catch (SpielException | RemoteException ex) {
                         setInformation(ex.getMessage(), 2);
                         animationMessageBox();
@@ -215,16 +215,15 @@ public class StartseiteFXMLController implements Initializable {
     }
 
     private void setInformation(String inforamtionTxt, int messageTyp) {
-        
-        if (messageTyp == 1){
+
+        if (messageTyp == 1) {
             //Gruen
             informationPane.setStyle("-fx-background-color: #53c65d; -fx-opacity: 80%;");
-        }
-        else {
+        } else {
             //Rot
             informationPane.setStyle("-fx-background-color: #c66253; -fx-opacity: 80%;");
         }
-        
+
         information.setText(inforamtionTxt);
     }
 
@@ -266,11 +265,28 @@ public class StartseiteFXMLController implements Initializable {
     }
 
     @FXML
+    private void passwortVergessenAction(ActionEvent event) {
+        try {
+
+            if(!anmeldenBenutzername.getText().isEmpty()) {
+                spiel.resetPassword(email);
+            }
+            else{
+                throw new Exception("Feld darf \nnicht leer sein");
+            }
+            
+        } catch (Exception ex) {
+            setInformation(ex.getMessage(), 2);
+            animationMessageBox();
+        }
+    }
+
+    @FXML
     private void gameAbmelden(ActionEvent event) throws RemoteException, SpielException {
         spiel.ausloggen(sitzungsID);
         showAnmeldePaneContent();
     }
-    
+
     public void showAnmeldePaneContent() {
 
         anmeldePane.setVisible(true);
@@ -292,7 +308,8 @@ public class StartseiteFXMLController implements Initializable {
     }
 
     @FXML
-    private void powerOff(ActionEvent event) {
+    private void powerOff(ActionEvent event) throws RemoteException, SpielException {
+        spiel.ausloggen(sitzungsID);
         Platform.exit();
         System.exit(0);
     }

@@ -1060,7 +1060,8 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     @FXML
-    private void beenden(ActionEvent event) {
+    private void beenden(ActionEvent event) throws RemoteException, SpielException {
+        spiel.ausloggen(sitzungsID);
         Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
         spielBrettStage.close();
     }

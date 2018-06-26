@@ -19,11 +19,11 @@
          <font>
             <Font name="System Bold" size="40.0" />
          </font></Label>
-      <JFXButton layoutX="158.0" layoutY="344.0" onAction="#goToStartseite" prefHeight="35.0" prefWidth="92.0" text="Startseite">
+      <JFXButton layoutX="158.0" layoutY="344.0" onAction="#goToStartseite" prefHeight="35.0" prefWidth="92.0" styleClass="second" stylesheets="@StandardDesign.css" text="Startseite">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></JFXButton>
-      <JFXButton layoutX="335.0" layoutY="344.0" onAction="#beenden" prefHeight="35.0" prefWidth="92.0" text="Beenden">
+      <JFXButton layoutX="335.0" layoutY="344.0" onAction="#beenden" prefHeight="35.0" prefWidth="92.0" styleClass="second" stylesheets="@StandardDesign.css" text="Beenden">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></JFXButton>

@@ -11,9 +11,9 @@
 
 <AnchorPane id="AnchorPane" prefHeight="274.0" prefWidth="590.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.Controller.PartieLadenFXMLController">
    <children>
-      <ImageView fitHeight="433.0" fitWidth="590.0" layoutY="-148.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="433.0" fitWidth="590.0" layoutY="-105.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Ressources/backgroundStartSeite.PNG" />
+            <Image url="@../Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
       <Pane layoutX="30.0" layoutY="74.0" prefHeight="119.0" prefWidth="528.0" styleClass="second" stylesheets="@StandardDesign.css">
@@ -30,11 +30,11 @@
             </JFXTextField>
          </children>
       </Pane>
-      <JFXButton fx:id="laden" buttonType="RAISED" layoutX="317.0" layoutY="201.0" onAction="#loadAndOpen" prefHeight="35.0" prefWidth="114.0" ripplerFill="#108a2a" styleClass="second" stylesheets="@StandardDesign.css" text="Partie laden" textAlignment="CENTER">
+      <JFXButton fx:id="laden" buttonType="RAISED" layoutX="317.0" layoutY="223.0" onAction="#loadAndOpen" prefHeight="35.0" prefWidth="114.0" ripplerFill="#108a2a" styleClass="second" stylesheets="@StandardDesign.css" text="Partie laden" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="16.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" cancelButton="true" layoutX="444.0" layoutY="201.0" onAction="#abbrechen" prefHeight="37.0" prefWidth="114.0" ripplerFill="#d02020" styleClass="second" stylesheets="@StandardDesign.css" text="Abbrechen" textAlignment="CENTER">
+      <JFXButton buttonType="RAISED" cancelButton="true" layoutX="444.0" layoutY="222.0" onAction="#abbrechen" prefHeight="37.0" prefWidth="114.0" ripplerFill="#d02020" styleClass="second" stylesheets="@StandardDesign.css" text="Abbrechen" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>

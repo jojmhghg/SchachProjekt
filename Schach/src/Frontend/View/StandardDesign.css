@@ -10,18 +10,27 @@ and open the template in the editor.
 
 .first {
     -fx-background-color: #50280e;
-    -fx-opacity: 90%;
+    -fx-opacity: 0.9;
     -fx-text-fill: #ffffff;
 }
 
 .second {
     -fx-background-color:  #DEB887;
-    -fx-opacity: 90%;
+    -fx-opacity: 0.9;
 }
 
 .border {
     -fx-border-color:  #fff333; 
     -fx-border-width: 10;
-    -fx-opacity: 90%;
+    -fx-opacity: 0.9;
 }
+
+.borderColour {
+    -fx-border-color:  #DEB887; 
+    -fx-border-width: 10;
+    -fx-opacity: 0.9;
+}
+
+
+
 
