@@ -357,6 +357,7 @@ public class SpielbrettFXMLController implements Initializable {
     int spieler1sec = 0;
     int spieler2sec = 0;
 
+    boolean rotate = false;
     int sitzungsID;
     SpielStub spiel;
     Spielbrett spielbrett;
@@ -1608,6 +1609,7 @@ public class SpielbrettFXMLController implements Initializable {
       
         spiel.bauerUmwandeln(Position.values()[zielfeld], neueFigur, sitzungsID);
         this.updateScreen();
+        rotateBoard();
     }
 
     /**
