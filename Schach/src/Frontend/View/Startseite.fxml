@@ -20,22 +20,22 @@
             <Image url="@../Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
-      <JFXButton fx:id="spielStarten" buttonType="RAISED" layoutX="498.0" layoutY="239.0" onAction="#goToOptionen" prefHeight="48.0" prefWidth="170.0" style="-fx-background-color: #FFF8DC;" text="Neue Partie" textAlignment="CENTER" textFill="#864921" visible="false">
+      <JFXButton fx:id="spielStarten" buttonType="RAISED" layoutX="498.0" layoutY="204.0" onAction="#goToOptionen" prefHeight="48.0" prefWidth="170.0" style="-fx-background-color: #FFF8DC;" text="Neue Partie" textAlignment="CENTER" textFill="#864921">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="partieFortsetzen" buttonType="RAISED" layoutX="498.0" layoutY="308.0" onAction="#partieFortsetzen" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Partie forsetzen" textAlignment="CENTER" visible="false">
+      <JFXButton fx:id="partieFortsetzen" buttonType="RAISED" layoutX="498.0" layoutY="264.0" onAction="#partieFortsetzen" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Partie forsetzen" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="partieLaden" buttonType="RAISED" layoutX="498.0" layoutY="367.0" onAction="#goToPartieLaden" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Partie laden" textAlignment="CENTER" visible="false">
+      <JFXButton fx:id="partieLaden" buttonType="RAISED" layoutX="498.0" layoutY="318.0" onAction="#goToPartieLaden" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Partie laden" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="powerOffBtn" buttonType="RAISED" layoutX="498.0" layoutY="426.0" onAction="#powerOff" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Beenden" textAlignment="CENTER" visible="false">
+      <JFXButton fx:id="powerOffBtn" buttonType="RAISED" layoutX="498.0" layoutY="426.0" onAction="#powerOff" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Beenden" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -50,7 +50,7 @@
             <Font name="System Bold Italic" size="33.0" />
          </font>
       </Text>
-      <Pane fx:id="anmeldePane" layoutX="316.0" layoutY="31.0" opacity="0.9" prefHeight="439.0" prefWidth="353.0" style="-fx-background-color: #DEB887;">
+      <Pane fx:id="anmeldePane" layoutX="316.0" layoutY="31.0" opacity="0.9" prefHeight="439.0" prefWidth="353.0" style="-fx-background-color: #DEB887;" visible="false">
          <children>
             <JFXTabPane fx:id="anmeldeTabPane" prefHeight="439.0" prefWidth="353.0" stylesheets="@StartSeite.css">
                <tabs>
@@ -132,5 +132,10 @@
             </Label>
          </children>
       </Pane>
+      <JFXButton fx:id="abmeldenBtn" buttonType="RAISED" layoutX="498.0" layoutY="372.0" onAction="#gameAbmelden" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Abmelden" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

@@ -10,6 +10,7 @@ import Backend.Funktionalität.Spielbrett;
 import Backend.SpielStub;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
@@ -58,6 +59,12 @@ public class StartseiteFXMLController implements Initializable {
     private JFXButton powerOffBtn;
 
     @FXML
+    private Pane anmeldePane;
+
+    @FXML
+    private JFXTabPane anmeldeTabPane;
+
+    @FXML
     private JFXTextField anmeldenBenutzername;
 
     @FXML
@@ -67,10 +74,13 @@ public class StartseiteFXMLController implements Initializable {
     private JFXButton passwortVergessenBtn;
 
     @FXML
-    private JFXTextField benuntzernameReg;
+    private JFXButton anmeldenButton;
 
     @FXML
     private JFXTextField emailReg;
+
+    @FXML
+    private JFXTextField benuntzernameReg;
 
     @FXML
     private JFXPasswordField passwortReg;
@@ -82,19 +92,16 @@ public class StartseiteFXMLController implements Initializable {
     private JFXButton registrierenBtn;
 
     @FXML
-    private JFXButton anmeldenButton;
+    private JFXButton schliessen;
 
     @FXML
     private Pane informationPane;
 
     @FXML
-    private Label meldung;
-
-    @FXML
     private Label information;
 
     @FXML
-    public Pane anmeldePane;
+    private JFXButton abmeldenBtn;
 
     int sitzungsID;
     SpielStub spiel;
@@ -258,23 +265,29 @@ public class StartseiteFXMLController implements Initializable {
 
     }
 
+    @FXML
+    private void gameAbmelden(ActionEvent event) throws RemoteException, SpielException {
+        spiel.ausloggen(sitzungsID);
+        showAnmeldePaneContent();
+    }
+    
     public void showAnmeldePaneContent() {
 
         anmeldePane.setVisible(true);
-        anmeldenButton.setVisible(true);
         spielStarten.setVisible(false);
         partieFortsetzen.setVisible(false);
         partieLaden.setVisible(false);
+        abmeldenBtn.setVisible(false);
         powerOffBtn.setVisible(false);
 
     }
 
     private void showContent() {
         anmeldePane.setVisible(false);
-        anmeldenButton.setVisible(false);
         spielStarten.setVisible(true);
         partieFortsetzen.setVisible(true);
         partieLaden.setVisible(true);
+        abmeldenBtn.setVisible(true);
         powerOffBtn.setVisible(true);
     }
 
