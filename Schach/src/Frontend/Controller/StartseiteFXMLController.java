@@ -270,6 +270,8 @@ public class StartseiteFXMLController implements Initializable {
 
             if(!anmeldenBenutzername.getText().isEmpty()) {
                 spiel.resetPassword(email);
+                setInformation("Email an \n" + anmeldenBenutzername.getText() + "\ngesendet", 1);
+                animationMessageBox();
             }
             else{
                 throw new Exception("Feld darf \nnicht leer sein");
@@ -310,6 +312,13 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private void powerOff(ActionEvent event) throws RemoteException, SpielException {
         spiel.ausloggen(sitzungsID);
+        Platform.exit();
+        System.exit(0);
+    }
+    
+    @FXML
+    private void powerOffForce(ActionEvent event) throws RemoteException, SpielException {
+        //spiel.ausloggen(sitzungsID);
         Platform.exit();
         System.exit(0);
     }

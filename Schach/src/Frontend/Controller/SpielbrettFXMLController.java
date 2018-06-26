@@ -357,6 +357,7 @@ public class SpielbrettFXMLController implements Initializable {
     int spieler1sec = 0;
     int spieler2sec = 0;
 
+    boolean rotate = false;
     int sitzungsID;
     SpielStub spiel;
     Spielbrett spielbrett;
@@ -800,11 +801,13 @@ public class SpielbrettFXMLController implements Initializable {
                         if(this.spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS){
                             if(pos.ordinal() >= 56 && pos.ordinal() <= 63){
                                 starteBauerUmwandelnFenster(pos, Farbe.WEISS, pos.ordinal());
+                                rotate = true;
                             }
                         }
                         else{
                             if(pos.ordinal() >= 0 && pos.ordinal() <= 7){
                                 starteBauerUmwandelnFenster(pos, Farbe.SCHWARZ, pos.ordinal());
+                                rotate = true;
                             }
                         }
                     }
@@ -814,7 +817,12 @@ public class SpielbrettFXMLController implements Initializable {
                     selectedFigur.setEffect(null);
                     selectedFigur = null;
                     quellPosition = null;
-                    updateScreen();
+                    if(!rotate){
+                        updateScreen();
+                    }
+                    else{
+                        rotate = false;
+                    }
 
                 } // Falls nein:
                 else {
