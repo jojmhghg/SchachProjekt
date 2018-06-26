@@ -1620,8 +1620,7 @@ public class SpielbrettFXMLController implements Initializable {
             imgView.setLayoutX(3);
             imgView.setLayoutY(3);
             paneArray[zielfeld].getChildren().add(imgView);
-        }
-      
+        }     
         spiel.bauerUmwandeln(neueFigur, sitzungsID);
         this.updateScreen();
     }

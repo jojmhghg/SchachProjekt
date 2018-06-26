@@ -13,6 +13,7 @@ import Backend.Funktionalität.Partie;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.Funktionalität.Zug;
+import java.io.File;
 import java.rmi.RemoteException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -72,7 +73,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public void ausloggen(int sitzungsID) throws RemoteException{
-        this.serverObjekte.sitzungen.remove(sitzungsID);        
+        this.serverObjekte.sitzungen.remove(sitzungsID);   
     }
     
     /**
@@ -95,7 +96,18 @@ public class SpielStubImpl implements SpielStub {
             throw new SpielException("Bitte eine gültige \nE-Mail-Adresse \neingeben!");
         }
         try {
-            //TODO neuen Ordner anlegen          
+            //Neuer Ordner anlegen
+            String seperator = System.getProperty("file.separator");      
+            File file = new File("." + seperator + "saves" + seperator + email);
+            
+             // Falls Datei nicht existiert...
+            if (!file.isDirectory()){
+                // ... Datei anlegen
+                if(!file.mkdir()){
+                    throw new SpielException("Ordner konnte nicht erstellt werden!");
+                }        
+            }
+            
             this.serverObjekte.datenbank.registiereNeuenUser(email, password, username);              
         } catch (SQLException ex) {
             throw new SpielException(ex.getMessage());

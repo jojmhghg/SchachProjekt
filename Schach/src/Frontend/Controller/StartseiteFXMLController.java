@@ -367,8 +367,8 @@ public class StartseiteFXMLController implements Initializable {
             spielbrettStage.show();
 
             ((Node) (event.getSource())).getScene().getWindow().hide();
-            controller.cleanBoard();
-            controller.initSpielbrett();
+//            controller.cleanBoard();
+//            controller.initSpielbrett();
 
         } catch (SpielException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);

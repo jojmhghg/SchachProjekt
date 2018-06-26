@@ -191,6 +191,7 @@ public final class Partie {
         this.umwandeln = false;
         this.onlinePartie = false;
         char farbeABK;
+        int verbleibendeZeit1, verbleibendeZeit2;
         String errorMessage = "Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.";
         
         //Pfad zum Speicherziel für Windows
@@ -226,34 +227,36 @@ public final class Partie {
             // Lade Partiezeit
             if((line = bufferedReader.readLine()) != null){
                 this.partiezeit = Integer.parseInt(line);
+                this.verbleibendeZeitSpieler1 = partiezeit;
+                this.verbleibendeZeitSpieler2 = partiezeit;
             }
             else{
                 throw new SpielException(errorMessage);
             }
             // Lade verbleibende Zeit von Spieler1
             if((line = bufferedReader.readLine()) != null){
-                this.verbleibendeZeitSpieler1 = Integer.parseInt(line);
+                verbleibendeZeit1 = Integer.parseInt(line);
             }
             else{
                 throw new SpielException(errorMessage);
             }
             // Lade verbleibende Zeit von Spieler2
             if((line = bufferedReader.readLine()) != null){
-                this.verbleibendeZeitSpieler2 = Integer.parseInt(line);
+                verbleibendeZeit2 = Integer.parseInt(line);
             }
             else{
                 throw new SpielException(errorMessage);
             }
             // Lade ob Partie beendet ist
             if((line = bufferedReader.readLine()) != null){
-                this.beendet = Boolean.parseBoolean(line);
+                this.beendet = false; //Boolean.parseBoolean(line);
             }
             else{
                 throw new SpielException(errorMessage);
             } 
             // Lade wer Partie gewonnen hat, falls sie beendet ist
             if((line = bufferedReader.readLine()) != null){
-                this.gewinner = Farbe.parseFarbe(line);
+                this.gewinner = null; //Farbe.parseFarbe(line);
             }
             else{
                 throw new SpielException(errorMessage);         
@@ -265,7 +268,6 @@ public final class Partie {
             // Hier werden die Züge der Partie simuliert. Dadurch wird das Spielbrett & der Ablauf geladen
             int pos1, pos2;
             while((line = bufferedReader.readLine()) != null){   
-                System.out.println(line);
                 switch(line){
                     case "(=)":
                         try{
@@ -288,28 +290,32 @@ public final class Partie {
                         
                         if(positionen.length == 3){
                             farbeABK = this.getSpielerAmZug().toString().charAt(0);
-                            System.out.println("test");
                             switch(positionen[2]){                               
                                 case "T":
                                     this.bauerUmwandeln("Turm" + farbeABK, 0);
+                                    break;
 
                                 case "S":
                                     this.bauerUmwandeln("Springer" + farbeABK, 0);
+                                    break;
 
                                 case "L":
                                     this.bauerUmwandeln("Laeufer" + farbeABK, 0);
+                                    break;
 
                                 case "D":
                                     this.bauerUmwandeln("Dame" + farbeABK, 0);
+                                    break;
                             }
                         }
-                }
-                
+                }               
             }
-
+            
+            this.verbleibendeZeitSpieler1 = verbleibendeZeit1;
+            this.verbleibendeZeitSpieler2 = verbleibendeZeit2;
         } catch (IOException e) { 
             throw new SpielException("Spielstand '" + speichername + "' konnte nicht gefunden werden!");
-        }      
+        }     
     }
     
        
@@ -555,7 +561,6 @@ public final class Partie {
      * @throws SpielException falls man Bauer nicht umwandeln kann oder Übergabeparameter ungültig ist
      */
     public void bauerUmwandeln(String figur, int sitzungsID) throws SpielException{
-        System.out.println("testtest");
         // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt   
         this.testeIdAmZug(sitzungsID);
         
