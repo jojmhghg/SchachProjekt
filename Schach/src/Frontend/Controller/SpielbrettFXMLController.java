@@ -1144,7 +1144,7 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 spieler2sec--;
 
-                if (spieler2min == 4 && spieler2sec < 10) {
+                if (spieler2min == 0 && spieler2sec < 10) {
                     if (spieler2sec % 2 == 0) {
                         this.rechtePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
                     } else {
@@ -1165,7 +1165,7 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 spieler1sec--;
 
-                if (spieler1min == 4 && spieler1sec < 50) {
+                if (spieler1min == 0 && spieler1sec < 10) {
                     if (spieler1sec % 2 == 0) {
                         this.linkePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
                     } else {
@@ -1199,7 +1199,7 @@ public class SpielbrettFXMLController implements Initializable {
                 }
                 spieler2sec--;
 
-                if (spieler2min == 4 && spieler2sec < 50) {
+                if (spieler2min == 0 && spieler2sec < 10) {
                     if (spieler2sec % 2 == 0) {
                         this.rechtePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
                     } else {
@@ -1222,7 +1222,7 @@ public class SpielbrettFXMLController implements Initializable {
                 spieler1sec--;
                 
                 
-                if (spieler1min == 4 && spieler1sec < 10) {
+                if (spieler1min == 0 && spieler1sec < 10) {
                     if (spieler1sec % 2 == 0) {
                         this.linkePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
                     } else {
