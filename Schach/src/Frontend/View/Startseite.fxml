@@ -121,7 +121,7 @@
                   </Tab>
                </tabs>
             </JFXTabPane>
-            <JFXButton fx:id="schliessen" buttonType="RAISED" layoutX="190.0" layoutY="377.0" onAction="#powerOff" prefHeight="42.0" prefWidth="151.0" ripplerFill="BLACK" styleClass="first" stylesheets="@StandardDesign.css" text="Beenden" textAlignment="CENTER">
+            <JFXButton fx:id="schliessen" buttonType="RAISED" layoutX="190.0" layoutY="377.0" onAction="#powerOffForce" prefHeight="42.0" prefWidth="151.0" ripplerFill="BLACK" styleClass="first" stylesheets="@StandardDesign.css" text="Beenden" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
