@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,14 +14,23 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="347.0" prefWidth="526.0" styleClass="borderColour" stylesheets="@StandardDesign.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.Controller.EinstellungenFXMLController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="385.0" prefWidth="583.0" styleClass="borderColour" stylesheets="@StandardDesign.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.Controller.EinstellungenFXMLController">
    <children>
-      <ImageView fitHeight="333.0" fitWidth="514.0" layoutX="6.0" layoutY="7.0" pickOnBounds="true">
+      <ImageView fitHeight="366.0" fitWidth="563.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true">
          <image>
             <Image url="@../Ressources/backgroundStartSeite1.jpg" />
          </image>
       </ImageView>
-      <Pane layoutX="19.0" layoutY="85.0" prefHeight="163.0" prefWidth="485.0" style="-fx-background-color: #DEB887; -fx-opacity: 90%;" />
+      <Pane layoutX="19.0" layoutY="85.0" prefHeight="220.0" prefWidth="535.0" style="-fx-background-color: #DEB887; -fx-opacity: 90%;">
+         <children>
+            <Hyperlink fx:id="pwAendern" layoutX="26.0" layoutY="121.0" onAction="#enableChangePW" text="Passwort ändern ?">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Hyperlink>
+            <JFXPasswordField fx:id="altesPasswortFeld" layoutX="26.0" layoutY="165.0" promptText="Altes Passwort" visible="false" />
+            <JFXPasswordField fx:id="neuesPasswortFeld" layoutX="200.0" layoutY="165.0" promptText="Neues Passwort" visible="false" />
+         </children></Pane>
       <Text layoutX="54.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Spielername">
          <font>
             <Font size="14.0" />
@@ -39,7 +50,7 @@
             <ToggleGroup fx:id="highlighting" />
          </toggleGroup>
       </JFXToggleButton>
-      <JFXButton fx:id="speichern" buttonType="RAISED" layoutX="181.0" layoutY="268.0" onAction="#speichern" ripplerFill="#c68137" style="-fx-background-color: #DEB887; -fx-opacity: 90%;" text="Speichern">
+      <JFXButton fx:id="speichern" buttonType="RAISED" layoutX="224.0" layoutY="318.0" onAction="#speichern" ripplerFill="#c68137" style="-fx-background-color: #DEB887; -fx-opacity: 90%;" text="Speichern">
          <graphic>
             <FontAwesomeIconView glyphName="CHECK_CIRCLE_ALT" size="35" />
          </graphic>
@@ -56,7 +67,7 @@
             </Text>
          </children>
       </Pane>
-      <JFXButton fx:id="backToSpielbrett" buttonType="RAISED" layoutX="344.0" layoutY="268.0" onAction="#backToSpielbrett" prefHeight="50.0" prefWidth="155.0" ripplerFill="#c68137" style="-fx-background-color: #DEB887; -fx-opacity: 90%;" text="zurück">
+      <JFXButton fx:id="backToSpielbrett" buttonType="RAISED" layoutX="399.0" layoutY="318.0" onAction="#backToSpielbrett" prefHeight="50.0" prefWidth="155.0" ripplerFill="#c68137" style="-fx-background-color: #DEB887; -fx-opacity: 90%;" text="zurück">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>

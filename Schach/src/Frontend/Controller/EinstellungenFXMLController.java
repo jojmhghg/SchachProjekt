@@ -9,6 +9,7 @@ import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
 import Backend.SpielStub;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ToggleGroup;
 
 /**
@@ -42,6 +44,12 @@ public class EinstellungenFXMLController implements Initializable {
     private JFXButton backToSpielbrett;
     @FXML
     private JFXButton speichern;
+    @FXML
+    private JFXPasswordField neuesPasswortFeld;
+    @FXML
+    private JFXPasswordField altesPasswortFeld;
+    @FXML
+    private Hyperlink pwAendern;
     
     int sitzungsID;
     SpielStub spiel;
@@ -60,12 +68,19 @@ public class EinstellungenFXMLController implements Initializable {
         //Ueberpruefe ob die Einstellungen Seite aus Optionen oder Spielbrett aufgerufen wird
         if(spielbrettFXMLController != null){
             spielername.setDisable(Boolean.TRUE);
+            pwAendern.setVisible(false);
         }
         else{
             spielername.setDisable(Boolean.FALSE);
         }
         
         highlightingButton.setSelected(spiel.isHighlightingAus(sitzungsID));
+    }
+    
+    @FXML
+    private void enableChangePW() {
+        altesPasswortFeld.setVisible(true);
+        neuesPasswortFeld.setVisible(true);
     }
     
     @FXML
@@ -83,19 +98,21 @@ public class EinstellungenFXMLController implements Initializable {
     private void speichern(ActionEvent event) throws IOException {
 
         String newSpielername = spielername.getText();
+        String altesPW = altesPasswortFeld.getText();
+        String neuesPW = neuesPasswortFeld.getText();
 
-        if (!newSpielername.isEmpty()) {
+        if (!newSpielername.isEmpty() || (!altesPW.isEmpty() && !neuesPW.isEmpty()) ) {
             try {
                 //Ueberpruefe zuerst ob die Einstellungen bei der Option Seite geaendert wird
-                if (spielbrettFXMLController != null) {
+                if (spielbrettFXMLController != null ) {
                     spiel.setUsername(newSpielername, sitzungsID);
                     spiel.setHighlightingAus(highlightingButton.isSelected(), sitzungsID);
                     spielbrettFXMLController.setSpielernameOnScreen();
                     backToSpielbrett(event);
-                    //((Node) (event.getSource())).getScene().getWindow().hide();
                 } else {
                     spiel.setUsername(newSpielername, sitzungsID);
                     spiel.setHighlightingAus(highlightingButton.isSelected(), sitzungsID);
+                    spiel.changePassword(altesPW, neuesPW, sitzungsID);
                     backToSpielbrett(event);
                 }
             } catch (SpielException ex) {
@@ -109,7 +126,7 @@ public class EinstellungenFXMLController implements Initializable {
             alert.showAndWait();
         }
     }
-
+    
     /**
      * Initializes the controller class.
      * @param url
@@ -117,7 +134,7 @@ public class EinstellungenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }    
     
 }

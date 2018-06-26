@@ -32,7 +32,7 @@ public interface SpielStub extends Remote{
     public String getUsername(int sitzungsID) throws RemoteException, SpielException;
     public void setHighlightingAus(Boolean highlightingAus, int sitzungsID) throws SpielException, RemoteException;
     public boolean isHighlightingAus(int sitzungsID) throws RemoteException, SpielException;
-    public void changePassword(String altesPW, String neuesPW, int sitzungsID) throws SpielException, RemoteException;
+    public boolean changePassword(String altesPW, String neuesPW, int sitzungsID) throws SpielException, RemoteException;
     
     /* --- Methoden die eine Partie betreffen --- */
     public Spielbrett neuePartie(Optionen partieoptionen, int sitzungsID) throws SpielException, RemoteException;

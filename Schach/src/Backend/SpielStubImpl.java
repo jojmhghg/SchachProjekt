@@ -216,21 +216,20 @@ public class SpielStubImpl implements SpielStub {
      * @param altesPW
      * @param neuesPW
      * @param sitzungsID
+     * @return 
      * @throws SpielException
      * @throws RemoteException 
      */
     @Override
-    public void changePassword(String altesPW, String neuesPW, int sitzungsID) throws SpielException, RemoteException{
-        String email = this.serverObjekte.sitzungen.get(sitzungsID);
+    public boolean changePassword(String altesPW, String neuesPW, int sitzungsID) throws SpielException, RemoteException{
         try {
-            this.serverObjekte.datenbank.changePassword(email, altesPW, neuesPW);
-        } catch (SQLException ex) {
-            throw new SpielException("Fehler bei \nder Datenbankabfrage!");
-        } catch (DatenbankException ex) {
-            throw new SpielException("E-Mail nicht vorhanden!");
+            String email = this.serverObjekte.sitzungen.get(sitzungsID);
+            return this.serverObjekte.datenbank.changePassword(email, altesPW, neuesPW);
+        } catch (SQLException | DatenbankException ex) {
+            Logger.getLogger(SpielStubImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return true;
     }
-    
     /**
      * Erstellt eine neue Partie
      * 
