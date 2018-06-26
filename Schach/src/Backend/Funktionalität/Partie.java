@@ -184,6 +184,7 @@ public final class Partie {
         this.spielbrett = new Spielbrett();     
         this.umwandeln = false;
         this.onlinePartie = false;
+        char farbeABK;
         String errorMessage = "Spielstand '" + speichername + "' konnte nicht geladen werden! Womöglich beschädigt.";
         
         //Pfad zum Speicherziel für Windows
@@ -257,7 +258,7 @@ public final class Partie {
             
             // Hier werden die Züge der Partie simuliert. Dadurch wird das Spielbrett & der Ablauf geladen
             int pos1, pos2;
-            while((line = bufferedReader.readLine()) != null){
+            while((line = bufferedReader.readLine()) != null){                
                 switch(line){
                     case "(=)":
                         try{
@@ -271,12 +272,30 @@ public final class Partie {
                     case "1/2 1/2":
                         this.remisAnnehmen(0);
                         break;
-                        
+                            
                     default:
                         final String[] positionen = line.split(" ");
                         pos1 = Integer.parseInt(positionen[0]);
                         pos2 = Integer.parseInt(positionen[1]);
                         this.zieheFigur(Position.values()[pos1], Position.values()[pos2], 0);
+                        
+                        if(positionen.length == 3){
+                            farbeABK = this.getSpielerAmZug().toString().charAt(0);
+                            
+                            switch(positionen[2]){
+                                case "T":
+                                    this.bauerUmwandeln("Turm" + farbeABK, 0);
+
+                                case "S":
+                                    this.bauerUmwandeln("Springer" + farbeABK, 0);
+
+                                case "L":
+                                    this.bauerUmwandeln("Laeufer" + farbeABK, 0);
+
+                                case "D":
+                                    this.bauerUmwandeln("Dame" + farbeABK, 0);
+                            }
+                        }
                 }
                 
             }
@@ -547,6 +566,9 @@ public final class Partie {
         spielbrett.bauerUmwandeln(tmpZiel, figur);
         
         umwandeln = false;
+        System.out.println(tmpUrsprung);
+        System.out.println(tmpZiel);
+        System.out.println(figur);
         zugBearbeiten(tmpUrsprung, tmpZiel, figur);
     }
      
@@ -937,6 +959,30 @@ public final class Partie {
                     bw.write(String.valueOf(zug.getUrsprung().ordinal()));
                     bw.write(" ");
                     bw.write(String.valueOf(zug.getZiel().ordinal()));
+                                       
+                    if(zug.getMitschrift().length() >= 6){
+                        switch(zug.getMitschrift().charAt(5)){
+                            case 'T':                            
+                            case 'D':
+                            case 'S':
+                            case 'L':
+                                bw.write(" ");
+                                bw.write(zug.getMitschrift().charAt(5));
+                                break;
+                        }
+                    }
+                    if(zug.getMitschrift().length() >= 7){
+                        switch(zug.getMitschrift().charAt(6)){
+                            case 'T':                            
+                            case 'D':
+                            case 'S':
+                            case 'L':
+                                bw.write(" ");
+                                bw.write(zug.getMitschrift().charAt(5));
+                                break;
+                        }
+                    }
+                    
                     bw.newLine();
                 }
             }
