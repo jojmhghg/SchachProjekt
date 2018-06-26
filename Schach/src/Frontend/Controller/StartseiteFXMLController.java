@@ -391,7 +391,7 @@ public class StartseiteFXMLController implements Initializable {
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             partieLadenStage.initModality(Modality.APPLICATION_MODAL);
-            //partieLadenStage.initStyle(StageStyle.UNDECORATED);
+            partieLadenStage.initStyle(StageStyle.UNDECORATED);
             partieLadenStage.setScene(new Scene(partieLadenScene));
             partieLadenStage.show();
         } catch (IOException ex) {
