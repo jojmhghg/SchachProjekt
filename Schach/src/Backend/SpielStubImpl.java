@@ -262,14 +262,13 @@ public class SpielStubImpl implements SpielStub {
 
     /**
      *
-     * @param position
      * @param nameDerGewuenschtenFigur
      * @param sitzungsID
      * @throws SpielException
      */
     @Override
-    public void bauerUmwandeln(Position position, String nameDerGewuenschtenFigur, int sitzungsID) throws SpielException, RemoteException{
-        this.serverObjekte.partieListe.get(sitzungsID).bauerUmwandeln(nameDerGewuenschtenFigur, position, sitzungsID);
+    public void bauerUmwandeln(String nameDerGewuenschtenFigur, int sitzungsID) throws SpielException, RemoteException{
+        this.serverObjekte.partieListe.get(sitzungsID).bauerUmwandeln(nameDerGewuenschtenFigur, sitzungsID);
     }
     /**
      * Man gibt auf

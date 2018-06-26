@@ -109,6 +109,7 @@ public final class Partie {
     
     private String bestMoveStart = "";
     private String bestMoveZiel = "";
+    private String connector;
 
     
     /* --- Konstruktoren --- */
@@ -503,7 +504,7 @@ public final class Partie {
             throw new SpielException("Es liegt ein Remisangebot vor!");
         }
         // Notation für Schlagen bzw. ziehen muss bereits ermittelt werden
-        String connector = "x";
+        this.connector = "x";
         if(this.spielbrett.getFigurAufFeld(ziel) == null){
             connector = "-";
         } 
@@ -513,11 +514,10 @@ public final class Partie {
             this.tmpUrsprung = ursprung;
             this.tmpZiel = ziel;
             this.umwandeln = true;
-            System.out.println("Jetzt wird umgewandelt");
             //this.spielbrett.bauerUmwandeln(ziel, connector);//todo
         }
         else{
-            zugBearbeiten(ursprung, ziel, null, connector);
+            zugBearbeiten(ursprung, ziel, null);
         }
     }
     
@@ -526,15 +526,13 @@ public final class Partie {
      * Ruft danach die Methode auf, die den Rest des Zuges abwickelt. 
      * 
      * @param figur Dame, Turm, Springer oder Laeufer
-     * @param position
      * @param sitzungsID
      * @throws SpielException falls man Bauer nicht umwandeln kann oder Übergabeparameter ungültig ist
      */
-    public void bauerUmwandeln(String figur, Position position, int sitzungsID) throws SpielException{
-        System.out.println("PartieLine534");
-        // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt
+    public void bauerUmwandeln(String figur, int sitzungsID) throws SpielException{
+        // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt   
         this.testeIdAmZug(sitzungsID);
-        spielbrett.bauerUmwandeln(position, figur);
+        
         if(!this.umwandeln){
             throw new SpielException("Umwandeln nicht notwendig!");
         }
@@ -546,20 +544,11 @@ public final class Partie {
         if(this.remisangebot){
             throw new SpielException("Es liegt ein Remisangebot vor!");
         }
-        
-        /*switch(figur){
-            case "Dame":
-            case "Turm":
-            case "Springer":
-            case "Laeufer":               
-                break;
                 
-            default:
-                throw new SpielException("Bauer kann nicht in" + figur + " umgewandelt werden! Nur Dame, Turm, Springer, Laeufer sind erlaubt");
-        }*/
+        spielbrett.bauerUmwandeln(tmpZiel, figur);
         
         umwandeln = false;
-        zugBearbeiten(tmpUrsprung, tmpZiel, figur, "TODO");
+        zugBearbeiten(tmpUrsprung, tmpZiel, figur);
     }
      
     /**
@@ -810,7 +799,7 @@ public final class Partie {
      * @param ziel der Figur
      * @return Notation in Langschreibweise
      */
-    private String getNotation(Position ursprung, Position ziel, String connector){        
+    private String getNotation(Position ursprung, Position ziel, String bauerUmwandelnIn){        
         String notation;
                 
         String figurABK = this.spielbrett.getFigurAufFeld(ziel).getFigurABK();       
@@ -829,6 +818,10 @@ public final class Partie {
             else{
                 notation = "0-0";
             }
+        }
+        else if(bauerUmwandelnIn != null){
+            notation += bauerUmwandelnIn.charAt(0);
+            notation = notation.substring(1);
         }
         
         // Schachmatt
@@ -853,7 +846,7 @@ public final class Partie {
      * @param bauerUmwandelnIn falls Bauer umgewandelt werden muss
      * @throws SpielException 
      */
-    private void zugBearbeiten(Position ursprung, Position ziel, String bauerUmwandelnIn, String connector) throws SpielException{    
+    private void zugBearbeiten(Position ursprung, Position ziel, String bauerUmwandelnIn) throws SpielException{    
         this.spielbrett.zugBearbeiten(ziel, bauerUmwandelnIn);
         
         // Teste Gegner keinen Zug mehr machen kann (Schachmatt oder Patt)     
@@ -880,13 +873,7 @@ public final class Partie {
         }      
         
         // Mitschrift aktualisieren
-        this.ablauf.add(new Zug(ursprung, ziel, this.getNotation(ursprung, ziel, connector)));
-        
-        //jetzt zieht KI, falls es ein PvE-Spiel ist
-        if(this.kiGegner && farbeSpieler1 != getSpielerAmZug()){
-            //this.kiZieht();
-            //TODO
-        }
+        this.ablauf.add(new Zug(ursprung, ziel, this.getNotation(ursprung, ziel, bauerUmwandelnIn)));       
         
         // Spielstand in tmp-File speichern
         this.speichereSpielImpl("tmp");
