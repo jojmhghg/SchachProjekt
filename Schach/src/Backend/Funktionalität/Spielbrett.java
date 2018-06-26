@@ -407,12 +407,10 @@ public class Spielbrett implements Serializable{
      * Loescht Bauern auf gegnerischer Grundreihe und setzt dort die
      * gewünschte neue Figur
      * 
-     * @param position
-     * @param farbe 
+     * @param position 
      * @param figurTyp 
      */
     public void bauerUmwandeln(Position position, String figurTyp){
-        System.out.println("bauerUmwandelnSpielbrettLine415");
         this.spielbrett[position.ordinal()].setFigur(null);
         switch(figurTyp){
             case "DameW":
@@ -447,7 +445,6 @@ public class Spielbrett implements Serializable{
                 this.spielbrett[position.ordinal()].setFigur(new Laeufer(Farbe.SCHWARZ));
                 break;
         }
-        printSpielbrett();
     }
    
     

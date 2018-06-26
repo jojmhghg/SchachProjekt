@@ -264,7 +264,8 @@ public final class Partie {
             
             // Hier werden die Züge der Partie simuliert. Dadurch wird das Spielbrett & der Ablauf geladen
             int pos1, pos2;
-            while((line = bufferedReader.readLine()) != null){                
+            while((line = bufferedReader.readLine()) != null){   
+                System.out.println(line);
                 switch(line){
                     case "(=)":
                         try{
@@ -287,8 +288,8 @@ public final class Partie {
                         
                         if(positionen.length == 3){
                             farbeABK = this.getSpielerAmZug().toString().charAt(0);
-                            
-                            switch(positionen[2]){
+                            System.out.println("test");
+                            switch(positionen[2]){                               
                                 case "T":
                                     this.bauerUmwandeln("Turm" + farbeABK, 0);
 
@@ -554,6 +555,7 @@ public final class Partie {
      * @throws SpielException falls man Bauer nicht umwandeln kann oder Übergabeparameter ungültig ist
      */
     public void bauerUmwandeln(String figur, int sitzungsID) throws SpielException{
+        System.out.println("testtest");
         // Teste ob übergebene ID am Zug ist, falls es sich um ein Online-Game handelt   
         this.testeIdAmZug(sitzungsID);
         
