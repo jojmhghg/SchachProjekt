@@ -298,7 +298,6 @@ public class OptionenFXMLController implements Initializable {
             StartseiteFXMLController controller = loader.getController();
             controller.loadData(spiel, timeline, sitzungsID);
             controller.showContentPane();
-            controller.showSitzungAbgelaufen();
                     
             //startSeiteScene = FXMLLoader.load(getClass().getResource("Startseite.fxml"));
             Stage startSeiteStage;
@@ -342,6 +341,7 @@ public class OptionenFXMLController implements Initializable {
 
                     StartseiteFXMLController controller = loader.getController();
                     controller.loadData(spiel, new Timeline(), sitzungsID);
+                    controller.showSitzungAbgelaufen();
 
                     Stage startseiteStage = new Stage();
                     startseiteStage.initModality(Modality.APPLICATION_MODAL);

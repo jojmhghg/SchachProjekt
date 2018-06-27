@@ -5,18 +5,17 @@
  */
 package Frontend.Controller;
 
-import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.SpielStub;
+import Frontend.Reconnect;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,8 +50,20 @@ import javafx.stage.Window;
  */
 public class PartieLadenFXMLController implements Initializable {
     
-    int sitzungsID;
-    SpielStub spiel;
+    /**
+     * SitzungsID, die User nach einloggen von Server bekommt.
+     * Erlaubt ihm zugriff auf seine Daten ohne wiederholte eingabe von 
+     * E-Mail & Passwort.
+     */
+    private int sitzungsID;
+    /**
+     * Verbindung zum Server. Auf diesem Objekt kann der Client Aufrufe 
+     * ausführen, die dann vom Server bearbeitet werden.
+     */
+    private SpielStub spiel;
+    /**
+     * Window des Parents. Genutzt um diesen bei Verbindungsverlust zu schließen.
+     */
     Window spielbrettWindow;
     Timeline timeline;
     
@@ -69,7 +80,7 @@ public class PartieLadenFXMLController implements Initializable {
     }
     
     @FXML
-    private void loadAndOpen(ActionEvent event) throws IOException {
+    private void loadAndOpen(ActionEvent event){
         String newfilename = filename.getText();
         
         if(!newfilename.isEmpty()) {
@@ -128,6 +139,36 @@ public class PartieLadenFXMLController implements Initializable {
                 alert.getDialogPane().setExpandableContent(expContent);
 
                 alert.showAndWait();
+            } catch (RemoteException ex) {
+                try {
+                    Reconnect rec = new Reconnect();
+                    spiel = rec.tryReconnect(); 
+                    if(!spiel.reconnect(sitzungsID)){
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("../View/Startseite.fxml"));
+                        Parent startseiteScene = loader.load();
+
+                        StartseiteFXMLController controller = loader.getController();
+                        controller.loadData(spiel, new Timeline(), sitzungsID);
+                        controller.showSitzungAbgelaufen();
+
+                        Stage startseiteStage = new Stage();
+                        startseiteStage.initModality(Modality.APPLICATION_MODAL);
+                        startseiteStage.setScene(new Scene(startseiteScene));
+                        startseiteStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+                        startseiteStage.initStyle(StageStyle.UNDECORATED);
+                        //startseiteStage.hide();
+                        startseiteStage.show();
+                        ((Node) (event.getSource())).getScene().getWindow().hide();
+                        spielbrettWindow.hide();
+                    }
+                } catch (RemoteException ex1) {
+                    Platform.exit();
+                    System.exit(0);
+                } catch (IOException ex1) {
+                    Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex1);
+                } 
+            } catch (IOException ex) {
             }
         }
         else{
@@ -146,11 +187,7 @@ public class PartieLadenFXMLController implements Initializable {
             @Override
             public void handle(KeyEvent ke) {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
-                    try {
-                        loadAndOpen(ae);
-                    } catch (IOException ex) {
-                        Logger.getLogger(PartieLadenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    loadAndOpen(ae);
                 }
             }
         });
