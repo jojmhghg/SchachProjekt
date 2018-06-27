@@ -108,13 +108,13 @@ public class StartseiteFXMLController implements Initializable {
      * Erlaubt ihm zugriff auf seine Daten ohne wiederholte eingabe von 
      * E-Mail & Passwort.
      */
-    int sitzungsID;
+    private int sitzungsID;
     /**
      * Verbindung zum Server. Auf diesem Objekt kann der Client Aufrufe 
      * ausführen, die dann vom Server bearbeitet werden.
      */
-    SpielStub spiel;
-    Timeline timeline;
+    private SpielStub spiel;
+    private Timeline timeline;
 
     /**
      * Wird genutzt um Controller Daten vor Aufruf zu übergeben. Diese Methode
@@ -142,13 +142,17 @@ public class StartseiteFXMLController implements Initializable {
      * Diese Methode wird verwendet, damit der Client eine Verbindung zum Server
      * aufbaut.
      * 
-     * @throws RemoteException
      * @throws NotBoundException 
      */
-    public void verbindeMitServer() throws RemoteException, NotBoundException {
-        Registry registry;
-        registry = LocateRegistry.getRegistry("localhost", 1099);
-        spiel = (SpielStub) registry.lookup("ClientStub");
+    public void verbindeMitServer() throws NotBoundException {
+        try {
+            Registry registry;
+            registry = LocateRegistry.getRegistry("localhost", 1099);
+            spiel = (SpielStub) registry.lookup("ClientStub");
+        } catch (RemoteException ex) {
+            Reconnect rec = new Reconnect();
+            spiel = rec.tryReconnect();
+        }
     }
 
     /**
@@ -180,8 +184,11 @@ public class StartseiteFXMLController implements Initializable {
 
                     // Wenn Erfolgreich ist
                     showMessageBox("Registierung erfolgreich", 1);
-                } catch (SpielException | RemoteException ex) {
+                } catch (SpielException ex) {
                     showMessageBox(ex.getMessage(), 2);
+                } catch (RemoteException ex) {
+                    Reconnect rec = new Reconnect();
+                    spiel = rec.tryReconnect();
                 }
             } else {
                 //Wenn passwort Falsch ist
@@ -228,11 +235,14 @@ public class StartseiteFXMLController implements Initializable {
                 spiel.resetPassword(anmeldenBenutzername.getText());
                 showMessageBox("Email an \n" + anmeldenBenutzername.getText() + "\ngesendet", 1);
             } else {
-                throw new Exception("Bitte oben E-Mail \neingeben");
+                showMessageBox("Bitte oben E-Mail \neingeben", 2);
             }
-        } catch (Exception ex) {
+        } catch (SpielException ex) { 
             showMessageBox(ex.getMessage(), 2);
-        }
+        } catch (RemoteException ex) {
+            Reconnect rec = new Reconnect();
+            spiel = rec.tryReconnect();  
+        }   
     }
 
     /**
@@ -252,9 +262,7 @@ public class StartseiteFXMLController implements Initializable {
                 spiel = rec.tryReconnect(); 
                 if(!spiel.reconnect(sitzungsID)){
                     showAnmeldePane();
-                }
-                else{
-                    System.out.println("TEST");
+                    showSitzungAbgelaufen();
                 }
             } catch (RemoteException ex1) {
                 Platform.exit();
@@ -338,9 +346,20 @@ public class StartseiteFXMLController implements Initializable {
             ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (SpielException ex) {
             showMessageBox("Partie konnte nicht \ngeladen werden!", 2);
-        } catch (IOException ex) {
-            Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (RemoteException ex) {
+            try {
+                Reconnect rec = new Reconnect();
+                spiel = rec.tryReconnect(); 
+                if(!spiel.reconnect(sitzungsID)){
+                    showAnmeldePane();
+                    showSitzungAbgelaufen();
+                }
+            } catch (RemoteException ex1) {
+                Platform.exit();
+                System.exit(0);
+            }
+        } catch (IOException ex) {            
+        } 
     }
 
     /**
@@ -364,8 +383,7 @@ public class StartseiteFXMLController implements Initializable {
             partieLadenStage.initStyle(StageStyle.UNDECORATED);
             partieLadenStage.setScene(new Scene(partieLadenScene));
             partieLadenStage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {           
         }
     }
 
@@ -401,6 +419,13 @@ public class StartseiteFXMLController implements Initializable {
     }
 
     /**
+     * Fehlermeldung wenn man auf Startseite zurückgelenkt wird
+     */
+    public void showSitzungAbgelaufen(){
+        this.showMessageBox("Sitzung abgelaufen!", 2);
+    }
+    
+    /**
      * Hilfsmethode um Anmelde-Form anzuzeigen
      */
     private void showAnmeldePane() {
@@ -416,7 +441,7 @@ public class StartseiteFXMLController implements Initializable {
     /**
      * Hilfsmethode um Form für eingeloggten User anzuzeigen
      */
-    private void showContentPane() {
+    public void showContentPane() {
         anmeldePane.setVisible(false);
         spielStarten.setVisible(true);
         partieFortsetzen.setVisible(true);

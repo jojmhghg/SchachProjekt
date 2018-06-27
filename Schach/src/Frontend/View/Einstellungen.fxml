@@ -67,7 +67,7 @@
             </Text>
          </children>
       </Pane>
-      <JFXButton fx:id="backToSpielbrett" buttonType="RAISED" layoutX="399.0" layoutY="318.0" onAction="#backToSpielbrett" prefHeight="50.0" prefWidth="155.0" ripplerFill="#c68137" style="-fx-background-color: #DEB887; -fx-opacity: 90%;" text="zurück">
+      <JFXButton fx:id="backToSpielbrett" buttonType="RAISED" layoutX="399.0" layoutY="318.0" onAction="#goBack" prefHeight="50.0" prefWidth="155.0" ripplerFill="#c68137" style="-fx-background-color: #DEB887; -fx-opacity: 90%;" text="zurück">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
