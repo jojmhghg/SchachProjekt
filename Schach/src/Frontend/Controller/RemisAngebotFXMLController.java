@@ -8,14 +8,12 @@ package Frontend.Controller;
 import Backend.Funktionalität.SpielException;
 import Backend.SpielStub;
 import Frontend.Reconnect;
-import Frontend.Threads.CheckRemisangebotThread;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -32,7 +30,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-import javafx.util.Duration;
 
 /**
  * FXML Controller class

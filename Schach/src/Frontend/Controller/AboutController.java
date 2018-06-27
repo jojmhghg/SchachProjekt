@@ -46,7 +46,6 @@ public class AboutController implements Initializable {
         try {
             Desktop.getDesktop().browse(new URL(powerOff.getText()).toURI());
         } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
         }
     }
 
@@ -55,7 +54,6 @@ public class AboutController implements Initializable {
         try {
             Desktop.getDesktop().browse(new URL(boardArtAsset.getText()).toURI());
         } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
         }
     }
 
@@ -64,7 +62,6 @@ public class AboutController implements Initializable {
         try {
             Desktop.getDesktop().browse(new URL(appIcon.getText()).toURI());
         } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
         }
     }
 
@@ -73,7 +70,6 @@ public class AboutController implements Initializable {
         try {
             Desktop.getDesktop().browse(new URL(gif.getText()).toURI());
         } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
         }
     }
 
@@ -82,7 +78,6 @@ public class AboutController implements Initializable {
         try {
             Desktop.getDesktop().browse(new URL(github.getText()).toURI());
         } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
         }
     }
     
