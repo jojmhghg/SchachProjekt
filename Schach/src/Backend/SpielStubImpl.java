@@ -8,6 +8,7 @@ package Backend;
 import Backend.Funktionalität.DatenbankException;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
+import Backend.Figuren.Figur;
 import Backend.Funktionalität.Optionen;
 import Backend.Funktionalität.Partie;
 import Backend.Funktionalität.SpielException;
@@ -419,6 +420,10 @@ public class SpielStubImpl implements SpielStub {
         return this.serverObjekte.partieListe.get(sitzungsID).getSpielerAmZug();
     }
 
+    @Override
+    public Figur getFigurAufFeld(Position pos, int sitzungsID)throws SpielException, RemoteException{
+        return this.serverObjekte.partieListe.get(sitzungsID).getFigurAufFeld(pos);
+    }
     /**
      * Gibt an wer gewonnen hat
      * Null bei Remis, sonst Farbe des Gewinners

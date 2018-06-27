@@ -741,7 +741,6 @@ public class SpielbrettFXMLController implements Initializable {
             stelleLinks++;
         }
     }
-
     /**
      * Methode onCliked erkennt wenn das Maus links oder Rechts angeklickt
      * wurde, und handelt dementsprechend
@@ -765,6 +764,7 @@ public class SpielbrettFXMLController implements Initializable {
                 Pane tmpPane = (Pane) event.getSource();
                 //Null oder Bild der Figur des ausgewählten Panes
                 ImageView tmpView = null;
+               
                 if (tmpPane.getChildren().size() > 0) {
                     tmpView = (ImageView) tmpPane.getChildren().get(0);
                 }
@@ -795,22 +795,28 @@ public class SpielbrettFXMLController implements Initializable {
                         addgeschlageneFiguren(tmpView);
                     }
                     tmpPane.getChildren().add(selectedFigur);
+                    
                     // Rochade oder En Passant in GUI darstellen
                     rochadeOderEnPassantAnzeigen(pos, this.quellPosition);
-                    if(this.spielbrett.getFigurAufFeld(quellPosition) instanceof Bauer){
-                        if(this.spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS){
+           
+                    
+                    if(spielbrett.getFigurAufFeld(quellPosition) instanceof Bauer){
+                        if(spielbrett.getFigurAufFeld(quellPosition).getFarbe() != Farbe.WEISS){
                             if(pos.ordinal() >= 56 && pos.ordinal() <= 63){
                                 starteBauerUmwandelnFenster(pos, Farbe.WEISS, pos.ordinal());
                                 rotate = true;
+
                             }
                         }
                         else{
                             if(pos.ordinal() >= 0 && pos.ordinal() <= 7){
                                 starteBauerUmwandelnFenster(pos, Farbe.SCHWARZ, pos.ordinal());
                                 rotate = true;
+                                
                             }
                         }
                     }
+                    
                     //Reset all and Update screen
                     possibleMoves = null;
                     quellPane = null;

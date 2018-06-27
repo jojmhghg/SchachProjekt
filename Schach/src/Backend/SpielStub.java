@@ -7,6 +7,7 @@ package Backend;
 
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
+import Backend.Figuren.Figur;
 import Backend.Funktionalität.Optionen;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
@@ -54,6 +55,7 @@ public interface SpielStub extends Remote{
     public boolean getEnPassant(int sitzungsID) throws RemoteException;
     public boolean getRochade(int sitzungsID) throws RemoteException;
     public Farbe getSpielerAmZug(int sitzungsID) throws RemoteException;
+    public Figur getFigurAufFeld(Position pos, int sitzungsID) throws SpielException, RemoteException;
     public Farbe getGewinner(int sitzungsID) throws RemoteException;  
     public Farbe imSchach(int sitzungsID) throws RemoteException; 
     public long getZeitSpieler1(int sitzungsID) throws RemoteException;

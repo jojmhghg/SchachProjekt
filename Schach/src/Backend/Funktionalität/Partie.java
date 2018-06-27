@@ -8,6 +8,7 @@ package Backend.Funktionalität;
 import Backend.Enums.Farbe;
 import Backend.Enums.Position;
 import Backend.Figuren.Bauer;
+import Backend.Figuren.Figur;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -392,6 +393,9 @@ public final class Partie {
         return this.spielbrett.getSpielerAmZug();
     }
     
+    public Figur getFigurAufFeld(Position pos){
+        return this.spielbrett.getFigurAufFeld(pos);
+    }
     /**
      * Getter für Attribut kiGegner
      * 

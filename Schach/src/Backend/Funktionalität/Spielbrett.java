@@ -112,13 +112,13 @@ public class Spielbrett implements Serializable{
         this.spielbrett[Position.H8.ordinal()].setFigur(new Turm(Farbe.SCHWARZ));
         
         this.spielbrett[Position.A7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.B7.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+        this.spielbrett[Position.B7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.C7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.D7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.E7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.F7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
         this.spielbrett[Position.G7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
-        this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.WEISS));
+        this.spielbrett[Position.H7.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
     }
     
     /**
@@ -215,6 +215,7 @@ public class Spielbrett implements Serializable{
         return this.amZug;
     }
     
+    
     /**
      * Gibt zurück wie viel Züge schon gespielt wurden
      * 
@@ -247,7 +248,7 @@ public class Spielbrett implements Serializable{
      * @param position Position auf Spielbrett
      * @return Objekt von der Klasse Figur
      */
-    public Figur getFigurAufFeld(Position position){        
+    public Figur getFigurAufFeld(Position position){   
         return this.spielbrett[position.ordinal()].getFigur();
     }
     
