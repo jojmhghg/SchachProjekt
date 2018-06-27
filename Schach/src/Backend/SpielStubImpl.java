@@ -299,6 +299,7 @@ public class SpielStubImpl implements SpielStub {
      * @param nameDerGewuenschtenFigur
      * @param sitzungsID
      * @throws SpielException
+     * @throws java.rmi.RemoteException
      */
     @Override
     public void bauerUmwandeln(String nameDerGewuenschtenFigur, int sitzungsID) throws SpielException, RemoteException{
@@ -541,6 +542,11 @@ public class SpielStubImpl implements SpielStub {
     @Override
     public int getBestMoveInt(int sitzungsID){
         return this.serverObjekte.partieListe.get(sitzungsID).getBestMoveInt();
+    }
+    
+    @Override
+    public String getInWelcheFigurWirdUmgewandelt(int sitzungsID){
+        return this.serverObjekte.partieListe.get(sitzungsID).getInWelcheFigurWirdUmgewandelt();
     }
     
     @Override

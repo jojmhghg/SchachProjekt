@@ -108,6 +108,7 @@ public final class Partie {
     
     private int bestMoveInt;
     
+    private String inWelcheFigurWirdUmgewandelt;
     private String bestMoveStart = "";
     private String bestMoveZiel = "";
     private String connector;
@@ -477,6 +478,11 @@ public final class Partie {
     public int getBestMoveInt() {
         return bestMoveInt;
     }
+
+    public String getInWelcheFigurWirdUmgewandelt() {
+        return inWelcheFigurWirdUmgewandelt;
+    }
+    
     
     /**
      * Gibt an, ob Bauer umgewandelt werden muss
@@ -727,6 +733,9 @@ public final class Partie {
         }
         else{
             bestMoveInt = convertBestMove(bestMoveZiel);
+        }
+        if(bestMoveZiel.length() >= 3){
+            inWelcheFigurWirdUmgewandelt = bestMoveZiel.substring(2, 3);
         }
     }
     

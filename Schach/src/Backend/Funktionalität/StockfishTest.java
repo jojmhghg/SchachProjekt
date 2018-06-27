@@ -13,7 +13,6 @@ public class StockfishTest {
   } else { 
    //System.out.println("Oops! Something went wrong.."); 
   } 
-     System.out.println(FEN);
   // send commands manually 
   //client.sendCommand("uci"); 
  

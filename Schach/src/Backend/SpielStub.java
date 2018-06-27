@@ -67,7 +67,8 @@ public interface SpielStub extends Remote{
        
     /* --- Methoden zur KI --- */
     public boolean getKiGegner(int sitzungsID) throws RemoteException; 
-    public int getBestMoveInt(int sitzungsID) throws RemoteException;  
+    public int getBestMoveInt(int sitzungsID) throws RemoteException;
+    public String getInWelcheFigurWirdUmgewandelt(int sitzungsID) throws RemoteException;
     public void kiZieht(boolean startOderZiel, int sitzungsID) throws SpielException, RemoteException;
     
     /* --- Methoden für OnlinePartie --- */

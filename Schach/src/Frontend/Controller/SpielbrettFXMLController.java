@@ -1550,23 +1550,29 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
-    public void starteBauerUmwandelnFenster(Position ziel, Farbe farbe, int zielfeld) throws IOException {
+    public void starteBauerUmwandelnFenster(Position ziel, Farbe farbe, int zielfeld) throws IOException, SpielException {
+        if(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == spiel.getSpielerAmZug(sitzungsID)){
+            FXMLLoader loader = new FXMLLoader();
+            if (farbe == Farbe.WEISS) {
+                loader.setLocation(getClass().getResource("../View/PopupWeiss.fxml"));
+            } else {
+                loader.setLocation(getClass().getResource("../View/PopupSchwarz.fxml"));
+            }
+            Parent popupScene = loader.load();
+            PopupFXMLController controller = loader.getController();
+            controller.loadData(this, zielfeld, spiel, sitzungsID, ((Node) anchorPaneSpielbrett).getScene().getWindow());
 
-        FXMLLoader loader = new FXMLLoader();
-        if (farbe == Farbe.WEISS) {
-            loader.setLocation(getClass().getResource("../View/PopupWeiss.fxml"));
-        } else {
-            loader.setLocation(getClass().getResource("../View/PopupSchwarz.fxml"));
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.initStyle(StageStyle.UNDECORATED);
+            popupStage.setScene(new Scene(popupScene));
+            popupStage.show();
         }
-        Parent popupScene = loader.load();
-        PopupFXMLController controller = loader.getController();
-        controller.loadData(this, zielfeld, spiel, sitzungsID, ((Node) anchorPaneSpielbrett).getScene().getWindow());
-
-        Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.initStyle(StageStyle.UNDECORATED);
-        popupStage.setScene(new Scene(popupScene));
-        popupStage.show();
+        else{
+            String bauerUmwandeln = spiel.getInWelcheFigurWirdUmgewandelt(sitzungsID);
+            this.bauerUmwandeln(bauerUmwandeln, zielfeld);
+            //todo
+        }
     }
 
     /**
@@ -1584,39 +1590,83 @@ public class SpielbrettFXMLController implements Initializable {
         if (paneArray[zielfeld].getChildren().size() > 0) {
             paneArray[zielfeld].getChildren().remove(0);
         }
+        if(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == spiel.getSpielerAmZug(sitzungsID)){
+            switch (neueFigur) {
+                case "SpringerW":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");
+                    break;
 
-        switch (neueFigur) {
-            case "SpringerW":
-                value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");
-                break;
+                case "SpringerB":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");
+                    break;
 
-            case "SpringerB":
-                value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");
-                break;
+                case "LaeuferW":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");
+                    break;
 
-            case "LaeuferW":
-                value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");
-                break;
+                case "LaeuferB":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");
+                    break;
 
-            case "LaeuferB":
-                value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");
-                break;
+                case "DameW":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/QueenW.png");
+                    break;
 
-            case "DameW":
-                value = new Image("Frontend/Ressources/Pieces/Wood/QueenW.png");
-                break;
+                case "DameB":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/QueenB.png");
+                    break;
 
-            case "DameB":
-                value = new Image("Frontend/Ressources/Pieces/Wood/QueenB.png");
-                break;
+                case "TurmW":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");
+                    break;
 
-            case "TurmW":
-                value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");
-                break;
+                case "TurmB":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");
+                    break;
+            }
+        }
+        else{
+            switch (neueFigur) {
+                case "N":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");
+                    neueFigur = "SpringerW";
+                    break;
 
-            case "TurmB":
-                value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");
-                break;
+                case "n":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");
+                    neueFigur = "SpringerB";
+                    break;
+
+                case "B":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");
+                    neueFigur = "LaeuferW";
+                    break;
+
+                case "b":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");
+                    neueFigur = "LaeuferB";
+                    break;
+
+                case "Q":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/QueenW.png");
+                    neueFigur = "DameW";
+                    break;
+
+                case "q":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/QueenB.png");
+                    neueFigur = "DameB";
+                    break;
+
+                case "R":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");
+                    neueFigur = "TurmW";
+                    break;
+
+                case "r":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");
+                    neueFigur = "TurmB";
+                    break;
+            }
         }
 
         if (value != null) {
