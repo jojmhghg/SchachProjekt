@@ -8,6 +8,7 @@ package Frontend.Controller;
 import Backend.Funktionalität.SpielException;
 import Backend.Funktionalität.Spielbrett;
 import Backend.SpielStub;
+import Frontend.Reconnect;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTabPane;
@@ -210,7 +211,8 @@ public class StartseiteFXMLController implements Initializable {
         } catch (SpielException e) { 
             showMessageBox(e.getMessage(), 2);
         } catch(RemoteException e){
-            showMessageBox("RemoteException TODO", 2);
+            Reconnect rec = new Reconnect();
+            spiel = rec.tryReconnect();                 
         }
     }
 
@@ -240,16 +242,33 @@ public class StartseiteFXMLController implements Initializable {
      * @throws RemoteException
      */
     @FXML
-    private void ausloggen(ActionEvent event) throws RemoteException {
-        spiel.ausloggen(sitzungsID);
-        showAnmeldePane();
+    private void ausloggen(ActionEvent event){
+        try {
+            spiel.ausloggen(sitzungsID);
+            showAnmeldePane();
+        } catch (RemoteException ex) {          
+            try {
+                Reconnect rec = new Reconnect();
+                spiel = rec.tryReconnect(); 
+                if(!spiel.reconnect(sitzungsID)){
+                    showAnmeldePane();
+                }
+                else{
+                    System.out.println("TEST");
+                }
+            } catch (RemoteException ex1) {
+                Platform.exit();
+                System.exit(0);
+            }
+        }
+        
     }
 
     /**
      * Wird aufgerufen, wenn man einen Beenden-Button klickt. 
      * 
      * @param event
-     */
+     */   
     @FXML
     private void beenden(ActionEvent event) {
         try {

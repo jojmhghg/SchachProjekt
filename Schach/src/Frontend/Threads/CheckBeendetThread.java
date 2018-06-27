@@ -5,13 +5,9 @@
  */
 package Frontend.Threads;
 
-import Backend.Threads.*;
-import Backend.ServerObjekte;
 import Backend.SpielStub;
 import Frontend.Controller.SpielbrettFXMLController;
 import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 
 /**
@@ -33,25 +29,35 @@ public class CheckBeendetThread extends Thread{
    /**
      * Methode die einen Server einen anderen Server anpingen laesst
      */
-    @Override 
-    public void run(){
-        try{            
+    @Override
+    public void run() {
+        try {
             boolean beendet = false;
-            while(!beendet){          
-                Thread.sleep(50);    
-                
-                if(spiel.getBeendet(sitzungsID)){
+            while (!beendet) {
+                Thread.sleep(50);
+
+                if (spiel.getBeendet(sitzungsID)) {
                     beendet = true;
                     Platform.runLater(() -> {
                         spielbrettFXMLController.goToWinnerPopup();
                     });
                 }
-            }                             
-        } catch (InterruptedException ex) {                
-            
-        } catch (RemoteException ex) {
-            Logger.getLogger(CheckBeendetThread.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+            }
+        }  catch (InterruptedException | RemoteException ex) {
+//            Platform.runLater(() -> {   
+//                try {
+//                    Stage stage = null;
+//                    spiel.reconnect(sitzungsID);
+//                    //createIndicatorStage();
+//                    if(spiel.reconnect(sitzungsID)){
+//                        System.out.println("Reconnecting");
+//                    }   
+//                } catch (RemoteException ex1) {
+//                    Logger.getLogger(CheckBeendetThread.class.getName()).log(Level.SEVERE, null, ex1);
+//                }
+//
+//            });
+        } 
     }
-    
+        
 }

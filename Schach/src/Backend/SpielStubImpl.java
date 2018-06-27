@@ -76,7 +76,7 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public boolean reconnect(int sitzungsID){
-        return this.serverObjekte.sitzungen.get(sitzungsID) == null;                        
+        return this.serverObjekte.sitzungen.get(sitzungsID) != null;                        
     }
     
     /**
