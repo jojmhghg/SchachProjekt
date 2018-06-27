@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Frontend.Controller.LostConnectionController">
    <children>
-      <Text layoutX="199.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Test" wrappingWidth="225.720703125">
+      <ProgressIndicator fx:id="progressIndicator" layoutX="265.0" layoutY="178.0" prefHeight="59.0" prefWidth="72.0" progress="0.0" />
+      <JFXButton layoutX="273.0" layoutY="286.0" onAction="#beenden" text="Beenden" />
+      <Text layoutX="130.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Verbindung abgebrochen">
          <font>
-            <Font size="34.0" />
-         </font></Text>
+            <Font size="30.0" />
+         </font>
+      </Text>
+      <Text layoutX="75.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Es wird  versucht eine neue Verbindung herzustellen">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text layoutX="137.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Das Programm kann auch früher beendet werden">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
