@@ -356,6 +356,7 @@ public class SpielbrettFXMLController implements Initializable {
     int spieler1sec = 0;
     int spieler2sec = 0;
 
+    boolean umwandlung = false;
     boolean rotate = false;
     int sitzungsID;
     SpielStub spiel;
@@ -792,8 +793,9 @@ public class SpielbrettFXMLController implements Initializable {
                     // Rochade oder En Passant in GUI darstellen
                     rochadeOderEnPassantAnzeigen(pos, this.quellPosition);
 
-                    if (spiel.getFigurAufFeld(quellPosition, sitzungsID) instanceof Bauer) {
-                        if (spiel.getFigurAufFeld(quellPosition,  sitzungsID).getFarbe() != Farbe.WEISS) {
+                    if(umwandlung){
+                        umwandlung = false;
+                        if (spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS) {
                             if (pos.ordinal() >= 56 && pos.ordinal() <= 63) {
                                 starteBauerUmwandelnFenster(pos, Farbe.WEISS, pos.ordinal());
                                 rotate = true;
@@ -825,7 +827,9 @@ public class SpielbrettFXMLController implements Initializable {
                     } catch (SpielException e) {
                         this.possibleMoves = null;
                     }
-
+                    if (spiel.getFigurAufFeld(pos, sitzungsID) instanceof Bauer) {
+                        umwandlung = true;
+                    }
                     if (possibleMoves != null) {
                         this.quellPosition = pos;
                         selectedFigur = tmpView;    // Festhalten welche Figur bewegt werden soll.
