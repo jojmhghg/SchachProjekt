@@ -262,9 +262,7 @@ public class StartseiteFXMLController implements Initializable {
                 spiel = rec.tryReconnect(); 
                 if(!spiel.reconnect(sitzungsID)){
                     showAnmeldePane();
-                }
-                else{
-                    System.out.println("TEST");
+                    showSitzungAbgelaufen();
                 }
             } catch (RemoteException ex1) {
                 Platform.exit();
@@ -354,9 +352,7 @@ public class StartseiteFXMLController implements Initializable {
                 spiel = rec.tryReconnect(); 
                 if(!spiel.reconnect(sitzungsID)){
                     showAnmeldePane();
-                }
-                else{
-                    System.out.println("TEST");
+                    showSitzungAbgelaufen();
                 }
             } catch (RemoteException ex1) {
                 Platform.exit();
@@ -387,8 +383,7 @@ public class StartseiteFXMLController implements Initializable {
             partieLadenStage.initStyle(StageStyle.UNDECORATED);
             partieLadenStage.setScene(new Scene(partieLadenScene));
             partieLadenStage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {           
         }
     }
 
@@ -424,6 +419,13 @@ public class StartseiteFXMLController implements Initializable {
     }
 
     /**
+     * Fehlermeldung wenn man auf Startseite zurückgelenkt wird
+     */
+    public void showSitzungAbgelaufen(){
+        this.showMessageBox("Sitzung abgelaufen!", 2);
+    }
+    
+    /**
      * Hilfsmethode um Anmelde-Form anzuzeigen
      */
     private void showAnmeldePane() {
@@ -439,7 +441,7 @@ public class StartseiteFXMLController implements Initializable {
     /**
      * Hilfsmethode um Form für eingeloggten User anzuzeigen
      */
-    private void showContentPane() {
+    public void showContentPane() {
         anmeldePane.setVisible(false);
         spielStarten.setVisible(true);
         partieFortsetzen.setVisible(true);
