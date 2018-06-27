@@ -35,12 +35,12 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="abmeldenBtn" buttonType="RAISED" layoutX="498.0" layoutY="372.0" onAction="#gameAbmelden" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Abmelden" textAlignment="CENTER" visible="false">
+      <JFXButton fx:id="abmeldenBtn" buttonType="RAISED" layoutX="498.0" layoutY="372.0" onAction="#ausloggen" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Abmelden" textAlignment="CENTER" visible="false">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="powerOffBtn" buttonType="RAISED" layoutX="498.0" layoutY="426.0" onAction="#powerOff" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Beenden" textAlignment="CENTER" visible="false">
+      <JFXButton fx:id="powerOffBtn" buttonType="RAISED" layoutX="498.0" layoutY="426.0" onAction="#beenden" prefHeight="42.0" prefWidth="170.0" ripplerFill="BLACK" style="-fx-background-color: #DEB887; -fx-opacity: 90;" text="Beenden" textAlignment="CENTER" visible="false">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -73,12 +73,12 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </JFXPasswordField>
-                              <JFXButton fx:id="passwortVergessenBtn" buttonType="RAISED" layoutX="92.0" layoutY="262.0" onAction="#passwortVergessenAction" prefHeight="31.0" prefWidth="170.0" ripplerFill="BLACK" styleClass="second" stylesheets="@StandardDesign.css" text="Passwort vergessen" textAlignment="CENTER" textFill="#50280e">
+                              <JFXButton fx:id="passwortVergessenBtn" buttonType="RAISED" layoutX="92.0" layoutY="262.0" onAction="#passwortVergessen" prefHeight="31.0" prefWidth="170.0" ripplerFill="BLACK" styleClass="second" stylesheets="@StandardDesign.css" text="Passwort vergessen" textAlignment="CENTER" textFill="#50280e">
                                  <font>
                                     <Font name="System Bold Italic" size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton fx:id="anmeldenButton" buttonType="RAISED" layoutX="13.0" layoutY="335.0" onAction="#anmdeldenMitServer" prefHeight="42.0" prefWidth="151.0" ripplerFill="BLACK" styleClass="first" stylesheets="@StandardDesign.css" text="Anmelden" textAlignment="CENTER">
+                              <JFXButton fx:id="anmeldenButton" buttonType="RAISED" layoutX="13.0" layoutY="335.0" onAction="#login" prefHeight="42.0" prefWidth="151.0" ripplerFill="BLACK" styleClass="first" stylesheets="@StandardDesign.css" text="Anmelden" textAlignment="CENTER">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
@@ -121,7 +121,7 @@
                   </Tab>
                </tabs>
             </JFXTabPane>
-            <JFXButton fx:id="schliessen" buttonType="RAISED" layoutX="190.0" layoutY="377.0" onAction="#powerOffForce" prefHeight="42.0" prefWidth="151.0" ripplerFill="BLACK" styleClass="first" stylesheets="@StandardDesign.css" text="Beenden" textAlignment="CENTER">
+            <JFXButton fx:id="schliessen" buttonType="RAISED" layoutX="190.0" layoutY="377.0" onAction="#beenden" prefHeight="42.0" prefWidth="151.0" ripplerFill="BLACK" styleClass="first" stylesheets="@StandardDesign.css" text="Beenden" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>

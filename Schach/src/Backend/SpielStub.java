@@ -25,7 +25,7 @@ public interface SpielStub extends Remote{
     /* --- Methoden um Sitzung zu starten --- */
     public int einloggen(String email, String password) throws RemoteException, SpielException;
     public boolean reconnect(int sitzungsID) throws RemoteException;
-    public void ausloggen(int sitzungsID) throws RemoteException, SpielException;
+    public void ausloggen(int sitzungsID) throws RemoteException;
     public void registrieren(String email, String password, String username) throws RemoteException, SpielException;
     public void resetPassword(String email) throws SpielException, RemoteException;
     

@@ -52,17 +52,18 @@ public class SpielStubImpl implements SpielStub {
                 try {
                     this.serverObjekte.partieListe.put(sitzungsID, new Partie(email, "tmp"));
                 } catch (SpielException ex) {
-                    Logger.getLogger(SpielStubImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    // Hier wird der Fehler abgefangen, wenn kein tmp-File existiert
+                    // Ist für HUI erstmal nicht wichtig!
                 }
                 return sitzungsID;
             }
             else{
-                throw new SpielException("E-Mail-Adresse \noder Passwort falsch");
+                throw new SpielException("E-Mail-Adresse oder \nPasswort falsch");
             }
         } catch (SQLException ex) {
             throw new SpielException("Fehler beim Login");
         } catch (DatenbankException ex) {
-            throw new SpielException("E-Mail-Adresse \noder Passwort falsch");
+            throw new SpielException("E-Mail-Adresse existiert \n nicht!");
         }                    
     }
     
@@ -108,7 +109,9 @@ public class SpielStubImpl implements SpielStub {
         if(!email.contains("@") || !email.contains(".")){
             throw new SpielException("Bitte eine gültige \nE-Mail-Adresse \neingeben!");
         }
-        try {
+        try {  
+            this.serverObjekte.datenbank.registiereNeuenUser(email, password, username); 
+            
             //Neuer Ordner anlegen
             String seperator = System.getProperty("file.separator");      
             File file = new File("." + seperator + "saves" + seperator + email);
@@ -120,11 +123,9 @@ public class SpielStubImpl implements SpielStub {
                     throw new SpielException("Ordner konnte nicht erstellt werden!");
                 }        
             }
-            
-            this.serverObjekte.datenbank.registiereNeuenUser(email, password, username);              
         } catch (SQLException ex) {
-            throw new SpielException(ex.getMessage());
-            //throw new SpielException("E-Mail bereits \nvorhanden!");
+            //throw new SpielException(ex.getMessage());
+            throw new SpielException("E-Mail bereits \nvorhanden!");
         }             
     }
     

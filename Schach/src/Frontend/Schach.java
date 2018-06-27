@@ -38,7 +38,6 @@ public class Schach extends Application {
         StartseiteFXMLController controller = loader.getController();
         controller.loadData();
         controller.verbindeMitServer();
-        controller.showAnmeldePaneContent();
         
         mainStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
         mainStage.initStyle(StageStyle.UNDECORATED);

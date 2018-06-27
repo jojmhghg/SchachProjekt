@@ -53,16 +53,7 @@ public class DatenbankHandler {
                     + "username varchar(60),"
                     + "highlightingOff integer,"                    
                     + "PRIMARY KEY (email))");
-        }
-
-        if(!resultSet2.next()){
-            System.out.println("Building the Termin table with prepopulated values.");
-            Statement stateTermine = connection.createStatement();
-            stateTermine.execute("CREATE TABLE savefiles("
-                    + "email varchar(100),"
-                    + "filename varchar(100),"
-                    + "primary key(email, filename))");
-        }                  
+        }                
     }
     
     /**

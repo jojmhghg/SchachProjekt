@@ -102,145 +102,102 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private JFXButton abmeldenBtn;
 
+    /**
+     * SitzungsID, die User nach einloggen von Server bekommt.
+     * Erlaubt ihm zugriff auf seine Daten ohne wiederholte eingabe von 
+     * E-Mail & Passwort.
+     */
     int sitzungsID;
+    /**
+     * Verbindung zum Server. Auf diesem Objekt kann der Client Aufrufe 
+     * ausführen, die dann vom Server bearbeitet werden.
+     */
     SpielStub spiel;
     Timeline timeline;
 
-    public void loadData() throws SpielException {
+    /**
+     * Wird genutzt um Controller Daten vor Aufruf zu übergeben. Diese Methode
+     * wird nur beim Starten der Anwedung aufgerufen. 
+     */
+    public void loadData() {
         timeline = new Timeline();
     }
 
+    /**
+     * Wird genutzt um Controller Daten vor Aufruf zu übergeben. Diese Methode
+     * wird nur bei Aufrufen von anderen Controllern verwendet.
+     * 
+     * @param spiel
+     * @param timeline
+     * @param sitzungsID
+     */
     public void loadData(SpielStub spiel, Timeline timeline, int sitzungsID) {
         this.spiel = spiel;
         this.sitzungsID = sitzungsID;
         this.timeline = timeline;
     }
 
+    /**
+     * Diese Methode wird verwendet, damit der Client eine Verbindung zum Server
+     * aufbaut.
+     * 
+     * @throws RemoteException
+     * @throws NotBoundException 
+     */
     public void verbindeMitServer() throws RemoteException, NotBoundException {
         Registry registry;
-
         registry = LocateRegistry.getRegistry("localhost", 1099);
         spiel = (SpielStub) registry.lookup("ClientStub");
-//        try {  
-//            sitzungsID = spiel.einloggen("timyer93@googlemail.com", "test123");
-//        } catch (SpielException ex) {
-//            Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }
 
-    //Hier wird die registrieren vorgang durchgeführt
+    /**
+     * Wird aufgerufen, wenn man den Registrieren-Button klickt. 
+     * Übergibt eingetragene Email, Username und beide Passwörter an Server.
+     * Dieser legt dann einen neuen User an oder wirft einen Fehler.
+     * 
+     * @param event
+     */
     @FXML
-    private void registrieren(ActionEvent event) throws RemoteException, SpielException {
+    private void registrieren(ActionEvent event){
         String email = emailReg.getText();
         String username = benuntzernameReg.getText();
         String password = passwortReg.getText();
 
-        try {
-            //Wenn Felder nicht leer ist
-            if (!(benuntzernameReg.getText().isEmpty() || emailReg.getText().isEmpty()
-                    || passwortReg.getText().isEmpty() || passwortWdhReg.getText().isEmpty())) {
 
-                //Pruefe ob die Passwort falsch ist
-                if (passwortReg.getText().equals(passwortWdhReg.getText())) {
-                    password = passwortReg.getText();
+        //Überprüfe ob ein Feld leer, wenn ja -> werfe
+        if(!(benuntzernameReg.getText().isEmpty() || emailReg.getText().isEmpty()
+                || passwortReg.getText().isEmpty() || passwortWdhReg.getText().isEmpty())
+        ){
+            //Pruefe ob die Passwort falsch ist
+            if (passwortReg.getText().equals(passwortWdhReg.getText())) {
+                try {
+                    spiel.registrieren(email, password, username);
 
-                    try {
-                        spiel.registrieren(email, password, username);
+                    // Reg daten werden in anmdelde Bildschirm angezeigt
+                    anmeldenBenutzername.setText(email);
+                    anmeldenPasswort.setText(password);
 
-                        // Reg daten werden in anmdelde Bildschirm angezeigt
-                        anmeldenBenutzername.setText(email);
-                        anmeldenPasswort.setText(password);
-
-                        // Wenn Erfolgreich ist
-                        messageBox(1);
-
-                    } catch (SpielException | RemoteException ex) {
-                        setInformation(ex.getMessage(), 2);
-                        animationMessageBox();
-                        //messageBox(5);
-                    }
-
-                } else {
-                    //Wenn passwort Falsch ist
-                    messageBox(3);
+                    // Wenn Erfolgreich ist
+                    showMessageBox("Registierung erfolgreich", 1);
+                } catch (SpielException | RemoteException ex) {
+                    showMessageBox(ex.getMessage(), 2);
                 }
-
             } else {
-                throw new Exception("Felder dürfen \nnicht leer sein");
+                //Wenn passwort Falsch ist
+                showMessageBox("Die Passwörter stimmen \nnicht überein", 2);
             }
-        } catch (Exception ex) {
-            setInformation(ex.getMessage(), 2);
-            animationMessageBox();
-        }
-
-    }
-
-    private void messageBox(int stelle) {
-        switch (stelle) {
-            case 1:
-                setInformation("Registierung erfolgreich", 1);
-                break;
-
-            case 2:
-                setInformation("Anmeldung erfolgreich", 1);
-                break;
-
-            case 3:
-                setInformation("Die Passwörter stimmen \nnicht überein", 2);
-                break;
-
-            case 4:
-
-                break;
-
-            case 5:
-                setInformation("Benutzername Existiert", 2);
-                break;
-
-            case 6:
-                setInformation("Email oder Passwort \nist Falsch", 2);
-                break;
-
-            default:
-                break;
-        }
-
-        animationMessageBox();
-    }
-
-    private void setInformation(String inforamtionTxt, int messageTyp) {
-
-        if (messageTyp == 1) {
-            //Gruen
-            informationPane.setStyle("-fx-background-color: #53c65d; -fx-opacity: 80%;");
         } else {
-            //Rot
-            informationPane.setStyle("-fx-background-color: #c66253; -fx-opacity: 80%;");
+            showMessageBox("Ein oder mehrere Felder \nsind leer!", 2);
         }
-
-        information.setText(inforamtionTxt);
     }
-
-    private void animationMessageBox() {
-        informationPane.setVisible(true);
-        //Animationen
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(6), informationPane);
-        fadeIn.setFromValue(0);
-        fadeIn.setToValue(1);
-        fadeIn.setCycleCount(1);
-
-        FadeTransition fadeOut = new FadeTransition(Duration.seconds(6), informationPane);
-        fadeOut.setFromValue(1);
-        fadeOut.setToValue(0);
-        fadeOut.setCycleCount(1);
-
-        fadeIn.play();
-        fadeOut.play();
-    }
-
-    // Hier kann man anmelden
+   
+    /**
+     * Wird aufgerufen, wenn man den Login-Button klickt. 
+     * 
+     * @param event
+     */
     @FXML
-    private void anmdeldenMitServer(ActionEvent event) throws RemoteException, NotBoundException, SpielException {
+    private void login(ActionEvent event) {
         String email = anmeldenBenutzername.getText();
         String password = anmeldenPasswort.getText();
 
@@ -248,80 +205,68 @@ public class StartseiteFXMLController implements Initializable {
             sitzungsID = spiel.einloggen(email, password);
 
             // Wenn anmeldung Erfolgreich ist
-            messageBox(2);
-            showContent();
-
-        } catch (Exception e) {
-            // Benutzer existert nicht 
-            messageBox(6);
+            showMessageBox("Anmeldung erfolgreich", 1);
+            showContentPane();
+        } catch (SpielException e) { 
+            showMessageBox(e.getMessage(), 2);
+        } catch(RemoteException e){
+            showMessageBox("RemoteException TODO", 2);
         }
-
     }
 
+    /**
+     * Wird aufgerufen, wenn man den Passwort-Vergessen-Button klickt. 
+     * 
+     * @param event
+     */
     @FXML
-    private void passwortVergessenAction(ActionEvent event) {
+    private void passwortVergessen(ActionEvent event) {
         try {
-
             if (!anmeldenBenutzername.getText().isEmpty()) {
                 spiel.resetPassword(anmeldenBenutzername.getText());
-                setInformation("Email an \n" + anmeldenBenutzername.getText() + "\ngesendet", 1);
-                animationMessageBox();
+                showMessageBox("Email an \n" + anmeldenBenutzername.getText() + "\ngesendet", 1);
             } else {
                 throw new Exception("Bitte oben E-Mail \neingeben");
             }
-
         } catch (Exception ex) {
-            setInformation(ex.getMessage(), 2);
-            animationMessageBox();
+            showMessageBox(ex.getMessage(), 2);
         }
     }
 
+    /**
+     * Wird aufgerufen, wenn man den Ausloggen-Button klickt. 
+     * 
+     * @param event
+     * @throws RemoteException
+     */
     @FXML
-    private void gameAbmelden(ActionEvent event) throws RemoteException, SpielException {
+    private void ausloggen(ActionEvent event) throws RemoteException {
         spiel.ausloggen(sitzungsID);
-        showAnmeldePaneContent();
+        showAnmeldePane();
     }
 
-    public void showAnmeldePaneContent() {
-
-        anmeldePane.setVisible(true);
-        spielStarten.setVisible(false);
-        partieFortsetzen.setVisible(false);
-        partieLaden.setVisible(false);
-        abmeldenBtn.setVisible(false);
-        powerOffBtn.setVisible(false);
-
-    }
-
-    private void showContent() {
-        anmeldePane.setVisible(false);
-        spielStarten.setVisible(true);
-        partieFortsetzen.setVisible(true);
-        partieLaden.setVisible(true);
-        abmeldenBtn.setVisible(true);
-        powerOffBtn.setVisible(true);
-    }
-
+    /**
+     * Wird aufgerufen, wenn man einen Beenden-Button klickt. 
+     * 
+     * @param event
+     */
     @FXML
-    private void powerOff(ActionEvent event) {
+    private void beenden(ActionEvent event) {
         try {
             spiel.ausloggen(sitzungsID);
             Platform.exit();
-            System.exit(0);
-            
-        } catch (RemoteException | SpielException ex) {
+            System.exit(0);            
+        } catch (RemoteException ex) {
             Platform.exit();
             System.exit(0);
         }
     }
 
-    @FXML
-    private void powerOffForce(ActionEvent event) throws RemoteException, SpielException {
-        //spiel.ausloggen(sitzungsID);
-        Platform.exit();
-        System.exit(0);
-    }
-
+    /**
+     * Wird aufgerufen, wenn man den Neues-Spiel-Button klickt. 
+     * 
+     * @param event
+     */
     @FXML
     private void goToOptionen(ActionEvent event) {
         //Parent optionenScene;
@@ -346,6 +291,11 @@ public class StartseiteFXMLController implements Initializable {
         }
     }
 
+    /**
+     * Wird aufgerufen, wenn man den Fortsetzen-Button klickt. 
+     * 
+     * @param event
+     */
     @FXML
     private void partieFortsetzen(ActionEvent event) {
         try {
@@ -367,16 +317,18 @@ public class StartseiteFXMLController implements Initializable {
             spielbrettStage.show();
 
             ((Node) (event.getSource())).getScene().getWindow().hide();
-//            controller.cleanBoard();
-//            controller.initSpielbrett();
-
         } catch (SpielException ex) {
-            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            showMessageBox("Partie konnte nicht \ngeladen werden!", 2);
         } catch (IOException ex) {
             Logger.getLogger(StartseiteFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Wird aufgerufen, wenn man den Laden-Button klickt. 
+     * 
+     * @param event
+     */
     @FXML
     private void goToPartieLaden(ActionEvent event) {
         try {
@@ -398,11 +350,65 @@ public class StartseiteFXMLController implements Initializable {
         }
     }
 
+    /**
+     * Hilfsmethode um Messagebox mit übergebenem Text anzuzeigen
+     * 
+     * @param inforamtionTxt
+     * @param messageTyp 1 = grün, 2 = rot
+     */
+    private void showMessageBox(String inforamtionTxt, int messageTyp) {
+        switch(messageTyp){
+            case 1:
+                informationPane.setStyle("-fx-background-color: #53c65d; -fx-opacity: 80%;");
+                break;
+            case 2:
+                informationPane.setStyle("-fx-background-color: #c66253; -fx-opacity: 80%;");
+                break;
+        }
+        information.setText(inforamtionTxt);       
+        informationPane.setVisible(true);
+        
+        //Animationen
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(6), informationPane);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.setCycleCount(1);
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(6), informationPane);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        fadeOut.setCycleCount(1);
+        fadeIn.play();
+        fadeOut.play();
+    }
+
+    /**
+     * Hilfsmethode um Anmelde-Form anzuzeigen
+     */
+    private void showAnmeldePane() {
+        anmeldePane.setVisible(true);
+        spielStarten.setVisible(false);
+        partieFortsetzen.setVisible(false);
+        partieLaden.setVisible(false);
+        abmeldenBtn.setVisible(false);
+        powerOffBtn.setVisible(false);
+
+    }
+
+    /**
+     * Hilfsmethode um Form für eingeloggten User anzuzeigen
+     */
+    private void showContentPane() {
+        anmeldePane.setVisible(false);
+        spielStarten.setVisible(true);
+        partieFortsetzen.setVisible(true);
+        partieLaden.setVisible(true);
+        abmeldenBtn.setVisible(true);
+        powerOffBtn.setVisible(true);
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //animationFadeIn();
-        showContent();
-        //messageBox(4);
+        showAnmeldePane();
     }
 
 }
