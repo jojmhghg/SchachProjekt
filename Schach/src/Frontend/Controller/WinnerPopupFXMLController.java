@@ -5,6 +5,7 @@
  */
 package Frontend.Controller;
 
+import Backend.Enums.Farbe;
 import Backend.SpielStub;
 import java.io.IOException;
 import java.net.URL;
@@ -42,16 +43,23 @@ public class WinnerPopupFXMLController implements Initializable {
     @FXML
     private Label gewinnerFarbe;
     
-    public void loadData(SpielStub spiel, int sitzungsID, Window window) throws RemoteException {
+    public void loadData(SpielStub spiel, int sitzungsID, Window window) throws RemoteException{
         this.spiel = spiel;
         this.sitzungsID = sitzungsID;
+
         if(!spiel.getBeendet(sitzungsID)){
             gewinnerFarbe.setText(spiel.getSpielerAmZug(sitzungsID).andereFarbe().toString());
         }
         else{
-            gewinnerFarbe.setText(spiel.getGewinner(sitzungsID).toString());
+            Farbe gewinner = spiel.getGewinner(sitzungsID);
+            if(gewinner == null){
+                gewinnerFarbe.setText("Remis");
+            }
+            else{
+                gewinnerFarbe.setText(gewinner.toString());
+            }
         }
-        
+
         this.startseiteWindow = window;
     }
     
@@ -64,6 +72,7 @@ public class WinnerPopupFXMLController implements Initializable {
             
             StartseiteFXMLController controller = loader.getController();
             controller.loadData(spiel, new Timeline(), sitzungsID);
+            controller.showContentPane();
 
             Stage startseiteStage = new Stage();
             startseiteStage.initModality(Modality.APPLICATION_MODAL);
@@ -92,12 +101,7 @@ public class WinnerPopupFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*try {
-            this.spiel = new SpielStubImpl();
-            //loadData(spiel);
-        } catch (SpielException ex) {
-            Logger.getLogger(WinnerPopupFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        
     } 
     
 }

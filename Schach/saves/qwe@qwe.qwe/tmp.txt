@@ -1,0 +1,7 @@
+false
+WEISS
+-1
+-60000
+-60000
+false
+

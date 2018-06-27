@@ -1048,7 +1048,7 @@ public class SpielbrettFXMLController implements Initializable {
             Parent remisAngebotScene = loader.load();
 
             RemisAngebotFXMLController controller = loader.getController();
-            controller.loadData(spiel, this, ((Node) myMenuBar).getScene().getWindow(), sitzungsID);
+            controller.loadData(spiel, this, ((Node) anchorPaneSpielbrett).getScene().getWindow(), sitzungsID);
 
             Stage remisAngebotStage = new Stage();
             remisAngebotStage.initModality(Modality.APPLICATION_MODAL);
@@ -1556,7 +1556,7 @@ public class SpielbrettFXMLController implements Initializable {
         }
         Parent popupScene = loader.load();
         PopupFXMLController controller = loader.getController();
-        controller.loadData(this, zielfeld);
+        controller.loadData(this, zielfeld, spiel, sitzungsID, ((Node) anchorPaneSpielbrett).getScene().getWindow());
 
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
