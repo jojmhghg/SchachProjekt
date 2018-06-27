@@ -53,7 +53,6 @@ public class PartieLadenFXMLController implements Initializable {
     
     int sitzungsID;
     SpielStub spiel;
-    Spielbrett spielbrett;
     Window spielbrettWindow;
     Timeline timeline;
     
@@ -62,9 +61,8 @@ public class PartieLadenFXMLController implements Initializable {
     @FXML
     private JFXTextField filename;
     
-    public void loadData(SpielStub spiel, Spielbrett spielbrett, Window window, Timeline timeline, int sitzungsID) {
+    public void loadData(SpielStub spiel, Window window, Timeline timeline, int sitzungsID) {
         this.spiel = spiel;
-        this.spielbrett = spielbrett;
         this.spielbrettWindow = window;
         this.sitzungsID = sitzungsID;
         this.timeline = timeline;
@@ -76,7 +74,7 @@ public class PartieLadenFXMLController implements Initializable {
         
         if(!newfilename.isEmpty()) {
             try {                
-                spielbrett = spiel.partieLaden(newfilename, sitzungsID);
+                Spielbrett spielbrett = spiel.partieLaden(newfilename, sitzungsID);
                 
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
@@ -171,14 +169,10 @@ public class PartieLadenFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            this.spielbrett = new Spielbrett();
-            this.spiel = new SpielStubImpl();
-            // Request focus on the newfilename field by default.
-            Platform.runLater(() -> filename.requestFocus());
-        } catch (SpielException | ClassNotFoundException | SQLException | NoSuchAlgorithmException ex) {
-            Logger.getLogger(PartieLadenFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //this.spielbrett = new Spielbrett();
+        //this.spiel = new SpielStubImpl();
+        // Request focus on the newfilename field by default.
+        Platform.runLater(() -> filename.requestFocus());
     }
     
 }

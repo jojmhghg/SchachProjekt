@@ -95,7 +95,6 @@ public class OptionenFXMLController implements Initializable {
     ObservableList<String> partieZeitListOnline = FXCollections.observableArrayList("5", "10", "15", "30", "60");
     
     int sitzungsID;
-    Spielbrett spielbrett;
     SpielStub spiel;
     SpielbrettFXMLController spielbrettFXMLController;
     Timeline timeline;
@@ -112,8 +111,6 @@ public class OptionenFXMLController implements Initializable {
         partieZeitLokal.getSelectionModel().selectLast();
         partieZeitOnline.setItems(partieZeitListOnline);
         partieZeitOnline.getSelectionModel().selectFirst();
-
-        this.spielbrett = new Spielbrett();
     }
     
     public void loadData(SpielStub spiel, Timeline timeline, int sitzungsID) {
@@ -132,7 +129,7 @@ public class OptionenFXMLController implements Initializable {
             partieoptionen = new Optionen(farbe, time, false);
             
             spiel.warteschlangeBetreten(partieoptionen, sitzungsID); 
-            spielbrett = new Spielbrett();
+            Spielbrett spielbrett = new Spielbrett();
             
             boolean wait = true;
             while(wait){
@@ -181,7 +178,7 @@ public class OptionenFXMLController implements Initializable {
                 int time = getChosenTimeOffline();
                 Farbe farbe = choosedColorOffline();
                 partieoptionen = new Optionen(farbe, time, getChoosedGegner());
-                spielbrett = spiel.neuePartie(partieoptionen, sitzungsID);        
+                Spielbrett spielbrett = spiel.neuePartie(partieoptionen, sitzungsID);        
                       
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));

@@ -5,7 +5,6 @@
  */
 package Frontend.Controller;
 
-import Backend.SpielStubImpl;
 import Backend.Funktionalität.SpielException;
 import Backend.SpielStub;
 import com.jfoenix.controls.JFXButton;
@@ -55,7 +54,6 @@ public class EinstellungenFXMLController implements Initializable {
     SpielStub spiel;
     SpielbrettFXMLController spielbrettFXMLController;
     OptionenFXMLController optionenFXMLContoller;
-    Timeline timeline;
 
     public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, int sitzungsID, OptionenFXMLController optionenFXMLContoller) throws RemoteException, SpielException {
         this.spiel = spiel;

@@ -104,12 +104,7 @@ public class StartseiteFXMLController implements Initializable {
 
     int sitzungsID;
     SpielStub spiel;
-    Spielbrett spielbrett;
     Timeline timeline;
-
-    private String email;
-    private String username;
-    private String password;
 
     public void loadData() throws SpielException {
         timeline = new Timeline();
@@ -136,9 +131,9 @@ public class StartseiteFXMLController implements Initializable {
     //Hier wird die registrieren vorgang durchgeführt
     @FXML
     private void registrieren(ActionEvent event) throws RemoteException, SpielException {
-        email = emailReg.getText();
-        username = benuntzernameReg.getText();
-        password = passwortReg.getText();
+        String email = emailReg.getText();
+        String username = benuntzernameReg.getText();
+        String password = passwortReg.getText();
 
         try {
             //Wenn Felder nicht leer ist
@@ -246,8 +241,8 @@ public class StartseiteFXMLController implements Initializable {
     // Hier kann man anmelden
     @FXML
     private void anmdeldenMitServer(ActionEvent event) throws RemoteException, NotBoundException, SpielException {
-        email = anmeldenBenutzername.getText();
-        password = anmeldenPasswort.getText();
+        String email = anmeldenBenutzername.getText();
+        String password = anmeldenPasswort.getText();
 
         try {
             sitzungsID = spiel.einloggen(email, password);
@@ -354,7 +349,7 @@ public class StartseiteFXMLController implements Initializable {
     @FXML
     private void partieFortsetzen(ActionEvent event) {
         try {
-            spielbrett = spiel.partieLaden("tmp", sitzungsID);
+            Spielbrett spielbrett = spiel.partieLaden("tmp", sitzungsID);
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/Spielbrett.fxml"));
@@ -390,7 +385,7 @@ public class StartseiteFXMLController implements Initializable {
             Parent partieLadenScene = loader.load();
 
             PartieLadenFXMLController controller = loader.getController();
-            controller.loadData(spiel, spielbrett, ((Node) (event.getSource())).getScene().getWindow(), timeline, sitzungsID);
+            controller.loadData(spiel, ((Node) (event.getSource())).getScene().getWindow(), timeline, sitzungsID);
 
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));

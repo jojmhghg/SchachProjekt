@@ -5,8 +5,6 @@
  */
 package Frontend.Controller;
 
-import Backend.SpielStubImpl;
-import Backend.Funktionalität.SpielException;
 import Backend.SpielStub;
 import java.io.IOException;
 import java.net.URL;

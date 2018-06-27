@@ -1463,7 +1463,7 @@ public class SpielbrettFXMLController implements Initializable {
             Parent partieLadenScene = loader.load();
 
             PartieLadenFXMLController controller = loader.getController();
-            controller.loadData(spiel, spielbrett, ((Node) myMenuBar).getScene().getWindow(), timeline, sitzungsID);
+            controller.loadData(spiel, ((Node) myMenuBar).getScene().getWindow(), timeline, sitzungsID);
 
             Stage partieLadenStage = new Stage();
             partieLadenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
