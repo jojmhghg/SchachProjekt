@@ -217,7 +217,8 @@ public class StartseiteFXMLController implements Initializable {
             showMessageBox(e.getMessage(), 2);
         } catch(RemoteException e){
             Reconnect rec = new Reconnect();
-            spiel = rec.tryReconnect();                 
+            spiel = rec.tryReconnect();
+            //spiel = rec.loadData();
         }
     }
 
@@ -239,7 +240,7 @@ public class StartseiteFXMLController implements Initializable {
             showMessageBox(ex.getMessage(), 2);
         } catch (RemoteException ex) {
             Reconnect rec = new Reconnect();
-            spiel = rec.tryReconnect();  
+            spiel = rec.tryReconnect();
         }   
     }
 
@@ -257,7 +258,7 @@ public class StartseiteFXMLController implements Initializable {
         } catch (RemoteException ex) {          
             try {
                 Reconnect rec = new Reconnect();
-                spiel = rec.tryReconnect(); 
+                spiel = rec.tryReconnect();
                 if(!spiel.reconnect(sitzungsID)){
                     showAnmeldePane();
                     showSitzungAbgelaufen();
@@ -347,7 +348,7 @@ public class StartseiteFXMLController implements Initializable {
         } catch (RemoteException ex) {
             try {
                 Reconnect rec = new Reconnect();
-                spiel = rec.tryReconnect(); 
+                spiel = rec.tryReconnect();
                 if(!spiel.reconnect(sitzungsID)){
                     showAnmeldePane();
                     showSitzungAbgelaufen();

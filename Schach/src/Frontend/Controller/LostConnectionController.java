@@ -12,7 +12,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -26,38 +25,47 @@ import javafx.scene.layout.AnchorPane;
  */
 public class LostConnectionController implements Initializable {
 
-    int stopTime = 0;
-    Registry registry;
-    SpielStub spiel;
-
     @FXML
     private AnchorPane anchorPane;
     @FXML
     private ProgressIndicator progressIndicator;
+    private SpielStub spiel;
 
-    public SpielStub loadData() {
-        while (stopTime <= 10) {
-            try {
-                stopTime++;
-                Thread.sleep(1000);
-                registry = LocateRegistry.getRegistry("localhost", 1099);
-                spiel = (SpielStub) registry.lookup("ClientStub");
-                ((Node) anchorPane).getScene().getWindow().hide();
-
-                return spiel;
-            } catch (RemoteException | NotBoundException | InterruptedException ex) {
-
-            }
-        }
-        Platform.exit();
-        System.exit(0);
-        return null;
+    public void loadData(SpielStub spiel) {
+//        this.spiel = spiel;
+//        Registry registry;
+//        SpielStub spiel;
+//        int stopTime = 0;
+//        while (stopTime <= 10) {
+//            try {
+//                //stopTime++;
+//                //Thread.sleep(1000);
+//                registry = LocateRegistry.getRegistry("localhost", 1099);
+//                spiel = (SpielStub) registry.lookup("ClientStub");
+//                ((Node) anchorPane).getScene().getWindow().hide();
+//
+//                return spiel;
+//            } catch (RemoteException | NotBoundException ex) {
+//            
+//            }
+//        }
+//        Platform.exit();
+//        System.exit(0);
+//        return null;
     }
     
     @FXML
     private void beenden(){
-        Platform.exit();
-        System.exit(0);
+        try {
+            Registry registry;
+            registry = LocateRegistry.getRegistry("localhost", 1099);
+            spiel = (SpielStub) registry.lookup("ClientStub");
+            ((Node) anchorPane).getScene().getWindow().hide();
+        } catch (RemoteException | NotBoundException ex) {
+
+        }
+//        Platform.exit();
+//        System.exit(0);
     }
 
     /**

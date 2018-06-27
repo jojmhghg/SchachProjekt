@@ -83,7 +83,7 @@ public class RemisAngebotFXMLController implements Initializable {
         } catch (RemoteException ex) {
             try {
                 Reconnect rec = new Reconnect();
-                spiel = rec.tryReconnect(); 
+                spiel = rec.tryReconnect();
                 if(!spiel.reconnect(sitzungsID)){
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(getClass().getResource("../View/Startseite.fxml"));
@@ -123,7 +123,7 @@ public class RemisAngebotFXMLController implements Initializable {
         } catch (RemoteException ex) {
             try {
                 Reconnect rec = new Reconnect();
-                spiel = rec.tryReconnect(); 
+                spiel = rec.tryReconnect();
                 if(!spiel.reconnect(sitzungsID)){
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(getClass().getResource("../View/Startseite.fxml"));
