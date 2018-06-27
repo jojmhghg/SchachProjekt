@@ -351,7 +351,6 @@ public class SpielbrettFXMLController implements Initializable {
     int stelleRechts = 0;
     int stelleLinks = 0;
 
-    
     int spieler1min = 0;
     int spieler2min = 0;
     int spieler1sec = 0;
@@ -366,15 +365,15 @@ public class SpielbrettFXMLController implements Initializable {
     CheckBeendetThread checkBeendetThread;
     CheckRemisangebotThread checkRemisangebotThread;
     OnlineZieheGegnerFigurThread onlineZieheGegnerFigurThread;
-    
+
     // Attribute zum Ziehen von Figuren
     private ImageView selectedFigur;
     private Pane quellPane;
     private Position quellPosition;
     private LinkedList<Position> possibleMoves;
 
-    private Position posKingImSchach;       
-            
+    private Position posKingImSchach;
+
     public void loadData(SpielStub spiel, Spielbrett spielbrett, Timeline timeline, int sitzungsID) throws RemoteException, SpielException {
         this.spiel = spiel;
         this.spielbrett = spielbrett;
@@ -384,26 +383,27 @@ public class SpielbrettFXMLController implements Initializable {
         timerPlay();
 
         this.startCheckBeendetThread();
-        this.startCheckRemisangebotThread();       
+        this.startCheckRemisangebotThread();
     }
-    
-    private void startCheckBeendetThread(){
+
+    private void startCheckBeendetThread() {
         checkBeendetThread = new CheckBeendetThread(sitzungsID, spiel, this);
         checkBeendetThread.start();
     }
-    
-    public void startCheckRemisangebotThread(){
+
+    public void startCheckRemisangebotThread() {
         checkRemisangebotThread = new CheckRemisangebotThread(sitzungsID, spiel, this);
         checkRemisangebotThread.start();
     }
-    
-    private void startOnlineZieheGegnerFigurThread(){
+
+    private void startOnlineZieheGegnerFigurThread() {
         onlineZieheGegnerFigurThread = new OnlineZieheGegnerFigurThread(sitzungsID, spiel, this);
         onlineZieheGegnerFigurThread.start();
     }
 
     /**
      * initialisiert die GUI-Objekte & plaziert dort die Figuren
+     *
      * @throws java.rmi.RemoteException
      * @throws Backend.Funktionalität.SpielException
      */
@@ -412,7 +412,6 @@ public class SpielbrettFXMLController implements Initializable {
         DateFormat formatter = new SimpleDateFormat("mm:ss");
         String sp1 = Long.toString(spiel.getZeitSpieler1(sitzungsID));
         String sp2 = Long.toString(spiel.getZeitSpieler2(sitzungsID));
-
 
         if (spiel.getPartiezeit(sitzungsID) == -1) {
             this.restZeitSchwarz.setVisible(false);
@@ -632,12 +631,12 @@ public class SpielbrettFXMLController implements Initializable {
 
         spielerErkennung();
 
-        if((spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ) || (spiel.istOnlinePartie(sitzungsID) && spiel.getEigeneFarbeByID(sitzungsID) == Farbe.SCHWARZ)){
+        if ((spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ) || (spiel.istOnlinePartie(sitzungsID) && spiel.getEigeneFarbeByID(sitzungsID) == Farbe.SCHWARZ)) {
             rotateBoard();
         }
-        
-        if(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ){
-            MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);          
+
+        if (spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ) {
+            MouseEvent event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
             new Thread(() -> {
                 try {
                     Thread.sleep(1000);
@@ -654,54 +653,50 @@ public class SpielbrettFXMLController implements Initializable {
                     }
                 });
             }).start();
-        }    
-       
-        if(spiel.istOnlinePartie(sitzungsID) && spiel.getEigeneFarbeByID(sitzungsID) == Farbe.SCHWARZ){
+        }
+
+        if (spiel.istOnlinePartie(sitzungsID) && spiel.getEigeneFarbeByID(sitzungsID) == Farbe.SCHWARZ) {
             this.startOnlineZieheGegnerFigurThread();
         }
     }
 
     /**
-     * Zeigt die Seite des Gegners transparent an, 
-     * bzw. bei Offline-PvP Seite des Spielers der nicht am Zug ist
-     * 
-     * @throws RemoteException 
+     * Zeigt die Seite des Gegners transparent an, bzw. bei Offline-PvP Seite
+     * des Spielers der nicht am Zug ist
+     *
+     * @throws RemoteException
      */
     private void spielerErkennung() throws RemoteException, SpielException {
         // Gegen KI wird immer nur beim Spieler alles normal angezeigt
         // Der Andere ist immer transparent
-        if(spiel.getKiGegner(sitzungsID)){
-            if(spiel.getFarbeSpieler1(sitzungsID) == Farbe.WEISS){
+        if (spiel.getKiGegner(sitzungsID)) {
+            if (spiel.getFarbeSpieler1(sitzungsID) == Farbe.WEISS) {
                 this.listZuegeSchwarz.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold; -fx-font-size: 20px;");
                 this.listZuegeWeiss.setStyle("-fx-background-color:#FFDEAD; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
                 this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
                 this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 85%");
-            }
-            else{
+            } else {
                 this.listZuegeSchwarz.setStyle("-fx-background-color:#D2691E; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
                 this.listZuegeWeiss.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold;  -fx-font-size: 20px;");
                 this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity:85%");
                 this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
             }
-        }
-        // Online wird immer nur beim Spieler alles normal angezeigt
+        } // Online wird immer nur beim Spieler alles normal angezeigt
         // Der Andere ist immer transparent
-        else if(spiel.istOnlinePartie(sitzungsID)){
-            if(spiel.getEigeneFarbeByID(sitzungsID) == Farbe.WEISS){
+        else if (spiel.istOnlinePartie(sitzungsID)) {
+            if (spiel.getEigeneFarbeByID(sitzungsID) == Farbe.WEISS) {
                 this.listZuegeSchwarz.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold; -fx-font-size: 20px;");
                 this.listZuegeWeiss.setStyle("-fx-background-color:#FFDEAD; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
                 this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
                 this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 85%");
-            }
-            else{
+            } else {
                 this.listZuegeSchwarz.setStyle("-fx-background-color:#D2691E; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
                 this.listZuegeWeiss.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold;  -fx-font-size: 20px;");
                 this.rechtePane.setStyle("-fx-background-color:#DEB887; -fx-opacity:85%");
                 this.linkePane.setStyle("-fx-background-color:#DEB887; -fx-opacity: 60%");
             }
-        }
-        // Bei Offline-PvP wird abwechselnt transparent angezeigt
-        else{
+        } // Bei Offline-PvP wird abwechselnt transparent angezeigt
+        else {
             if (spiel.getSpielerAmZug(sitzungsID) == Farbe.SCHWARZ) {
                 this.listZuegeSchwarz.setStyle("-fx-background-color:#D2691E; -fx-opacity:85%; -fx-font-weight: bold;  -fx-font-size: 20px;");
                 this.listZuegeWeiss.setStyle("-fx-background-color:#DEB887; -fx-opacity:50%; -fx-font-weight: bold;  -fx-font-size: 20px;");
@@ -720,27 +715,27 @@ public class SpielbrettFXMLController implements Initializable {
 
     /**
      * Zeigt eine geschlagene Figur am Spielrand an
-     * 
+     *
      * @param addImage geschlagene Figur
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     private void addgeschlageneFiguren(ImageView addImage) throws RemoteException {
-        
-        addImage.rotateProperty().setValue(0);           
+
+        addImage.rotateProperty().setValue(0);
         addImage.setFitHeight(50);
         addImage.setFitWidth(50);
         addImage.setLayoutX(-5);
         addImage.setLayoutY(20);
-        
-        if(spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ){        
+
+        if (spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ) {
             paneArrayRechts[stelleRechts].getChildren().add(addImage);
             stelleRechts++;
-        } 
-        else{
+        } else {
             paneArrayLinks[stelleLinks].getChildren().add(addImage);
             stelleLinks++;
         }
     }
+
     /**
      * Methode onCliked erkennt wenn das Maus links oder Rechts angeklickt
      * wurde, und handelt dementsprechend
@@ -764,11 +759,11 @@ public class SpielbrettFXMLController implements Initializable {
                 Pane tmpPane = (Pane) event.getSource();
                 //Null oder Bild der Figur des ausgewählten Panes
                 ImageView tmpView = null;
-               
+
                 if (tmpPane.getChildren().size() > 0) {
                     tmpView = (ImageView) tmpPane.getChildren().get(0);
                 }
-                
+
                 //Hier wird die Position auf dem Schachbrett des ausgewählten Panes bestimmt
                 int tmp = 0;
                 for (int i = 0; i < 64; i++) {
@@ -787,7 +782,7 @@ public class SpielbrettFXMLController implements Initializable {
                 // Falls ja:
                 if (possibleMoves != null && possibleMoves.contains(pos)) {
                     spiel.zieheFigur(quellPosition, pos, sitzungsID);
-                    if(spiel.istOnlinePartie(sitzungsID)){
+                    if (spiel.istOnlinePartie(sitzungsID)) {
                         this.startOnlineZieheGegnerFigurThread();
                     }
                     if (tmpPane.getChildren().size() > 0) {
@@ -795,38 +790,35 @@ public class SpielbrettFXMLController implements Initializable {
                         addgeschlageneFiguren(tmpView);
                     }
                     tmpPane.getChildren().add(selectedFigur);
-                    
+
                     // Rochade oder En Passant in GUI darstellen
                     rochadeOderEnPassantAnzeigen(pos, this.quellPosition);
-           
-                    
-                    if(spielbrett.getFigurAufFeld(quellPosition) instanceof Bauer){
-                        if(spielbrett.getFigurAufFeld(quellPosition).getFarbe() != Farbe.WEISS){
-                            if(pos.ordinal() >= 56 && pos.ordinal() <= 63){
+
+                    if (spielbrett.getFigurAufFeld(quellPosition) instanceof Bauer) {
+                        if (spielbrett.getFigurAufFeld(quellPosition).getFarbe() != Farbe.WEISS) {
+                            if (pos.ordinal() >= 56 && pos.ordinal() <= 63) {
                                 starteBauerUmwandelnFenster(pos, Farbe.WEISS, pos.ordinal());
                                 rotate = true;
 
                             }
-                        }
-                        else{
-                            if(pos.ordinal() >= 0 && pos.ordinal() <= 7){
+                        } else {
+                            if (pos.ordinal() >= 0 && pos.ordinal() <= 7) {
                                 starteBauerUmwandelnFenster(pos, Farbe.SCHWARZ, pos.ordinal());
                                 rotate = true;
-                                
+
                             }
                         }
                     }
-                    
+
                     //Reset all and Update screen
                     possibleMoves = null;
                     quellPane = null;
                     selectedFigur.setEffect(null);
                     selectedFigur = null;
                     quellPosition = null;
-                    if(!rotate){
+                    if (!rotate) {
                         updateScreen();
-                    }
-                    else{
+                    } else {
                         rotate = false;
                     }
 
@@ -888,30 +880,30 @@ public class SpielbrettFXMLController implements Initializable {
 
         }
     }
-    
-    public void zieheFuerOnlineGegner() throws RemoteException, SpielException{
+
+    public void zieheFuerOnlineGegner() throws RemoteException, SpielException {
         Position startPosition = spiel.getMitschrift(sitzungsID).getLast().getUrsprung();
         Position zielPosition = spiel.getMitschrift(sitzungsID).getLast().getZiel();
-          
+
         Pane startFeld = this.paneArray[startPosition.ordinal()];
         ImageView startFigur = (ImageView) startFeld.getChildren().get(0);
-        
+
         Pane zielFeld = this.paneArray[zielPosition.ordinal()];
-                  
+
         if (zielFeld.getChildren().size() > 0) {
             ImageView zielFigur = (ImageView) zielFeld.getChildren().get(0);
             zielFeld.getChildren().remove(0);
             addgeschlageneFiguren(zielFigur);
         }
         zielFeld.getChildren().add(startFigur);
-                    
+
         rochadeOderEnPassantAnzeigen(zielPosition, startPosition);
         updateScreen();
     }
-    
-    public void rochadeOderEnPassantAnzeigen(Position zielPosition, Position quellPosition) throws RemoteException{
+
+    public void rochadeOderEnPassantAnzeigen(Position zielPosition, Position quellPosition) throws RemoteException {
         ImageView tmpView2;
-        
+
         if (spiel.getEnPassant(sitzungsID)) {
             if (quellPosition.ordinal() > zielPosition.ordinal()) {
                 if (quellPosition.ordinal() - 8 > zielPosition.ordinal()) {
@@ -927,8 +919,7 @@ public class SpielbrettFXMLController implements Initializable {
                     this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
                     addgeschlageneFiguren(tmpView2);
                 }
-            } 
-            else {
+            } else {
                 if (quellPosition.ordinal() + 8 > zielPosition.ordinal()) {
                     tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() - 1].getChildren().get(0);
                     //Lösche quellPosi + 1
@@ -971,7 +962,7 @@ public class SpielbrettFXMLController implements Initializable {
             }
         }
     }
-    
+
     /**
      * Hilfsmethode um Felder zu highlighten
      */
@@ -1032,7 +1023,7 @@ public class SpielbrettFXMLController implements Initializable {
             Parent einstellungenScene = loader.load();
 
             EinstellungenFXMLController controller = loader.getController();
-            controller.loadData(spiel, this, sitzungsID,optionenFXMLController);
+            controller.loadData(spiel, this, sitzungsID, optionenFXMLController);
 
             Stage einstellungenStage = new Stage();
             einstellungenStage.initModality(Modality.APPLICATION_MODAL);
@@ -1053,8 +1044,8 @@ public class SpielbrettFXMLController implements Initializable {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void goToRemisangebot(){
+
+    public void goToRemisangebot() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/RemisAngebot.fxml"));
@@ -1074,10 +1065,17 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     @FXML
-    private void beenden(ActionEvent event) throws RemoteException, SpielException {
-        spiel.ausloggen(sitzungsID);
-        Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
-        spielBrettStage.close();
+    private void beenden(ActionEvent event) {
+
+        try {
+            spiel.ausloggen(sitzungsID);
+            Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
+            spielBrettStage.close();
+
+        } catch (RemoteException | SpielException ex) {
+            Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
+            spielBrettStage.close();
+        }
     }
 
     @FXML
@@ -1087,10 +1085,16 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     @FXML
-    private void close(ActionEvent event) throws RemoteException, SpielException  {
-        spiel.ausloggen(sitzungsID);
-        Platform.exit();
-        System.exit(0);
+    private void close(ActionEvent event) {
+        try {
+            spiel.ausloggen(sitzungsID);
+            Platform.exit();
+            System.exit(0);
+
+        } catch (RemoteException | SpielException ex) {
+            Platform.exit();
+            System.exit(0);
+        }
     }
 
     public void timerPlay() {
@@ -1185,7 +1189,7 @@ public class SpielbrettFXMLController implements Initializable {
                     this.checkBeendetThread.interrupt();
                     this.goToWinnerPopup();
                 }
-                
+
                 this.restZeitWeiss.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
             }
 
@@ -1219,7 +1223,7 @@ public class SpielbrettFXMLController implements Initializable {
                     this.checkBeendetThread.interrupt();
                     this.goToWinnerPopup();
                 }
-                
+
                 this.restZeitSchwarz.setText(String.format("%02d", spieler2min) + ":" + String.format("%02d", spieler2sec));
             } else {
                 if (spieler1sec == 0) {
@@ -1227,8 +1231,7 @@ public class SpielbrettFXMLController implements Initializable {
                     spieler1min--;
                 }
                 spieler1sec--;
-                
-                
+
                 if (spieler1min == 0 && spieler1sec < 10) {
                     if (spieler1sec % 2 == 0) {
                         this.linkePane.setStyle("-fx-background-color:ce2339; -fx-opacity: 85%");
@@ -1236,13 +1239,13 @@ public class SpielbrettFXMLController implements Initializable {
                         this.linkePane.setStyle("-fx-background-color:DEB887; -fx-opacity: 85%");
                     }
                 }
-                
+
                 if (spieler1min == 0 && spieler1sec == 0) {
                     timerStop();
                     this.checkBeendetThread.interrupt();
                     this.goToWinnerPopup();
                 }
-                
+
                 this.restZeitSchwarz.setText(String.format("%02d", spieler1min) + ":" + String.format("%02d", spieler1sec));
             }
 
@@ -1286,34 +1289,33 @@ public class SpielbrettFXMLController implements Initializable {
         }
 
         if (this.spiel.getGewinner(sitzungsID) != null) {
-            timeline.stop();          
+            timeline.stop();
         }
     }
 
     /**
      * Hilfmethode fuer partie Laden und goToChessboard
+     *
      * @throws java.rmi.RemoteException
      * @throws Backend.Funktionalität.SpielException
      */
-    public void setSpielernameOnScreen() throws RemoteException, SpielException{
-        if(spiel.istOnlinePartie(sitzungsID)){
-            if(spiel.getEigeneFarbeByID(sitzungsID) == Farbe.WEISS){
+    public void setSpielernameOnScreen() throws RemoteException, SpielException {
+        if (spiel.istOnlinePartie(sitzungsID)) {
+            if (spiel.getEigeneFarbeByID(sitzungsID) == Farbe.WEISS) {
                 spielernameWeiss.setText(spiel.getUsername(sitzungsID));
-            }
-            else{
+            } else {
                 spielernameSchwarz.setText(spiel.getUsername(sitzungsID));
             }
-        }
-        else if(spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ){
+        } else if (spiel.getFarbeSpieler1(sitzungsID) == Farbe.SCHWARZ) {
             spielernameSchwarz.setText(spiel.getUsername(sitzungsID));
-        } else{
+        } else {
             spielernameWeiss.setText(spiel.getUsername(sitzungsID));
         }
     }
 
     @FXML
     public void goToWinnerPopup() {
-        try {                 
+        try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/WinnerPopup.fxml"));
             Parent winnerPopupScene = loader.load();
@@ -1478,7 +1480,7 @@ public class SpielbrettFXMLController implements Initializable {
     private void partieAufgeben(ActionEvent event) throws RemoteException {
         try {
             spiel.aufgeben(sitzungsID);
-            timeline.stop();            
+            timeline.stop();
         } catch (SpielException ex) {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             //TODO: Popup, dass aufgeben nicht möglich ist -> siehe fehlermeldung
@@ -1531,7 +1533,7 @@ public class SpielbrettFXMLController implements Initializable {
             }
         });
     }
-    
+
     @FXML
     private void openSpielregelnOnBrowser(ActionEvent event) {
         try {
@@ -1540,7 +1542,7 @@ public class SpielbrettFXMLController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void openDonateOnBrowser(ActionEvent event) {
         try {
@@ -1550,76 +1552,75 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
-    public void starteBauerUmwandelnFenster(Position ziel, Farbe farbe, int zielfeld) throws IOException{
-        
+    public void starteBauerUmwandelnFenster(Position ziel, Farbe farbe, int zielfeld) throws IOException {
+
         FXMLLoader loader = new FXMLLoader();
-        if(farbe == Farbe.WEISS){
+        if (farbe == Farbe.WEISS) {
             loader.setLocation(getClass().getResource("../View/PopupWeiss.fxml"));
-        }
-        else{
+        } else {
             loader.setLocation(getClass().getResource("../View/PopupSchwarz.fxml"));
         }
         Parent popupScene = loader.load();
         PopupFXMLController controller = loader.getController();
         controller.loadData(this, zielfeld);
-        
-        Stage popupStage = new Stage();        
+
+        Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.initStyle(StageStyle.UNDECORATED);
         popupStage.setScene(new Scene(popupScene));
         popupStage.show();
     }
-    
+
     /**
      * Wandelt den Bauer auf dem Zielfeld zur übergebenen Figur um (Nur in GUI)
-     * 
+     *
      * @param neueFigur
      * @param zielfeld
      * @throws SpielException
-     * @throws RemoteException 
+     * @throws RemoteException
      */
-    public void bauerUmwandeln(String neueFigur, int zielfeld) throws SpielException, RemoteException{
+    public void bauerUmwandeln(String neueFigur, int zielfeld) throws SpielException, RemoteException {
         Image value = null;
-        
+
         // Bauer entfernen
         if (paneArray[zielfeld].getChildren().size() > 0) {
             paneArray[zielfeld].getChildren().remove(0);
         }
-               
+
         switch (neueFigur) {
             case "SpringerW":
-                value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");               
+                value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");
                 break;
-                
+
             case "SpringerB":
-                value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");               
+                value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");
                 break;
 
             case "LaeuferW":
-                value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");                
+                value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");
                 break;
-                
+
             case "LaeuferB":
-                value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");               
+                value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");
                 break;
 
             case "DameW":
                 value = new Image("Frontend/Ressources/Pieces/Wood/QueenW.png");
                 break;
-                
+
             case "DameB":
                 value = new Image("Frontend/Ressources/Pieces/Wood/QueenB.png");
                 break;
 
             case "TurmW":
-                value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");             
+                value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");
                 break;
-                
+
             case "TurmB":
                 value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");
                 break;
         }
-        
+
         if (value != null) {
             ImageView imgView = new ImageView(value);
             imgView.setFitHeight(70);
@@ -1627,7 +1628,7 @@ public class SpielbrettFXMLController implements Initializable {
             imgView.setLayoutX(3);
             imgView.setLayoutY(3);
             paneArray[zielfeld].getChildren().add(imgView);
-        }     
+        }
         spiel.bauerUmwandeln(neueFigur, sitzungsID);
         this.updateScreen();
     }

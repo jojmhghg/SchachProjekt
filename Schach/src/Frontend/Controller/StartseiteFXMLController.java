@@ -267,15 +267,14 @@ public class StartseiteFXMLController implements Initializable {
     private void passwortVergessenAction(ActionEvent event) {
         try {
 
-            if(!anmeldenBenutzername.getText().isEmpty()) {
+            if (!anmeldenBenutzername.getText().isEmpty()) {
                 spiel.resetPassword(anmeldenBenutzername.getText());
                 setInformation("Email an \n" + anmeldenBenutzername.getText() + "\ngesendet", 1);
                 animationMessageBox();
-            }
-            else{
+            } else {
                 throw new Exception("Bitte oben E-Mail \neingeben");
             }
-            
+
         } catch (Exception ex) {
             setInformation(ex.getMessage(), 2);
             animationMessageBox();
@@ -309,12 +308,18 @@ public class StartseiteFXMLController implements Initializable {
     }
 
     @FXML
-    private void powerOff(ActionEvent event) throws RemoteException, SpielException {
-        spiel.ausloggen(sitzungsID);
-        Platform.exit();
-        System.exit(0);
+    private void powerOff(ActionEvent event) {
+        try {
+            spiel.ausloggen(sitzungsID);
+            Platform.exit();
+            System.exit(0);
+            
+        } catch (RemoteException | SpielException ex) {
+            Platform.exit();
+            System.exit(0);
+        }
     }
-    
+
     @FXML
     private void powerOffForce(ActionEvent event) throws RemoteException, SpielException {
         //spiel.ausloggen(sitzungsID);
