@@ -166,6 +166,8 @@ public class EinstellungenFXMLController implements Initializable {
                     Reconnect rec = new Reconnect();
                     spiel = rec.tryReconnect(); 
                     if(!spiel.reconnect(sitzungsID)){
+                        spielbrettFXMLController.timeline.stop();
+                        
                         FXMLLoader loader = new FXMLLoader();
                         loader.setLocation(getClass().getResource("../View/Startseite.fxml"));
                         Parent startseiteScene = loader.load();

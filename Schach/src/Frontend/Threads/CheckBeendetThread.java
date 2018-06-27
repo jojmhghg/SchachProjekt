@@ -44,19 +44,6 @@ public class CheckBeendetThread extends Thread{
                 }
             }
         }  catch (InterruptedException | RemoteException ex) {
-//            Platform.runLater(() -> {   
-//                try {
-//                    Stage stage = null;
-//                    spiel.reconnect(sitzungsID);
-//                    //createIndicatorStage();
-//                    if(spiel.reconnect(sitzungsID)){
-//                        System.out.println("Reconnecting");
-//                    }   
-//                } catch (RemoteException ex1) {
-//                    Logger.getLogger(CheckBeendetThread.class.getName()).log(Level.SEVERE, null, ex1);
-//                }
-//
-//            });
         } 
     }
         

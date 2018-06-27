@@ -35,23 +35,22 @@ public class CheckRemisangebotThread extends Thread{
      */
     @Override 
     public void run(){
-        try{            
+                   
             boolean beendet = false;
             while(!beendet){          
-                Thread.sleep(50);    
-               
-                if(spiel.liegtRemisangebotVor(sitzungsID)){
-                    beendet = true;
-                    Platform.runLater(() -> {
-                        spielbrettFXMLController.goToRemisangebot();
-                    });                    
-                }              
+                try {
+                    Thread.sleep(50);
+                    if(spiel.liegtRemisangebotVor(sitzungsID)){
+                        beendet = true;
+                        Platform.runLater(() -> {
+                            spielbrettFXMLController.goToRemisangebot();
+                        });              
+                    }
+                } catch (SpielException | RemoteException | InterruptedException ex) {
+                    
+                }
             }                             
-        } catch (InterruptedException ex) {                
-            Logger.getLogger(QueueThread.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException | SpielException ex) {
-            Logger.getLogger(CheckRemisangebotThread.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+         
     }
     
 }

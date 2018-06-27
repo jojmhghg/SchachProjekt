@@ -34,12 +34,12 @@ public class OnlineZieheGegnerFigurThread extends Thread{
      * Methode die einen Server einen anderen Server anpingen laesst
      */
     @Override 
-    public void run(){
-        try{            
-            boolean beendet = false;
-            while(!beendet){          
-                Thread.sleep(50);    
-                
+    public void run(){         
+        boolean beendet = false;
+        while(!beendet){          
+            try {
+                Thread.sleep(50);
+
                 if(this.spiel.istOnlinePartie(sitzungsID) && this.spiel.getSpielerAmZug(sitzungsID) == this.spiel.getEigeneFarbeByID(sitzungsID)){
                     beendet = true;
                     Platform.runLater(() -> {
@@ -50,12 +50,10 @@ public class OnlineZieheGegnerFigurThread extends Thread{
                         }
                     });
                 }
-            }                             
-        } catch (InterruptedException ex) {                
-            Logger.getLogger(QueueThread.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException | SpielException ex) {
-            Logger.getLogger(OnlineZieheGegnerFigurThread.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+            } catch (InterruptedException | SpielException | RemoteException ex) {
+                Logger.getLogger(OnlineZieheGegnerFigurThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }                             
     }
     
 }

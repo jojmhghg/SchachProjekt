@@ -1023,7 +1023,7 @@ public class SpielbrettFXMLController implements Initializable {
             Parent einstellungenScene = loader.load();
 
             EinstellungenFXMLController controller = loader.getController();
-            controller.loadData(spiel, this, sitzungsID, ((Node) event.getSource()).getScene().getWindow());
+            controller.loadData(spiel, this, sitzungsID, ((Node) myMenuBar).getScene().getWindow());
 
             Stage einstellungenStage = new Stage();
             einstellungenStage.initModality(Modality.APPLICATION_MODAL);
