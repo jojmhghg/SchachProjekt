@@ -67,6 +67,18 @@ public class SpielStubImpl implements SpielStub {
     }
     
     /**
+     * Testet ob SitzungsID in Liste mit Sitzungen enthalten ist, dann kann der User
+     * darüber auf seine Sitzungs zugreifen.
+     * 
+     * @param sitzungsID
+     * @return true wenn Sitzung existiert, sonst false 
+     */
+    @Override
+    public boolean reconnect(int sitzungsID){
+        return this.serverObjekte.sitzungen.get(sitzungsID) == null;                        
+    }
+    
+    /**
      * Methode zum Ausloggen
      * 
      * @param sitzungsID
@@ -223,6 +235,10 @@ public class SpielStubImpl implements SpielStub {
      */
     @Override
     public boolean changePassword(String altesPW, String neuesPW, int sitzungsID) throws SpielException, RemoteException{
+        if(neuesPW.length() < 8){
+            throw new SpielException("Das Passwort muss mindestens 8 Zeichen enthalten!");
+        }
+        
         try {
             String email = this.serverObjekte.sitzungen.get(sitzungsID);
             return this.serverObjekte.datenbank.changePassword(email, altesPW, neuesPW);
@@ -231,6 +247,7 @@ public class SpielStubImpl implements SpielStub {
         }
         return true;
     }
+    
     /**
      * Erstellt eine neue Partie
      * 
