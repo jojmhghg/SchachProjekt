@@ -17,7 +17,6 @@ import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -50,10 +49,10 @@ public class EinstellungenFXMLController implements Initializable {
     @FXML
     private Hyperlink pwAendern;
     
-    int sitzungsID;
-    SpielStub spiel;
-    SpielbrettFXMLController spielbrettFXMLController;
-    OptionenFXMLController optionenFXMLContoller;
+    private int sitzungsID;
+    private SpielStub spiel;
+    private SpielbrettFXMLController spielbrettFXMLController;
+    private OptionenFXMLController optionenFXMLContoller;
 
     public void loadData(SpielStub spiel, SpielbrettFXMLController spielbrettFXMLController, int sitzungsID, OptionenFXMLController optionenFXMLContoller) throws RemoteException, SpielException {
         this.spiel = spiel;
