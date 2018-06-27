@@ -359,7 +359,6 @@ public class SpielbrettFXMLController implements Initializable {
     boolean rotate = false;
     int sitzungsID;
     SpielStub spiel;
-    Spielbrett spielbrett;
     OptionenFXMLController optionenFXMLController;
     Timeline timeline;
     CheckBeendetThread checkBeendetThread;
@@ -376,10 +375,9 @@ public class SpielbrettFXMLController implements Initializable {
 
     public void loadData(SpielStub spiel, Spielbrett spielbrett, Timeline timeline, int sitzungsID) throws RemoteException, SpielException {
         this.spiel = spiel;
-        this.spielbrett = spielbrett;
         this.timeline = timeline;
         this.sitzungsID = sitzungsID;
-        initSpielbrett();
+        initSpielbrett(spielbrett);
         timerPlay();
 
         this.startCheckBeendetThread();
@@ -407,7 +405,7 @@ public class SpielbrettFXMLController implements Initializable {
      * @throws java.rmi.RemoteException
      * @throws Backend.Funktionalität.SpielException
      */
-    public void initSpielbrett() throws RemoteException, SpielException {
+    public void initSpielbrett(Spielbrett spielbrett) throws RemoteException, SpielException {
         //Aktuelle Zeit auf dem Spielbrett setzen
         DateFormat formatter = new SimpleDateFormat("mm:ss");
         String sp1 = Long.toString(spiel.getZeitSpieler1(sitzungsID));
@@ -794,18 +792,16 @@ public class SpielbrettFXMLController implements Initializable {
                     // Rochade oder En Passant in GUI darstellen
                     rochadeOderEnPassantAnzeigen(pos, this.quellPosition);
 
-                    if (spielbrett.getFigurAufFeld(quellPosition) instanceof Bauer) {
-                        if (spielbrett.getFigurAufFeld(quellPosition).getFarbe() != Farbe.WEISS) {
+                    if (spiel.getFigurAufFeld(quellPosition, sitzungsID) instanceof Bauer) {
+                        if (spiel.getFigurAufFeld(quellPosition,  sitzungsID).getFarbe() != Farbe.WEISS) {
                             if (pos.ordinal() >= 56 && pos.ordinal() <= 63) {
                                 starteBauerUmwandelnFenster(pos, Farbe.WEISS, pos.ordinal());
                                 rotate = true;
-
                             }
                         } else {
                             if (pos.ordinal() >= 0 && pos.ordinal() <= 7) {
                                 starteBauerUmwandelnFenster(pos, Farbe.SCHWARZ, pos.ordinal());
                                 rotate = true;
-
                             }
                         }
                     }
