@@ -279,7 +279,8 @@ public class OptionenFXMLController implements Initializable {
             } catch (IOException ex1) {
                 Logger.getLogger(EinstellungenFXMLController.class.getName()).log(Level.SEVERE, null, ex1);
             } 
-        } catch (IOException ex) {                
+        } catch (IOException ex) {  
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }       
     }
 

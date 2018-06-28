@@ -1085,6 +1085,7 @@ public class SpielbrettFXMLController implements Initializable {
         try {
             spiel.ausloggen(sitzungsID);
             Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
+            spielBrettStage.close();
             Platform.exit();
             System.exit(0);
         } catch (RemoteException ex) {
@@ -1097,6 +1098,18 @@ public class SpielbrettFXMLController implements Initializable {
     private void minimizeWindow(ActionEvent event) {
         Stage spielBrettStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         spielBrettStage.toBack();
+    }
+    
+    @FXML
+    private void close(ActionEvent event) {
+        try {
+            spiel.ausloggen(sitzungsID);
+            Platform.exit();
+            System.exit(0);
+        } catch (RemoteException ex) {
+            Platform.exit();
+            System.exit(0);
+        }
     }
 
     /**
