@@ -881,6 +881,12 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
+    /**
+     * Hilfsmethode
+     * Reproduziert das Ziehen vom Gegner bei einer Online partie
+     * @throws RemoteException
+     * @throws SpielException
+     */
     public void zieheFuerOnlineGegner() throws RemoteException, SpielException {
         Position startPosition = spiel.getMitschrift(sitzungsID).getLast().getUrsprung();
         Position zielPosition = spiel.getMitschrift(sitzungsID).getLast().getZiel();
@@ -901,6 +907,12 @@ public class SpielbrettFXMLController implements Initializable {
         updateScreen();
     }
 
+    /**
+     * Zeigt die Rochade an oder En Passant auf dem Spielbrett
+     * @param zielPosition
+     * @param quellPosition
+     * @throws RemoteException
+     */
     public void rochadeOderEnPassantAnzeigen(Position zielPosition, Position quellPosition) throws RemoteException {
         ImageView tmpView2;
 
@@ -1045,6 +1057,9 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
+    /**
+     * Die Methode öffnet die Seite fuer das Remis Angebot
+     */
     public void goToRemisangebot() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -1095,6 +1110,9 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
+    /**
+     * Startet die Timeline
+     */
     public void timerPlay() {
         this.timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1.0), new EventHandler<ActionEvent>() {
@@ -1123,6 +1141,11 @@ public class SpielbrettFXMLController implements Initializable {
         //goToWinnerPopup();
     }
 
+    /**
+     * Hilfsmethode, setzt die gewaehlte Partie Zeit fuer den Timer Countdown
+     * @param partieZeit
+     * @throws RemoteException
+     */
     public void getTime(String partieZeit) throws RemoteException {
 
         if (spiel.getPartiezeit(sitzungsID) == -1) {
@@ -1139,7 +1162,12 @@ public class SpielbrettFXMLController implements Initializable {
         }
 
     }
-
+    
+    /**
+     * Die Methode zaehlt die Zeit vom Spieler Weiss runter
+     *
+     * @throws RemoteException
+     */
     private void storedTimeWeiss() throws RemoteException {
 
         if (spiel.getPartiezeit(sitzungsID) == -1) {
@@ -1193,7 +1221,12 @@ public class SpielbrettFXMLController implements Initializable {
 
         }
     }
-
+    
+    /**
+     * Die Methode zaehlt die Zeit vom Spieler Schwarz runter
+     *
+     * @throws RemoteException
+     */
     private void storedTimeSchwarz() throws RemoteException {
 
         if (spiel.getPartiezeit(sitzungsID) == -1) {
@@ -1251,6 +1284,13 @@ public class SpielbrettFXMLController implements Initializable {
 
     }
 
+    /**
+     * Wir benutzt um das Spielbrett nach jedem zu aktualisieren
+     * Die Listview wird ausgefuelt 
+     * Das Spielbrett wird rotiert
+     * @throws RemoteException
+     * @throws SpielException
+     */
     @FXML
     public void updateScreen() throws RemoteException, SpielException {
         //Populate listView and apply rotation
@@ -1389,6 +1429,12 @@ public class SpielbrettFXMLController implements Initializable {
         }
     }
 
+    /**
+     * Die Methode speichert eine partie
+     * @param event
+     * @throws SpielException
+     * @throws RemoteException
+     */
     @FXML
     public void partieSpeichern(ActionEvent event) throws SpielException, RemoteException {
         timeline.pause();

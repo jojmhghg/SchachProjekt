@@ -463,6 +463,10 @@ public class OptionenFXMLController implements Initializable {
         }
     }
     
+    /**
+     * Gibt die Farbe zurueck
+     * @return SCHWARZ oder WEISS
+     */
     public Farbe choosedColorOffline(){
          if (weissLokal.isSelected()){
             return Farbe.WEISS;

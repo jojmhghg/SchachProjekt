@@ -1,0 +1,7 @@
+false
+WEISS
+15
+900000
+900000
+false
+
