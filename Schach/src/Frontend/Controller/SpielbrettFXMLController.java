@@ -1599,7 +1599,7 @@ public class SpielbrettFXMLController implements Initializable {
     }
 
     public void starteBauerUmwandelnFenster(Position ziel, Farbe farbe, int zielfeld) throws IOException, SpielException {
-        if(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == spiel.getSpielerAmZug(sitzungsID)){
+        if(!(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) != spiel.getSpielerAmZug(sitzungsID))){
             FXMLLoader loader = new FXMLLoader();
             if (farbe == Farbe.WEISS) {
                 loader.setLocation(getClass().getResource("../View/PopupWeiss.fxml"));
@@ -1638,7 +1638,7 @@ public class SpielbrettFXMLController implements Initializable {
         if (paneArray[zielfeld].getChildren().size() > 0) {
             paneArray[zielfeld].getChildren().remove(0);
         }
-        if(spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == spiel.getSpielerAmZug(sitzungsID)){
+        //if(!spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == spiel.getSpielerAmZug(sitzungsID)){
             switch (neueFigur) {
                 case "SpringerW":
                     value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");
@@ -1671,8 +1671,49 @@ public class SpielbrettFXMLController implements Initializable {
                 case "TurmB":
                     value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");
                     break;
+                    
+                    //Fuer KI
+                case "N":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");
+                    neueFigur = "SpringerW";
+                    break;
+
+                case "n":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");
+                    neueFigur = "SpringerB";
+                    break;
+
+                case "B":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");
+                    neueFigur = "LaeuferW";
+                    break;
+
+                case "b":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");
+                    neueFigur = "LaeuferB";
+                    break;
+
+                case "Q":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/QueenW.png");
+                    neueFigur = "DameW";
+                    break;
+
+                case "q":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/QueenB.png");
+                    neueFigur = "DameB";
+                    break;
+
+                case "R":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");
+                    neueFigur = "TurmW";
+                    break;
+
+                case "r":
+                    value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");
+                    neueFigur = "TurmB";
+                    break;
             }
-        }
+        /*}
         else{
             switch (neueFigur) {
                 case "N":
@@ -1715,7 +1756,7 @@ public class SpielbrettFXMLController implements Initializable {
                     neueFigur = "TurmB";
                     break;
             }
-        }
+        }*/
 
         if (value != null) {
             ImageView imgView = new ImageView(value);
