@@ -94,7 +94,7 @@ public class Spielbrett implements Serializable{
         this.spielbrett[Position.H1.ordinal()].setFigur(new Turm(Farbe.WEISS));
         
         this.spielbrett[Position.A2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
-        this.spielbrett[Position.B2.ordinal()].setFigur(new Bauer(Farbe.SCHWARZ));
+        this.spielbrett[Position.B2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
         this.spielbrett[Position.C2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
         this.spielbrett[Position.D2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
         this.spielbrett[Position.E2.ordinal()].setFigur(new Bauer(Farbe.WEISS));
