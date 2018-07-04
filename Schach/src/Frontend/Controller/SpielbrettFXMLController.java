@@ -897,22 +897,74 @@ public class SpielbrettFXMLController implements Initializable {
         String umwandeln = spiel.getMitschrift(sitzungsID).getLast().getBauerUmgewandeltIn();        
 
         Pane startFeld = this.paneArray[startPosition.ordinal()];
-        ImageView startFigur = (ImageView) startFeld.getChildren().get(0);
+        if(!startFeld.getChildren().isEmpty()){    
+            ImageView startFigur = (ImageView) startFeld.getChildren().get(0);
 
-        Pane zielFeld = this.paneArray[zielPosition.ordinal()];
+            Pane zielFeld = this.paneArray[zielPosition.ordinal()];
 
-        if (zielFeld.getChildren().size() > 0) {
-            ImageView zielFigur = (ImageView) zielFeld.getChildren().get(0);
-            zielFeld.getChildren().remove(0);
-            addgeschlageneFiguren(zielFigur);
+            if (zielFeld.getChildren().size() > 0) {
+                ImageView zielFigur = (ImageView) zielFeld.getChildren().get(0);
+                zielFeld.getChildren().remove(0);
+                addgeschlageneFiguren(zielFigur);
+            }
+            zielFeld.getChildren().add(startFigur);
+            if(umwandeln != null){
+                Image value = null;
+
+                // Bauer entfernen
+                if (paneArray[zielPosition.ordinal()].getChildren().size() > 0) {
+                    paneArray[zielPosition.ordinal()].getChildren().remove(0);
+                }
+
+                switch (umwandeln) {
+                    case "SpringerW":
+                        value = new Image("Frontend/Ressources/Pieces/Wood/KnightW.png");
+                        break;
+
+                    case "SpringerB":
+                        value = new Image("Frontend/Ressources/Pieces/Wood/KnightB.png");
+                        break;
+
+                    case "LaeuferW":
+                        value = new Image("Frontend/Ressources/Pieces/Wood/BishopW.png");
+                        break;
+
+                    case "LaeuferB":
+                        value = new Image("Frontend/Ressources/Pieces/Wood/BishopB.png");
+                        break;
+
+                    case "DameW":
+                        value = new Image("Frontend/Ressources/Pieces/Wood/QueenW.png");
+                        break;
+
+                    case "DameB":
+                        value = new Image("Frontend/Ressources/Pieces/Wood/QueenB.png");
+                        break;
+
+                    case "TurmW":
+                        value = new Image("Frontend/Ressources/Pieces/Wood/RookW.png");
+                        break;
+
+                    case "TurmB":
+                        value = new Image("Frontend/Ressources/Pieces/Wood/RookB.png");
+                        break;
+                }
+
+
+                if (value != null) {
+                    ImageView imgView = new ImageView(value);
+                    imgView.setFitHeight(70);
+                    imgView.setFitWidth(70);
+                    imgView.setLayoutX(3);
+                    imgView.setLayoutY(3);
+                    paneArray[zielPosition.ordinal()].getChildren().add(imgView);
+                }            
+                this.updateScreen();
+            }
+
+            rochadeOderEnPassantAnzeigen(zielPosition, startPosition);
+            updateScreen();
         }
-        zielFeld.getChildren().add(startFigur);
-        if(umwandeln != null){
-            this.bauerUmwandeln(umwandeln, zielPosition.ordinal());
-        }
-
-        rochadeOderEnPassantAnzeigen(zielPosition, startPosition);
-        updateScreen();
     }
 
     /**
@@ -1774,7 +1826,7 @@ public class SpielbrettFXMLController implements Initializable {
             imgView.setLayoutY(3);
             paneArray[zielfeld].getChildren().add(imgView);
         }
-        spiel.bauerUmwandeln(neueFigur, sitzungsID);
+        spiel.bauerUmwandeln(neueFigur, sitzungsID);              
         this.updateScreen();
     }
 
