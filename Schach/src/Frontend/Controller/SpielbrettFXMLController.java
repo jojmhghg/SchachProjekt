@@ -950,7 +950,6 @@ public class SpielbrettFXMLController implements Initializable {
                         break;
                 }
 
-
                 if (value != null) {
                     ImageView imgView = new ImageView(value);
                     imgView.setFitHeight(70);
@@ -958,6 +957,9 @@ public class SpielbrettFXMLController implements Initializable {
                     imgView.setLayoutX(3);
                     imgView.setLayoutY(3);
                     paneArray[zielPosition.ordinal()].getChildren().add(imgView);
+                    if(this.spiel.getEigeneFarbeByID(sitzungsID) == Farbe.SCHWARZ){
+                        ((ImageView) paneArray[zielPosition.ordinal()].getChildren().get(0)).rotateProperty().setValue(180);
+                    }
                 }            
                 this.updateScreen();
             }
@@ -1825,6 +1827,9 @@ public class SpielbrettFXMLController implements Initializable {
             imgView.setLayoutX(3);
             imgView.setLayoutY(3);
             paneArray[zielfeld].getChildren().add(imgView);
+            if(this.spiel.istOnlinePartie(sitzungsID) && this.spiel.getEigeneFarbeByID(sitzungsID) == Farbe.SCHWARZ){
+                ((ImageView) paneArray[zielfeld].getChildren().get(0)).rotateProperty().setValue(180);
+            }
         }
         spiel.bauerUmwandeln(neueFigur, sitzungsID);              
         this.updateScreen();
