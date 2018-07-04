@@ -75,6 +75,5 @@ public interface SpielStub extends Remote{
     public void warteschlangeBetreten(Optionen partieoptionen, int sitzungsID) throws RemoteException, SpielException;
     public boolean testObSpielGefunden(int sitzungsID) throws RemoteException, SpielException;
     public boolean istOnlinePartie(int sitzungsID) throws RemoteException;
-    public Farbe getEigeneFarbeByID(int sitzungsID) throws RemoteException, SpielException;
-    
+    public Farbe getEigeneFarbeByID(int sitzungsID) throws RemoteException, SpielException;    
 }

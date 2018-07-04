@@ -741,143 +741,147 @@ public class SpielbrettFXMLController implements Initializable {
      *
      * @param event
      * @throws Backend.Funktionalität.SpielException
+     * @throws java.rmi.RemoteException
      */
     public void onClicked(MouseEvent event) throws SpielException, RemoteException, IOException {
+        if(this.spiel.istOnlinePartie(sitzungsID) && this.spiel.getEigeneFarbeByID(sitzungsID) == this.spiel.getSpielerAmZug(sitzungsID)){
+            
+        
+            if (spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) != spiel.getSpielerAmZug(sitzungsID)) {
+                spiel.kiZieht(startOderZiel, sitzungsID);
+                event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
+                startOderZiel = !startOderZiel;
+            }
+            //Um zwischen Rechts- und Linksklick zu unterscheiden
+            MouseButton button = event.getButton();
+            switch (button) {
+                //Linksklick:
+                case PRIMARY: //Starte den Zug  
+                    // angeklickte Pane
+                    Pane tmpPane = (Pane) event.getSource();
+                    //Null oder Bild der Figur des ausgewählten Panes
+                    ImageView tmpView = null;
 
-        if (spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) != spiel.getSpielerAmZug(sitzungsID)) {
-            spiel.kiZieht(startOderZiel, sitzungsID);
-            event = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
-            startOderZiel = !startOderZiel;
-        }
-        //Um zwischen Rechts- und Linksklick zu unterscheiden
-        MouseButton button = event.getButton();
-        switch (button) {
-            //Linksklick:
-            case PRIMARY: //Starte den Zug  
-                // angeklickte Pane
-                Pane tmpPane = (Pane) event.getSource();
-                //Null oder Bild der Figur des ausgewählten Panes
-                ImageView tmpView = null;
-
-                if (tmpPane.getChildren().size() > 0) {
-                    tmpView = (ImageView) tmpPane.getChildren().get(0);
-                }
-
-                //Hier wird die Position auf dem Schachbrett des ausgewählten Panes bestimmt
-                int tmp = 0;
-                for (int i = 0; i < 64; i++) {
-                    if (this.paneArray[i] == tmpPane) {
-                        tmp = i;
-                    }
-                }
-                Position pos = Position.values()[tmp];
-
-                // highlighting für alte figur ausmachen
-                if (selectedFigur != null) {
-                    selectedFigur.setEffect(null);
-                    highlightAus();
-                }
-                //... teste ob neues Feld ein möglicher zug ist
-                // Falls ja:
-                if (possibleMoves != null && possibleMoves.contains(pos)) {
-                    spiel.zieheFigur(quellPosition, pos, sitzungsID);
-                    if (spiel.istOnlinePartie(sitzungsID)) {
-                        this.startOnlineZieheGegnerFigurThread();
-                    }
                     if (tmpPane.getChildren().size() > 0) {
-                        tmpPane.getChildren().remove(0);
-                        addgeschlageneFiguren(tmpView);
+                        tmpView = (ImageView) tmpPane.getChildren().get(0);
                     }
-                    tmpPane.getChildren().add(selectedFigur);
 
-                    // Rochade oder En Passant in GUI darstellen
-                    rochadeOderEnPassantAnzeigen(pos, this.quellPosition);
+                    //Hier wird die Position auf dem Schachbrett des ausgewählten Panes bestimmt
+                    int tmp = 0;
+                    for (int i = 0; i < 64; i++) {
+                        if (this.paneArray[i] == tmpPane) {
+                            tmp = i;
+                        }
+                    }
+                    Position pos = Position.values()[tmp];
 
-                    if(umwandlung){
-                        umwandlung = false;
-                        if (spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS) {
-                            if (pos.ordinal() >= 56 && pos.ordinal() <= 63) {
-                                starteBauerUmwandelnFenster(pos, Farbe.WEISS, pos.ordinal());
-                                rotate = true;
+                    // highlighting für alte figur ausmachen
+                    if (selectedFigur != null) {
+                        selectedFigur.setEffect(null);
+                        highlightAus();
+                    }
+                    //... teste ob neues Feld ein möglicher zug ist
+                    // Falls ja:
+                    if (possibleMoves != null && possibleMoves.contains(pos)) {
+                        spiel.zieheFigur(quellPosition, pos, sitzungsID);
+                        if (spiel.istOnlinePartie(sitzungsID)) {
+                            this.startOnlineZieheGegnerFigurThread();
+                        }
+                        if (tmpPane.getChildren().size() > 0) {
+                            tmpPane.getChildren().remove(0);
+                            addgeschlageneFiguren(tmpView);
+                        }
+                        tmpPane.getChildren().add(selectedFigur);
+
+                        // Rochade oder En Passant in GUI darstellen
+                        rochadeOderEnPassantAnzeigen(pos, this.quellPosition);
+
+                        if(umwandlung){
+                            umwandlung = false;
+                            if (spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS) {
+                                if (pos.ordinal() >= 56 && pos.ordinal() <= 63) {
+                                    starteBauerUmwandelnFenster(pos, Farbe.WEISS, pos.ordinal());
+                                    rotate = true;
+                                }
+                            } else {
+                                if (pos.ordinal() >= 0 && pos.ordinal() <= 7) {
+                                    starteBauerUmwandelnFenster(pos, Farbe.SCHWARZ, pos.ordinal());
+                                    rotate = true;
+                                }
                             }
+                        }
+
+                        //Reset all and Update screen
+                        possibleMoves = null;
+                        quellPane = null;
+                        selectedFigur.setEffect(null);
+                        selectedFigur = null;
+                        quellPosition = null;
+                        if (!rotate) {
+                            updateScreen();
                         } else {
-                            if (pos.ordinal() >= 0 && pos.ordinal() <= 7) {
-                                starteBauerUmwandelnFenster(pos, Farbe.SCHWARZ, pos.ordinal());
-                                rotate = true;
-                            }
-                        }
-                    }
-
-                    //Reset all and Update screen
-                    possibleMoves = null;
-                    quellPane = null;
-                    selectedFigur.setEffect(null);
-                    selectedFigur = null;
-                    quellPosition = null;
-                    if (!rotate) {
-                        updateScreen();
-                    } else {
-                        rotate = false;
-                    }
-
-                } // Falls nein:
-                else {
-                    try {
-                        this.possibleMoves = spiel.getMoeglicheZuege(pos, sitzungsID);
-                    } catch (SpielException e) {
-                        this.possibleMoves = null;
-                    }
-                    if (spiel.getFigurAufFeld(pos, sitzungsID) instanceof Bauer) {
-                        umwandlung = true;
-                    }
-                    if (possibleMoves != null) {
-                        this.quellPosition = pos;
-                        selectedFigur = tmpView;    // Festhalten welche Figur bewegt werden soll.
-                        quellPane = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
-                        if ((spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == spiel.getSpielerAmZug(sitzungsID)) || !spiel.getKiGegner(sitzungsID)) {
-                            highlight();
-                            if (selectedFigur != null) {
-                                selectedFigur.setEffect(new DropShadow());
-                            }
+                            rotate = false;
                         }
 
-                    }
-                }
-                break;
+                    } // Falls nein:
+                    else {
+                        try {
+                            this.possibleMoves = spiel.getMoeglicheZuege(pos, sitzungsID);
+                        } catch (SpielException e) {
+                            this.possibleMoves = null;
+                        }
+                        if (spiel.getFigurAufFeld(pos, sitzungsID) instanceof Bauer) {
+                            umwandlung = true;
+                        }
+                        if (possibleMoves != null) {
+                            this.quellPosition = pos;
+                            selectedFigur = tmpView;    // Festhalten welche Figur bewegt werden soll.
+                            quellPane = tmpPane;     // Festhalten von welchem Feld die Figur bewegt werden soll.
+                            if ((spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) == spiel.getSpielerAmZug(sitzungsID)) || !spiel.getKiGegner(sitzungsID)) {
+                                highlight();
+                                if (selectedFigur != null) {
+                                    selectedFigur.setEffect(new DropShadow());
+                                }
+                            }
 
-            //Rechtsklick:
-            case SECONDARY: //Bricht den Zug ab
-                if (selectedFigur != null) {
-                    highlightAus();
-                    selectedFigur.setEffect(null);
-                    possibleMoves = null;
-                    quellPane = null;
-                    selectedFigur = null;
-                    quellPosition = null;
-                }
-                break;
-            default:
-                break;
-        }
-        if (spiel.getKiGegner(sitzungsID) && spiel.getSpielerAmZug(sitzungsID) != spiel.getFarbeSpieler1(sitzungsID)) {
-            MouseEvent event1 = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
-            new Thread(() -> {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                Platform.runLater(() -> {
+                        }
+                    }
+                    break;
+
+                //Rechtsklick:
+                case SECONDARY: //Bricht den Zug ab
+                    if (selectedFigur != null) {
+                        highlightAus();
+                        selectedFigur.setEffect(null);
+                        possibleMoves = null;
+                        quellPane = null;
+                        selectedFigur = null;
+                        quellPosition = null;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if (spiel.getKiGegner(sitzungsID) && spiel.getSpielerAmZug(sitzungsID) != spiel.getFarbeSpieler1(sitzungsID)) {
+                MouseEvent event1 = new MouseEvent(paneArray[spiel.getBestMoveInt(sitzungsID)], acht, MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0, MouseButton.PRIMARY, 0, true, true, true, true, true, true, true, true, true, true, null);
+                new Thread(() -> {
                     try {
-                        onClicked(event1);
-                    } catch (SpielException | RemoteException ex) {
-                        Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
                         Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                });
-            }).start();
+                    Platform.runLater(() -> {
+                        try {
+                            onClicked(event1);
+                        } catch (SpielException | RemoteException ex) {
+                            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+                }).start();
 
+            }
         }
     }
 
@@ -890,6 +894,7 @@ public class SpielbrettFXMLController implements Initializable {
     public void zieheFuerOnlineGegner() throws RemoteException, SpielException {
         Position startPosition = spiel.getMitschrift(sitzungsID).getLast().getUrsprung();
         Position zielPosition = spiel.getMitschrift(sitzungsID).getLast().getZiel();
+        String umwandeln = spiel.getMitschrift(sitzungsID).getLast().getBauerUmgewandeltIn();        
 
         Pane startFeld = this.paneArray[startPosition.ordinal()];
         ImageView startFigur = (ImageView) startFeld.getChildren().get(0);
@@ -902,6 +907,9 @@ public class SpielbrettFXMLController implements Initializable {
             addgeschlageneFiguren(zielFigur);
         }
         zielFeld.getChildren().add(startFigur);
+        if(umwandeln != null){
+            this.bauerUmwandeln(umwandeln, zielPosition.ordinal());
+        }
 
         rochadeOderEnPassantAnzeigen(zielPosition, startPosition);
         updateScreen();

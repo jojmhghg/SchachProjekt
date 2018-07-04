@@ -662,7 +662,7 @@ public final class Partie {
             throw new SpielException("Man kann dem Computer kein Remis anbieten!");
         } 
         
-        this.ablauf.add(new Zug(null, null, "(=)"));
+        this.ablauf.add(new Zug(null, null, "(=)", null));
         this.remisangebot = true;
     }
     
@@ -685,7 +685,7 @@ public final class Partie {
             throw new SpielException("Es liegt kein Remis-Angebot vor!");
         }
         
-        this.ablauf.add(new Zug(null, null, "1/2 1/2"));
+        this.ablauf.add(new Zug(null, null, "1/2 1/2", null));
         this.beendet = true;
         this.gewinner = null;
     }
@@ -709,7 +709,7 @@ public final class Partie {
             throw new SpielException("Es liegt kein Remis-Angebot vor!");
         }   
         
-        this.ablauf.add(new Zug(null, null, "(=)"));
+        this.ablauf.add(new Zug(null, null, "(=)", null));
         this.remisangebot = false;
     }
     
@@ -915,7 +915,7 @@ public final class Partie {
         }      
         
         // Mitschrift aktualisieren
-        this.ablauf.add(new Zug(ursprung, ziel, this.getNotation(ursprung, ziel, bauerUmwandelnIn)));       
+        this.ablauf.add(new Zug(ursprung, ziel, this.getNotation(ursprung, ziel, bauerUmwandelnIn), bauerUmwandelnIn));       
         
         if(!this.onlinePartie){
             // Spielstand in tmp-File speichern

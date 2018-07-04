@@ -27,17 +27,23 @@ public class Zug implements Serializable{
      * z.B. Ta2
      */
     private final String mitschrift;
+    /**
+     * 
+     */
+    private final String bauerUmgewandeltIn;
     
     /**
      * Konstruktor der Klasse
      * @param ursprung Ursprungsposition des Zuges
      * @param ziel Zielposition des Zuges
      * @param mitschrift Mitschrift als String im offiziellen Format
+     * @param bauerUmgewandeltIn
      */
-    public Zug(Position ursprung, Position ziel, String mitschrift){
+    public Zug(Position ursprung, Position ziel, String mitschrift, String bauerUmgewandeltIn){
         this.ursprung = ursprung;
         this.ziel = ziel;
         this.mitschrift = mitschrift;
+        this.bauerUmgewandeltIn = bauerUmgewandeltIn;
     }
 
     /**
@@ -65,6 +71,10 @@ public class Zug implements Serializable{
      */
     public String getMitschrift() {
         return mitschrift;
+    }
+    
+    public String getBauerUmgewandeltIn() {
+        return bauerUmgewandeltIn;
     }
     
     
