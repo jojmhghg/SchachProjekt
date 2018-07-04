@@ -173,8 +173,6 @@ public final class Partie {
         this.ablauf = new LinkedList<>();
         
         this.spielbrett = new Spielbrett();
-        
-        this.speichereSpielImpl("tmp");
     }
     
     
@@ -919,8 +917,10 @@ public final class Partie {
         // Mitschrift aktualisieren
         this.ablauf.add(new Zug(ursprung, ziel, this.getNotation(ursprung, ziel, bauerUmwandelnIn)));       
         
-        // Spielstand in tmp-File speichern
-        this.speichereSpielImpl("tmp");
+        if(!this.onlinePartie){
+            // Spielstand in tmp-File speichern
+            this.speichereSpielImpl("tmp");
+        }       
     }
     
     /**

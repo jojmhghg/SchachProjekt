@@ -634,8 +634,8 @@ public class SpielStubImpl implements SpielStub {
             sitzungsID = (int)(Math.random() * 1000000 + 1); 
             neu = true;
             
-            for(String sitzung : serverObjekte.sitzungen.values()){
-                if(Integer.parseInt(sitzung) == sitzungsID){
+            for(Number sitzung : serverObjekte.sitzungen.keySet()){
+                if(sitzungsID == sitzung.intValue()){
                     neu = false;
                     break;
                 }
