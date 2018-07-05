@@ -83,6 +83,8 @@ public class OptionenFXMLController implements Initializable {
     @FXML
     private JFXComboBox<String> partieZeitLokal;
     @FXML
+    private JFXComboBox<String> kiLevel;
+    @FXML
     private JFXToggleButton kiGegnerToggler;
     @FXML
     private ToggleGroup KIEinAus;
@@ -93,6 +95,7 @@ public class OptionenFXMLController implements Initializable {
 
     private final ObservableList<String> partieZeitList = FXCollections.observableArrayList("5", "10", "15", "30", "60", "Unbegrenzt");
     private final ObservableList<String> partieZeitListOnline = FXCollections.observableArrayList("5", "10", "15", "30", "60");
+    private final ObservableList<String> kiLevelList = FXCollections.observableArrayList("Leicht", "Mittel", "Schwer");
     
     /**
      * SitzungsID, die User nach einloggen von Server bekommt.
@@ -497,5 +500,7 @@ public class OptionenFXMLController implements Initializable {
         partieZeitLokal.getSelectionModel().selectLast();
         partieZeitOnline.setItems(partieZeitListOnline);
         partieZeitOnline.getSelectionModel().selectFirst();
+        kiLevel.setItems(kiLevelList);
+        kiLevel.getSelectionModel().selectFirst();
     }
 }
