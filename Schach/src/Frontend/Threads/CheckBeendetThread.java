@@ -35,7 +35,7 @@ public class CheckBeendetThread extends Thread{
             boolean beendet = false;
             while (!beendet) {
                 Thread.sleep(50);
-
+                System.out.println("Thread Beendet?");
                 if (spiel.getBeendet(sitzungsID)) {
                     beendet = true;
                     Platform.runLater(() -> {

@@ -1093,7 +1093,7 @@ public class SpielbrettFXMLController implements Initializable {
      * Schließt alle Threads und gibt das Spiel auf (wichtig wenn online)
      */
     public void prepareFensterSchliessen(){
-        this.onlineZieheGegnerFigurThread.interrupt();
+        //this.onlineZieheGegnerFigurThread.interrupt();
         this.checkBeendetThread.interrupt();
         this.checkRemisangebotThread.interrupt();
         try {

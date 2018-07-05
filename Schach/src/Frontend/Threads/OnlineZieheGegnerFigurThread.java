@@ -6,7 +6,6 @@
 package Frontend.Threads;
 
 import Backend.Funktionalität.SpielException;
-import Backend.Threads.*;
 import Backend.SpielStub;
 import Frontend.Controller.SpielbrettFXMLController;
 import java.rmi.RemoteException;
@@ -39,7 +38,7 @@ public class OnlineZieheGegnerFigurThread extends Thread{
         while(!beendet){          
             try {
                 Thread.sleep(50);
-
+                System.out.println("Thread ZieheFürGegner?");
                 if(this.spiel.istOnlinePartie(sitzungsID) && this.spiel.getSpielerAmZug(sitzungsID) == this.spiel.getEigeneFarbeByID(sitzungsID)){
                     beendet = true;
                     Platform.runLater(() -> {

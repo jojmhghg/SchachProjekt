@@ -6,12 +6,9 @@
 package Frontend.Threads;
 
 import Backend.Funktionalität.SpielException;
-import Backend.Threads.*;
 import Backend.SpielStub;
 import Frontend.Controller.SpielbrettFXMLController;
 import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 
 /**
@@ -40,6 +37,7 @@ public class CheckRemisangebotThread extends Thread{
             while(!beendet){          
                 try {
                     Thread.sleep(50);
+                    System.out.println("Thread Remis?");
                     if(spiel.liegtRemisangebotVor(sitzungsID)){
                         beendet = true;
                         Platform.runLater(() -> {
