@@ -784,9 +784,9 @@ public class SpielbrettFXMLController implements Initializable {
                     // Falls ja:
                     if (possibleMoves != null && possibleMoves.contains(pos)) {
                         spiel.zieheFigur(quellPosition, pos, sitzungsID);
-//                        if (spiel.istOnlinePartie(sitzungsID)) {
-//                            this.startOnlineZieheGegnerFigurThread();
-//                        }
+                        if (spiel.istOnlinePartie(sitzungsID)) {
+                            this.startOnlineZieheGegnerFigurThread();
+                        }
                         if (tmpPane.getChildren().size() > 0) {
                             tmpPane.getChildren().remove(0);
                             addgeschlageneFiguren(tmpView);
@@ -1094,15 +1094,15 @@ public class SpielbrettFXMLController implements Initializable {
      */
     public void prepareFensterSchliessen(){
         if(this.onlineZieheGegnerFigurThread != null){
-            this.onlineZieheGegnerFigurThread.interrupt();
+            this.onlineZieheGegnerFigurThread.stop();
             System.out.println("Stoppe Thread für OnlineZiehen");
         }
         if(this.checkBeendetThread != null){
-            this.checkBeendetThread.interrupt();
+            this.checkBeendetThread.stop();
             System.out.println("Stoppe Thread für Beendet");
         }
         if(this.checkRemisangebotThread != null){
-            this.checkRemisangebotThread.interrupt();
+            this.checkRemisangebotThread.stop();
             System.out.println("Stoppe Thread für Remis");
         }
      
