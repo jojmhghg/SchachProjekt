@@ -58,7 +58,7 @@ public class LostConnectionController implements Initializable {
     private void beenden(){
         try {
             Registry registry;
-            registry = LocateRegistry.getRegistry("localhost", 1099);
+            registry = LocateRegistry.getRegistry("25.67.52.242", 1099);
             spiel = (SpielStub) registry.lookup("ClientStub");
             ((Node) anchorPane).getScene().getWindow().hide();
         } catch (RemoteException | NotBoundException ex) {
