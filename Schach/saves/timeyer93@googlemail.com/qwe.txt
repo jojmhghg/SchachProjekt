@@ -1,8 +1,0 @@
-false
-WEISS
-5
-4000
-4000
-false
-
-10 26

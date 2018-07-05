@@ -1095,15 +1095,12 @@ public class SpielbrettFXMLController implements Initializable {
     public void prepareFensterSchliessen(){
         if(this.onlineZieheGegnerFigurThread != null){
             this.onlineZieheGegnerFigurThread.stop();
-            System.out.println("Stoppe Thread für OnlineZiehen");
         }
         if(this.checkBeendetThread != null){
             this.checkBeendetThread.stop();
-            System.out.println("Stoppe Thread für Beendet");
         }
         if(this.checkRemisangebotThread != null){
             this.checkRemisangebotThread.stop();
-            System.out.println("Stoppe Thread für Remis");
         }
      
         try {

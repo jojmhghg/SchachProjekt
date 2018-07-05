@@ -37,7 +37,7 @@ public class CheckRemisangebotThread extends Thread{
             while(!beendet){          
                 try {
                     Thread.sleep(50);
-                    System.out.println("Thread Remis?");
+                    
                     if(spiel.liegtRemisangebotVor(sitzungsID)){
                         beendet = true;
                         Platform.runLater(() -> {
