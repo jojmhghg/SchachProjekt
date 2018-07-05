@@ -36,17 +36,19 @@ import javafx.stage.Window;
  */
 public class WinnerPopupFXMLController implements Initializable {
     
-    SpielStub spiel;
-    int sitzungsID;
-    Window startseiteWindow;
+    private SpielStub spiel;
+    private int sitzungsID;
+    private Window startseiteWindow;
+    private SpielbrettFXMLController spielbrettController;
     
     @FXML
     private Label gewinnerFarbe;
     
-    public void loadData(SpielStub spiel, int sitzungsID, Window window) throws RemoteException{
+    public void loadData(SpielStub spiel, int sitzungsID, Window window, SpielbrettFXMLController spielbrettController) throws RemoteException{
         this.spiel = spiel;
         this.sitzungsID = sitzungsID;
-
+        this.spielbrettController = spielbrettController;
+        
         if(!spiel.getBeendet(sitzungsID)){
             gewinnerFarbe.setText(spiel.getSpielerAmZug(sitzungsID).andereFarbe().toString());
         }
@@ -66,6 +68,8 @@ public class WinnerPopupFXMLController implements Initializable {
     @FXML
     private void goToStartseite(ActionEvent event) {
         try {
+            this.spielbrettController.prepareFensterSchliessen();
+            
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/Startseite.fxml"));
             Parent startseiteScene = loader.load();

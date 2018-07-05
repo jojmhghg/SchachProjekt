@@ -1065,6 +1065,8 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private void neuePartie(ActionEvent event) {
         try {
+            this.prepareFensterSchliessen();
+            
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../View/Optionen.fxml"));
             Parent optionenScene = loader.load();
@@ -1085,6 +1087,22 @@ public class SpielbrettFXMLController implements Initializable {
             Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+    /**
+     * Schließt alle Threads und gibt das Spiel auf (wichtig wenn online)
+     */
+    public void prepareFensterSchliessen(){
+        this.onlineZieheGegnerFigurThread.interrupt();
+        this.checkBeendetThread.interrupt();
+        this.checkRemisangebotThread.interrupt();
+        try {
+            this.spiel.aufgeben(sitzungsID);
+        } catch (SpielException ex) {
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -1145,6 +1163,7 @@ public class SpielbrettFXMLController implements Initializable {
     private void beenden(ActionEvent event) {
 
         try {
+            this.prepareFensterSchliessen();
             spiel.ausloggen(sitzungsID);
             Stage spielBrettStage = (Stage) ((Node) myMenuBar).getScene().getWindow();
             spielBrettStage.close();
@@ -1165,6 +1184,7 @@ public class SpielbrettFXMLController implements Initializable {
     @FXML
     private void close(ActionEvent event) {
         try {
+            this.prepareFensterSchliessen();
             spiel.ausloggen(sitzungsID);
             Platform.exit();
             System.exit(0);
@@ -1423,7 +1443,7 @@ public class SpielbrettFXMLController implements Initializable {
             Parent winnerPopupScene = loader.load();
 
             WinnerPopupFXMLController controller = loader.getController();
-            controller.loadData(spiel, sitzungsID, ((Node) anchorPaneSpielbrett).getScene().getWindow());
+            controller.loadData(spiel, sitzungsID, ((Node) anchorPaneSpielbrett).getScene().getWindow(), this);
 
             //aboutScene = FXMLLoader.load(getClass().getResource("About.fxml"));
             Stage winnerPopupStage = new Stage();
