@@ -38,7 +38,7 @@ public class OnlineZieheGegnerFigurThread extends Thread{
         while(!beendet){          
             try {
                 Thread.sleep(50);
-                
+                System.out.println("go");
                 if(this.spiel.istOnlinePartie(sitzungsID) && this.spiel.getSpielerAmZug(sitzungsID) == this.spiel.getEigeneFarbeByID(sitzungsID)){
                     beendet = true;
                     Platform.runLater(() -> {

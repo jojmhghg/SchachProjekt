@@ -718,7 +718,7 @@ public class SpielbrettFXMLController implements Initializable {
      * @param addImage geschlagene Figur
      * @throws RemoteException
      */
-    private void addgeschlageneFiguren(ImageView addImage) throws RemoteException {
+    private void addgeschlageneFiguren(ImageView addImage, boolean links) throws RemoteException {
 
         addImage.rotateProperty().setValue(0);
         addImage.setFitHeight(50);
@@ -726,12 +726,12 @@ public class SpielbrettFXMLController implements Initializable {
         addImage.setLayoutX(-5);
         addImage.setLayoutY(20);
 
-        if (spiel.getSpielerAmZug(sitzungsID) != Farbe.SCHWARZ) {
-            paneArrayRechts[stelleRechts].getChildren().add(addImage);
-            stelleRechts++;
-        } else {
-            paneArrayLinks[stelleLinks].getChildren().add(addImage);
+        if (links) {
+            paneArrayRechts[stelleLinks].getChildren().add(addImage);
             stelleLinks++;
+        } else {
+            paneArrayLinks[stelleRechts].getChildren().add(addImage);           
+            stelleRechts++;
         }
     }
 
@@ -782,14 +782,23 @@ public class SpielbrettFXMLController implements Initializable {
                     }
                     //... teste ob neues Feld ein möglicher zug ist
                     // Falls ja:
-                    if (possibleMoves != null && possibleMoves.contains(pos)) {
+                    if (possibleMoves != null && possibleMoves.contains(pos)) {      
+                        Farbe amZug = spiel.getSpielerAmZug(sitzungsID);
+                        
                         spiel.zieheFigur(quellPosition, pos, sitzungsID);
                         if (spiel.istOnlinePartie(sitzungsID)) {
-                            this.startOnlineZieheGegnerFigurThread();
-                        }
+                            if(amZug != spiel.getSpielerAmZug(sitzungsID)){
+                                this.startOnlineZieheGegnerFigurThread();
+                            }                          
+                        } 
                         if (tmpPane.getChildren().size() > 0) {
                             tmpPane.getChildren().remove(0);
-                            addgeschlageneFiguren(tmpView);
+                            if(amZug == spiel.getSpielerAmZug(sitzungsID)){
+                                addgeschlageneFiguren(tmpView, this.spiel.getSpielerAmZug(sitzungsID) == Farbe.SCHWARZ);
+                            }
+                            else{
+                                addgeschlageneFiguren(tmpView, this.spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS);
+                            }                           
                         }
                         tmpPane.getChildren().add(selectedFigur);
 
@@ -905,7 +914,7 @@ public class SpielbrettFXMLController implements Initializable {
             if (zielFeld.getChildren().size() > 0) {
                 ImageView zielFigur = (ImageView) zielFeld.getChildren().get(0);
                 zielFeld.getChildren().remove(0);
-                addgeschlageneFiguren(zielFigur);
+                addgeschlageneFiguren(zielFigur, this.spiel.getEigeneFarbeByID(sitzungsID) == Farbe.WEISS);
             }
             zielFeld.getChildren().add(startFigur);
             if(umwandeln != null){
@@ -985,25 +994,25 @@ public class SpielbrettFXMLController implements Initializable {
                     //Lösche quellPosi - 1
                     this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
 
-                    addgeschlageneFiguren(tmpView2);
+                    addgeschlageneFiguren(tmpView2, this.spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS);
 
                 } else {
                     tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() + 1].getChildren().get(0);
                     //Lösche quellPosi + 1
                     this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
-                    addgeschlageneFiguren(tmpView2);
+                    addgeschlageneFiguren(tmpView2, this.spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS);
                 }
             } else {
                 if (quellPosition.ordinal() + 8 > zielPosition.ordinal()) {
                     tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() - 1].getChildren().get(0);
                     //Lösche quellPosi + 1
                     this.paneArray[quellPosition.ordinal() - 1].getChildren().remove(0);
-                    addgeschlageneFiguren(tmpView2);
+                    addgeschlageneFiguren(tmpView2, this.spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS);
                 } else {
                     tmpView2 = (ImageView) this.paneArray[quellPosition.ordinal() + 1].getChildren().get(0);
                     //Lösche quellPosi - 1
                     this.paneArray[quellPosition.ordinal() + 1].getChildren().remove(0);
-                    addgeschlageneFiguren(tmpView2);
+                    addgeschlageneFiguren(tmpView2, this.spiel.getSpielerAmZug(sitzungsID) == Farbe.WEISS);
                 }
             }
         }
@@ -1857,6 +1866,7 @@ public class SpielbrettFXMLController implements Initializable {
         }
         spiel.bauerUmwandeln(neueFigur, sitzungsID);              
         this.updateScreen();
+        this.startOnlineZieheGegnerFigurThread();
     }
 
     /**
