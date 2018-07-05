@@ -262,7 +262,7 @@ public final class Partie {
             else{
                 throw new SpielException(errorMessage);         
             }  
-            // Lade wer Partie gewonnen hat, falls sie beendet ist
+            // Lade Schwierigkeitsgrad der KI
             if((line = bufferedReader.readLine()) != null){
                 this.schwierigkeitsgrad = Integer.parseInt(line);
             }
@@ -977,6 +977,8 @@ public final class Partie {
             if(this.gewinner != null){
                 bw.write(this.gewinner.toString());              
             }
+            bw.newLine();
+            bw.write(String.valueOf(this.schwierigkeitsgrad));
             bw.newLine();
             
             //Züge
