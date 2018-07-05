@@ -23,11 +23,11 @@ public class Optionen implements Serializable{
         this.farbe = farbe;
         this.kiGegner = kiGegner;
         
-        if(schwierigkeitsgrad == 50 || schwierigkeitsgrad == 250 || schwierigkeitsgrad == 500){
+        if(schwierigkeitsgrad == 5 || schwierigkeitsgrad == 50 || schwierigkeitsgrad == 500){
             this.schwierigkeitsgrad = schwierigkeitsgrad;
         }
         else{
-            throw new SpielException("Ungültiger Schwierigkeitsgrad");
+            this.schwierigkeitsgrad = 5;
         }
         
         if(partiezeit == 5 || partiezeit == 10 || partiezeit == 15 || partiezeit == 30 || partiezeit == 60 || partiezeit == -1){

@@ -140,7 +140,7 @@ public class OptionenFXMLController implements Initializable {
 
             int time = getChosenTimeOnline();
             Farbe farbe = choosedColorOnline();
-            partieoptionen = new Optionen(farbe, time, false, 250);
+            partieoptionen = new Optionen(farbe, time, false, 500);
             
             spiel.warteschlangeBetreten(partieoptionen, sitzungsID); 
             Spielbrett spielbrett = new Spielbrett();
@@ -436,13 +436,13 @@ public class OptionenFXMLController implements Initializable {
         
         switch(selected){
             case "Leicht":
-                return 50;
+                return 5;
             case "Mittel":
-                return 250;
+                return 50;
             case "Schwer":
                 return 500;
             default:
-                return 250;
+                return 50;
         }
     }
 
