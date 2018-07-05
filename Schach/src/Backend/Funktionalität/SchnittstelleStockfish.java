@@ -12,7 +12,7 @@ package Backend.Funktionalität;
 public class SchnittstelleStockfish {
     Stockfish client = new Stockfish();
     
-    public String stockfishEngine(String FEN) {     
+    public String stockfishEngine(String FEN, int schwierigkeitsgrad) {     
         // initialize and connect to engine
         if (client.startEngine()) { 
         } 
@@ -26,7 +26,7 @@ public class SchnittstelleStockfish {
         client.getOutput(0); 
         
         // get the best move for a position with a given think time 
-        String bestMove = client.getBestMove(FEN, 500);
+        String bestMove = client.getBestMove(FEN, schwierigkeitsgrad);
         System.out.println(bestMove);
         client.stopEngine();
         

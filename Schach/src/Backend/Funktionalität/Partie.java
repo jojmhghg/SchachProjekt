@@ -104,6 +104,11 @@ public final class Partie {
      */
     private Position tmpZiel;
     
+    /**
+     * Schwierigkeitsgrad der KI (50, 250, 500)
+     */
+    private int schwierigkeitsgrad;
+    
     private SchnittstelleStockfish schnittstelleStockfish = new SchnittstelleStockfish();
     
     private int bestMoveInt;
@@ -130,6 +135,7 @@ public final class Partie {
         this.farbeSpieler1 = optionen.getFarbe();
         this.partiezeit = optionen.getPartiezeit();
         this.onlinePartie = false;
+        this.schwierigkeitsgrad = optionen.getSchwierigkeitsgrad();
         
         this.verbleibendeZeitSpieler1 = optionen.getPartiezeit() * 60 * 1000;
         this.verbleibendeZeitSpieler2 = optionen.getPartiezeit() * 60 * 1000;
@@ -158,6 +164,8 @@ public final class Partie {
         this.kiGegner = optionen.getKiGegner();
         this.farbeSpieler1 = optionen.getFarbe();
         this.partiezeit = optionen.getPartiezeit();
+        this.schwierigkeitsgrad = optionen.getSchwierigkeitsgrad();
+        
         this.onlinePartie = true;
         this.sitzungsIDspieler1 = sitzungsIDspieler1;
         this.sitzungsIDspieler2 =  sitzungsIDspieler2;
@@ -196,13 +204,6 @@ public final class Partie {
         
         //Pfad zum Speicherziel für Windows
         File file = new File("." + seperator + "saves" + seperator + ordner + seperator + speichername + ".txt"); 
-        //Pfad zum Speicherziel für Macs
-        /*if (!file.canRead() || !file.isFile()){
-            file = new File("./saves/" + speichername + ".txt"); 
-            if (!file.canRead() || !file.isFile()){
-                throw new SpielException(errorMessage);
-            }
-        }*/
         
         try { 
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file)); 
@@ -261,6 +262,13 @@ public final class Partie {
             else{
                 throw new SpielException(errorMessage);         
             }  
+            // Lade wer Partie gewonnen hat, falls sie beendet ist
+            if((line = bufferedReader.readLine()) != null){
+                this.schwierigkeitsgrad = Integer.parseInt(line);
+            }
+            else{
+                throw new SpielException(errorMessage);         
+            }
                        
             this.ablauf = new LinkedList<>();
             this.endeLetzterZug = new Date().getTime();
@@ -722,7 +730,7 @@ public final class Partie {
     public void kiZieht(boolean startOderZiel) throws SpielException{
         if(startOderZiel){
             String FEN = spielbrett.gibStringStockfish();
-            String bestMove = schnittstelleStockfish.stockfishEngine(FEN);
+            String bestMove = schnittstelleStockfish.stockfishEngine(FEN, schwierigkeitsgrad);
             bestMoveStart = bestMove.substring(0, bestMove.length()-2);
             bestMoveZiel = bestMove.substring(2);
         }

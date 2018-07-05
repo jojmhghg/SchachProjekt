@@ -1,7 +1,9 @@
-false
+true
 WEISS
 -1
 -60000
 -60000
 false
 
+10 26
+52 36

@@ -1108,10 +1108,7 @@ public class SpielbrettFXMLController implements Initializable {
      
         try {
             this.spiel.aufgeben(sitzungsID);
-        } catch (SpielException ex) {
-            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
-            Logger.getLogger(SpielbrettFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SpielException | RemoteException ex) {
         }
     }
 
