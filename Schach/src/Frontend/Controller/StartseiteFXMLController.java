@@ -306,7 +306,7 @@ public class StartseiteFXMLController implements Initializable {
 
             //optionenScene = FXMLLoader.load(getClass().getResource("Optionen.fxml"));
             Stage optionenStage = new Stage();
-            //optionenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
+            optionenStage.getIcons().add(new Image("Frontend/Ressources/horse.png"));
             optionenStage.initModality(Modality.APPLICATION_MODAL);
             optionenStage.initStyle(StageStyle.UNDECORATED);
             optionenStage.setScene(new Scene(optionenScene));
