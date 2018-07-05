@@ -140,7 +140,7 @@ public class OptionenFXMLController implements Initializable {
 
             int time = getChosenTimeOnline();
             Farbe farbe = choosedColorOnline();
-            partieoptionen = new Optionen(farbe, time, false, 500);
+            partieoptionen = new Optionen(farbe, time, false, 1);
             
             spiel.warteschlangeBetreten(partieoptionen, sitzungsID); 
             Spielbrett spielbrett = new Spielbrett();
@@ -410,20 +410,7 @@ public class OptionenFXMLController implements Initializable {
 
     @FXML
     private void toggleKiGegner() {
-        kiGegnerToggler.selectedProperty().addListener(new ChangeListener<Boolean>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-                if (kiGegnerToggler.isSelected() == true) {
-                    onOff.setText("EIN");
-                    kiLevel.setDisable(false);
-                } else {
-                    onOff.setText("AUS");
-                }
-            }
-
-        });
-
+        this.kiLevel.setDisable(!kiLevel.isDisabled());
     }
     
     private boolean getChoosedGegner(){
@@ -436,13 +423,13 @@ public class OptionenFXMLController implements Initializable {
         
         switch(selected){
             case "Leicht":
-                return 5;
+                return 1;
             case "Mittel":
-                return 50;
+                return 5;
             case "Schwer":
-                return 500;
+                return 10;
             default:
-                return 50;
+                return 1;
         }
     }
 
