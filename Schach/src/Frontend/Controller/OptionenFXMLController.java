@@ -140,7 +140,7 @@ public class OptionenFXMLController implements Initializable {
 
             int time = getChosenTimeOnline();
             Farbe farbe = choosedColorOnline();
-            partieoptionen = new Optionen(farbe, time, false);
+            partieoptionen = new Optionen(farbe, time, false, 250);
             
             spiel.warteschlangeBetreten(partieoptionen, sitzungsID); 
             Spielbrett spielbrett = new Spielbrett();
@@ -224,7 +224,7 @@ public class OptionenFXMLController implements Initializable {
             Optionen partieoptionen;
             int time = getChosenTimeOffline();
             Farbe farbe = choosedColorOffline();
-            partieoptionen = new Optionen(farbe, time, getChoosedGegner());
+            partieoptionen = new Optionen(farbe, time, getChoosedGegner(), this.getLevel());
             Spielbrett spielbrett = spiel.neuePartie(partieoptionen, sitzungsID);        
 
             FXMLLoader loader = new FXMLLoader();
@@ -428,6 +428,22 @@ public class OptionenFXMLController implements Initializable {
     
     private boolean getChoosedGegner(){
         return kiGegnerToggler.isSelected();
+    }
+    
+    private int getLevel() {
+        String selected;
+        selected = kiLevel.getValue();
+        
+        switch(selected){
+            case "Leicht":
+                return 50;
+            case "Mittel":
+                return 250;
+            case "Schwer":
+                return 500;
+            default:
+                return 250;
+        }
     }
 
     private int getChosenTimeOffline() {
