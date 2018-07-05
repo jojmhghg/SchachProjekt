@@ -418,6 +418,7 @@ public class OptionenFXMLController implements Initializable {
                     onOff.setText("EIN");
                 } else {
                     onOff.setText("AUS");
+                    kiLevel.setDisable(true);
                 }
             }
 
