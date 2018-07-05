@@ -744,7 +744,7 @@ public class SpielbrettFXMLController implements Initializable {
      * @throws java.rmi.RemoteException
      */
     public void onClicked(MouseEvent event) throws SpielException, RemoteException, IOException {
-        if(this.spiel.istOnlinePartie(sitzungsID) && this.spiel.getEigeneFarbeByID(sitzungsID) == this.spiel.getSpielerAmZug(sitzungsID)){
+        if(this.spiel.istOnlinePartie(sitzungsID) && this.spiel.getEigeneFarbeByID(sitzungsID) == this.spiel.getSpielerAmZug(sitzungsID) || !this.spiel.istOnlinePartie(sitzungsID)){
             
         
             if (spiel.getKiGegner(sitzungsID) && spiel.getFarbeSpieler1(sitzungsID) != spiel.getSpielerAmZug(sitzungsID)) {
