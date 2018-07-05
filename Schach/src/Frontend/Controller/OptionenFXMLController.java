@@ -416,9 +416,9 @@ public class OptionenFXMLController implements Initializable {
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
                 if (kiGegnerToggler.isSelected() == true) {
                     onOff.setText("EIN");
+                    kiLevel.setDisable(false);
                 } else {
                     onOff.setText("AUS");
-                    kiLevel.setDisable(true);
                 }
             }
 
