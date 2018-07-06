@@ -145,7 +145,7 @@ public class StartseiteFXMLController implements Initializable {
     public void verbindeMitServer() throws NotBoundException {
         try {
             Registry registry;
-            registry = LocateRegistry.getRegistry("25.39.20.107", 1099);
+            registry = LocateRegistry.getRegistry("192.168.2.5", 1099);
             spiel = (SpielStub) registry.lookup("ClientStub");
         } catch (RemoteException ex) {
             Reconnect rec = new Reconnect();
