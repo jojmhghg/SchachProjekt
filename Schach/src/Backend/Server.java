@@ -28,7 +28,7 @@ public class Server {
      */
     public static void main(String[] args) throws SpielException, RemoteException, AlreadyBoundException, ClassNotFoundException, SQLException, NoSuchAlgorithmException  {
             
-        System.setProperty("java.rmi.server.hostname", "25.67.52.242");
+        System.setProperty("java.rmi.server.hostname", "25.39.20.107");
 
         SpielStubImpl clientLauncher = new SpielStubImpl();
         SpielStub clientStub = (SpielStub) UnicastRemoteObject.exportObject(clientLauncher, 0);
